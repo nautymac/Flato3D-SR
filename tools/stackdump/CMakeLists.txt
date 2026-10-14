@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+project(stackdump CXX)
+add_executable(stackdump stackdump.cpp)
+target_compile_definitions(stackdump PRIVATE UNICODE _UNICODE)
+set_target_properties(stackdump PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
+target_link_libraries(stackdump PRIVATE psapi)

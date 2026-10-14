@@ -1,0 +1,4 @@
+[submodule "ogl3d"]
+	path = ogl3d
+	url = https://github.com/nautymac/OGL3D-SR.git
+	branch = flato3d

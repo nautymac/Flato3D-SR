@@ -1,0 +1,6 @@
+WineD3D for Windows 11.19 (DirectX 1-11 to OpenGL), builds by Federico Dossena
+  x86: https://downloads.fdossena.com/Projects/WineD3D/Builds/WineD3DForWindows_11.19.zip
+  x64: https://downloads.fdossena.com/Projects/WineD3D/Builds/WineD3DForWindows_11.19-x86_64.zip
+Downloaded 2026-10-14. Build scripts: https://github.com/adolfintel/wined3d4win (Wine is LGPL).
+Flato3D use: D3D9/D3D11 game -> WineD3D -> OpenGL -> OGL3D flat depth. Door Kickers: Action Squad
+also needs the Flato3D loader (version.dll) because it reaches the system d3d9.dll.

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(gstime CXX)
+add_executable(gstime gstime.cpp)
+set_target_properties(gstime PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded")
+target_link_libraries(gstime PRIVATE opengl32 user32 gdi32)

@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "updated": "2026-10-14",
+  "about": "Games Flato3D has been made to work with: what to install, the OGL3D.ini values that differ from the template, and the state of each. The installer will apply these as profiles. Candidates not yet worked on are in game_candidates.json. 'test' holds the steps for tools\\analysis\\gametest.ps1.",
+  "games": [
+    {
+      "id": "technobabylon",
+      "name": "Technobabylon",
+      "steam_appid": 307580,
+      "folder": "Technobabylon",
+      "exe": "Technobabylon.exe",
+      "arch": "x86",
+      "engine": "AGS 3.6.1 (SDL2)",
+      "api": "OpenGL (acsetup.cfg driver = OGL)",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "sbs"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "feet",
+          "depth_top": 1,
+          "depth_screen": 0,
+          "plane_size": 1.8,
+          "plane_height": 1.8,
+          "sprite_min": -0.25,
+          "screen_batch": 1
+        }
+      },
+      "status": "verified",
+      "verified_by_user": "2026-10-14",
+      "notes": [
+        "Rule feet: sprites stand at the depth of their bottom edge, rooms slope back towards the top of the screen.",
+        "Scissor batches: 0 = room, 1 = overlays/GUI, 2 = cursor (screen_batch 1 keeps the GUI at the screen).",
+        "Measured: character head..feet 8 px, floor at its feet 9 px, GUI 0 px (3840 px per eye)."
+      ],
+      "known_issues": [],
+      "test": {
+        "proc": "Technobabylon",
+        "reaches": "title ~28 s after launch; Start at (1920,1460)",
+        "notes": "AGS ignores SetCursorPos: move the mouse with relative steps (rmove). Starting a game rewrites Saved Games\\Technobabylon\\agssave.999: restore it from test-backups\\Technobabylon."
+      }
+    },
+    {
+      "id": "huntdown",
+      "name": "Huntdown",
+      "steam_appid": 598550,
+      "folder": "Huntdown",
+      "exe": "Huntdown.exe",
+      "arch": "x64",
+      "engine": "Unity 2019.4.13f1",
+      "api": "Direct3D 11 (-force-glcore not built into the player)",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25.42,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_top": 1,
+          "depth_screen": 0.3,
+          "plane_size": 1.2,
+          "plane_height": 0,
+          "sprite_min": 0,
+          "screen_batch": 1,
+          "group": "draw",
+          "order_curve": 0.5
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "verified_by_user": "2026-10-14 (layered depth, SR weaving upright)",
+      "notes": [
+        "WineD3D's d3d11/dxgi must be the renamed copies (w3d11.dll, wxgi.dll): the NVIDIA OpenGL driver presents through the system D3D11 and would pick up a module called d3d11.dll.",
+        "WineD3D CSMT must stay on (Unity creates resources from other threads); no csmt registry key.",
+        "The game turns vsync off; swap_interval = 1 forces it on, otherwise a tear line runs across the woven picture.",
+        "Unity draws each parallax plane as its own draw call, often from one atlas: group = draw (every draw is a layer), order_curve = 0.5 gives the background planes more of the depth range.",
+        "The sprite atlas sits on texture unit 1 (unit 0 holds a 0x0 placeholder); only the units a program samples count, because WineD3D leaves earlier render targets bound on others.",
+        "The scene buffer is a texture view (render target view) and the final pass reads another view of the same texture; the composition order follows views."
+      ],
+      "known_issues": [
+        "Measured on a cutscene only (layers -44..-96 px with the old depth_screen 1.05); gameplay depth to be confirmed by the user."
+      ],
+      "test": {
+        "proc": "Huntdown",
+        "steps": "wait:30,key:0D,wait:3,key:0D,wait:3,key:0D,wait:3,key:0D,wait:3,key:0D,wait:5,key:56,wait:3,key:56,wait:3,key:56,wait:3,key:56,wait:6,key:0D,wait:2,key:0D,wait:14,ctrlkey:7B,wait:4",
+        "reaches": "street cutscene of the first mission, then Ctrl+F12 dump",
+        "notes": "Saves are backed up in test-backups\\Huntdown (only Unity session counters change)."
+      }
+    },
+    {
+      "id": "door-kickers-action-squad",
+      "name": "Door Kickers: Action Squad",
+      "steam_appid": 686200,
+      "folder": "Door Kickers - Action Squad",
+      "exe": "ActionSquad.exe",
+      "arch": "x86",
+      "engine": "KillHouse engine (DXUT, SDL2), SteamStub-wrapped exe",
+      "api": "Direct3D 9",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x86/d3d9.dll",
+        "wined3d-11.19/x86/wined3d.dll",
+        "loader/x86/version.dll",
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [
+        {
+          "key": "HKCU\\Software\\Wine\\AppDefaults\\ActionSquad.exe\\Direct3D",
+          "name": "csmt",
+          "type": "DWORD",
+          "value": 0
+        }
+      ],
+      "ini": {
+        "Stereo": {
+          "separation": 4.51,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_top": 1,
+          "depth_screen": 1.42,
+          "plane_size": 1.2,
+          "plane_height": 0,
+          "sprite_min": 0,
+          "screen_batch": 1,
+          "cache_scale": 0.406
+        }
+      },
+      "status": "working",
+      "verified_by_user": "2026-10-14 (gameplay depth)",
+      "notes": [
+        "The loader (version.dll) is required: Steam's overlay maps the system d3d9 early and the exe has no GetProcAddress import.",
+        "WineD3D CSMT off (registry key): with it on, the title -> menu step deadlocked under the NVIDIA DXGI-layered present.",
+        "The level is drawn at about 416x234 into a 1024x1024 cache (left half colour, right half normals), then scaled to the screen: the cache is made stereo (layer cache), cache_scale = 416/1024.",
+        "F5 toggles the game's frame statistics; our hotkeys are kept from the game ([Keys] swallow = 1).",
+        "separation and depth_screen are the user's own settings.",
+        "Only a target drawn into in the same frame becomes a layer cache (WineD3D also attaches atlases to its own framebuffers for uploads)."
+      ],
+      "known_issues": [
+        "Depth inside the low-resolution cache moves in cache pixels (about 9 screen px per step): only a few depth levels. Planned: render the cache larger.",
+        "Now and then (seen in automated launches of DK and Huntdown, mostly the first one after replacing the DLLs) the game stops after frame 3 for about 100 s, the render thread waiting inside the NVIDIA driver under WineD3D. Not shader compilation (the program links in 43 ms on a cold cache). Cause unknown."
+      ],
+      "test": {
+        "proc": "ActionSquad",
+        "steps": "wait:36,lclick,wait:8,click:320:1272,wait:6,click:1904:1080,wait:6,click:1904:1080,wait:6,click:1600:1488,wait:4,click:1600:1488,wait:8,key:20,wait:3,key:0D,wait:3,key:4A,wait:3,key:11,wait:3,key:20,wait:3,key:0D,wait:3,key:4A,wait:16,ctrlkey:7B,wait:4",
+        "reaches": "gameplay, then Ctrl+F12 dump",
+        "notes": "Mouse clicks work (3840x2160 screen pixels), keyboard input is unreliable."
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# build trees and built binaries (binaries go into release packages)
+build/
+build-x86/
+bin/
+b32/
+b64/
+tools/analysis/gstime/b/
+*.map
+
+# WineD3D builds: downloaded, not kept in git (see third_party/wined3d-11.19/SOURCE.txt)
+third_party/**/x86/
+third_party/**/x64/
+third_party/**/x86-renamed/
+third_party/**/x64-renamed/
+third_party/**/*.dll
+
+# local data: game save backups, the full library survey (store and install details)
+test-backups/
+data/private/
+
+# logs, dumps, Python caches
+*.log
+OGL3D_frame*.bmp
+OGL3D_step*.bmp
+OGL3D_flicker*.bmp
+__pycache__/
