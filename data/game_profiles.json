@@ -201,8 +201,8 @@
           "order_curve": 1
         }
       },
-      "status": "working",
-      "verified_by_user": null,
+      "status": "verified",
+      "verified_by_user": "2026-10-15 (FRAMED, SR weaving)",
       "notes": [
         "screen_batch = 0: the game sets glScissor before many draws, so the AGS rule (later scissor batches are UI) would put the whole picture at the screen.",
         "Each comic panel is drawn as frame + picture; repeated runs of the same draws share a depth, so the panels sit side by side on one plane.",

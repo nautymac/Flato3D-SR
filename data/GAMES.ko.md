@@ -7,7 +7,7 @@
 | Technobabylon | OpenGL (AGS) · 직접 | feet (발 위치) | 사용자 확인 완료 | opengl32.dll x86 |
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
-| FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) | 동작, 사용자 확인 전 | opengl32.dll x86 (bin 폴더) |
+| FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
 
 ## 게임별 메모
 
