@@ -10,13 +10,14 @@ Flato3D gives flat 2D games, pixel art or hand-drawn, real stereo depth. A flat 
 
 The picture is woven for lenticular SR panels (Acer SpatialLabs, Leia SR displays) through the installed SR runtime. The SR output can be turned off: side-by-side and top-and-bottom work with any other 3D display.
 
-Status: early. Three games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
+Status: early. Four games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 
 | Game | API | Route | Depth rule |
 | --- | --- | --- | --- |
 | Technobabylon | OpenGL (AGS) | direct | feet |
 | Huntdown | Direct3D 11 (Unity) | WineD3D | drawing order, one layer per draw |
 | Door Kickers: Action Squad | Direct3D 9 | WineD3D | drawing order, layer cache |
+| FRAMED Collection | OpenGL 3.2 | direct | drawing order, repeated panels share a layer |
 
 ## How it works
 

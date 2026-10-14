@@ -170,6 +170,53 @@
         "reaches": "gameplay, then Ctrl+F12 dump",
         "notes": "Mouse clicks work (3840x2160 screen pixels), keyboard input is unreliable."
       }
+    },
+    {
+      "id": "framed-collection",
+      "name": "FRAMED Collection (FRAMED, FRAMED 2)",
+      "steam_appid": 322450,
+      "folder": "FRAMED",
+      "exe": "bin/Framed.exe",
+      "arch": "x86",
+      "engine": "Loveshack (SDL2 + GLEW)",
+      "api": "OpenGL 3.2 core",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll -> bin",
+        "OGL3D.ini -> bin"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_top": 1,
+          "depth_screen": 0.3,
+          "screen_batch": 0,
+          "group": "texture",
+          "order_curve": 1
+        }
+      },
+      "status": "working",
+      "verified_by_user": null,
+      "notes": [
+        "screen_batch = 0: the game sets glScissor before many draws, so the AGS rule (later scissor batches are UI) would put the whole picture at the screen.",
+        "Each comic panel is drawn as frame + picture; repeated runs of the same draws share a depth, so the panels sit side by side on one plane.",
+        "Measured on the first puzzle of FRAMED: blinds +56 px, room +36..42 px, panels -2 px, hint arrow -28 px (separation 25)."
+      ],
+      "known_issues": [
+        "Only the first puzzle of FRAMED measured; FRAMED 2 not yet tried.",
+        "A panel's picture sits slightly in front of its own frame (drawn after it)."
+      ],
+      "test": {
+        "proc": "Framed",
+        "steps": "wait:25,click:280:360,wait:16,click:1920:1080,wait:6,ctrlkey:7B,wait:4",
+        "reaches": "first puzzle of FRAMED (collection menu -> FRAMED -> title), then Ctrl+F12 dump"
+      }
     }
   ]
 }

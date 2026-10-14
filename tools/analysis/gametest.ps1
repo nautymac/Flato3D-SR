@@ -1,6 +1,6 @@
 # Starts a Steam game, keeps its window in front and runs a list of steps, then kills it.
 # Steps (comma separated): wait:<s>  shot:<name>  click:<x>:<y> (screen pixels)  key:<vk hex>  front
-param([string]$AppId, [string]$Proc, [string]$Steps, [string]$OutDir, [string]$Exe = '', [string]$ExeArgs = '', [switch]$Keep)
+param([string]$AppId, [string]$Proc, [string]$Steps, [string]$OutDir, [string]$Exe = '', [string]$ExeArgs = '', [switch]$Keep, [switch]$Attach)
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
 Add-Type -Namespace GT -Name U -MemberDefinition @'
@@ -19,12 +19,18 @@ Add-Type -Namespace GT -Name U -MemberDefinition @'
 [GT.U]::SetProcessDPIAware() | Out-Null
 [GT.U]::SetThreadExecutionState(0x80000003) | Out-Null
 New-Item -ItemType Directory -Force $OutDir | Out-Null
-if (Get-Process -Name $Proc -ErrorAction SilentlyContinue) { throw "$Proc already running" }
+$running = Get-Process -Name $Proc -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($running -and -not $Attach) { throw "$Proc already running" }
+if (-not $running) {
 if ($Exe -and $ExeArgs) { Start-Process -FilePath $Exe -ArgumentList $ExeArgs -WorkingDirectory (Split-Path $Exe) } elseif ($Exe) { Start-Process -FilePath $Exe -WorkingDirectory (Split-Path $Exe) } else { Start-Process "steam://rungameid/$AppId" }
 $p = $null
 for ($i = 0; $i -lt 90 -and -not $p; $i++) { Start-Sleep 1; $p = Get-Process -Name $Proc -ErrorAction SilentlyContinue | Select-Object -First 1 }
 if (-not $p) { throw "$Proc did not start" }
 "started pid $($p.Id)"
+} else {
+$p = $running   # -Attach: drive the game that is already running
+"attached to pid $($p.Id)"
+}
 function Front {
     $p.Refresh()
     if ($p.HasExited) {   # Steam may relaunch the game: follow the new process

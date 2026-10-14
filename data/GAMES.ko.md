@@ -7,6 +7,7 @@
 | Technobabylon | OpenGL (AGS) · 직접 | feet (발 위치) | 사용자 확인 완료 | opengl32.dll x86 |
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
+| FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) | 동작, 사용자 확인 전 | opengl32.dll x86 (bin 폴더) |
 
 ## 게임별 메모
 
@@ -26,3 +27,8 @@
 
 - 남은 일: 캐시 해상도 때문에 깊이 단계가 거칩니다. 캐시를 더 크게 그리게 할 계획입니다.
 - 남은 일: 가끔 시작 직후(프레임 3)에 약 100초 멈춥니다. 자동 실행에서 DK와 Huntdown 둘 다 봤고, 주로 DLL을 바꾼 뒤 첫 실행이었습니다. 셰이더 컴파일은 원인이 아닙니다(캐시를 비워도 43ms). 원인은 아직 모릅니다.
+
+**FRAMED Collection**: 게임이 draw마다 glScissor를 걸기 때문에 `screen_batch = 0`으로 둡니다. 그렇지 않으면 화면 전체가 UI로 취급됩니다. 만화 칸은 (테두리, 그림) 묶음이 반복되는 구조라 같은 층으로 묶어서, 칸들이 한 평면에 나란히 놓입니다.
+
+- 측정(FRAMED 첫 퍼즐, 분리값 25): 블라인드 +56px, 방 +36~42px, 칸 −2px, 화살표 −28px.
+- 남은 일: FRAMED 2는 아직 해 보지 않았습니다. 칸 안의 그림이 자기 테두리보다 살짝 앞에 있습니다.
