@@ -8,6 +8,7 @@
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
+| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 
 ## 게임별 메모
 
@@ -32,3 +33,10 @@
 
 - 측정(FRAMED 첫 퍼즐, 분리값 25): 블라인드 +56px, 방 +36~42px, 칸 −2px, 화살표 −28px.
 - 남은 일: FRAMED 2는 아직 해 보지 않았습니다. 칸 안의 그림이 자기 테두리보다 살짝 앞에 있습니다.
+
+**Astral Ascent**: exe가 d3d11.dll을 정적으로 가져오기 때문에, 로더가 exe의 가져오기 항목을 WineD3D 사본(w3d11.dll)으로 바꿉니다. geo-11이 설치돼 있으면 d3d11.dll, dxgi.dll, nvapi64.dll을 빼야 합니다.
+
+- 글자는 한 글자씩 임시 버퍼에 그려 합성합니다. 한 프레임에 여러 번 지우고 쓰는 버퍼는 쓸 때마다 한 층으로 묶어서 대사 줄이 평평합니다.
+- 애니메이션 스프라이트는 프레임마다 텍스처가 바뀝니다. 직전 순서 목록에 없는 층은 바로 앞에 그린 층 다음 자리를 받습니다.
+- 측정(첫 지역, 분리값 25): 하늘 +28~54px, 섬 +30px, 칼·폐허 +20~26px, 기둥·바닥 +8px, 캐릭터 −6px, HUD −14~−18px.
+- 남은 일: 대화 장면은 초상화, 대화창, 글자가 한 UI 층입니다. 첫 지역만 측정했습니다.

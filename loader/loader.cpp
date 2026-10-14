@@ -7,6 +7,9 @@
 //  * The loader imports (LoadLibrary*, GetModuleHandle*) of the game's own modules (the exe and DLLs
 //    in its folder, not the wrappers) are patched: a request for one of kRedirect gets the copy in
 //    the game folder when there is one.
+//  * Static imports of kRedirect DLLs in the game's own modules (Astral Ascent's exe imports
+//    d3d11.dll!D3D11CreateDevice, so Windows binds it before any of our code runs) are pointed at
+//    stubs that call the game-folder copy; the system DLL stays loaded for the GPU driver.
 //  * When a system copy of one of kRedirect gets mapped anyway (Steam loads d3d9.dll early; Door
 //    Kickers: Action Squad's SteamStub-wrapped exe then reaches it without any import we see), its
 //    creation entry points are bent to stubs that call the game-folder copy (LdrRegisterDllNotification).
@@ -214,6 +217,8 @@ const Hook kHooks[] = {
     {"GetProcAddress", (void*)HookGetProcAddress},
 };
 
+int PatchStaticImports(BYTE* base, const IMAGE_IMPORT_DESCRIPTOR* imp);
+
 bool IsLoaderImport(const char* dll)
 {
     return _stricmp(dll, "kernel32.dll") == 0 || _stricmp(dll, "kernelbase.dll") == 0 ||
@@ -230,6 +235,7 @@ int PatchImports(HMODULE m)
     if (!dir.VirtualAddress) return 0;
     int patched = 0;
     for (auto imp = (IMAGE_IMPORT_DESCRIPTOR*)(base + dir.VirtualAddress); imp->Name; ++imp) {
+        if (imp->OriginalFirstThunk) patched += PatchStaticImports(base, imp);
         if (!IsLoaderImport((const char*)(base + imp->Name)) || !imp->OriginalFirstThunk) continue;
         auto names = (IMAGE_THUNK_DATA*)(base + imp->OriginalFirstThunk);
         auto slots = (IMAGE_THUNK_DATA*)(base + imp->FirstThunk);
@@ -256,9 +262,11 @@ int PatchImports(HMODULE m)
 
 FARPROC LocalProc(const wchar_t* dll, const char* name, void* ret)
 {
-    HMODULE m = LoadLibraryExW((g_dir + dll).c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
+    std::wstring local = Redirect(dll);   // the renamed copy (w3d11.dll) when there is one
+    if (local.empty()) local = g_dir + dll;
+    HMODULE m = LoadLibraryExW(local.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
     FARPROC f = m ? GetProcAddress(m, name) : nullptr;
-    Log("%ls!%s called from %s -> game folder copy %p", dll, name, Caller(ret).c_str(), (void*)f);
+    Log("%ls!%s called from %s -> %ls %p", dll, name, Caller(ret).c_str(), BaseName(local).c_str(), (void*)f);
     return f;
 }
 
@@ -274,6 +282,15 @@ STUB(HRESULT, L"d3d9.dll", Direct3DCreate9Ex, (UINT v, void** out), (v, out))
 STUB(void*, L"d3d8.dll", Direct3DCreate8, (UINT v), (v))
 STUB(HRESULT, L"ddraw.dll", DirectDrawCreate, (GUID* g, void** out, void* outer), (g, out, outer))
 STUB(HRESULT, L"ddraw.dll", DirectDrawCreateEx, (GUID* g, void** out, const GUID* iid, void* outer), (g, out, iid, outer))
+// for static imports only (see kStaticEntries)
+STUB(HRESULT, L"d3d11.dll", D3D11CreateDevice, (void* a, int t, HMODULE sw, UINT f, const void* fl, UINT n, UINT sdk, void** dev, void* lvl, void** ctx),
+     (a, t, sw, f, fl, n, sdk, dev, lvl, ctx))
+STUB(HRESULT, L"d3d11.dll", D3D11CreateDeviceAndSwapChain,
+     (void* a, int t, HMODULE sw, UINT f, const void* fl, UINT n, UINT sdk, const void* desc, void** sc, void** dev, void* lvl, void** ctx),
+     (a, t, sw, f, fl, n, sdk, desc, sc, dev, lvl, ctx))
+STUB(HRESULT, L"dxgi.dll", CreateDXGIFactory, (const GUID& iid, void** out), (iid, out))
+STUB(HRESULT, L"dxgi.dll", CreateDXGIFactory1, (const GUID& iid, void** out), (iid, out))
+STUB(HRESULT, L"dxgi.dll", CreateDXGIFactory2, (UINT f, const GUID& iid, void** out), (f, iid, out))
 
 struct Entry {
     const wchar_t* dll;
@@ -290,6 +307,47 @@ const Entry kEntries[] = {
     // (OpenGL on a DXGI swap chain), and bending them sent the driver's own device into WineD3D.
     // D3D11 games reach the wrapper through the patched LoadLibrary/GetProcAddress imports.
 };
+
+// Static imports of the game's modules: the IAT slot of these functions gets the stub (the first call
+// loads the game-folder copy). d3d11/dxgi are not bent in the system DLL itself (see kEntries).
+const Entry kStaticEntries[] = {
+    {L"d3d11.dll", "D3D11CreateDevice", (void*)Stub_D3D11CreateDevice},
+    {L"d3d11.dll", "D3D11CreateDeviceAndSwapChain", (void*)Stub_D3D11CreateDeviceAndSwapChain},
+    {L"dxgi.dll", "CreateDXGIFactory", (void*)Stub_CreateDXGIFactory},
+    {L"dxgi.dll", "CreateDXGIFactory1", (void*)Stub_CreateDXGIFactory1},
+    {L"dxgi.dll", "CreateDXGIFactory2", (void*)Stub_CreateDXGIFactory2},
+    {L"d3d9.dll", "Direct3DCreate9", (void*)Stub_Direct3DCreate9},
+    {L"d3d9.dll", "Direct3DCreate9Ex", (void*)Stub_Direct3DCreate9Ex},
+    {L"d3d8.dll", "Direct3DCreate8", (void*)Stub_Direct3DCreate8},
+};
+
+int PatchStaticImports(BYTE* base, const IMAGE_IMPORT_DESCRIPTOR* imp)
+{
+    const std::wstring dll = Widen((const char*)(base + imp->Name));
+    if (!InList(dll, kRedirect, _countof(kRedirect)) || Redirect(dll.c_str()).empty()) return 0;
+    int patched = 0;
+    auto names = (IMAGE_THUNK_DATA*)(base + imp->OriginalFirstThunk);
+    auto slots = (IMAGE_THUNK_DATA*)(base + imp->FirstThunk);
+    for (; names->u1.AddressOfData; ++names, ++slots) {
+        if (IMAGE_SNAP_BY_ORDINAL(names->u1.Ordinal)) continue;
+        const char* fn = (const char*)((IMAGE_IMPORT_BY_NAME*)(base + names->u1.AddressOfData))->Name;
+        const Entry* e = nullptr;
+        for (const Entry& x : kStaticEntries)
+            if (_wcsicmp(x.dll, dll.c_str()) == 0 && strcmp(x.name, fn) == 0) e = &x;
+        if (!e) {
+            Log("static import %ls!%s: no stub, left to the system copy", dll.c_str(), fn);
+            continue;
+        }
+        DWORD old;
+        if (slots->u1.Function != (ULONG_PTR)e->stub && VirtualProtect(&slots->u1.Function, sizeof(void*), PAGE_READWRITE, &old)) {
+            slots->u1.Function = (ULONG_PTR)e->stub;
+            VirtualProtect(&slots->u1.Function, sizeof(void*), old, &old);
+            Log("static import %ls!%s -> %ls", dll.c_str(), fn, BaseName(Redirect(dll.c_str())).c_str());
+            ++patched;
+        }
+    }
+    return patched;
+}
 
 bool WriteJump(void* from, void* to)
 {

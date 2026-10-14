@@ -217,6 +217,66 @@
         "steps": "wait:25,click:280:360,wait:16,click:1920:1080,wait:6,ctrlkey:7B,wait:4",
         "reaches": "first puzzle of FRAMED (collection menu -> FRAMED -> title), then Ctrl+F12 dump"
       }
+    },
+    {
+      "id": "astral-ascent",
+      "name": "Astral Ascent",
+      "steam_appid": 1280930,
+      "folder": "Astral Ascent",
+      "exe": "Astral Ascent.exe",
+      "arch": "x64",
+      "engine": "Clickteam Fusion through Chowdren (SDL2)",
+      "api": "Direct3D 11 (the exe imports d3d11.dll!D3D11CreateDevice statically)",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll (2026-10-15 or later: patches static imports)",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "remove": [
+        "d3d11.dll, dxgi.dll, nvapi64.dll of a geo-11 install (they would load instead of WineD3D)"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_top": 1,
+          "depth_screen": 0.3,
+          "screen_batch": 1,
+          "group": "texture",
+          "order_curve": 1
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "verified_by_user": null,
+      "notes": [
+        "The exe binds d3d11.dll before any of our code runs; the loader points that import at w3d11.dll (the system d3d11 stays for the GPU driver).",
+        "Every object is one quad with its own texture, drawn in layer order: drawing order gives the layers.",
+        "Text is drawn glyph by glyph into a scratch target that is cleared and composited several times a frame: each use is one layer, so lines are flat.",
+        "Animated sprites change texture every few frames: groups new to the last frame's layout take the place after the group drawn before them.",
+        "Measured in the first area (separation 25): sky +28..54 px, islands +30, swords/ruins +20..26, pillars and ground +8, player -6, HUD -14..-18."
+      ],
+      "known_issues": [
+        "Dialogue scenes: portrait, box and text are one flat UI layer in front of the scene.",
+        "Only the first area measured."
+      ],
+      "test": {
+        "proc": "Astral Ascent",
+        "steps": "wait:30,key:1B,wait:3,key:0D,wait:4,key:52,wait:14,key:52,wait:2,key:52,wait:2,key:52,wait:2,key:52,wait:2,key:52,wait:2,key:52,wait:2,key:52,wait:2,key:52,wait:2,wait:3,ctrlkey:7B,wait:5",
+        "reaches": "first area after the opening dialogue (intro skipped, save slot 1 loaded), then Ctrl+F12 dump",
+        "notes": "Loads and advances save slot 1: back up Saved Games\\Astral Ascent\\<steamid> first and restore it afterwards."
+      }
     }
   ]
 }
