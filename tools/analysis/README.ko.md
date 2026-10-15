@@ -1,5 +1,7 @@
 # Flato3D 분석 도구
 
+전체 작업 순서는 [docs/WORKFLOW.ko.md](../../docs/WORKFLOW.ko.md)에 있습니다.
+
 새 게임을 작업하거나 수정 후 회귀를 확인할 때 쓰는 도구입니다. Python 스크립트는 Pillow와 numpy가 필요합니다.
 
 ## 새 게임 분석 순서
@@ -22,8 +24,9 @@
 
 | 파일 | 용도 |
 | --- | --- |
-| `gametest.ps1` | Steam 게임을 실행하고 창을 앞에 둔 채 단계(wait, shot, click, key, ctrlkey 등)를 실행합니다. 게임별 단계는 `data\game_profiles.json`의 `test`에 있습니다. |
+| `gametest.ps1` | Steam 게임을 실행하고 창을 앞에 둔 채 단계(wait, shot, click, key, hold, ctrlkey, lclick, rmove 등)를 실행합니다. `-Attach`는 실행 중인 게임에 이어 붙고, `-Exe`는 Steam 없이 exe를 실행합니다. 게임별 단계는 `data\game_profiles.json`의 `test`에 있습니다. |
 | `dispmap.py` | SBS 덤프의 시차 지도 |
+| `maskdisp.py` | 영역 하나의 시차(색 마스크로 작은 캐릭터만 잴 수 있음) |
 | `sheet.py` | 이미지 여러 장을 이름과 함께 한 장으로 |
 | `eyes.py` | 애너글리프, 작은 SBS, 차이 이미지 |
 | `cachecrop.py` | 저해상도 캐시(DK) 영역을 잘라 확대 |

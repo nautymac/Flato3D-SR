@@ -26,6 +26,10 @@ Status: early. Five games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 - **Direct3D 8/9/10/11 games:** WineD3D translates Direct3D to OpenGL, and OGL3D does the rest. A small `version.dll` loader makes the game load the WineD3D copies even when Steam's overlay has already loaded the system DLLs. Direct3D 12 is not covered.
 - **Per-game settings** are in [data/game_profiles.json](data/game_profiles.json): files to install, `OGL3D.ini` values, registry keys, known issues, and test steps.
 
+## Workflow
+
+The step-by-step procedure for converting a new game (checkpoints, measurements, symptoms and fixes, how to record results) is in [docs/WORKFLOW.ko.md](docs/WORKFLOW.ko.md) (Korean).
+
 ## Layout
 
 | Folder | Contents |

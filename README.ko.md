@@ -26,6 +26,10 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 - **Direct3D 8/9/10/11 게임:** WineD3D가 Direct3D를 OpenGL로 바꾸고, 나머지는 OGL3D가 처리합니다. 작은 `version.dll` 로더가 게임이 WineD3D 사본을 불러오게 합니다. Steam 오버레이가 시스템 DLL을 먼저 불러온 경우에도 됩니다. Direct3D 12는 지원하지 않습니다.
 - **게임별 설정**은 [data/game_profiles.json](data/game_profiles.json)에 있습니다. 설치할 파일, `OGL3D.ini` 값, 레지스트리, 알려진 문제, 자동 테스트 절차가 들어 있습니다.
 
+## 작업 절차
+
+새 게임을 입체로 만드는 순서(체크포인트, 측정, 증상별 해결, 기록 방법)는 [docs/WORKFLOW.ko.md](docs/WORKFLOW.ko.md)에 있습니다.
+
 ## 폴더 구성
 
 | 폴더 | 내용 |
