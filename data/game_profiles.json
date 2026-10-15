@@ -265,11 +265,12 @@
         "Every object is one quad with its own texture, drawn in layer order: drawing order gives the layers.",
         "Text is drawn glyph by glyph into a scratch target that is cleared and composited several times a frame: each use is one layer, so lines are flat.",
         "Animated sprites change texture every few frames: groups new to the last frame's layout take the place after the group drawn before them.",
-        "Measured in the first area (separation 25): sky +28..54 px, islands +30, swords/ruins +20..26, pillars and ground +8, player -6, HUD -14..-18."
+        "Measured in the first area (separation 25): sky +28..54 px, islands +30, swords/ruins +20..26, pillars and ground +8, player -6, HUD -14..-18.",
+        "Played through the hub areas (ruins, altar, garden, cliff) with movement, jumps and attacks: no hangs or errors, 60 fps, one A-B-A flicker that was a game effect in both eyes. Garden: sky +40..64 px, ground +28, trees +20, characters 0..-6, pergola -12, low clouds -14, HUD -20. Cliff: far islands +40..64, rock island +28, characters 0, big foreground cliff -18."
       ],
       "known_issues": [
-        "Dialogue scenes: portrait, box and text are one flat UI layer in front of the scene.",
-        "Only the first area measured."
+        "Characters stand in front of the ground they walk on (the ground is drawn before them, so drawing order puts it farther): up to about 30 px in the garden.",
+        "Dialogue scenes: portrait, box and text are one flat UI layer in front of the scene."
       ],
       "test": {
         "proc": "Astral Ascent",

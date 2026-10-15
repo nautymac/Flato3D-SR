@@ -1,5 +1,5 @@
 # Starts a Steam game, keeps its window in front and runs a list of steps, then kills it.
-# Steps (comma separated): wait:<s>  shot:<name>  click:<x>:<y> (screen pixels)  key:<vk hex>  front
+# Steps (comma separated): wait:<s>  shot:<name>  click:<x>:<y> (screen pixels)  key:<vk hex>  hold:<vk hex>:<s>  front
 param([string]$AppId, [string]$Proc, [string]$Steps, [string]$OutDir, [string]$Exe = '', [string]$ExeArgs = '', [switch]$Keep, [switch]$Attach)
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Windows.Forms, System.Drawing
@@ -84,6 +84,10 @@ foreach ($s in $Steps.Split(',')) {
         'key' { Front; $vk = [Convert]::ToByte($a[1], 16); $sc = [byte][GT.U]::MapVirtualKey($vk, 0)
                 [GT.U]::keybd_event($vk, $sc, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds 120
                 [GT.U]::keybd_event($vk, $sc, 2, [IntPtr]::Zero); "key $($a[1])" }
+        # hold:<vk hex>:<seconds> keeps a key down (movement)
+        'hold' { Front; $vk = [Convert]::ToByte($a[1], 16); $sc = [byte][GT.U]::MapVirtualKey($vk, 0)
+                [GT.U]::keybd_event($vk, $sc, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds ([int]([double]$a[2] * 1000))
+                [GT.U]::keybd_event($vk, $sc, 2, [IntPtr]::Zero); "hold $($a[1]) $($a[2])s" }
     }
 }
 $p.Refresh()
