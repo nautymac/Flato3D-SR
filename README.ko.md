@@ -31,6 +31,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 | 폴더 | 내용 |
 | --- | --- |
 | `ogl3d/` | 서브모듈: OGL3D-SR `flato3d` 브랜치(입체·깊이 엔진) |
+| `installer/` | 설치기(C# WinForms)와 패키지용 README, 제3자 라이선스 안내 |
 | `loader/` | 게임이 WineD3D 사본을 쓰게 하는 `version.dll` 프록시 |
 | `data/` | 게임 프로필, 작업한 게임 목록, 후보 목록(544개) |
 | `tools/analysis/` | 자동 테스트, 시차 지도, draw별 이미지 도구(폴더 README 참고) |
@@ -43,11 +44,14 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 
 ## 사용법
 
-설치기는 아직 없고 만들 계획입니다. 지금은 게임 프로필을 보고 직접 설치합니다.
+릴리스 페이지에서 패키지를 받아 아무 곳에나 풀고 `Flato3DInstaller.exe`를 실행합니다. Windows 10/11에 기본으로 있는 .NET Framework 4.x로 동작합니다.
 
-1. `install`에 적힌 파일을 게임 exe 옆에 복사합니다.
-2. `ini` 값을 `OGL3D.ini`에 넣습니다.
-3. `registry` 값이 있으면 설정합니다.
+1. **게임** 탭에 Steam과 Heroic(Epic, GOG)에 설치된 게임이 나옵니다. 초록색은 시험을 마친 프로필이 있는 게임이고, 나머지는 후보 목록의 예상이 함께 표시됩니다. 목록에 없는 게임은 **exe 직접 고르기**로 고릅니다.
+2. 게임을 고르면 exe를 읽어 32/64비트와 경로(OpenGL, 또는 WineD3D를 거치는 Direct3D 8/9, 10/11)를 정합니다. 경로는 바꿀 수 있습니다.
+3. 출력(SR 위빙, 좌우 SBS, 위아래)과 분리값을 정하고 **설치**를 누릅니다. 다른 도구(geo-11, dgVoodoo, ReShade)의 그래픽 DLL은 `Flato3D_backup` 폴더로 옮기고, 모든 변경은 exe 옆의 `Flato3D_install.json`에 기록합니다.
+4. **제거**는 설치한 것을 지우고, 옮겨 둔 파일과 레지스트리 값을 되돌립니다.
+
+**후보 목록** 탭에서는 평면 2D 후보 544개와 각 게임의 경로를 볼 수 있습니다.
 
 단축키:
 
@@ -63,6 +67,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 
 ## 빌드
 
+- `installer\src\build.cmd`: `installer\bin\Flato3DInstaller.exe`를 빌드합니다. `package.ps1`은 `dist\`에 릴리스 zip을 만듭니다.
 - `ogl3d\build.ps1`: `opengl32.dll` 두 가지(x64, x86)를 빌드합니다. SR SDK 경로는 OGL3D-SR README를 보세요.
 - `loader\build.ps1`: `version.dll` 두 가지를 빌드합니다.
 - `tools\wined3d_rename.py <wined3d 폴더> <출력 폴더>`: Direct3D 11 게임용으로 이름을 바꾼 WineD3D 세트를 만듭니다.

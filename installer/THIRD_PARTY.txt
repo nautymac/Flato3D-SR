@@ -1,0 +1,22 @@
+Flato3D-SR third-party components
+=================================
+
+WineD3D for Windows 11.19 (folder wined3d\)
+  DirectX 1-11 to OpenGL wrapper from the Wine project (https://www.winehq.org/),
+  licensed under the GNU Lesser General Public License 2.1 or later (wined3d\LGPL-2.1.txt).
+  Windows builds by Federico Dossena:
+    x86: https://downloads.fdossena.com/Projects/WineD3D/Builds/WineD3DForWindows_11.19.zip
+    x64: https://downloads.fdossena.com/Projects/WineD3D/Builds/WineD3DForWindows_11.19-x86_64.zip
+  Build scripts and source: https://github.com/adolfintel/wined3d4win
+  Wine source code: https://gitlab.winehq.org/wine/wine
+  The *-renamed folders hold the same DLLs with d3d11.dll, dxgi.dll and d3d10core.dll renamed to
+  w3d11.dll, wxgi.dll and w3d10core.dll and the import names inside the DLLs changed to match
+  (tools\wined3d_rename.py in the Flato3D-SR repository). Nothing else is modified.
+
+OGL3D-SR (folder ogl3d\), MIT license, https://github.com/nautymac/OGL3D-SR (branch flato3d)
+
+Game candidate data (data\game_candidates.json) uses engine and graphics API information from
+PCGamingWiki (https://www.pcgamingwiki.com/, CC BY-NC-SA 3.0) and Steam store tags.
+
+SR weaving uses the SR runtime installed on the PC (Leia Inc. / Acer SpatialLabs); it is not
+included in this package.

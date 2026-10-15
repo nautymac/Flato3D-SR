@@ -14,6 +14,9 @@ third_party/**/x86-renamed/
 third_party/**/x64-renamed/
 third_party/**/*.dll
 
+# release packages (package.ps1)
+dist/
+
 # local data: game save backups, the full library survey (store and install details)
 test-backups/
 data/private/

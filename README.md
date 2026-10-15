@@ -31,6 +31,7 @@ Status: early. Five games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 | Folder | Contents |
 | --- | --- |
 | `ogl3d/` | submodule: OGL3D-SR, branch `flato3d` (the stereo and depth engine) |
+| `installer/` | the installer (C# WinForms) and the package's README and third-party notice |
 | `loader/` | `version.dll` proxy that sends the game to the WineD3D copies |
 | `data/` | game profiles, the list of worked games, the candidate list (544 games) |
 | `tools/analysis/` | test harness, disparity maps, per-draw images (see its README) |
@@ -43,7 +44,14 @@ Clone with `git clone --recursive https://github.com/nautymac/Flato3D-SR`.
 
 ## Using it
 
-There is no installer yet; it is planned. For now, follow the game's profile by hand: copy the files listed under `install` next to the game exe, put the `ini` values into `OGL3D.ini`, and set any `registry` values.
+Download the package from the releases page, unpack it anywhere and run `Flato3DInstaller.exe` (Windows 10/11, .NET Framework 4.x, which Windows includes).
+
+1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Green ones have a tested profile; the others show what the candidate list expects. Games not listed: **Choose an exe...**.
+2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe; the route can be changed.
+3. Pick the output (SR weaving, side by side, top and bottom) and the separation, then **Install**. Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
+4. **Uninstall** removes what was installed and puts the moved files and registry values back.
+
+The **Candidate list** tab shows the 544 flat 2D candidates with their route.
 
 Hotkeys:
 
@@ -59,6 +67,7 @@ The game does not receive these keys.
 
 ## Building
 
+- `installer\src\build.cmd` builds `installer\bin\Flato3DInstaller.exe`; `package.ps1` makes the release zip in `dist\`.
 - `ogl3d\build.ps1` builds both `opengl32.dll`. See the OGL3D-SR README for the SR SDK path.
 - `loader\build.ps1` builds both `version.dll`.
 - `tools\wined3d_rename.py <wined3d folder> <output folder>` prepares the renamed WineD3D set for Direct3D 11 games.
