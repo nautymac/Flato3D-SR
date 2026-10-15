@@ -1,0 +1,740 @@
+{
+ "about": "Graphics API of candidates PCGamingWiki had no API for (researched 2026-10-15 from PCGamingWiki api.php, Steam app info, GOG build manifests, developer notes). classify.py applies these by title.",
+ "games": {
+  "AshenForest": {
+   "engine": "GameMaker (version not confirmed; likely GameMaker Studio 2)",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "low",
+   "evidence": "Its itch.io page says 'Made with GameMaker' and Steam Cloud saves go to %LOCALAPPDATA%\\AshenForest (GameMaker's save folder); a 2020 release points to GMS2 (D3D11), but if it is GMS 1.4 it would be D3D9.",
+   "sources": [
+    "https://psychoflux.itch.io/ashenforest",
+    "https://api.steamcmd.net/v1/info/1160020",
+    "https://store.steampowered.com/app/1160020/"
+   ]
+  },
+  "Brigador: Up-Armored Edition": {
+   "engine": "Custom C++ engine (SDL2 + GLEW)",
+   "api": "opengl",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "Stellar Jockeys' Blood Anniversary update post calls OpenGL 'the graphics library that Brigador relies on'; the GOG build ships SDL2.dll, glew32.dll and GLSL shaders, and the current build is 64-bit.",
+   "sources": [
+    "https://store.steampowered.com/news/app/274500/view/3077625729414684577",
+    "https://content-system.gog.com/products/1356485086/os/windows/builds?generation=2",
+    "https://www.pcgamingwiki.com/wiki/Brigador:_Up-Armored_Edition"
+   ]
+  },
+  "Fiendish Freddy's Big Top o' Fun": {
+   "engine": "DOS game in DOSBox 0.74",
+   "api": "oneimage",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "PCGamingWiki lists the Windows release as wrapper=DOSBox, and the GOG build is FREDDY.EXE plus dosbox_windows\\dosbox.exe (0.74).",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Fiendish_Freddy%27s_Big_Top_o%27_Fun",
+    "https://content-system.gog.com/products/1680154175/os/windows/builds?generation=2"
+   ]
+  },
+  "Gunslugs 3: Rogue Tactics": {
+   "engine": "Orangepixel Java framework on libGDX (LWJGL)",
+   "api": "opengl",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "Steam requirements say 'Intel HD3000 or higher with OpenGL 2.1 support'; the GOG build is gunslugs3.exe plus a bundled 32-bit (i386) Java 8 JRE, and Orangepixel moved its games to LibGDX in 2015.",
+   "sources": [
+    "https://store.steampowered.com/app/1012360/",
+    "https://content-system.gog.com/products/1299228602/os/windows/builds?generation=2",
+    "https://www.pcgamingwiki.com/wiki/Gunslugs"
+   ]
+  },
+  "Hyper Echelon": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "Saves are in LocalLow\\GangoGames LLC\\HyperEchelon with a com.GangoGamesLLC.HyperEchelon Mac bundle (Unity conventions), and the Steam requirements copy Unity's player requirements word for word ('DX10, DX11, and DX12-capable GPUs'); D3D11 is Unity's Windows default.",
+   "sources": [
+    "https://store.steampowered.com/app/953330/",
+    "https://api.steamcmd.net/v1/info/953330",
+    "https://docs.unity3d.com/2020.3/Documentation/Manual/system-requirements.html"
+   ]
+  },
+  "Madrid Noir": {
+   "engine": "Unreal Engine (UE4; 2021 release)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The Steam page says 'Made in Unreal Engine' and requires DirectX 11; it is a SteamVR title (launch type 'vr'), so it probably has no ordinary flat-screen mode.",
+   "sources": [
+    "https://store.steampowered.com/app/1761450/",
+    "https://api.steamcmd.net/v1/info/1761450"
+   ],
+   "note": "SteamVR title, probably no flat-screen mode."
+  },
+  "Melvor Idle": {
+   "engine": "JavaScript web game packaged with NW.js",
+   "api": "browser",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "The developer (Malcs) says on the Steam forum: 'It sure is Javascript' and 'It's ported to Steam using NW.js'.",
+   "sources": [
+    "https://steamcommunity.com/app/1267910/discussions/0/3114770279394818584"
+   ]
+  },
+  "Morbid: The Seven Acolytes": {
+   "engine": "Probably GameMaker Studio 2 (inferred)",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "low",
+   "evidence": "No source names the engine. Saves are in %LOCALAPPDATA%\\Morbid\\ (GameMaker's save folder, not Unity's LocalLow), the studio's earlier game Zombie Kill of the Week is GameMaker, and the 2020 Switch/PS4/Xbox ports point to GMS2 (D3D11); Steam lists 'DirectX 9.0'.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Morbid:_The_Seven_Acolytes",
+    "https://www.pcgamingwiki.com/wiki/Zombie_Kill_of_the_Week_-_Reborn",
+    "https://store.steampowered.com/app/1140890/"
+   ]
+  },
+  "Neon Blood": {
+   "engine": "Unity (IL2CPP)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG build contains UnityPlayer.dll, GameAssembly.dll, UnityCrashHandler64.exe and Neon Blood_Data, so it is Unity; D3D11 is Unity's Windows default (the actual API was not checked).",
+   "sources": [
+    "https://content-system.gog.com/products/1449555183/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/2067310/"
+   ]
+  },
+  "Overlooting": {
+   "engine": "Godot (version and renderer unknown)",
+   "api": "unknown",
+   "bits": "",
+   "confidence": "low",
+   "evidence": "Steam Cloud saves *.tres files to %APPDATA%\\Godot\\app_userdata\\Overlooting, so it is Godot. The API depends on the version: Godot 3 or the Godot 4 Compatibility renderer use OpenGL; Godot 4 Forward+/Mobile use Vulkan (OpenGL can be forced with --rendering-driver opengl3).",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/3410180",
+    "https://store.steampowered.com/app/3410180/"
+   ],
+   "note": "Godot: Godot 3 or the Compatibility renderer is OpenGL; Forward+/Mobile is Vulkan (force OpenGL with --rendering-driver opengl3)."
+  },
+  "Residual": {
+   "engine": "Orangepixel Java framework on libGDX (LWJGL)",
+   "api": "opengl",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "Steam requirements say 'OpenGL 2.1 support'; the GOG build is residual.exe plus residual.jar and a bundled 64-bit Java runtime (jvm.dll, vcruntime140_1.dll).",
+   "sources": [
+    "https://store.steampowered.com/app/1290780/",
+    "https://content-system.gog.com/products/1688702977/os/windows/builds?generation=2",
+    "https://www.pcgamingwiki.com/wiki/Gunslugs"
+   ]
+  },
+  "Skillshot City": {
+   "engine": "Custom engine (Nik Nak Studios; formerly Geneshift)",
+   "api": "opengl",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "The developer's 1.24 patch notes say 'I have spent about 2 weeks fixing my old outdated OpenGL code'; Steam lists 'OpenGL 2.0+' and requires a 64-bit OS.",
+   "sources": [
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/2592316573861706638",
+    "https://store.steampowered.com/app/308600/"
+   ]
+  },
+  "Spirit Mancer": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "medium",
+   "evidence": "Steam Cloud saves SaveFile.es3 (the Easy Save 3 format for Unity) to LocalLow\\SunnySyrupStudio\\Spirit Mancer (Unity's save convention); D3D11 is Unity's Windows default.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/2172580",
+    "https://store.steampowered.com/app/2172580/"
+   ]
+  },
+  "Teenagent": {
+   "engine": "DOS game in DOSBox Staging 0.82",
+   "api": "oneimage",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "PCGamingWiki: the GOG freeware release comes with DOSBox-staging (wrapper=DOSBox); the GOG build contains DOSBOX\\dosbox.exe (staging 0.82).",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Teenagent",
+    "https://content-system.gog.com/products/1207658753/os/windows/builds?generation=2"
+   ]
+  },
+  "The Cave": {
+   "engine": "Buddha (Double Fine)",
+   "api": "d3d9",
+   "bits": "x86",
+   "confidence": "medium",
+   "evidence": "Steam requires DirectX 9.0c, PCGamingWiki lists a 32-bit-only Windows exe, and other Buddha-engine games on PCGamingWiki (Costume Quest, Stacking, Brutal Legend) are Direct3D 9.0c on Windows; OpenGL is used only on Mac/Linux.",
+   "sources": [
+    "https://store.steampowered.com/app/221810/",
+    "https://www.pcgamingwiki.com/wiki/The_Cave",
+    "https://www.pcgamingwiki.com/wiki/Costume_Quest"
+   ]
+  },
+  "The Deed: Dynasty": {
+   "engine": "RPG Maker VX Ace (RGSS3)",
+   "api": "oneimage",
+   "bits": "x86",
+   "confidence": "low",
+   "evidence": "Stock RGSS3 runtime (Game.exe, Save*.rvdata2, no MKXP). As far as I can tell, RGSS builds the whole frame on the CPU and shows the finished image through Direct3D 9, so there are no draw calls per sprite; I found only a forum claim ('VX Ace is utilizing only the CPU'), no primary source.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/The_Deed:_Dynasty",
+    "https://steamcommunity.com/app/220700/discussions/0/487870763299272187"
+   ]
+  },
+  "The Takeover": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "medium",
+   "evidence": "Developer Update#37: 'The game had to be upgraded to the latest version of Unity which in turn means no DX9 support'; an old DX9 build was left in a dx9 subfolder. Unity's Windows default is D3D11.",
+   "sources": [
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/2415533798143476563",
+    "https://www.pcgamingwiki.com/wiki/The_TakeOver"
+   ]
+  },
+  "Tyrian 2000": {
+   "engine": "DOS game in DOSBox (GOG); the Microsoft Store version uses the OpenTyrian source port",
+   "api": "oneimage",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "PCGamingWiki: the GOG.com release is 'Pre-packaged with DOSBox' (wrapper=DOSBox); the GOG build contains tyrian2.exe and app\\dosboxT2K.conf.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Tyrian",
+    "https://content-system.gog.com/products/1207658901/os/windows/builds?generation=2"
+   ]
+  },
+  "Utopos": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "Jani Penttinen's press kits say he builds his Utopos Games titles (URG, Guntech 2) in Unity; the build 1.09 notes mention 'FixedUpdate', and the Linux binary is Utopos.x86_64 (both Unity conventions). D3D11 is Unity's default.",
+   "sources": [
+    "https://utoposgames.com/urg-press-kit",
+    "https://www.utoposgames.com/guntech2-press-kit",
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/4117954072999590328",
+    "https://api.steamcmd.net/v1/info/1560330"
+   ]
+  },
+  "Vlad Circus: Descend Into Madness": {
+   "engine": "MonoGame (WindowsDX, .NET) with Indiesruption's 'Engendro' framework",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "The GOG build ships MonoGame.Framework.dll with SharpDX.Direct3D11.dll and SharpDX.DXGI.dll, i.e. the MonoGame WindowsDX backend (Direct3D 11); Steam lists DirectX 10, and PCGamingWiki says 64-bit only.",
+   "sources": [
+    "https://content-system.gog.com/products/1598116759/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/1702430/",
+    "https://www.pcgamingwiki.com/wiki/Vlad_Circus:_Descend_Into_Madness"
+   ]
+  },
+  "Wasteland 1 - The Original Classic": {
+   "engine": "DOS game in a custom DOSBox build",
+   "api": "oneimage",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "PCGamingWiki: 'Digital distribution version uses a custom build of DOSBox', and the Windows release is wrapper=DOSBox.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Wasteland"
+   ]
+  },
+  "Astro Duel 2": {
+   "engine": "Custom (SDL2 2.30-based, in-house by Rusty Moyher)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "low",
+   "evidence": "A patch note says the game was updated to SDL 2.30.1. The developer forked GLFW/SDL for macOS OpenGL fixes and forked godot-angle-static (ANGLE: GLES to D3D11) three months before launch, and the listed minimum is DirectX 11, which suggests GLES through ANGLE/D3D11 on Windows. No source states the API.",
+   "sources": [
+    "https://store.steampowered.com/news/app/655350",
+    "https://api.steamcmd.net/v1/info/655350",
+    "https://github.com/RustyMoyher/godot-angle-static",
+    "https://github.com/RustyMoyher/SDL",
+    "https://github.com/RustyMoyher/glfw_MacVsyncFix",
+    "https://www.pcgamingwiki.com/wiki/Astro_Duel_II"
+   ]
+  },
+  "Broken Sword 1 - Shadow of the Templars: Director's Cut (2009)": {
+   "engine": "Virtual Theatre (Director's Cut port, SDL 1.2 + OpenGL)",
+   "api": "opengl",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "The game fails with 'missing or broken OpenGL drivers' on bad GL drivers, and the GOG build ships SDL.dll and libftgl (FTGL, an OpenGL font library). PCGW lists it as 32-bit only. The separate 'Original Version' launcher is a different (ScummVM) path.",
+   "sources": [
+    "https://gog.com/forum/broken_sword_series/bs1_directors_cut_opengl_issue",
+    "https://www.gogdb.org/product/1207658900/build/51385360727671355",
+    "https://www.pcgamingwiki.com/wiki/Broken_Sword:_Shadow_of_the_Templars:_Director%27s_Cut"
+   ]
+  },
+  "Gratuitous Space Battles": {
+   "engine": "Custom (Positech)",
+   "api": "d3d9",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "Wikipedia says the graphics engine was an entirely new DirectX 9 engine built for the game, and Steam lists DirectX 9.0c.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Gratuitous_Space_Battles",
+    "https://store.steampowered.com/app/41800/"
+   ]
+  },
+  "Hidden Deep": {
+   "engine": "Custom (Cogwheel Software in-house engine with own physics)",
+   "api": "d3d11",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "Developer patch notes say 'Added DirectX 11 rendering' (Nov 2022) and later talk about the DirectX 11 renderer and DX11 crash fixes; an older D3D9 path may still exist. The default exe is 32-bit, and a 64-bit hdeep_NG.exe is on a beta branch.",
+   "sources": [
+    "https://store.steampowered.com/news/app/976890",
+    "https://steamcommunity.com/app/976890/discussions/0/3807279669987212262/",
+    "https://api.steamcmd.net/v1/info/976890",
+    "https://igf.com/hidden-deep"
+   ]
+  },
+  "Jamestown": {
+   "engine": "Custom (Final Form Games C++ engine, OpenGL/OpenAL)",
+   "api": "opengl",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "Steam requires 'Any OpenGL 2.0 graphics card ... full GLSL support', and patch notes mention restoring OpenGL 1.5 provisional support. The Windows patch version is 'v1.0.3.w32'.",
+   "sources": [
+    "https://store.steampowered.com/app/94200/",
+    "https://store.steampowered.com/news/app/94200",
+    "https://spacesofplay.com/blog/porting-spirits-interview-tim-ambrogi/"
+   ]
+  },
+  "Magenta Horizon - Neverending Harvest": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The itch.io page says 'Made with Unity', and the Steam Cloud save path is LocalLow/Maddison Baek/Magenta Horizon (Unity persistentDataPath). Unity's Windows default is D3D11, and Steam lists DirectX 10.",
+   "sources": [
+    "https://maddison-baek.itch.io/magenta-horizon",
+    "https://api.steamcmd.net/v1/info/2109060",
+    "https://store.steampowered.com/app/2109060/"
+   ]
+  },
+  "METAL SUITS: Counter-attack": {
+   "engine": "Unity (inferred)",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "low",
+   "evidence": "No source names the engine. The Steam Cloud save path is AppData/LocalLow/Eggtart Inc/Metal Suits, the Unity persistentDataPath pattern, and Steam lists DirectX 11.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/2093800",
+    "https://store.steampowered.com/app/2093800/"
+   ]
+  },
+  "My Friend is a Raven": {
+   "engine": "Unreal Engine 4",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The Steam launch target is WindowsNoEditor\\UE42019MegaJam.exe (a UE4 packaged build from the 2019 Epic MegaJam). The UE4 default is D3D11, and Steam lists DirectX 11.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/1215090",
+    "https://store.steampowered.com/app/1215090/"
+   ]
+  },
+  "Night Reverie": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The Night Reverie prologue on itch.io says 'Made with Unity', and the Steam Cloud saves are in LocalLow/Somber Pixel/NightReverie (Unity pattern). Steam marks it 64-bit.",
+   "sources": [
+    "https://somberpixel.itch.io/night-reverie-prologue",
+    "https://api.steamcmd.net/v1/info/1254670"
+   ]
+  },
+  "Raji: An Ancient Epic Prologue": {
+   "engine": "Unreal Engine 4",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "PCGW lists the full game as UE 4.26.2 with Direct3D 11 and 64-bit only. The prologue is the same Raji.exe UE4 build (Saved/SaveGames cloud path), and Steam lists DirectX 11.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Raji:_An_Ancient_Epic",
+    "https://en.wikipedia.org/wiki/Raji:_An_Ancient_Epic",
+    "https://api.steamcmd.net/v1/info/1429740"
+   ]
+  },
+  "Return to Ash": {
+   "engine": "Ren'Py",
+   "api": "opengl",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The itch.io page says 'Made with Ren'Py', and the launchers (returntoash.exe/.sh/.app) follow the Ren'Py pattern. Ren'Py's renderer order tries gl2 (OpenGL) first, with angle2 (D3D) as a fallback or option.",
+   "sources": [
+    "https://serenity-forge.itch.io/return-to-ash",
+    "https://www.renpy.org/doc/html/display_problems.html",
+    "https://api.steamcmd.net/v1/info/3445830"
+   ]
+  },
+  "Song of Iron": {
+   "engine": "Unreal Engine 4",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The developer says in an interview that he built it in Unreal (the 2021 release predates UE5). The Steam Cloud path is Song_of_Iron/Saved/SavedGames, the build is 64-bit only, and Steam lists DirectX 11.",
+   "sources": [
+    "https://premortem.games/2022/01/25/new-series-the-life-and-work-of-solo-game-developers/",
+    "https://www.xboxygen.com/Tests/Tests-Xbox-One/37853-Test-Song-of-Iron-L-Enfer-forge",
+    "https://api.steamcmd.net/v1/info/1258220",
+    "https://store.steampowered.com/app/1258220/"
+   ]
+  },
+  "Stargunner": {
+   "engine": "DOS game in DOSBox",
+   "api": "oneimage",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "The Steam launch entry is Stargunner\\Dosbox\\dosbox.exe -conf STARGUN.conf, and PCGW says the GOG/Steam/ZOOM versions come pre-packaged with DOSBox.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Stargunner",
+    "https://api.steamcmd.net/v1/info/358390"
+   ]
+  },
+  "Tested on Humans: Escape Room": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x86",
+   "confidence": "medium",
+   "evidence": "The GOG depot file list has UnityPlayer.dll, UnityCrashHandler32.exe and Plugins\\x86. Unity's Windows default is D3D11, and Steam lists DirectX 11.",
+   "sources": [
+    "https://content-system.gog.com/products/1339662209/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/1483780/"
+   ]
+  },
+  "The Coma: Recut": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG depot file list has UnityPlayer.dll and UnityCrashHandler64.exe, and Headup's Steam news posted a Unity security-vulnerability patch. Unity's Windows default is D3D11.",
+   "sources": [
+    "https://content-system.gog.com/products/1163487128/os/windows/builds?generation=2",
+    "https://store.steampowered.com/news/app/600090",
+    "https://www.pcgamingwiki.com/wiki/The_Coma:_Cutting_Class"
+   ]
+  },
+  "The Eternal Castle [REMASTERED]": {
+   "engine": "GameMaker Studio 2",
+   "api": "d3d11",
+   "bits": "x86",
+   "confidence": "medium",
+   "evidence": "The game is listed in GameMaker's official showcase, and a TFL Studios AMA says it was built in GameMaker Studio 2. The GMS2 Windows runner uses D3D11, and PCGW lists the Windows exe as 32-bit only.",
+   "sources": [
+    "https://gamemaker.io/en/showcase/the-eternal-castle-remastered",
+    "https://www.pcgamingwiki.com/wiki/The_Eternal_Castle:_Remastered"
+   ]
+  },
+  "Time Recoil": {
+   "engine": "Custom (10tons in-house engine, Crimsonland/Neon Chrome lineage)",
+   "api": "d3d9",
+   "bits": "",
+   "confidence": "medium",
+   "evidence": "Steam lists DirectX 9.0c / SM3.0. Per PCGW, the 10tons sibling titles on the same engine use D3D9: Neon Chrome (2016) is D3D9, and Jydge (2017) is D3D9 with a beta D3D11 renderer.",
+   "sources": [
+    "https://store.steampowered.com/app/625910/",
+    "https://www.pcgamingwiki.com/wiki/Neon_Chrome",
+    "https://www.pcgamingwiki.com/wiki/Jydge",
+    "https://nintendoworldreport.com/review/45795"
+   ]
+  },
+  "Ultros": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "medium",
+   "evidence": "Wikipedia, citing Unity's 2024 'Games made with Unity' review, lists Unity, and the Steam Cloud paths use LocalLow and .config/unity3d. Unity's Windows default is D3D11.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Ultros",
+    "https://unity.com/blog/games-made-with-unity-2024-releases",
+    "https://api.steamcmd.net/v1/info/2386310"
+   ]
+  },
+  "Valfaris: Mecha Therion": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG depot file list has UnityPlayer.dll and Plugins\\x86_64. Unity's default is D3D11, and the predecessor Valfaris (Unity 2018.4) is listed on PCGW as D3D11.",
+   "sources": [
+    "https://content-system.gog.com/products/1889332257/os/windows/builds?generation=2",
+    "https://www.pcgamingwiki.com/wiki/Valfaris"
+   ]
+  },
+  "VVVVVV": {
+   "engine": "Custom C++ (SDL2 SDL_Renderer)",
+   "api": "opengl_alt",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "Release 2.4.x ships SDL2.dll and calls SDL_CreateRenderer(window, -1, ...). SDL2 tries the D3D9 'direct3d' driver first on Windows, and the game accepts '-renderer <name>' (e.g. -renderer opengl) to override the driver. PCGW lists the Windows exe as 32-bit.",
+   "sources": [
+    "https://github.com/TerryCavanagh/VVVVVV/blob/2.4.4/desktop_version/src/Screen.cpp",
+    "https://github.com/TerryCavanagh/VVVVVV/blob/2.4.4/desktop_version/src/main.cpp",
+    "https://github.com/libsdl-org/SDL/blob/SDL2/src/render/SDL_render.c",
+    "https://www.pcgamingwiki.com/wiki/VVVVVV"
+   ],
+   "note": "SDL2 renderer, Direct3D 9 by default; -renderer opengl switches to OpenGL."
+  },
+  "Waves 2: Notorious": {
+   "engine": "Unreal Engine 4",
+   "api": "opengl_alt",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "Steam launch options are default Waves.exe (UE4 D3D11), 'Waves.exe -opengl' labelled 'OpenGL For AMD Cards', and '-FeatureLevelES31'. The UE4 port of the UE3 original is reported by PCGamesN, and the save path is Waves/Saved/SaveGames.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/217120",
+    "https://pcgamesn.com/waves-2/waves-2-twin-stick-shooter-ai",
+    "https://www.pcgamingwiki.com/wiki/Waves"
+   ],
+   "note": "Unreal Engine 4 (D3D11); Steam launch option Waves.exe -opengl."
+  },
+  "Bio Menace": {
+   "engine": "DOS (id/Keen engine) in DOSBox",
+   "api": "oneimage",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "Steam launch config runs dosbox.exe with BMENACE.conf, and PCGW lists the GOG, ZOOM and Steam releases as pre-packaged with DOSBox.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Bio_Menace",
+    "https://api.steamcmd.net/v1/info/358180"
+   ]
+  },
+  "Definitely Sneaky But Not Sneaky": {
+   "engine": "Unity 2019.3+ (IL2CPP)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "Unity game that defaults to Vulkan; the developer added a second Steam launch option ('-force-d3d11', Direct3D 11) in v1.1.3, so it needs that option instead of the default launch.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/954010",
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/4023377846283868120",
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/3384966595870868715"
+   ],
+   "note": "Starts in Vulkan by default: use the Steam launch option -force-d3d11."
+  },
+  "Gunslugs 2": {
+   "engine": "libGDX (Java, bundled JRE)",
+   "api": "opengl",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "The itch.io page says it is made with libGDX, the GOG build ships Gunslugs2.jar plus a Java runtime, and the Steam requirements ask for 'OpenGL 2.1 support'.",
+   "sources": [
+    "https://orangepixel.itch.io/gunslugs2",
+    "https://store.steampowered.com/app/340750/",
+    "https://content-system.gog.com/products/1679659438/os/windows/builds?generation=2"
+   ]
+  },
+  "Home": {
+   "engine": "GameMaker (rewritten on GameMaker: Studio 1.x in 2013)",
+   "api": "d3d9",
+   "bits": "x86",
+   "confidence": "medium",
+   "evidence": "Wikipedia and the developer's Steam FAQ say it was made in Game Maker, with a 'complete engine rewrite' in v1.4.3 (2013); the last Steam build is from 2017, which fits the GMS1 Windows runner (Direct3D 9).",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Home_(video_game)",
+    "https://steamcommunity.com/app/215670/discussions/0/864947149098133826/",
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1478591738299527199"
+   ]
+  },
+  "Jennifer Wilde: Unlikely Revolutionaries": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The developer asks users for player.log from AppData/LocalLow/Outsider Games/Jennifer Wilde, which is the Unity layout, and the build is 64-bit only; the API is assumed to be Unity's default, D3D11.",
+   "sources": [
+    "https://steamcommunity.com/app/1466350/discussions/0/600782567264780640/",
+    "https://api.steamcmd.net/v1/info/1466350"
+   ]
+  },
+  "Meganoid": {
+   "engine": "libGDX (Java, bundled JRE)",
+   "api": "opengl",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "The Steam requirements ask for 'OpenGL 2.1 support' and an OpenAL sound card; the GOG build ships Meganoid.jar plus a Java runtime (Orangepixel's libGDX framework).",
+   "sources": [
+    "https://store.steampowered.com/app/606030/",
+    "https://content-system.gog.com/products/1438861093/os/windows/builds?generation=2",
+    "https://www.ifanr.com/app/617292"
+   ]
+  },
+  "Minute of Islands": {
+   "engine": "Unity (IL2CPP)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "Unity case study and GOG build files (UnityPlayer.dll, GameAssembly.dll) confirm Unity; Steam minimum requirement is DirectX 11, consistent with Unity's default D3D11.",
+   "sources": [
+    "https://create.unity.com/minute-of-islands-case-study",
+    "https://content-system.gog.com/products/1333551351/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/1049710/"
+   ]
+  },
+  "Necroking": {
+   "engine": "Unity (Mono)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG build contains Necroking_Data, MonoBleedingEdge and Plugins/x86_64 (a Unity 64-bit player) and no D3D12 folder; the API is assumed to be Unity's default, D3D11.",
+   "sources": [
+    "https://content-system.gog.com/products/1547541023/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/2852980/"
+   ]
+  },
+  "Omen Exitio: Plague": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "Tiny Bull support points users to LocalLow/Tiny Bull Studios/Omen Exitio Plague/Player.log and ~/.config/unity3d (Unity); the API is assumed to be Unity's default, D3D11. Steam also lists a 32-bit launch entry, but its depot is empty.",
+   "sources": [
+    "https://steamcommunity.com/app/668590/discussions/0/4078523564597945508/",
+    "https://steamcommunity.com/app/668590/discussions/0/1644304412652453308/",
+    "https://api.steamcmd.net/v1/info/668590"
+   ]
+  },
+  "Reloader: test_subject": {
+   "engine": "Unity (inferred)",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "low",
+   "evidence": "No source names the engine for test_subject; the same studio's sister build Reloader: subject_alpha is listed on itch.io as 'Made with Unity', so this assumes Unity with its default D3D11.",
+   "sources": [
+    "https://nevertheless-studio.itch.io/reloader-subject-alpha",
+    "https://store.steampowered.com/app/1706210/"
+   ]
+  },
+  "Sentience: The Android's Tale": {
+   "engine": "RPG Maker MV (NW.js)",
+   "api": "browser",
+   "bits": "",
+   "confidence": "high",
+   "evidence": "Steam's Windows launch executable is nw.exe (NW.js), which is the RPG Maker MV HTML5 runtime.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/635850",
+    "https://www.pcgamingwiki.com/wiki/Sentience:_The_Android%27s_Tale"
+   ]
+  },
+  "Space Runaway": {
+   "engine": "Unreal Engine 4 (per community)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "Steam requirements say DirectX 11 with feature level 11_1 on 64-bit Windows, and players say it is made in Unreal Engine (it bundles CEF). One user saw a DX12 claim, but launches showed '-dx11'.",
+   "sources": [
+    "https://store.steampowered.com/app/2125250/",
+    "https://steamcommunity.com/app/2125250/discussions/0/3725071921957172457/",
+    "https://steamcommunity.com/app/2125250/discussions/0/3770112515496857914/"
+   ]
+  },
+  "Strider": {
+   "engine": "Slayer (Double Helix)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "high",
+   "evidence": "PCGamingWiki 'Strider (2014)' lists Direct3D 11 and a 64-bit-only executable; the May 2026 Steam update only notes Windows 11 compatibility and bug fixes.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/Strider_(2014)",
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318570659"
+   ]
+  },
+  "The Abandoned Planet": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The developer states 'it's built in Unity', saves are in AppData/LocalLow, and PCGW lists a 64-bit-only Windows exe; the API is assumed to be Unity's default, D3D11.",
+   "sources": [
+    "https://steamcommunity.com/app/2014470/discussions/0/3650755710024396322/",
+    "https://www.pcgamingwiki.com/wiki/The_Abandoned_Planet"
+   ]
+  },
+  "The Deed": {
+   "engine": "RPG Maker VX Ace (RGSS3)",
+   "api": "oneimage",
+   "bits": "x86",
+   "confidence": "medium",
+   "evidence": "PCGW lists RPG Maker VX Ace (Game.exe). The stock RGSS3 player draws everything on the CPU and only presents the finished frame, so there are no per-sprite GPU draw calls.",
+   "sources": [
+    "https://www.pcgamingwiki.com/wiki/The_Deed",
+    "https://api.steamcmd.net/v1/info/420740",
+    "https://lord-forte-games.itch.io/noblesse-oblige/devlog/909214/antilag-beta-on-itch"
+   ]
+  },
+  "The Last Show of Mr. Chardish": {
+   "engine": "Unreal Engine 4",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG build has the UE4 layout (ArsFabulae-Win64-Shipping.exe, Engine/Binaries/ThirdParty, pakchunk0-WindowsNoEditor.pak); the API is assumed to be UE4's default, D3D11.",
+   "sources": [
+    "https://content-system.gog.com/products/1469803270/os/windows/builds?generation=2",
+    "https://buried-treasure.org/2020/11/the-last-show-of-mr-chardish/"
+   ]
+  },
+  "Tiny Robots Recharged": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "",
+   "confidence": "medium",
+   "evidence": "Saves are in AppData/LocalLow/Big Loop Studios/Tiny Robots_ Recharged (Unity persistentDataPath), and it is a 2021 Unity-era mobile port; the API is assumed to be Unity's default, D3D11.",
+   "sources": [
+    "https://steamcommunity.com/app/1709580/discussions/0/3202621953673829787/",
+    "https://store.steampowered.com/app/1709580/"
+   ]
+  },
+  "Under The Moon": {
+   "engine": "Unreal Engine 4 (4.27-era)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG build has UnderTheMoon-Win64-Shipping.exe, Engine/Binaries with PhysX3 and UEPrereqSetup (UE4), and the Steam minimum and recommended requirements say DirectX 11; it ships a D3D12 folder, but UE4 defaults to DX11.",
+   "sources": [
+    "https://content-system.gog.com/products/1386468605/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/1945780/"
+   ]
+  },
+  "Veil of Darkness": {
+   "engine": "DOS game in DOSBox 0.74-3",
+   "api": "oneimage",
+   "bits": "x86",
+   "confidence": "high",
+   "evidence": "Steam launches .\\DOSBOX\\DOSBox.exe with vod-*.conf, and the GOG build ships DOSBox 0.74-3.",
+   "sources": [
+    "https://api.steamcmd.net/v1/info/2414320",
+    "https://content-system.gog.com/products/2105995113/os/windows/builds?generation=2"
+   ]
+  },
+  "Wall World 2": {
+   "engine": "Unity",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "The GOG build contains UnityPlayer.dll, UnityCrashHandler64.exe and WallWorld2_Data/Plugins/x86_64; the API is assumed to be Unity's default, D3D11.",
+   "sources": [
+    "https://content-system.gog.com/products/1755631711/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/3467710/"
+   ]
+  },
+  "Ynglet": {
+   "engine": "Unity (IL2CPP)",
+   "api": "d3d11",
+   "bits": "x64",
+   "confidence": "medium",
+   "evidence": "Nifflas says he made it while learning Unity, and the GOG build has UnityPlayer.dll and GameAssembly.dll; the Steam requirement is DirectX 10, which fits Unity's D3D11 renderer at feature level 10.",
+   "sources": [
+    "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/5019805792168456402",
+    "https://content-system.gog.com/products/1456247442/os/windows/builds?generation=2",
+    "https://store.steampowered.com/app/1015920/"
+   ]
+  }
+ }
+}

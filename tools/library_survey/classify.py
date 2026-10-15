@@ -250,6 +250,11 @@ OVERRIDES = {
     1552550: {'kind': 4, 'depth_rule': 'ai', 'note': 'M2 에뮬레이터(GBA) — 한 장 화면 추정'},
 }
 
+RESEARCH = {}
+if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_research.json')):
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api_research.json'), encoding='utf-8') as _f:
+        RESEARCH = json.load(_f)['games']
+
 PHASE = {'opengl': 1, 'opengl_alt': 1, 'd3d11': 3, 'd3d9': 3, 'browser': 9, 'oneimage': 9, 'unsupported': 9, 'unknown': 8}
 
 def main():
@@ -314,6 +319,10 @@ def main():
         if not cls:
             continue
         r, note = route(pc, g['title'])
+        rs = RESEARCH.get(g['title'])   # researched by hand where PCGamingWiki has no API
+        if rs and r == 'unknown':
+            r = rs['api']
+            note = f"{rs['evidence']} ({rs['confidence']})" + (f" {rs['note']}" if rs.get('note') else '')
         if cls == '2.5D' or any(e.lower().startswith(ENGINES_3D) for e in (pc or {}).get('engines', [])):
             kind = 1  # perspective / 3D-rendered scene
         elif r == 'oneimage':
@@ -329,12 +338,13 @@ def main():
         bits = None
         if pc:
             bits = 'x86' if pc['x86'] == 'true' and pc['x64'] != 'true' else 'x64' if pc['x64'] == 'true' and pc['x86'] != 'true' else 'x86/x64' if pc['x86'] == 'true' else None
+        if rs and not bits: bits = rs.get('bits') or None
         out.append({
             'title': g['title'], 'steam_appid': g['steam_appid'], 'stores': g['stores'], 'installed': g['installed'],
             'developer': g['developer'], 'class': cls, 'kind': kind, 'pixel': pixel,
             'style': 'pixel' if pixel else 'illustrated',
             'genre': genre, 'depth_rule': 'auto' if kind == 1 else ('ai' if kind == 4 else RULE.get(genre, 'draw_order')),
-            'engine': (pc or {}).get('engines', []), 'api': r, 'phase': PHASE[r], 'bits': bits, 'note': note,
+            'engine': (pc or {}).get('engines', []) or ([rs['engine']] if rs and rs.get('engine') else []), 'api': r, 'phase': PHASE[r], 'bits': bits, 'note': note,
             'd3d': (pc or {}).get('d3d', []), 'opengl': (pc or {}).get('opengl', ''), 'vulkan': (pc or {}).get('vulkan', ''),
             'perspectives': (pc or {}).get('perspectives', []), 'art': (pc or {}).get('art', []),
             'tags': ((g['tagp'] or {}).get('names') or [])[:10], 'pcgw_page': g.get('pcgw_page'),
