@@ -278,6 +278,48 @@
         "reaches": "first area after the opening dialogue (intro skipped, save slot 1 loaded), then Ctrl+F12 dump",
         "notes": "Loads and advances save slot 1: back up Saved Games\\Astral Ascent\\<steamid> first and restore it afterwards."
       }
+    },
+    {
+      "id": "intravenous-2",
+      "name": "Intravenous 2",
+      "steam_appid": 2608270,
+      "folder": "Intravenous 2",
+      "exe": "intravenous2.exe",
+      "arch": "x64",
+      "engine": "LÖVE 11.5 (SDL2, fused exe)",
+      "api": "OpenGL (SDL2 loads opengl32 at run time)",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3
+        }
+      },
+      "status": "verified",
+      "verified_by_user": "2026-10-16 (gameplay, SBS)",
+      "notes": [
+        "First game installed with the Flato3D installer (defaults from the candidate list: top-down, rule order).",
+        "LÖVE shader outputs whose names start with '_' needed the rename fix (no '__' in GLSL names)."
+      ],
+      "known_issues": [
+        "Not measured with dumps yet; depth checked by the user in play."
+      ],
+      "test": {
+        "proc": "intravenous2",
+        "steps": "wait:28,click:560:828,wait:5,ctrlkey:7B,wait:4",
+        "reaches": "main menu -> New game (intro video follows)",
+        "notes": "With output = sbs the menu sits at half x: New game at (560,828) on a 3840x2160 screen."
+      }
     }
   ]
 }
