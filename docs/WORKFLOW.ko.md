@@ -52,6 +52,7 @@
    | Unity (시차 레이어를 같은 아틀라스로 따로 그림) | `group = draw`, `order_curve = 0.5` | Huntdown |
    | 저해상도 버퍼에 그린 뒤 화면으로 늘림 | 자동 처리(레이어 캐시). 화면 비율이 아니면 `cache_scale` | DK |
    | draw마다 glScissor를 거는 게임 | `screen_batch = 0` | FRAMED |
+   | 인물이 이미 합쳐진 그림(동영상 칸 등) 안의 검은 실루엣 | `silhouette = <프로그램 해시>`, 셰이더의 좌표·텍스처 이름 | FRAMED |
    | 2.5D(원근이 있는 장면) | `[Flat] enable = 0` (일반 OGL3D 입체) | Broken Age |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
@@ -151,6 +152,9 @@
 | `[Flat] cache_scale` | 저해상도 캐시 안의 이동량 비율(0 = scissor 기준 자동) | 캐시 영역이 화면에 대응하는 비율을 아는 경우(DK 0.406) |
 | `[Flat] screen_batch` | 몇 번째 scissor 묶음부터 화면 깊이(UI)로 볼지, 0 = 끔 | AGS는 1, draw마다 scissor를 거는 게임은 0 |
 | `[Flat] plane_size`, `plane_height`, `sprite_min` | feet 규칙의 평면·스프라이트 판정 | feet 규칙 게임 |
+| `[Flat] silhouette` | 이 프로그램(해시, 쉼표로 여러 개)이 그리는 그림 안에서 어두운 픽셀을 그림보다 앞으로 | 인물이 한 장의 그림에 합쳐져 들어오는데 인물이 검은 실루엣일 때 |
+| `[Flat] silhouette_uv`, `silhouette_tex` | 그 프래그먼트 셰이더의 텍스처 좌표 varying(vec2)과 그림 샘플러 이름 | `dump_shaders = 1`로 셰이더를 보고 정함(FRAMED: `texcoordOut`, `texture1`) |
+| `[Flat] silhouette_depth`, `silhouette_threshold` | 앞으로 나오는 정도(depth_top 기준 비율), 어둡다고 볼 밝기(r, g, b 중 최댓값) | 기본 0.3, 0.15. 어두운 배경까지 나오면 threshold를 낮춤 |
 | `[Display] swap_interval` | 1 = 수직동기화 강제 | WineD3D 게임 기본 1 |
 | `[Keys] swallow` | 래퍼 단축키를 게임에 전달하지 않음 | 기본 1. 문제 있으면 0 |
 | `[Debug] trace_steps`, `flicker_probe`, `dump_frames`, `trace_frames` | 분석용 | 끝나면 끔 |
@@ -170,7 +174,7 @@
 | 같은 줄의 칸·카드가 계단식으로 다른 깊이 | 반복 구조가 그리는 순서대로 깊이를 받음 | 반복되는 draw 묶음은 같은 층(수정됨) |
 | 캐릭터가 엉뚱하게 뒤에 있음 | 애니메이션 텍스처가 바뀌어 새 층으로 잡힘 | 새 층은 바로 앞 층 다음 자리(수정됨). `target`과 `depth` 비교 |
 | 캐릭터가 서 있는 바닥보다 앞에 뜸 | 바닥을 먼저 그려서 더 멀게 잡힘 | 미해결(발 위치 보정 예정) |
-| 칸·그림 안의 인물이 평면 | 인물이 이미 한 장의 그림에 합쳐져 들어옴 | draw 방식으로는 불가. 실루엣·AI 깊이 검토 |
+| 칸·그림 안의 인물이 평면 | 인물이 이미 한 장의 그림에 합쳐져 들어옴 | 인물이 어두운 실루엣이면 `silhouette`(그 셰이더에서 어두운 픽셀만 눈마다 옮김). 로그의 `silhouette depth: ... rewritten`, `shift N px` 확인. 밝은 인물은 미해결(AI 깊이) |
 | 깊이 단계가 거칢 | 저해상도 버퍼 픽셀 단위로만 이동 | 미해결(캐시를 크게 그리기 예정) |
 | `renamed vertex shader N failed to compile` (`'__'` 예약어 오류) | 밑줄로 시작하는 셰이더 출력 이름에 접두사를 붙여 `__`가 생김(LÖVE) | 밑줄로 시작하면 다른 접두사 사용(수정됨) |
 | 위빙 화면에 가로줄(티어링) | 게임이 수직동기화를 끔 | `swap_interval = 1` |
@@ -220,7 +224,9 @@
 - **프레임 3 멈춤:** 자동 실행에서 가끔 생깁니다. 한 번 더 실행합니다(재시도 반복문 사용).
 - **덤프 크기:** 4K 덤프는 장당 16MB입니다. 끝나면 지웁니다.
 - **세이브:** 플레이 테스트 전에 백업하고, 끝나면 되돌립니다. Steam Cloud는 로컬 변경을 올리므로 따로 처리할 필요가 없었습니다.
-- **알려진 미해결:** 캐릭터가 바닥 앞에 뜸, 저해상도 캐시의 거친 깊이 단계, 합쳐진 그림 안의 인물(FRAMED), 프레임 3 멈춤.
+- **측정 중 값이 바뀜:** 덤프 로그의 `separation N%`가 ini 값과 다르면 누군가 Ctrl+F3/F4를 눌렀습니다(`separation ... flat screen depth` 줄). 측정값은 그 분리값으로 환산합니다.
+- **데스크탑에 위빙이 남음:** SR 렌즈를 켠 게임이 끄지 않고 종료하면 렌즈가 켜진 채 남습니다. 새 프로그램의 렌즈 끄기나 SRSession 재시작으로는 안 풀리고, `Restart-Service 'SR Service'`(관리자)로 풉니다.
+- **알려진 미해결:** 캐릭터가 바닥 앞에 뜸, 저해상도 캐시의 거친 깊이 단계, 합쳐진 그림 안의 밝은 인물, 프레임 3 멈춤.
 
 ## 도구 위치
 

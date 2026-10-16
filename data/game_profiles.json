@@ -198,19 +198,28 @@
           "depth_screen": 0.3,
           "screen_batch": 0,
           "group": "texture",
-          "order_curve": 1
+          "order_curve": 1,
+          "silhouette": "c05a6bab",
+          "silhouette_uv": "texcoordOut",
+          "silhouette_tex": "texture1",
+          "silhouette_depth": 0.6,
+          "silhouette_threshold": 0.15
         }
       },
       "status": "verified",
-      "verified_by_user": "2026-10-15 (FRAMED, SR weaving)",
+      "verified_by_user": "2026-10-15 (FRAMED, SR weaving); silhouette depth 2026-10-16 (remote, SBS)",
       "notes": [
         "screen_batch = 0: the game sets glScissor before many draws, so the AGS rule (later scissor batches are UI) would put the whole picture at the screen.",
         "Each comic panel is drawn as frame + picture; repeated runs of the same draws share a depth, so the panels sit side by side on one plane.",
-        "Measured on the first puzzle of FRAMED: blinds +56 px, room +36..42 px, panels -2 px, hint arrow -28 px (separation 25)."
+        "Measured on the first puzzle of FRAMED: blinds +56 px, room +36..42 px, panels -2 px, hint arrow -28 px (separation 25).",
+        "The panel pictures are videos (YUV in texture1/uTexture/vTexture of program c05a6bab), so the figures arrive inside one picture. [Flat] silhouette rewrites that fragment shader: dark pixels (the black silhouettes) are sampled through a per-eye shifted coordinate and stand in front of the picture.",
+        "Silhouette check (first puzzle, separation 8.4% at the time): figures +4.8 px nearer than the panel picture (half-resolution dump), exactly the configured shift."
       ],
       "known_issues": [
         "Only the first puzzle of FRAMED measured; FRAMED 2 not yet tried.",
-        "A panel's picture sits slightly in front of its own frame (drawn after it)."
+        "A panel's picture sits slightly in front of its own frame (drawn after it).",
+        "Silhouettes come forward as flat cutouts; white details inside a figure (glasses, flowers) stay at the picture's depth, and a thin strip of background is repeated where a figure moved away.",
+        "Remote SBS check: the user preferred separation about 3% with depth_screen 1.2 (not saved)."
       ],
       "test": {
         "proc": "Framed",

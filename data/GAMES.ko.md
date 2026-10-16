@@ -7,7 +7,7 @@
 | Technobabylon | OpenGL (AGS) · 직접 | feet (발 위치) | 사용자 확인 완료 | opengl32.dll x86 |
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
-| FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
+| FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
 | Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
 
@@ -33,6 +33,8 @@
 **FRAMED Collection**: 게임이 draw마다 glScissor를 걸기 때문에 `screen_batch = 0`으로 둡니다. 그렇지 않으면 화면 전체가 UI로 취급됩니다. 만화 칸은 (테두리, 그림) 묶음이 반복되는 구조라 같은 층으로 묶어서, 칸들이 한 평면에 나란히 놓입니다.
 
 - 측정(FRAMED 첫 퍼즐, 분리값 25): 블라인드 +56px, 방 +36~42px, 칸 −2px, 화살표 −28px.
+- 칸 그림은 동영상이라 인물이 그림 안에 합쳐져 들어옵니다. `[Flat] silhouette = c05a6bab`로 칸 그림 셰이더를 고쳐, 어두운 픽셀(검은 실루엣 인물)만 눈마다 옮겨 칸 그림보다 앞에 놓습니다(`silhouette_depth = 0.6`). 첫 퍼즐에서 인물이 칸 그림보다 정확히 설정한 만큼 앞에 있었고, 사용자가 원격으로 보고 만족했습니다.
+- 인물은 납작한 판처럼 한 깊이로 나옵니다. 인물 안의 흰 부분(안경, 꽃)은 그림 깊이에 남고, 인물이 비킨 자리에는 옆 배경이 조금 반복됩니다.
 - 남은 일: FRAMED 2는 아직 해 보지 않았습니다. 칸 안의 그림이 자기 테두리보다 살짝 앞에 있습니다.
 
 **Astral Ascent**: exe가 d3d11.dll을 정적으로 가져오기 때문에, 로더가 exe의 가져오기 항목을 WineD3D 사본(w3d11.dll)으로 바꿉니다. geo-11이 설치돼 있으면 d3d11.dll, dxgi.dll, nvapi64.dll을 빼야 합니다.
