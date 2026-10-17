@@ -53,7 +53,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 
 1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Green ones have a tested profile; the others show what the candidate list expects. Games not listed: **Choose an exe...**.
 2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe; the route can be changed.
-3. Pick the output (SR weaving, side by side, top and bottom) and the separation, then **Install**. Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
+3. Pick the output and the separation, then **Install**. Without an SR display (Acer, Samsung), choose **side by side** or **top and bottom** to match your 3D display. Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
 
 The **Candidate list** tab shows the 544 flat 2D candidates with their route.
@@ -65,7 +65,7 @@ Hotkeys:
 | Ctrl+F3 / Ctrl+F4 | separation down / up |
 | Ctrl+F5 / Ctrl+F6 | flat games: move the screen plane nearer / farther |
 | Ctrl+F7 | save the values |
-| Ctrl+Alt+W | SR weaving on/off (off shows side-by-side) |
+| Ctrl+Alt+W | SR display output on/off (off shows the side-by-side picture) |
 | Ctrl+F12 | save both eyes and a draw trace (for analysis) |
 
 The game does not receive these keys.

@@ -142,7 +142,7 @@
 | 설정 | 의미 | 언제 바꾸나 |
 | --- | --- | --- |
 | `[Stereo] separation` | 분리값(%) | 깊이 전체가 약하거나 강할 때. 평면 게임은 25 전후 |
-| `[Stereo] output` | auto(SR 위빙, 없으면 SBS) / sbs / tab | 원격 확인은 sbs |
+| `[Stereo] output` | auto(SR 디스플레이) / sbs / tab. 설치기에서는 "SR 디스플레이 (Acer, Samsung)", "좌우 SBS", "위아래" | 원격 확인은 sbs. SR 디스플레이가 아니면 sbs/tab을 직접 고름 |
 | `[Flat] enable` | 평면 깊이 사용 | 2.5D 게임은 0 |
 | `[Flat] rule` | feet(발 위치) / order(그리는 순서) | CP0 표 참고 |
 | `[Flat] depth_screen` | 화면 위치에 놓이는 깊이 | HUD가 튀어나오면 낮추고(0~0.3), 전체가 뒤로 멀면 높임. 게임 중 Ctrl+F5/F6 |

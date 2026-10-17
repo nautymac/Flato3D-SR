@@ -5,7 +5,7 @@ https://github.com/nautymac/Flato3D-SR
 1. 이 폴더를 아무 곳에나 풀고 Flato3DInstaller.exe를 실행합니다. 폴더 구성은 바꾸지 마세요.
 2. 게임 탭에서 게임을 고르면 32/64비트와 경로(OpenGL / Direct3D → WineD3D)가 자동으로 정해집니다.
    목록에 없는 게임은 [exe 직접 고르기]로 고릅니다.
-3. 출력(SR 위빙 / 좌우 SBS / 위아래)과 분리값을 정하고 [설치]를 누릅니다.
+3. 출력(SR 디스플레이(Acer, Samsung) / 좌우 SBS / 위아래)과 분리값을 정하고 [설치]를 누릅니다.
 4. 게임을 평소처럼 실행합니다. Ctrl+F3/F4 분리값, Ctrl+F5/F6 화면 위치, Ctrl+F7 저장, Ctrl+T 3D 켜기/끄기.
 5. [제거]는 설치한 파일을 지우고, 옮겨 두었던 다른 도구의 파일(geo-11, dgVoodoo, ReShade)과 레지스트리를 되돌립니다.
    설치 기록은 게임 exe 옆의 Flato3D_install.json에 남습니다.
@@ -16,7 +16,7 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
 1. Unpack this folder anywhere and run Flato3DInstaller.exe. Keep the folder layout as it is.
 2. Choose a game on the Games tab: 32/64-bit and the route (OpenGL / Direct3D -> WineD3D) are detected.
    Games not in the list: [Choose an exe...].
-3. Pick the output (SR weaving / side by side / top and bottom) and the separation, then [Install].
+3. Pick the output (SR display (Acer, Samsung) / side by side / top and bottom) and the separation, then [Install].
 4. Start the game as usual. Ctrl+F3/F4 separation, Ctrl+F5/F6 screen plane, Ctrl+F7 save, Ctrl+T 3D on/off.
 5. [Uninstall] removes the installed files and puts back other tools' files it moved aside (geo-11, dgVoodoo,
    ReShade) and registry values. The record is Flato3D_install.json next to the game exe.

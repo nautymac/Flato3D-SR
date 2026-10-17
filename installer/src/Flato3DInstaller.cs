@@ -179,7 +179,7 @@ namespace Flato3D
             foreach (string r in Routes) routeBox.Items.Add(Route.Label(r));
             outputBox.DropDownStyle = ComboBoxStyle.DropDownList;
             outputBox.Width = P(230);
-            outputBox.Items.AddRange(new object[] { L.T("SR 위빙 (SR 없으면 SBS)", "SR weaving (SBS without SR)"), L.T("좌우 SBS", "Side by side"), L.T("위아래", "Top and bottom") });
+            outputBox.Items.AddRange(new object[] { L.T("SR 디스플레이 (Acer, Samsung)", "SR display (Acer, Samsung)"), L.T("좌우 SBS", "Side by side"), L.T("위아래", "Top and bottom") });
             sepBox.Minimum = 1;
             sepBox.Maximum = 200;
             sepBox.DecimalPlaces = 1;
@@ -260,7 +260,7 @@ namespace Flato3D
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
                 L.T("  Ctrl+F5 / Ctrl+F6  화면 위치를 앞으로 / 뒤로", "  Ctrl+F5 / Ctrl+F6  screen plane nearer / farther"),
-                L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기      Ctrl+Alt+W  SR 위빙 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off      Ctrl+Alt+W  SR weaving on/off"),
+                L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기      Ctrl+Alt+W  SR 디스플레이 출력 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off      Ctrl+Alt+W  SR display output on/off"),
                 L.T("  Ctrl+F12  두 눈 이미지 저장(분석용). 이 키들은 게임에 전달되지 않습니다.", "  Ctrl+F12  save both eyes (analysis). The game does not receive these keys."),
                 "",
                 L.T("출처와 라이선스", "Credits and license"),
