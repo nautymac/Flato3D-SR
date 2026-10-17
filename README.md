@@ -52,7 +52,11 @@ Clone with `git clone --recursive https://github.com/nautymac/Flato3D-SR`.
 Download the package from the releases page, unpack it anywhere and run `Flato3DInstaller.exe` (Windows 10/11, .NET Framework 4.x, which Windows includes).
 
 1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Green ones have a tested profile; the others show what the candidate list expects. Games not listed: **Choose an exe...**.
-2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe; the route can be changed.
+2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe. The depth rule, the output and upscale are pre-selected from what is known about the game, with the reason shown:
+   - depth rule: the profile, else the candidate list's genre (adventure: feet, 2.5D: plain stereo, others: drawing order)
+   - output: SR display when this PC has the SR runtime, else side by side
+   - upscale: games that PCGamingWiki lists without 4K support or with a UI that stays tiny at 4K (not when the exe is DPI aware)
+   - an installed game shows its installed settings (including values saved in game with Ctrl+F7). Everything can be changed.
 3. Pick the output and the separation, then **Install**. Without an SR display (Acer, Samsung), choose **side by side** or **top and bottom** to match your 3D display. If the game cannot use the native resolution (e.g. 4K) or its text gets too small, tick **Upscale** and set the game to 1920x1080: it renders at that size and is shown enlarged at the native resolution (`[Display] upscale`). Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
 

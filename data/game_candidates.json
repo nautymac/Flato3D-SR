@@ -40,7 +40,10 @@
     "Casual"
    ],
    "pcgw_page": "Broken Age",
-   "status": "verified"
+   "status": "verified",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Darkest Dungeon®",
@@ -80,7 +83,10 @@
     "Perma Death"
    ],
    "pcgw_page": "Darkest Dungeon",
-   "status": "verified"
+   "status": "verified",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Four Last Things",
@@ -121,7 +127,10 @@
     "2D"
    ],
    "pcgw_page": "Four Last Things",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Ken Follett's The Pillars of the Earth",
@@ -166,7 +175,10 @@
     "Based On A Novel"
    ],
    "pcgw_page": "Ken Follett's The Pillars of the Earth",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Paradigm",
@@ -208,7 +220,10 @@
     "2D"
    ],
    "pcgw_page": "Paradigm",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "RUINER",
@@ -250,7 +265,10 @@
     "Difficult"
    ],
    "pcgw_page": "Ruiner",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Higher resolutions may appear offscreen due to a lack of scrolling in the menu.",
+   "upscale": "0"
   },
   {
    "title": "Sam & Max 201: Ice Station Santa",
@@ -292,7 +310,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Sam & Max: Beyond Time and Space",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Use Tell Tale Games Custom Resolution Tool. Maximum resolution is 4096x4096.",
+   "upscale": "1"
   },
   {
    "title": "Sam & Max 301: The Penal Zone",
@@ -335,7 +356,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Sam & Max: The Devil's Playhouse",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Skillshot City",
@@ -373,7 +397,10 @@
    ],
    "pcgw_page": "Skillshot City",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "STASIS",
@@ -415,7 +442,10 @@
     "Psychological Horror"
    ],
    "pcgw_page": "Stasis",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "The Dark Eye: Chains of Satinav",
@@ -455,7 +485,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "The Dark Eye: Chains of Satinav",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Night of the Rabbit",
@@ -500,7 +533,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "The Night of the Rabbit",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Preposterous Awesomeness of Everything",
@@ -537,7 +573,10 @@
     "Indie"
    ],
    "pcgw_page": "The Preposterous Awesomeness of Everything",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Whispered World: Special Edition",
@@ -579,7 +618,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "The Whispered World",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Astral Ascent",
@@ -620,7 +662,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "Astral Ascent",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "1600x900 max",
+   "upscale": "1"
   },
   {
    "title": "Axiom Verge",
@@ -664,7 +709,10 @@
     "Retro"
    ],
    "pcgw_page": "Axiom Verge",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Axiom Verge 2",
@@ -708,7 +756,10 @@
     "2D"
    ],
    "pcgw_page": "Axiom Verge 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Blackwell Convergence",
@@ -752,7 +803,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Blackwell Convergence",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution can be set, but will be pillarboxed (Stretch, preserving aspect ratio setting) or stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Blackwell Deception",
@@ -796,7 +850,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Blackwell Deception",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution can be set, but will be pillarboxed (Stretch, preserving aspect ratio setting) or stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Blackwell Epiphany",
@@ -840,7 +897,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Blackwell Epiphany",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution can be set, but will have black borders (Stretch, preserving aspect ratio setting), or be stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Blackwell Unbound",
@@ -884,7 +944,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Blackwell Unbound",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution can be set, but will be pillarboxed (Stretch, preserving aspect ratio setting), or stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Cave Story+",
@@ -925,7 +988,10 @@
     "Action"
    ],
    "pcgw_page": "Cave Story+",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "The 2026 version upscales from 1704x960. Requires doukutsu-rs.",
+   "upscale": "1"
   },
   {
    "title": "Celeste",
@@ -973,7 +1039,10 @@
     "2D"
    ],
    "pcgw_page": "Celeste",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Coromon",
@@ -1015,7 +1084,10 @@
     "2D"
    ],
    "pcgw_page": "Coromon",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Crypt of the NecroDancer",
@@ -1060,7 +1132,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "Crypt of the NecroDancer",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Dead Cells",
@@ -1105,7 +1180,10 @@
     "Replay Value"
    ],
    "pcgw_page": "Dead Cells",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Death Coming",
@@ -1145,7 +1223,10 @@
     "Nonlinear"
    ],
    "pcgw_page": "Death Coming",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Dome Keeper",
@@ -1187,7 +1268,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Dome Keeper",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Dungeon of the ENDLESS™",
@@ -1231,7 +1315,10 @@
     "Perma Death"
    ],
    "pcgw_page": "Dungeon of the Endless",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Fez",
@@ -1273,7 +1360,10 @@
     "Puzzle Platformer"
    ],
    "pcgw_page": "Fez",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Full Throttle Remastered",
@@ -1312,7 +1402,10 @@
     "1990's"
    ],
    "pcgw_page": "Full Throttle Remastered",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Gemini Rue",
@@ -1356,7 +1449,10 @@
     "Dystopian "
    ],
    "pcgw_page": "Gemini Rue",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "4K resolution can be set, but will be 16:10 static aspect (Stretch, preserving aspect ratio setting), or stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Gravity Circuit",
@@ -1398,7 +1494,10 @@
     "Controller"
    ],
    "pcgw_page": "Gravity Circuit",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Gunslugs",
@@ -1439,7 +1538,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Gunslugs",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Gunslugs 2",
@@ -1481,7 +1583,10 @@
    ],
    "pcgw_page": "Gunslugs 2",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Gunslugs 3: Rogue Tactics",
@@ -1523,7 +1628,10 @@
    ],
    "pcgw_page": "Gunslugs: Rogue Tactics",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Hotline Miami",
@@ -1570,7 +1678,10 @@
     "Retro"
    ],
    "pcgw_page": "Hotline Miami",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Hotline Miami 2: Wrong Number",
@@ -1617,7 +1728,10 @@
     "Indie"
    ],
    "pcgw_page": "Hotline Miami 2: Wrong Number",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Into The Breach",
@@ -1657,7 +1771,10 @@
     "Roguelite"
    ],
    "pcgw_page": "Into the Breach",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Intravenous",
@@ -1699,7 +1816,10 @@
     "2D"
    ],
    "pcgw_page": "Intravenous",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Intravenous 2",
@@ -1741,7 +1861,10 @@
     "Combat"
    ],
    "pcgw_page": "Intravenous 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Jamestown",
@@ -1783,7 +1906,10 @@
    ],
    "pcgw_page": "Jamestown: Legend of the Lost Colony",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Katanaut",
@@ -1825,7 +1951,10 @@
     "Indie"
    ],
    "pcgw_page": "Katanaut",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "LUFTRAUSERS",
@@ -1867,7 +1996,10 @@
     "Retro"
    ],
    "pcgw_page": "Luftrausers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Martial Law",
@@ -1908,7 +2040,10 @@
     "1980s"
    ],
    "pcgw_page": "Martial Law",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Meganoid",
@@ -1948,7 +2083,10 @@
    ],
    "pcgw_page": "Meganoid",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Moonlighter",
@@ -1993,7 +2131,10 @@
     "Adventure"
    ],
    "pcgw_page": "Moonlighter",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "OpenTTD",
@@ -2031,7 +2172,10 @@
     "City Builder"
    ],
    "pcgw_page": "OpenTTD",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Recommended to use Double or Quad interface sizes",
+   "upscale": "0"
   },
   {
    "title": "Pathway",
@@ -2070,7 +2214,10 @@
     "Turn-Based"
    ],
    "pcgw_page": "Pathway",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Primordia",
@@ -2114,7 +2261,10 @@
     "Multiple Endings"
    ],
    "pcgw_page": "Primordia",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution can be set, but either pillarboxed or stretched.",
+   "upscale": "0"
   },
   {
    "title": "Residual",
@@ -2157,7 +2307,10 @@
    ],
    "pcgw_page": "Residual",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Resonance",
@@ -2201,7 +2354,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Resonance",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "4K resolution can be set, but will be pillarboxed (Stretch, preserving aspect ratio setting) or stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Roadwarden",
@@ -2244,7 +2400,10 @@
     "Fantasy"
    ],
    "pcgw_page": "Roadwarden",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Scourgebringer",
@@ -2284,7 +2443,10 @@
     "Metroidvania"
    ],
    "pcgw_page": "ScourgeBringer",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Shardlight",
@@ -2328,7 +2490,10 @@
     "2D"
    ],
    "pcgw_page": "Shardlight",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution can be set, but will have a 16:10 static aspect (Stretch, preserving aspect ratio setting), or be stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "Strangeland",
@@ -2373,7 +2538,10 @@
     "Dialogue Heavy"
    ],
    "pcgw_page": "Strangeland",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Superbrothers: Sword & Sworcery EP",
@@ -2410,7 +2578,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Superbrothers: Sword & Sworcery EP",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Technobabylon",
@@ -2454,7 +2625,10 @@
     "LGBTQ+"
    ],
    "pcgw_page": "Technobabylon",
-   "status": "checked"
+   "status": "checked",
+   "uhd": "false",
+   "uhd_note": "Maximum resolution is 5120x3200, but 3840x2160 cannot be set without pillarboxing.",
+   "upscale": "0"
   },
   {
    "title": "The Blackwell Legacy",
@@ -2498,7 +2672,10 @@
     "Story Rich"
    ],
    "pcgw_page": "The Blackwell Legacy",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "4K resolution can be set, but will be pillarboxed (Stretch, preserving aspect ratio setting) or stretched (Fill whole screen setting).",
+   "upscale": "0"
   },
   {
    "title": "The End is Nigh",
@@ -2533,7 +2710,10 @@
     "Pixel Graphics"
    ],
    "pcgw_page": "The End Is Nigh",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Excavation of Hob's Barrow",
@@ -2576,7 +2756,10 @@
     "Mystery"
    ],
    "pcgw_page": "The Excavation of Hob's Barrow",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Shivah",
@@ -2620,7 +2803,10 @@
     "Mystery"
    ],
    "pcgw_page": "The Shivah: Kosher Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Titan Souls",
@@ -2659,7 +2845,10 @@
     "2D"
    ],
    "pcgw_page": "Titan Souls",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Tonight We Riot",
@@ -2701,7 +2890,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "Tonight We Riot",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "The videos are ih a 1080p resolution.",
+   "upscale": "0"
   },
   {
    "title": "Unavowed",
@@ -2745,7 +2937,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Unavowed",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Undertale",
@@ -2790,7 +2985,10 @@
     "2D"
    ],
    "pcgw_page": "Undertale",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Valfaris",
@@ -2829,7 +3027,10 @@
     "Retro"
    ],
    "pcgw_page": "Valfaris",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "VVVVVV",
@@ -2872,7 +3073,10 @@
    ],
    "pcgw_page": "VVVVVV",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "Upscales to native resolution.<br/>Upscaling method can be set to Integer-Scaled (added in 2.2), Nearest, or Linear.",
+   "upscale": "0"
   },
   {
    "title": "Wizard of Legend",
@@ -2911,7 +3115,10 @@
     "Adventure"
    ],
    "pcgw_page": "Wizard of Legend",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "And Yet It Moves",
@@ -2948,7 +3155,10 @@
     "Surreal"
    ],
    "pcgw_page": "And Yet It Moves",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Apotheon",
@@ -2991,7 +3201,10 @@
     "Historical"
    ],
    "pcgw_page": "Apotheon",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Brigador: Up-Armored Edition",
@@ -3029,7 +3242,10 @@
    ],
    "pcgw_page": "Brigador: Up-Armored Edition",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Broken Sword 1 - Shadow of the Templars: Director's Cut (2009)",
@@ -3069,7 +3285,10 @@
    ],
    "pcgw_page": "Broken Sword: Shadow of the Templars: Director's Cut",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Broken Sword 2 - the Smoking Mirror: Remastered (2010)",
@@ -3109,7 +3328,10 @@
     "Remake"
    ],
    "pcgw_page": "Broken Sword II: The Smoking Mirror - Remastered",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "limited",
+   "uhd_note": "Scaled from lower resolution.",
+   "upscale": "1"
   },
   {
    "title": "Broken Sword 5 - the Serpent's Curse",
@@ -3151,7 +3373,10 @@
     "Mystery"
    ],
    "pcgw_page": "Broken Sword 5: The Serpent's Curse",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Brotato",
@@ -3193,7 +3418,10 @@
     "Roguelite"
    ],
    "pcgw_page": "Brotato",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Resolution locked to 1080p.",
+   "upscale": "1"
   },
   {
    "title": "Closure",
@@ -3228,7 +3456,10 @@
     "Great Soundtrack"
    ],
    "pcgw_page": "Closure",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Door Kickers",
@@ -3265,7 +3496,10 @@
     "Replay Value"
    ],
    "pcgw_page": "Door Kickers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Downfall",
@@ -3309,7 +3543,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Downfall",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Eschalon: Book 1",
@@ -3351,7 +3588,10 @@
     "Free to Play"
    ],
    "pcgw_page": "Eschalon: Book I",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Faster Than Light",
@@ -3377,7 +3617,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "FTL: Faster Than Light",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "See Borderless fullscreen windowed, 1440p and 2160p resolutions are pixel-perfect.",
+   "upscale": "1"
   },
   {
    "title": "Football Manager 2020",
@@ -3408,7 +3651,10 @@
    ],
    "tags": [],
    "pcgw_page": "Football Manager 2020",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "FRAMED Collection",
@@ -3447,7 +3693,10 @@
     "Heist"
    ],
    "pcgw_page": "Framed Collection",
-   "status": "checked"
+   "status": "checked",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Kentucky Route Zero",
@@ -3494,7 +3743,10 @@
     "Mystery"
    ],
    "pcgw_page": "Kentucky Route Zero",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Night in the Woods",
@@ -3533,7 +3785,10 @@
     "2D"
    ],
    "pcgw_page": "Night in the Woods",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "NightSky",
@@ -3570,7 +3825,10 @@
     "Short"
    ],
    "pcgw_page": "NightSky",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Our Life: Beginnings & Always",
@@ -3609,7 +3867,10 @@
     "Multiple Endings"
    ],
    "pcgw_page": "Our Life: Beginnings & Always",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Prison Architect",
@@ -3648,7 +3909,10 @@
     "Top-Down"
    ],
    "pcgw_page": "Prison Architect",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Return to Ash",
@@ -3686,7 +3950,10 @@
    ],
    "pcgw_page": "Return to Ash",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Rocketbirds: Hardboiled Chicken",
@@ -3729,7 +3996,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Rocketbirds: Hardboiled Chicken",
-   "status": "checked"
+   "status": "checked",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Salt and Sanctuary",
@@ -3772,7 +4042,10 @@
     "Indie"
    ],
    "pcgw_page": "Salt and Sanctuary",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Sanitarium",
@@ -3813,7 +4086,10 @@
     "Dark"
    ],
    "pcgw_page": "Sanitarium",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Silence",
@@ -3856,7 +4132,10 @@
     "2D"
    ],
    "pcgw_page": "Silence - The Whispered World 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "SteamWorld Dig",
@@ -3896,7 +4175,10 @@
     "Action"
    ],
    "pcgw_page": "SteamWorld Dig",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "SteamWorld Dig 2",
@@ -3936,7 +4218,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "SteamWorld Dig 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Sunrider: Mask of Arcadius",
@@ -3975,7 +4260,10 @@
     "Turn-Based"
    ],
    "pcgw_page": "Sunrider: Mask of Arcadius",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "always on",
+   "uhd_note": "Fonts are optimized for 1080p and may be too small at higher resolutions.",
+   "upscale": "1"
   },
   {
    "title": "The Bridge",
@@ -4020,7 +4308,10 @@
     "Indie"
    ],
    "pcgw_page": "The Bridge",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Maximum available resolution is 1920x1080.",
+   "upscale": "1"
   },
   {
    "title": "The Cat Lady",
@@ -4064,7 +4355,10 @@
     "Psychological"
    ],
    "pcgw_page": "The Cat Lady",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "The Dishwasher: Vampire Smile",
@@ -4106,7 +4400,10 @@
     "Horror"
    ],
    "pcgw_page": "The Dishwasher: Vampire Smile",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Ticket To Ride: Classic Edition",
@@ -4135,7 +4432,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Ticket to Ride: Classic Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Waves 2: Notorious",
@@ -4173,7 +4473,10 @@
    ],
    "pcgw_page": "Waves²",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Wilmot's Warehouse",
@@ -4208,7 +4511,10 @@
     "Family Friendly"
    ],
    "pcgw_page": "Wilmot's Warehouse",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Windjammers 2",
@@ -4250,7 +4556,10 @@
     "Family Friendly"
    ],
    "pcgw_page": "Windjammers 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Worms Armageddon",
@@ -4290,7 +4599,10 @@
     "Co-op"
    ],
    "pcgw_page": "Worms Armageddon",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Interface does not scale with resolution and can be very small in 4K. The game is letterboxed to 1920×854 for cavern levels (on standard-size maps), and 640×480 for the main menu. Use the SuperFronten...",
+   "upscale": "1"
   },
   {
    "title": "ANNO:Mutationem",
@@ -4334,7 +4646,10 @@
     "Action"
    ],
    "pcgw_page": "ANNO: Mutationem",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Beyond Galaxyland",
@@ -4378,7 +4693,10 @@
     "Party-Based RPG"
    ],
    "pcgw_page": "Beyond Galaxyland",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Godzilla Voxel Wars",
@@ -4419,7 +4737,10 @@
     "Isometric"
    ],
    "pcgw_page": "Godzilla Voxel Wars",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Neon Blood",
@@ -4457,7 +4778,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "OCTOPATH TRAVELER II",
@@ -4501,7 +4825,10 @@
     "Choices Matter"
    ],
    "pcgw_page": "Octopath Traveler II",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Reloader: test_subject",
@@ -4539,7 +4866,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Tails Noir",
@@ -4584,7 +4914,10 @@
     "Conspiracy"
    ],
    "pcgw_page": "Tails Noir",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Toodee and Topdee",
@@ -4629,7 +4962,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Toodee and Topdee",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Warpips",
@@ -4670,7 +5006,10 @@
     "Indie"
    ],
    "pcgw_page": "Warpips",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "A Juggler's Tale",
@@ -4710,7 +5049,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "A Juggler's Tale",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Abyss Odyssey",
@@ -4754,7 +5096,10 @@
     "2D"
    ],
    "pcgw_page": "Abyss Odyssey",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Afterimage",
@@ -4798,7 +5143,10 @@
     "Difficult"
    ],
    "pcgw_page": "Afterimage",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Alien Breed 3: Descent",
@@ -4839,7 +5187,10 @@
     "Top-Down"
    ],
    "pcgw_page": "Alien Breed 3: Descent",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Alien Breed: Impact",
@@ -4880,7 +5231,10 @@
     "Third Person"
    ],
    "pcgw_page": "Alien Breed: Impact",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Back to the Future: Ep 1 - It's About Time",
@@ -4924,7 +5278,10 @@
     "Retro"
    ],
    "pcgw_page": "Back to the Future: The Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Back to the Future: Ep 2 - Get Tannen!",
@@ -4964,7 +5321,10 @@
     "Time Travel"
    ],
    "pcgw_page": "Back to the Future: The Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Back to the Future: Ep 3 - Citizen Brown",
@@ -5003,7 +5363,10 @@
     "Time Travel"
    ],
    "pcgw_page": "Back to the Future: The Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Back to the Future: Ep 4 - Double Visions",
@@ -5041,7 +5404,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Back to the Future: The Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Back to the Future: Ep 5 - OUTATIME",
@@ -5079,7 +5445,10 @@
     "Time Travel"
    ],
    "pcgw_page": "Back to the Future: The Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Batman - The Telltale Series",
@@ -5122,7 +5491,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Batman: The Telltale Series",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Batman™: Arkham Origins Blackgate - Deluxe Edition",
@@ -5166,7 +5538,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Batman: Arkham Origins Blackgate Deluxe Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "BEAUTIFUL DESOLATION",
@@ -5208,7 +5583,10 @@
     "2.5D"
    ],
    "pcgw_page": "Beautiful Desolation",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Bionic Commando Rearmed",
@@ -5250,7 +5628,10 @@
     "Co-op"
    ],
    "pcgw_page": "Bionic Commando Rearmed",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "See The hacking mini game is bugged and unplayable in 4K resolution",
+   "upscale": "1"
   },
   {
    "title": "Black The Fall",
@@ -5292,7 +5673,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Black the Fall",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Bloodstained: Ritual of the Night",
@@ -5336,7 +5720,10 @@
     "Great Soundtrack"
    ],
    "pcgw_page": "Bloodstained: Ritual of the Night",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Character models in dialogue sequences and inventory screen are rendered at a locked resolution of 1080p, but can be fixed with a DLL mod.",
+   "upscale": "0"
   },
   {
    "title": "CAYNE",
@@ -5377,7 +5764,10 @@
     "Gore"
    ],
    "pcgw_page": "Cayne",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "CYGNI: All Guns Blazing",
@@ -5419,7 +5809,10 @@
     "Indie"
    ],
    "pcgw_page": "Cygni: All Guns Blazing",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "DARQ",
@@ -5463,7 +5856,10 @@
     "2.5D"
    ],
    "pcgw_page": "DARQ",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Deadlight",
@@ -5504,7 +5900,10 @@
     "Parkour"
    ],
    "pcgw_page": "Deadlight",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Definitely Sneaky But Not Sneaky",
@@ -5542,7 +5941,10 @@
    ],
    "pcgw_page": "Definitely Sneaky but Not Sneaky",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Diggles: The Myth of Fenris",
@@ -5584,7 +5986,10 @@
     "Economy"
    ],
    "pcgw_page": "Diggles: The Myth of Fenris",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "DNF Duel",
@@ -5625,7 +6030,10 @@
     "Multiplayer"
    ],
    "pcgw_page": "DNF Duel",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "ENDER LILIES: Quietus of the Knights",
@@ -5667,7 +6075,10 @@
     "Indie"
    ],
    "pcgw_page": "Ender Lilies: Quietus of the Knights",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Endling: Extinction is Forever",
@@ -5704,7 +6115,10 @@
     "Simulation"
    ],
    "pcgw_page": "Endling: Extinction Is Forever",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "F.I.S.T.: Forged In Shadow Torch",
@@ -5748,7 +6162,10 @@
     "Action-Adventure"
    ],
    "pcgw_page": "F.I.S.T.: Forged in Shadow Torch",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "FAR: Lone Sails",
@@ -5793,7 +6210,10 @@
     "Short"
    ],
    "pcgw_page": "FAR: Lone Sails",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Flashback",
@@ -5834,7 +6254,10 @@
     "Classic"
    ],
    "pcgw_page": "Flashback (2013)",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Flashback 2",
@@ -5879,7 +6302,10 @@
     "Platformer"
    ],
    "pcgw_page": "Flashback 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Genesis Noir",
@@ -5924,7 +6350,10 @@
     "Space"
    ],
    "pcgw_page": "Genesis Noir",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Giana Sisters: Twisted Dreams",
@@ -5966,7 +6395,10 @@
     "Fantasy"
    ],
    "pcgw_page": "Giana Sisters: Twisted Dreams",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "God's Trigger",
@@ -6010,7 +6442,10 @@
     "Roguelike"
    ],
    "pcgw_page": "God's Trigger",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "GRIME",
@@ -6054,7 +6489,10 @@
     "Surreal"
    ],
    "pcgw_page": "Grime",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Guacamelee! 2",
@@ -6099,7 +6537,10 @@
     "Adventure"
    ],
    "pcgw_page": "Guacamelee! 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Guacamelee! Super Turbo Championship Edition",
@@ -6144,7 +6585,10 @@
     "Adventure"
    ],
    "pcgw_page": "Guacamelee! Super Turbo Championship Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Hector: Ep 3",
@@ -6188,7 +6632,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Hector: Badge of Carnage!",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "INSIDE",
@@ -6233,7 +6680,10 @@
     "Adventure"
    ],
    "pcgw_page": "Inside",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Jet Kave Adventure",
@@ -6272,7 +6722,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Jet Kave Adventure",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "MARS 2120",
@@ -6311,7 +6764,10 @@
     "PvE"
    ],
    "pcgw_page": "Mars 2120",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Mega Man 11",
@@ -6353,7 +6809,10 @@
     "2D"
    ],
    "pcgw_page": "Mega Man 11",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "My Beautiful Paper Smile",
@@ -6390,7 +6849,10 @@
     "Surreal"
    ],
    "pcgw_page": "My Beautiful Paper Smile",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "NBA 2K21",
@@ -6422,7 +6884,10 @@
    ],
    "tags": [],
    "pcgw_page": "NBA 2K21",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Neo Cab",
@@ -6469,7 +6934,10 @@
     "Point & Click"
    ],
    "pcgw_page": "Neo Cab",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Oddworld: Soulstorm Enhanced Edition",
@@ -6513,7 +6981,10 @@
     "1990's"
    ],
    "pcgw_page": "Oddworld: Soulstorm Enhanced Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "PLANET ALPHA",
@@ -6555,7 +7026,10 @@
     "Exploration"
    ],
    "pcgw_page": "Planet Alpha",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Renegade Ops",
@@ -6598,7 +7072,10 @@
     "Local Multiplayer"
    ],
    "pcgw_page": "Renegade Ops",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "limited",
+   "uhd_note": "In-game GUI does not scale accordingly with higher resolutions.",
+   "upscale": "1"
   },
   {
    "title": "Sam & Max 101: Culture Shock",
@@ -6640,7 +7117,10 @@
     "2D"
    ],
    "pcgw_page": "Sam & Max Save the World",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Use Tell Tale Games Custom Resolution Tool. Maximum resolution is 4096x4096.",
+   "upscale": "1"
   },
   {
    "title": "Serial Cleaners",
@@ -6677,7 +7157,10 @@
     "Gore"
    ],
    "pcgw_page": "Serial Cleaners",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Shadow Complex Remastered",
@@ -6722,7 +7205,10 @@
     "Adventure"
    ],
    "pcgw_page": "Shadow Complex Remastered",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Shadowgrounds",
@@ -6765,7 +7251,10 @@
     "Isometric"
    ],
    "pcgw_page": "Shadowgrounds",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Sine Mora EX",
@@ -6804,7 +7293,10 @@
     "2D"
    ],
    "pcgw_page": "Sine Mora EX",
-   "status": "checked"
+   "status": "checked",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "SlavicPunk: Oldtimer",
@@ -6845,7 +7337,10 @@
     "Sexual Content"
    ],
    "pcgw_page": "SlavicPunk: Oldtimer",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Song of Iron",
@@ -6886,7 +7381,10 @@
    ],
    "pcgw_page": "Song of Iron",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "STASIS: BONE TOTEM",
@@ -6928,7 +7426,10 @@
     "Exploration"
    ],
    "pcgw_page": "Stasis: Bone Totem",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Stray Gods: The Roleplaying Musical",
@@ -6969,7 +7470,10 @@
     "Choose Your Own Adventure"
    ],
    "pcgw_page": "Stray Gods: The Roleplaying Musical",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Suit for Hire",
@@ -7011,7 +7515,10 @@
     "Comic Book"
    ],
    "pcgw_page": "Suit for Hire",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Tales of Monkey Island: Chapter 1 - Launch of the Screaming Narwhal",
@@ -7054,7 +7561,10 @@
     "Adventure"
    ],
    "pcgw_page": "Tales of Monkey Island",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tales of Monkey Island: Chapter 3 - Lair of the Leviathan ",
@@ -7096,7 +7606,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Tales of Monkey Island",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tales of Monkey Island: Chapter 4 - The Trial and Execution of Guybrush Threepwood ",
@@ -7138,7 +7651,10 @@
     "1990's"
    ],
    "pcgw_page": "Tales of Monkey Island",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tales of Monkey Island: Chapter 5 - Rise of the Pirate God",
@@ -7181,7 +7697,10 @@
     "Pirates"
    ],
    "pcgw_page": "Tales of Monkey Island",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tandem A Tale of Shadows",
@@ -7226,7 +7745,10 @@
     "Stylized"
    ],
    "pcgw_page": "Tandem: A Tale of Shadows",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Ascent",
@@ -7268,7 +7790,10 @@
     "Adventure"
    ],
    "pcgw_page": "The Ascent",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Eternal Castle [REMASTERED]",
@@ -7306,7 +7831,10 @@
    ],
    "pcgw_page": "The Eternal Castle: Remastered",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Hong Kong Massacre",
@@ -7343,7 +7871,10 @@
     "Difficult"
    ],
    "pcgw_page": "The Hong Kong Massacre",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Vagrant",
@@ -7387,7 +7918,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "The Vagrant",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Trine",
@@ -7431,7 +7965,10 @@
     "Family Friendly"
    ],
    "pcgw_page": "Trine",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Trine 2",
@@ -7475,7 +8012,10 @@
     "Family Friendly"
    ],
    "pcgw_page": "Trine 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Trine 4: The Nightmare Prince",
@@ -7514,7 +8054,10 @@
     "Magic"
    ],
    "pcgw_page": "Trine 4: The Nightmare Prince",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Trinity Fusion",
@@ -7558,7 +8101,10 @@
     "Action"
    ],
    "pcgw_page": "Trinity Fusion",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Waves",
@@ -7597,7 +8143,10 @@
     "Action"
    ],
    "pcgw_page": "Waves",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "In-game resolution option tops out at 2560x1600, but can be changed to anything via an .ini edit.",
+   "upscale": "0"
   },
   {
    "title": "Castlevania Dominus Collection",
@@ -7642,7 +8191,10 @@
     "Pixel Graphics"
    ],
    "pcgw_page": "Castlevania Dominus Collection",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "20 Minutes Till Dawn",
@@ -7686,7 +8238,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "20 Minutes till Dawn",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "9 Years of Shadows",
@@ -7729,7 +8284,10 @@
     "Action"
    ],
    "pcgw_page": "9 Years of Shadows",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "A Robot Named Fight",
@@ -7771,7 +8329,10 @@
     "Procedural Generation"
    ],
    "pcgw_page": "A Robot Named Fight!",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "AK-xolotl: Together",
@@ -7812,7 +8373,10 @@
     "Colorful"
    ],
    "pcgw_page": "AK-xolotl: Together",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Alone With You",
@@ -7852,7 +8416,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Alone With You",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Alwa's Awakening",
@@ -7895,7 +8462,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Alwa's Awakening",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Anomaly Agent",
@@ -7936,7 +8506,10 @@
     "Action-Adventure"
    ],
    "pcgw_page": "Anomaly Agent",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "AshenForest",
@@ -7974,7 +8547,10 @@
    ],
    "pcgw_page": "AshenForest",
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Astro Duel 2",
@@ -8016,7 +8592,10 @@
    ],
    "pcgw_page": "Astro Duel II",
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Berserk Boy",
@@ -8056,7 +8635,10 @@
     "Anime"
    ],
    "pcgw_page": "Berserk Boy",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Bionic Bay",
@@ -8101,7 +8683,10 @@
     "2D Platformer"
    ],
    "pcgw_page": "Bionic Bay",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "BIT.TRIP RUNNER",
@@ -8140,7 +8725,10 @@
     "Minimalist"
    ],
    "pcgw_page": "Bit.Trip Runner",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Black Future '88",
@@ -8179,7 +8767,10 @@
     "Platformer"
    ],
    "pcgw_page": "Black Future '88",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Black Skylands",
@@ -8222,7 +8813,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Black Skylands",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Black Widow: Recharged",
@@ -8267,7 +8861,10 @@
     "Psychedelic"
    ],
    "pcgw_page": "Black Widow: Recharged",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Blade Assault",
@@ -8310,7 +8907,10 @@
     "2D"
    ],
    "pcgw_page": "Blade Assault",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Blasphemous",
@@ -8354,7 +8954,10 @@
     "Action"
    ],
    "pcgw_page": "Blasphemous",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Pixel-perfect",
+   "upscale": "0"
   },
   {
    "title": "Blasphemous 2",
@@ -8398,7 +9001,10 @@
     "Hack and Slash"
    ],
    "pcgw_page": "Blasphemous 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Native 640x360.",
+   "upscale": "1"
   },
   {
    "title": "Bloody Hell",
@@ -8441,7 +9047,10 @@
     "Demons"
    ],
    "pcgw_page": "Bloody Hell",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Broforce",
@@ -8484,7 +9093,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Broforce",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Use the Use the related PCGW community tool as a workaround (not compatible with Broforce Forever) or p1xel8teds solution.",
+   "upscale": "0"
   },
   {
    "title": "BUTCHER",
@@ -8527,7 +9139,10 @@
     "Dark"
    ],
    "pcgw_page": "Butcher",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Cave Story's Secret Santa",
@@ -8571,7 +9186,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Cave Story's Secret Santa",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Caveblazers",
@@ -8615,7 +9233,10 @@
     "Character Customization"
    ],
    "pcgw_page": "Caveblazers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Colt Canyon",
@@ -8659,7 +9280,10 @@
     "Roguelite"
    ],
    "pcgw_page": "Colt Canyon",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Crossing Souls",
@@ -8698,7 +9322,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Crossing Souls",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Crying Suns",
@@ -8742,7 +9369,10 @@
     "Post-apocalyptic"
    ],
    "pcgw_page": "Crying Suns",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Cursed to Golf",
@@ -8787,7 +9417,10 @@
     "Roguelite"
    ],
    "pcgw_page": "Cursed to Golf",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Native 640x360.",
+   "upscale": "0"
   },
   {
    "title": "Dandara: Trials of Fear Edition",
@@ -8832,7 +9465,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Dandara",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Dark Deity",
@@ -8874,7 +9510,10 @@
     "Lore-Rich"
    ],
    "pcgw_page": "Dark Deity",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Dark Devotion",
@@ -8917,7 +9556,10 @@
     "Adventure"
    ],
    "pcgw_page": "Dark Devotion",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Death's Gambit: Afterlife",
@@ -8959,7 +9601,10 @@
     "Platformer"
    ],
    "pcgw_page": "Death's Gambit",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Defaults to max 2560x1440 when editing the system_options.sav",
+   "upscale": "1"
   },
   {
    "title": "DEMON'S TILT",
@@ -9002,7 +9647,10 @@
     "Replay Value"
    ],
    "pcgw_page": "Demon's Tilt",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Despotism 3k",
@@ -9043,7 +9691,10 @@
     "Replay Value"
    ],
    "pcgw_page": "Despotism 3k",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Dex",
@@ -9085,7 +9736,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Dex",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Disjunction",
@@ -9128,7 +9782,10 @@
     "Top-Down"
    ],
    "pcgw_page": "Disjunction",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Door Kickers: Action Squad",
@@ -9169,7 +9826,10 @@
     "Tactical"
    ],
    "pcgw_page": "Door Kickers: Action Squad",
-   "status": "checked"
+   "status": "checked",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Downwell",
@@ -9208,7 +9868,10 @@
     "2D"
    ],
    "pcgw_page": "Downwell",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Duck Paradox",
@@ -9250,7 +9913,10 @@
     "Perma Death"
    ],
    "pcgw_page": "Duck Paradox",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Elderand",
@@ -9294,7 +9960,10 @@
     "Character Customization"
    ],
    "pcgw_page": "Elderand",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Eldest Souls",
@@ -9331,7 +10000,10 @@
     "Action"
    ],
    "pcgw_page": "Eldest Souls",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "EMPTY SHELL",
@@ -9370,7 +10042,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Empty Shell",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Enter the Gungeon",
@@ -9417,7 +10092,10 @@
     "Twin Stick Shooter"
    ],
    "pcgw_page": "Enter the Gungeon",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "FAITH",
@@ -9454,7 +10132,10 @@
     "Violent"
    ],
    "pcgw_page": "FAITH",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Five Nights at Freddy's: Into the Pit",
@@ -9495,7 +10176,10 @@
     "Action"
    ],
    "pcgw_page": "Five Nights at Freddy's: Into the Pit",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Foregone",
@@ -9539,7 +10223,10 @@
     "Female Protagonist"
    ],
    "pcgw_page": "Foregone",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "G.I. Joe: Wrath of Cobra",
@@ -9579,7 +10266,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "G.I. Joe: Wrath of Cobra",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Gargoyles Remastered",
@@ -9619,7 +10309,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "Gargoyles Remastered",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Gato Roboto",
@@ -9663,7 +10356,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Gato Roboto",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Gigapocalypse",
@@ -9706,7 +10402,10 @@
     "1990's"
    ],
    "pcgw_page": "Gigapocalypse",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Gods Will Be Watching",
@@ -9745,7 +10444,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Gods Will Be Watching",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Graveyard Keeper",
@@ -9789,7 +10491,10 @@
     "Building"
    ],
    "pcgw_page": "Graveyard Keeper",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Use p1xel8ted's Show Me Moar! mod to enable all resolutions.",
+   "upscale": "1"
   },
   {
    "title": "Hell is other demons",
@@ -9831,7 +10536,10 @@
     "Action"
    ],
    "pcgw_page": "Hell is Other Demons",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Hell is Others",
@@ -9868,7 +10576,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Hell is Others",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Hive Jump 2: Survivors",
@@ -9907,7 +10618,10 @@
     "Arcade"
    ],
    "pcgw_page": "Hive Jump 2: Survivors",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Home",
@@ -9945,7 +10659,10 @@
    ],
    "pcgw_page": "Home",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Honey, I Joined a Cult",
@@ -9989,7 +10706,10 @@
     "Comedy"
    ],
    "pcgw_page": "Honey, I Joined a Cult",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Horace",
@@ -10033,7 +10753,10 @@
     "Puzzle Platformer"
    ],
    "pcgw_page": "Horace",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Huntdown",
@@ -10076,7 +10799,10 @@
     "Arcade"
    ],
    "pcgw_page": "Huntdown",
-   "status": "checked"
+   "status": "checked",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Hyper Echelon",
@@ -10114,7 +10840,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Hyper Light Drifter",
@@ -10158,7 +10887,10 @@
     "Exploration"
    ],
    "pcgw_page": "Hyper Light Drifter",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "INMOST",
@@ -10197,7 +10929,10 @@
     "Dark"
    ],
    "pcgw_page": "Inmost",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Intravenous 2: Mercenarism",
@@ -10241,7 +10976,10 @@
     "Combat"
    ],
    "pcgw_page": "Intravenous 2: Mercenarism",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Jet Lancer",
@@ -10278,7 +11016,10 @@
     "Difficult"
    ],
    "pcgw_page": "Jet Lancer",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Fullscreen only",
+   "upscale": "0"
   },
   {
    "title": "Kathy Rain",
@@ -10322,7 +11063,10 @@
     "Psychological Horror"
    ],
    "pcgw_page": "Kathy Rain",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Kingdom New Lands",
@@ -10366,7 +11110,10 @@
     "Colony Sim"
    ],
    "pcgw_page": "Kingdom: New Lands",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Kraken Academy!!",
@@ -10410,7 +11157,10 @@
     "Dark Comedy"
    ],
    "pcgw_page": "Kraken Academy!!",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Lacuna",
@@ -10454,7 +11204,10 @@
     "Sci-fi"
    ],
    "pcgw_page": "Lacuna",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Pixel-perfect scaling from 320x180.",
+   "upscale": "0"
   },
   {
    "title": "Lamentum",
@@ -10496,7 +11249,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Lamentum",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Legend of Keepers: Career of a Dungeon Manager",
@@ -10538,7 +11294,10 @@
     "Roguelite"
    ],
    "pcgw_page": "Legend of Keepers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Legend of Keepers: Prologue",
@@ -10580,7 +11339,10 @@
     "Difficult"
    ],
    "pcgw_page": "Legend of Keepers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Lone Survivor: The Director's Cut",
@@ -10624,7 +11386,10 @@
     "Psychological Horror"
    ],
    "pcgw_page": "Lone Survivor",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Loop Hero",
@@ -10667,7 +11432,10 @@
     "Strategy RPG"
    ],
    "pcgw_page": "Loop Hero",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Lost Ruins",
@@ -10712,7 +11480,10 @@
     "Survival"
    ],
    "pcgw_page": "Lost Ruins",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Lovecraft's Untold Stories",
@@ -10755,7 +11526,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Lovecraft's Untold Stories",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "LUNARK",
@@ -10797,7 +11571,10 @@
     "Sci-fi"
    ],
    "pcgw_page": "Lunark",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Mable & The Wood",
@@ -10841,7 +11618,10 @@
     "Multiple Endings"
    ],
    "pcgw_page": "Mable and the Wood",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "METAL SUITS: Counter-attack",
@@ -10879,7 +11659,10 @@
    ],
    "pcgw_page": "Metal Suits: Counter-attack",
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Minit",
@@ -10918,7 +11701,10 @@
     "Funny"
    ],
    "pcgw_page": "Minit",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Monkey Island 2: Special Edition",
@@ -10961,7 +11747,10 @@
     "Funny"
    ],
    "pcgw_page": "Monkey Island 2 Special Edition: LeChuck's Revenge",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Moonscars",
@@ -11001,7 +11790,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Moonscars",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Morbid: The Seven Acolytes",
@@ -11041,7 +11833,10 @@
    ],
    "pcgw_page": "Morbid: The Seven Acolytes",
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Mother Russia Bleeds",
@@ -11084,7 +11879,10 @@
     "2D"
    ],
    "pcgw_page": "Mother Russia Bleeds",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Narita Boy",
@@ -11123,7 +11921,10 @@
     "1980s"
    ],
    "pcgw_page": "Narita Boy",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Necroking",
@@ -11161,7 +11962,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Neon Abyss",
@@ -11202,7 +12006,10 @@
     "Cyberpunk"
    ],
    "pcgw_page": "Neon Abyss",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "The game enumerates screen resolution at all supported refresh rates, but only shows the resolution part, so it may require multiple clicks to roll over",
+   "upscale": "0"
   },
   {
    "title": "Night Reverie",
@@ -11240,7 +12047,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Nine Witches: Family Disruption",
@@ -11284,7 +12094,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Nine Witches: Family Disruption",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "NORCO",
@@ -11323,7 +12136,10 @@
     "Gothic"
    ],
    "pcgw_page": "Norco",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Nuclear Blaze",
@@ -11364,7 +12180,10 @@
     "Platformer"
    ],
    "pcgw_page": "Nuclear Blaze",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Nuclear Throne",
@@ -11406,7 +12225,10 @@
     "Great Soundtrack"
    ],
    "pcgw_page": "Nuclear Throne",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "See Widescreen resolution.",
+   "upscale": "1"
   },
   {
    "title": "Orbital Bullet",
@@ -11446,7 +12268,10 @@
     "Bullet Time"
    ],
    "pcgw_page": "Orbital Bullet",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "OTXO",
@@ -11490,7 +12315,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "OTXO",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Party Hard 2 ",
@@ -11529,7 +12357,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Party Hard 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Police Stories",
@@ -11572,7 +12403,10 @@
     "Pixel Graphics"
    ],
    "pcgw_page": "Police Stories",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Racine",
@@ -11613,7 +12447,10 @@
     "PvE"
    ],
    "pcgw_page": "Racine",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Rain World",
@@ -11655,7 +12492,10 @@
     "Post-apocalyptic"
    ],
    "pcgw_page": "Rain World",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Can be achieved using the Sharpener mod.",
+   "upscale": "1"
   },
   {
    "title": "RIOT - Civil Unrest",
@@ -11692,7 +12532,10 @@
     "Historical"
    ],
    "pcgw_page": "Riot: Civil Unrest",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Rising Hell",
@@ -11735,7 +12578,10 @@
     "Difficult"
    ],
    "pcgw_page": "Rising Hell",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Risk of Rain Returns",
@@ -11777,7 +12623,10 @@
     "Controller"
    ],
    "pcgw_page": "Risk of Rain Returns",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Rogue Legacy",
@@ -11822,7 +12671,10 @@
     "Roguelite"
    ],
    "pcgw_page": "Rogue Legacy",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Shantae and the Pirate's Curse",
@@ -11867,7 +12719,10 @@
     "Indie"
    ],
    "pcgw_page": "Shantae and the Pirate's Curse",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Shogun Showdown",
@@ -11906,7 +12761,10 @@
     "Turn-Based Tactics"
    ],
    "pcgw_page": "Shogun Showdown",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Slain: Back from Hell",
@@ -11951,7 +12809,10 @@
     "Dark Fantasy"
    ],
    "pcgw_page": "Slain: Back from Hell",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "limited",
+   "uhd_note": "Pixel art with nearest-neighbor scaling.",
+   "upscale": "1"
   },
   {
    "title": "Sonic Mania",
@@ -11997,7 +12858,10 @@
     "Action"
    ],
    "pcgw_page": "Sonic Mania",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Scaled from 424x240; cutscenes scaled from 1024x512. See Widescreen resolution.",
+   "upscale": "0"
   },
   {
    "title": "Souldiers",
@@ -12041,7 +12905,10 @@
     "Souls-like"
    ],
    "pcgw_page": "Souldiers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Space Runaway",
@@ -12079,7 +12946,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Spirit Mancer",
@@ -12117,7 +12987,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Sunblaze",
@@ -12158,7 +13031,10 @@
     "Platformer"
    ],
    "pcgw_page": "Sunblaze",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Super Meat Boy",
@@ -12202,7 +13078,10 @@
     "Fast-Paced"
    ],
    "pcgw_page": "Super Meat Boy",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Many of the game assets are made for 720p and are scaled up using bilinear filtering.",
+   "upscale": "0"
   },
   {
    "title": "Tales of the Neon Sea",
@@ -12247,7 +13126,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Tales of the Neon Sea",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Terraria",
@@ -12292,7 +13174,10 @@
     "Exploration"
    ],
    "pcgw_page": "Terraria",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Abandoned Planet",
@@ -12330,7 +13215,10 @@
    ],
    "pcgw_page": "The Abandoned Planet",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Captain",
@@ -12374,7 +13262,10 @@
     "Turn-Based Combat"
    ],
    "pcgw_page": "The Captain",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Darkside Detective",
@@ -12419,7 +13310,10 @@
     "Indie"
    ],
    "pcgw_page": "The Darkside Detective",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Escapists",
@@ -12462,7 +13356,10 @@
     "Survival"
    ],
    "pcgw_page": "The Escapists",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Escapists 2",
@@ -12505,7 +13402,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "The Escapists 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Last Spell",
@@ -12546,7 +13446,10 @@
     "Strategy RPG"
    ],
    "pcgw_page": "The Last Spell",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Long Reach",
@@ -12585,7 +13488,10 @@
     "Point & Click"
    ],
    "pcgw_page": "The Long Reach",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Messenger",
@@ -12624,7 +13530,10 @@
     "2D Platformer"
    ],
    "pcgw_page": "The Messenger",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Red Strings Club",
@@ -12663,7 +13572,10 @@
     "Point & Click"
    ],
    "pcgw_page": "The Red Strings Club",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Secret of Monkey Island: Special Edition",
@@ -12702,7 +13614,10 @@
     "1990's"
    ],
    "pcgw_page": "The Secret of Monkey Island: Special Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Them's Fightin' Herds",
@@ -12746,7 +13661,10 @@
     "PvP"
    ],
    "pcgw_page": "Them's Fightin' Herds",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Three Minutes to Eight",
@@ -12792,7 +13710,10 @@
     "Sci-fi"
    ],
    "pcgw_page": "Three Minutes to Eight",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Treasure Adventure Game",
@@ -12837,7 +13758,10 @@
     "Open World"
    ],
    "pcgw_page": "Treasure Adventure Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Turnip Boy Commits Tax Evasion",
@@ -12882,7 +13806,10 @@
     "Comedy"
    ],
    "pcgw_page": "Turnip Boy Commits Tax Evasion",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Vampire Survivors",
@@ -12929,7 +13856,10 @@
     "Roguelike"
    ],
    "pcgw_page": "Vampire Survivors",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "VirtuaVerse",
@@ -12970,7 +13900,10 @@
     "Story Rich"
    ],
    "pcgw_page": "VirtuaVerse",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Vlad Circus: Descend Into Madness",
@@ -13010,7 +13943,10 @@
    ],
    "pcgw_page": "Vlad Circus: Descend Into Madness",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Wall World",
@@ -13051,7 +13987,10 @@
     "Mechs"
    ],
    "pcgw_page": "Wall World",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Wall World 2",
@@ -13089,7 +14028,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Whispers of a Machine",
@@ -13131,7 +14073,10 @@
     "Mystery"
    ],
    "pcgw_page": "Whispers of a Machine",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Yes, Your Grace",
@@ -13174,7 +14119,10 @@
     "Casual"
    ],
    "pcgw_page": "Yes, Your Grace",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "12 is Better Than 6",
@@ -13219,7 +14167,10 @@
     "Violent"
    ],
    "pcgw_page": "12 Is Better than 6",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "20XX",
@@ -13260,7 +14211,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "20XX",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "A Guidebook Of Babel",
@@ -13303,7 +14257,10 @@
     "Funny"
    ],
    "pcgw_page": "A Guidebook of Babel",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Alder's Blood Prologue",
@@ -13346,7 +14303,10 @@
     "Indie"
    ],
    "pcgw_page": "Alder's Blood",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Along the Edge",
@@ -13386,7 +14346,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Along the Edge",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Among Us",
@@ -13433,7 +14396,10 @@
     "Co-op"
    ],
    "pcgw_page": "Among Us",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Only shows a 1/4 of the screen. Can be adjusted by setting the .exe compatibility \"Change high DPI settings\" option for \"High DPI scaling override.\"",
+   "upscale": "1"
   },
   {
    "title": "Ancient Enemy",
@@ -13472,7 +14438,10 @@
     "RPG"
    ],
    "pcgw_page": "Ancient Enemy",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Ape Out",
@@ -13511,7 +14480,10 @@
     "Beat 'em up"
    ],
    "pcgw_page": "Ape Out",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Armor Of Heroes",
@@ -13541,7 +14513,10 @@
    ],
    "tags": [],
    "pcgw_page": "Armor of Heroes",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Ascendant",
@@ -13580,7 +14555,10 @@
     "Roguelike"
    ],
    "pcgw_page": "Ascendant",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Beholder",
@@ -13619,7 +14597,10 @@
     "Multiple Endings"
    ],
    "pcgw_page": "Beholder",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Beholder 3",
@@ -13658,7 +14639,10 @@
     "Isometric"
    ],
    "pcgw_page": "Beholder 3",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Black Mirror I",
@@ -13700,7 +14684,10 @@
     "Gothic"
    ],
    "pcgw_page": "The Black Mirror",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Black Mirror II",
@@ -13742,7 +14729,10 @@
     "Third Person"
    ],
    "pcgw_page": "Black Mirror 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Change in the game XML config. Interface elements are not scaled.",
+   "upscale": "1"
   },
   {
    "title": "Black Mirror III",
@@ -13784,7 +14774,10 @@
     "Escape Room"
    ],
    "pcgw_page": "Black Mirror 3",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Edit in in the Configuration file(s) location.",
+   "upscale": "1"
   },
   {
    "title": "Blacksad: Under the Skin",
@@ -13828,7 +14821,10 @@
     "Cartoony"
    ],
    "pcgw_page": "Blacksad: Under the Skin",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Blood Omen: Legacy of Kain",
@@ -13854,7 +14850,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Blood Omen: Legacy of Kain",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Botanicula",
@@ -13893,7 +14892,10 @@
     "Stylized"
    ],
    "pcgw_page": "Botanicula",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Burnhouse Lane",
@@ -13937,7 +14939,10 @@
     "Dark Humor"
    ],
    "pcgw_page": "Burnhouse Lane",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Bō: Path of the Teal Lotus",
@@ -13979,7 +14984,10 @@
     "2D"
    ],
    "pcgw_page": "Bō: Path of the Teal Lotus",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Capsized",
@@ -14019,7 +15027,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Capsized",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "See Widescreen resolution.",
+   "upscale": "1"
   },
   {
    "title": "Carcassonne",
@@ -14050,7 +15061,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Carcassonne",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Centipede Recharged",
@@ -14089,7 +15103,10 @@
     "Abstract"
    ],
    "pcgw_page": "Centipede: Recharged",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Chants of Sennaar",
@@ -14130,7 +15147,10 @@
     "Stylized"
    ],
    "pcgw_page": "Chants of Sennaar",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "CHUCHEL",
@@ -14169,7 +15189,10 @@
     "Linear"
    ],
    "pcgw_page": "Chuchel",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Citizen Sleeper",
@@ -14213,7 +15236,10 @@
     "Text-Based"
    ],
    "pcgw_page": "Citizen Sleeper",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Citizen Sleeper 2: Starward Vector",
@@ -14257,7 +15283,10 @@
     "Interactive Fiction"
    ],
    "pcgw_page": "Citizen Sleeper 2: Starward Vector",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Cook, Serve, Delicious! 3?!",
@@ -14302,7 +15331,10 @@
     "Co-op"
    ],
    "pcgw_page": "Cook, Serve, Delicious! 3?!",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Cookie Cutter",
@@ -14345,7 +15377,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Cookie Cutter",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Creaks",
@@ -14387,7 +15422,10 @@
     "Mystery"
    ],
    "pcgw_page": "Creaks",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Cris Tales",
@@ -14429,7 +15467,10 @@
     "Fantasy"
    ],
    "pcgw_page": "Cris Tales",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Dark Sky",
@@ -14468,7 +15509,10 @@
     "Tactical RPG"
    ],
    "pcgw_page": "Dark Sky",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Detention",
@@ -14511,7 +15555,10 @@
     "Dark"
    ],
    "pcgw_page": "Detention",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Disco Elysium",
@@ -14556,7 +15603,10 @@
     "Noir"
    ],
    "pcgw_page": "Disco Elysium",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "DOOMBLADE",
@@ -14597,7 +15647,10 @@
     "2D"
    ],
    "pcgw_page": "Doomblade",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Double Cross",
@@ -14640,7 +15693,10 @@
     "Female Protagonist"
    ],
    "pcgw_page": "Double Cross",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Drawful 2",
@@ -14679,7 +15735,10 @@
     "Comedy"
    ],
    "pcgw_page": "Drawful 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Duskers",
@@ -14720,7 +15779,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Duskers",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Eastern Exorcist",
@@ -14764,7 +15826,10 @@
     "Strategy"
    ],
    "pcgw_page": "Eastern Exorcist",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Encased",
@@ -14794,7 +15859,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Encased",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Encodya",
@@ -14841,7 +15909,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Encodya",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Epistory - Typing Chronicles",
@@ -14875,7 +15946,10 @@
    ],
    "tags": [],
    "pcgw_page": "Epistory - Typing Chronicles",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Fall of Porcupine: Prologue",
@@ -14916,7 +15990,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "Fall of Porcupine",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Figment",
@@ -14962,7 +16039,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Figment",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Figment 2: Creed Valley",
@@ -15007,7 +16087,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Figment 2: Creed Valley",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Fran Bow",
@@ -15053,7 +16136,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Fran Bow",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Unity version supports resolutions up to 2560x1600.<br/>GameMaker version highest available resolution is 1920x1080.",
+   "upscale": "1"
   },
   {
    "title": "From Space",
@@ -15096,7 +16182,10 @@
     "Action RPG"
    ],
    "pcgw_page": "From Space",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Geneforge 1: Mutagen",
@@ -15137,7 +16226,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Geneforge 1 - Mutagen",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Both pillarboxed and letterboxed.",
+   "upscale": "0"
   },
   {
    "title": "Geometry Wars 3: Dimensions Evolved",
@@ -15179,7 +16271,10 @@
     "Difficult"
    ],
    "pcgw_page": "Geometry Wars 3: Dimensions Evolved",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Geometry Wars: Retro Evolved",
@@ -15220,7 +16315,10 @@
     "Indie"
    ],
    "pcgw_page": "Geometry Wars: Retro Evolved",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Ghost Song",
@@ -15261,7 +16359,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Ghost Song",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "GoNNER",
@@ -15300,7 +16401,10 @@
     "Procedural Generation"
    ],
    "pcgw_page": "Gonner",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Gratuitous Space Battles",
@@ -15338,7 +16442,10 @@
    ],
    "pcgw_page": "Gratuitous Space Battles",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Greak: Memories of Azur",
@@ -15382,7 +16489,10 @@
     "Action"
    ],
    "pcgw_page": "Greak: Memories of Azur",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "GRIS",
@@ -15426,7 +16536,10 @@
     "Relaxing"
    ],
    "pcgw_page": "Gris",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Guns, Gore & Cannoli",
@@ -15465,7 +16578,10 @@
     "Platformer"
    ],
    "pcgw_page": "Guns, Gore & Cannoli",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Guns, Gore and Cannoli 2",
@@ -15505,7 +16621,10 @@
     "Zombies"
    ],
    "pcgw_page": "Guns, Gore & Cannoli 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Halo: Spartan Assault",
@@ -15544,7 +16663,10 @@
     "Arcade"
    ],
    "pcgw_page": "Halo: Spartan Assault",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Happy Game",
@@ -15587,7 +16709,10 @@
     "2D"
    ],
    "pcgw_page": "Happy Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Hero of the Kingdom II",
@@ -15628,7 +16753,10 @@
     "Hidden Object"
    ],
    "pcgw_page": "Hero of the Kingdom II",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "limited",
+   "uhd_note": "Upscaled from a lower resolution.",
+   "upscale": "1"
   },
   {
    "title": "Hidden Deep",
@@ -15671,7 +16799,10 @@
    ],
    "pcgw_page": "Hidden Deep",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Hue",
@@ -15716,7 +16847,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Hue",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Inkulinati",
@@ -15758,7 +16892,10 @@
     "Stylized"
    ],
    "pcgw_page": "Inkulinati",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Insanely Twisted Shadow Planet",
@@ -15795,7 +16932,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "Insanely Twisted Shadow Planet",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Iratus",
@@ -15825,7 +16965,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Iratus: Lord of the Dead",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Jennifer Wilde: Unlikely Revolutionaries",
@@ -15863,7 +17006,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Jotun: Valhalla Edition",
@@ -15907,7 +17053,10 @@
     "Exploration"
    ],
    "pcgw_page": "Jotun",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "KILL KNIGHT",
@@ -15946,7 +17095,10 @@
     "Indie"
    ],
    "pcgw_page": "Kill Knight",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "LEGO® Builder's Journey",
@@ -15988,7 +17140,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Lego Builder's Journey",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "LIMBO",
@@ -16030,7 +17185,10 @@
     "Horror"
    ],
    "pcgw_page": "Limbo",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "See Widescreen resolution.",
+   "upscale": "1"
   },
   {
    "title": "Little Misfortune",
@@ -16069,7 +17227,10 @@
     "Cute"
    ],
    "pcgw_page": "Little Misfortune",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Lorelai",
@@ -16113,7 +17274,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Lorelai",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Machinarium",
@@ -16158,7 +17322,10 @@
     "Casual"
    ],
    "pcgw_page": "Machinarium",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Madrid Noir",
@@ -16196,7 +17363,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Magenta Horizon - Neverending Harvest",
@@ -16234,7 +17404,10 @@
    ],
    "pcgw_page": "Magenta Horizon",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Mark of the Ninja",
@@ -16276,7 +17449,10 @@
     "Assassins"
    ],
    "pcgw_page": "Mark of the Ninja",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Max: The Curse of Brotherhood",
@@ -16319,7 +17495,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Max: The Curse of Brotherhood",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Minute of Islands",
@@ -16357,7 +17536,10 @@
    ],
    "pcgw_page": "Minute of Islands",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Mr. Prepper",
@@ -16396,7 +17578,10 @@
     "Underground"
    ],
    "pcgw_page": "Mr. Prepper",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Mutazione",
@@ -16435,7 +17620,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Mutazione",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "My Friend is a Raven",
@@ -16473,7 +17661,10 @@
    ],
    "pcgw_page": "My Friend is a Raven",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "My Memory of Us",
@@ -16514,7 +17705,10 @@
     "Platformer"
    ],
    "pcgw_page": "My Memory of Us",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Narco Terror",
@@ -16544,7 +17738,10 @@
    ],
    "tags": [],
    "pcgw_page": "Narco Terror",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Neon Chrome",
@@ -16583,7 +17780,10 @@
     "Shooter"
    ],
    "pcgw_page": "Neon Chrome",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Never Alone (Kisima Ingitchuna)",
@@ -16626,7 +17826,10 @@
     "Cute"
    ],
    "pcgw_page": "Never Alone",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Nex Machina",
@@ -16666,7 +17869,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "Nex Machina",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Next Up Hero",
@@ -16708,7 +17914,10 @@
     "2D"
    ],
    "pcgw_page": "Next Up Hero",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Nobody Saves the World",
@@ -16749,7 +17958,10 @@
     "Local Co-Op"
    ],
    "pcgw_page": "Nobody Saves the World",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Oddworld: New 'n' Tasty",
@@ -16790,7 +18002,10 @@
     "2D"
    ],
    "pcgw_page": "Oddworld: New 'n' Tasty!",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Omen Exitio: Plague",
@@ -16828,7 +18043,10 @@
    ],
    "pcgw_page": "Omen Exitio: Plague",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Once Upon a Jester",
@@ -16870,7 +18088,10 @@
     "Point & Click"
    ],
    "pcgw_page": "Once upon a Jester",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Only 720p , 900p or 1080p",
+   "upscale": "1"
   },
   {
    "title": "Ori and the Blind Forest",
@@ -16914,7 +18135,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Ori and the Blind Forest",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "Game assets are upscaled from 1920x1080.",
+   "upscale": "1"
   },
   {
    "title": "Ori and the Blind Forest: Definitive Edition",
@@ -16958,7 +18182,10 @@
     "Action"
    ],
    "pcgw_page": "Ori and the Blind Forest: Definitive Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Ori and the Will of the Wisps",
@@ -17002,7 +18229,10 @@
     "Exploration"
    ],
    "pcgw_page": "Ori and the Will of the Wisps",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Out of Line",
@@ -17045,7 +18275,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Out of Line",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Outland",
@@ -17086,7 +18319,10 @@
     "Controller"
    ],
    "pcgw_page": "Outland",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Paw Paw Paw",
@@ -17125,7 +18361,10 @@
     "Co-op"
    ],
    "pcgw_page": "Paw Paw Paw",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Pikuniku",
@@ -17167,7 +18406,10 @@
     "2D"
    ],
    "pcgw_page": "Pikuniku",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Pilgrims",
@@ -17206,7 +18448,10 @@
     "Point & Click"
    ],
    "pcgw_page": "Pilgrims",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Set manually through configuration file(s) location.",
+   "upscale": "0"
   },
   {
    "title": "Planescape: Torment",
@@ -17235,7 +18480,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Planescape: Torment",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "Use widescreen mod. Game elements will be too small or zoomed out at very high resolutions, even with UI Mod.",
+   "upscale": "1"
   },
   {
    "title": "Planet of Lana",
@@ -17279,7 +18527,10 @@
     "Indie"
    ],
    "pcgw_page": "Planet of Lana",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Please, Touch The Artwork 2",
@@ -17318,7 +18569,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "Please, Touch The Artwork 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Prince of Persia The Lost Crown",
@@ -17361,7 +18615,10 @@
     "Controller"
    ],
    "pcgw_page": "Prince of Persia: The Lost Crown",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Raji: An Ancient Epic Prologue",
@@ -17399,7 +18656,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Rayman Legends",
@@ -17442,7 +18702,10 @@
     "Local Multiplayer"
    ],
    "pcgw_page": "Rayman Legends",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "RIVE",
@@ -17479,7 +18742,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Rive",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Rocketbirds 2 Evolution",
@@ -17516,7 +18782,10 @@
     "Co-op"
    ],
    "pcgw_page": "Rocketbirds 2 Evolution",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Runaway: A Road Adventure",
@@ -17555,7 +18824,10 @@
     "Classic"
    ],
    "pcgw_page": "Runaway: A Road Adventure",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Runaway: A Twist of Fate",
@@ -17596,7 +18868,10 @@
     "Retro"
    ],
    "pcgw_page": "Runaway: A Twist of Fate",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Runaway: The Dream of the Turtle",
@@ -17635,7 +18910,10 @@
     "Retro"
    ],
    "pcgw_page": "Runaway 2: The Dream of the Turtle",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Rustler - Grand Theft Horse",
@@ -17665,7 +18943,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Rustler",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Samorost 1",
@@ -17707,7 +18988,10 @@
     "Colorful"
    ],
    "pcgw_page": "Samorost 1",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Samorost 2",
@@ -17751,7 +19035,10 @@
     "Psychedelic"
    ],
    "pcgw_page": "Samorost 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Samorost 3",
@@ -17796,7 +19083,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Samorost 3",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Secret Files: Puritas Cordis",
@@ -17831,7 +19121,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Secret Files 2: Puritas Cordis",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Secret Files: Tunguska",
@@ -17868,7 +19161,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Secret Files: Tunguska",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Serious Sam Double D XXL",
@@ -17907,7 +19203,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Serious Sam Double D",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Shadowgrounds: Survivor",
@@ -17948,7 +19247,10 @@
     "Action RPG"
    ],
    "pcgw_page": "Shadowgrounds: Survivor",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Shadowrun Hong Kong",
@@ -17979,7 +19281,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Shadowrun: Hong Kong",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Check Hi Res Scale Mode in the options menu to upscale the UI.",
+   "upscale": "0"
   },
   {
    "title": "Shank",
@@ -18020,7 +19325,10 @@
     "Co-op"
    ],
    "pcgw_page": "Shank",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "SILT",
@@ -18059,7 +19367,10 @@
     "Puzzle Platformer"
    ],
    "pcgw_page": "Silt",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Sine Mora",
@@ -18098,7 +19409,10 @@
     "2D"
    ],
    "pcgw_page": "Sine Mora",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Snufkin: Melody of Moominvalley",
@@ -18141,7 +19455,10 @@
     "Indie"
    ],
    "pcgw_page": "Snufkin: Melody of Moominvalley",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Songs of Silence",
@@ -18182,7 +19499,10 @@
     "Tactical"
    ],
    "pcgw_page": "Songs of Silence",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Source of Madness",
@@ -18222,7 +19542,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Source of Madness",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "South of the Circle",
@@ -18264,7 +19587,10 @@
     "Minimalist"
    ],
    "pcgw_page": "South of the Circle",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Speed Brawl",
@@ -18306,7 +19632,10 @@
     "Local Multiplayer"
    ],
    "pcgw_page": "Speed Brawl",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Spelunky",
@@ -18348,7 +19677,10 @@
     "Arcade"
    ],
    "pcgw_page": "Spelunky",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Artwork scaled from 1280x720.",
+   "upscale": "0"
   },
   {
    "title": "Spiritfarer®: Farewell Edition",
@@ -18393,7 +19725,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Spiritfarer",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Spitlings",
@@ -18432,7 +19767,10 @@
     "Colorful"
    ],
    "pcgw_page": "Spitlings",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "SteamWorld Quest: Hand of Gilgamech",
@@ -18475,7 +19813,10 @@
     "Cartoony"
    ],
    "pcgw_page": "SteamWorld Quest: Hand of Gilgamech",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Stick it to the Man",
@@ -18514,7 +19855,10 @@
     "Great Soundtrack"
    ],
    "pcgw_page": "Stick It to the Man!",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Still Life 2",
@@ -18556,7 +19900,10 @@
     "Escape Room"
    ],
    "pcgw_page": "Still Life 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Strange Horticulture",
@@ -18595,7 +19942,10 @@
     "Simulation"
    ],
    "pcgw_page": "Strange Horticulture",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Stranger Things 3: The Game",
@@ -18627,7 +19977,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Stranger Things 3: The Game",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Strider",
@@ -18668,7 +20021,10 @@
    ],
    "pcgw_page": "Strider",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Sunday Gold",
@@ -18707,7 +20063,10 @@
     "Linear"
    ],
    "pcgw_page": "Sunday Gold",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Sundered Eldritch Edition",
@@ -18749,7 +20108,10 @@
     "Difficult"
    ],
    "pcgw_page": "Sundered",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Native support",
+   "upscale": "0"
   },
   {
    "title": "Super Meat Boy Forever",
@@ -18792,7 +20154,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Super Meat Boy Forever",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Syberia",
@@ -18838,7 +20203,10 @@
     "Classic"
    ],
    "pcgw_page": "Syberia",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "hackable",
+   "uhd_note": "See 4K Ultra HD. Work in Windows 10. Also 1080p and 1440p.",
+   "upscale": "1"
   },
   {
    "title": "Syberia 2",
@@ -18884,7 +20252,10 @@
     "Mystery"
    ],
    "pcgw_page": "Syberia II",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Syberia: The World Before",
@@ -18927,7 +20298,10 @@
     "Choices Matter"
    ],
    "pcgw_page": "Syberia: The World Before",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Symphonia (Student Project, 2020)",
@@ -18969,7 +20343,10 @@
     "2D"
    ],
    "pcgw_page": "Symphonia (2024)",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "SYNTHETIK",
@@ -19008,7 +20385,10 @@
     "Shooter"
    ],
    "pcgw_page": "Synthetik: Legion Rising",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Teslagrad 2",
@@ -19050,7 +20430,10 @@
     "2D Platformer"
    ],
    "pcgw_page": "Teslagrad 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Teslagrad Remastered",
@@ -19092,7 +20475,10 @@
     "2D"
    ],
    "pcgw_page": "Teslagrad Remastered",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Tested on Humans: Escape Room",
@@ -19130,7 +20516,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Alto Collection",
@@ -19169,7 +20558,10 @@
     "Colorful"
    ],
    "pcgw_page": "The Alto Collection",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Big Con",
@@ -19210,7 +20602,10 @@
     "Story Rich"
    ],
    "pcgw_page": "The Big Con",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Cave",
@@ -19252,7 +20647,10 @@
    ],
    "pcgw_page": "The Cave",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Coma: Recut",
@@ -19295,7 +20693,10 @@
    ],
    "pcgw_page": "The Coma: Recut",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Detail",
@@ -19336,7 +20737,10 @@
     "Indie"
    ],
    "pcgw_page": "The Detail",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Dream Machine",
@@ -19380,7 +20784,10 @@
     "Exploration"
    ],
    "pcgw_page": "The Dream Machine",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "The Fall",
@@ -19424,7 +20831,10 @@
     "Point & Click"
    ],
    "pcgw_page": "The Fall",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Last Show of Mr. Chardish",
@@ -19462,7 +20872,10 @@
    ],
    "pcgw_page": "The Last Show of Mr. Chardish",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Life and Suffering of Sir Brante",
@@ -19505,7 +20918,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "The Life and Suffering of Sir Brante",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Life and Suffering of Sir Brante — Chapter 1&2",
@@ -19548,7 +20964,10 @@
     "Story Rich"
    ],
    "pcgw_page": "The Life and Suffering of Sir Brante",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Longest Journey",
@@ -19592,7 +21011,10 @@
     "1990's"
    ],
    "pcgw_page": "The Longest Journey",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "The Next BIG Thing",
@@ -19633,7 +21055,10 @@
     "Escape Room"
    ],
    "pcgw_page": "The Next Big Thing",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Internal render resolution is locked at 1920x1080, which is then scaled to the selected output resolution using nearest neighbor.",
+   "upscale": "0"
   },
   {
    "title": "The Pale Beyond",
@@ -19672,7 +21097,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "The Pale Beyond",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Procession to Calvary",
@@ -19713,7 +21141,10 @@
     "Comedy"
    ],
    "pcgw_page": "The Procession to Calvary",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Rogue Prince of Persia",
@@ -19757,7 +21188,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "The Rogue Prince of Persia",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Silent Age",
@@ -19801,7 +21235,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "The Silent Age",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Stone of Madness",
@@ -19841,7 +21278,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "The Stone of Madness",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Takeover",
@@ -19879,7 +21319,10 @@
    ],
    "pcgw_page": "The TakeOver",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The World Next Door",
@@ -19920,7 +21363,10 @@
     "Anime"
    ],
    "pcgw_page": "The World Next Door",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "They Always Run",
@@ -19959,7 +21405,10 @@
     "Story Rich"
    ],
    "pcgw_page": "They Always Run",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Through the Darkest of Times",
@@ -19998,7 +21447,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Through the Darkest of Times",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Time Recoil",
@@ -20036,7 +21488,10 @@
    ],
    "pcgw_page": "Time Recoil",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Tiny Robots Recharged",
@@ -20074,7 +21529,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Titan Quest",
@@ -20102,7 +21560,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Titan Quest",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "HUD does not scale up, and becomes very small.",
+   "upscale": "1"
   },
   {
    "title": "Titan Quest: Immortal Throne",
@@ -20130,7 +21591,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Titan Quest",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "HUD does not scale up, and becomes very small.",
+   "upscale": "1"
   },
   {
    "title": "TOEM",
@@ -20174,7 +21638,10 @@
     "Hand-drawn"
    ],
    "pcgw_page": "TOEM",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tormentor X Punisher",
@@ -20205,7 +21672,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Tormentor X Punisher",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Truberbrook",
@@ -20244,7 +21714,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Trüberbrook",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "True Fear: Forsaken Souls Part 1",
@@ -20288,7 +21761,10 @@
     "2D"
    ],
    "pcgw_page": "True Fear: Forsaken Souls Part 1",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tunche",
@@ -20329,7 +21805,10 @@
     "Difficult"
    ],
    "pcgw_page": "Tunche",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Tunguska: The Visitation - Final Cut",
@@ -20370,7 +21849,10 @@
     "Survival Horror"
    ],
    "pcgw_page": "Tunguska: The Visitation",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Turmoil",
@@ -20413,7 +21895,10 @@
     "Asynchronous Multiplayer"
    ],
    "pcgw_page": "Turmoil",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Ultros",
@@ -20451,7 +21936,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Under The Moon",
@@ -20491,7 +21979,10 @@
    ],
    "pcgw_page": "Under The Moon",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Undying",
@@ -20519,7 +22010,10 @@
    "art": [],
    "tags": [],
    "pcgw_page": "Undying",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Utopos",
@@ -20557,7 +22051,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Valfaris: Mecha Therion",
@@ -20595,7 +22092,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "VEGA Conflict",
@@ -20632,7 +22132,10 @@
     "RTS"
    ],
    "pcgw_page": "VEGA Conflict",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Wasteland 2: Director's Cut",
@@ -20666,7 +22169,10 @@
    ],
    "tags": [],
    "pcgw_page": "Wasteland 2",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "West of Dead",
@@ -20705,7 +22211,10 @@
     "Action Roguelike"
    ],
    "pcgw_page": "West of Dead",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Wheels of Aurelia",
@@ -20748,7 +22257,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Wheels of Aurelia",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Whispering Willows",
@@ -20794,7 +22306,10 @@
     "Exploration"
    ],
    "pcgw_page": "Whispering Willows",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Wildcat Gun Machine",
@@ -20835,7 +22350,10 @@
     "Cartoony"
    ],
    "pcgw_page": "Wildcat Gun Machine",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Wonder Boy The Dragons Trap",
@@ -20877,7 +22395,10 @@
     "Retro"
    ],
    "pcgw_page": "Wonder Boy: The Dragon's Trap",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Games assets are done for 1920x1080 resolution specifically. All of the assets are upscaled with higher resolutions.",
+   "upscale": "0"
   },
   {
    "title": "Yesterday",
@@ -20916,7 +22437,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "Yesterday",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Yesterday Origins",
@@ -20957,7 +22481,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Yesterday Origins",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Ynglet",
@@ -20995,7 +22522,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Yoku's Island Express",
@@ -21035,7 +22565,10 @@
     "Great Soundtrack"
    ],
    "pcgw_page": "Yoku's Island Express",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "Use \"Desktop\" resolution setting.",
+   "upscale": "0"
   },
   {
    "title": "Young Souls",
@@ -21074,7 +22607,10 @@
     "Character Customization"
    ],
    "pcgw_page": "Young Souls",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Castlevania Advance Collection",
@@ -21119,7 +22655,10 @@
     "Vampires"
    ],
    "pcgw_page": "Castlevania Advance Collection",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Castlevania Anniversary Collection",
@@ -21160,7 +22699,10 @@
     "Side Scroller"
    ],
    "pcgw_page": "Castlevania Anniversary Collection",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Overlooting",
@@ -21198,7 +22740,10 @@
    ],
    "pcgw_page": null,
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Hammerting",
@@ -21235,7 +22780,10 @@
     "Inventory Management"
    ],
    "pcgw_page": "Hammerting",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Little Nightmares Enhanced Edition",
@@ -21279,7 +22827,10 @@
     "Psychological Horror"
    ],
    "pcgw_page": "Little Nightmares Enhanced Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "The Thaumaturge",
@@ -21323,7 +22874,10 @@
     "Atmospheric"
    ],
    "pcgw_page": "The Thaumaturge",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Delores: A Thimbleweed Park Mini-Adventure",
@@ -21367,7 +22921,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Delores: A Thimbleweed Park Mini-Adventure",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "true",
+   "uhd_note": "",
+   "upscale": "0"
   },
   {
    "title": "Janosik",
@@ -21409,7 +22966,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "Janosik",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Sentience: The Android's Tale",
@@ -21451,7 +23011,10 @@
    ],
    "pcgw_page": "Sentience: The Android's Tale",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Sheepy: A Short Adventure",
@@ -21493,7 +23056,10 @@
     "2D"
    ],
    "pcgw_page": "Sheepy: A Short Adventure",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Hypnospace Outlaw",
@@ -21536,7 +23102,10 @@
     "Story Rich"
    ],
    "pcgw_page": "Hypnospace Outlaw",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "limited",
+   "uhd_note": "Integer scaled from 480x270.",
+   "upscale": "1"
   },
   {
    "title": "Melvor Idle",
@@ -21574,7 +23143,10 @@
    ],
    "pcgw_page": "Melvor Idle",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Universe For Sale",
@@ -21613,7 +23185,10 @@
     "Comic Book"
    ],
    "pcgw_page": "Universe For Sale",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Beneath a Steel Sky (1994)",
@@ -21651,7 +23226,10 @@
     "Post-apocalyptic"
    ],
    "pcgw_page": "Beneath a Steel Sky",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Fiendish Freddy's Big Top o' Fun",
@@ -21691,7 +23269,10 @@
    ],
    "pcgw_page": "Fiendish Freddy's Big Top o' Fun",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Flight of the Amazon Queen",
@@ -21728,7 +23309,10 @@
     "Dinosaurs"
    ],
    "pcgw_page": "Flight of the Amazon Queen: 25th Anniversary Edition",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Indiana Jones and the Fate of Atlantis",
@@ -21770,7 +23354,10 @@
     "Puzzle"
    ],
    "pcgw_page": "Indiana Jones and the Fate of Atlantis",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Indiana Jones and the Last Crusade",
@@ -21805,7 +23392,10 @@
     "1980s"
    ],
    "pcgw_page": "Indiana Jones and the Last Crusade: The Graphic Adventure",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Loom",
@@ -21845,7 +23435,10 @@
     "Retro"
    ],
    "pcgw_page": "Loom",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "SAMURAI SHODOWN NEOGEO COLLECTION",
@@ -21889,7 +23482,10 @@
     "Retro"
    ],
    "pcgw_page": "Samurai Shodown NeoGeo Collection",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Deed",
@@ -21929,7 +23525,10 @@
    ],
    "pcgw_page": "The Deed",
    "status": "untested",
-   "api_confidence": "medium"
+   "api_confidence": "medium",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "The Dig",
@@ -21970,7 +23569,10 @@
     "Remake"
    ],
    "pcgw_page": "The Dig",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Tyrian 2000",
@@ -22002,7 +23604,10 @@
    "tags": [],
    "pcgw_page": "Tyrian",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Veil of Darkness",
@@ -22043,7 +23648,10 @@
    ],
    "pcgw_page": "Veil of Darkness",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   },
   {
    "title": "Wasteland 1 - The Original Classic",
@@ -22084,7 +23692,10 @@
    ],
    "pcgw_page": "Wasteland",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Bio Menace",
@@ -22124,7 +23735,10 @@
    ],
    "pcgw_page": "Bio Menace",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "I Have No Mouth, and I Must Scream",
@@ -22166,7 +23780,10 @@
     "Singleplayer"
    ],
    "pcgw_page": "I Have No Mouth, and I Must Scream",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "POSTAL: Classic and Uncut",
@@ -22209,7 +23826,10 @@
     "Top-Down"
    ],
    "pcgw_page": "Postal",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Stargunner",
@@ -22249,7 +23869,10 @@
    ],
    "pcgw_page": "Stargunner",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "Teenagent",
@@ -22278,7 +23901,10 @@
    "tags": [],
    "pcgw_page": "Teenagent",
    "status": "untested",
-   "api_confidence": "high"
+   "api_confidence": "high",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "The Curse of Monkey Island",
@@ -22318,7 +23944,10 @@
     "Remake"
    ],
    "pcgw_page": "The Curse of Monkey Island",
-   "status": "untested"
+   "status": "untested",
+   "uhd": "false",
+   "uhd_note": "",
+   "upscale": "1"
   },
   {
    "title": "The Deed: Dynasty",
@@ -22356,7 +23985,10 @@
    ],
    "pcgw_page": "The Deed: Dynasty",
    "status": "untested",
-   "api_confidence": "low"
+   "api_confidence": "low",
+   "uhd": "unknown",
+   "uhd_note": "",
+   "upscale": ""
   }
  ]
 }

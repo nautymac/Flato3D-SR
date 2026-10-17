@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Flato3D
@@ -79,14 +80,18 @@ namespace Flato3D
                     log.AppendLine("game: " + game.Title + " | " + Library.StatusText(game) + " | profile " + (Json.Str(game.Profile, "id") ?? "-"));
                     log.AppendLine("exe: " + exePath + " | " + Pe.Arch(exePath) + " | imports " + string.Join(",", Pe.Imports(exePath).Where(n => n.StartsWith("d3d") || n.StartsWith("dxgi") || n.StartsWith("opengl") || n.StartsWith("vulkan") || n.StartsWith("ddraw"))));
                     log.AppendLine("route: " + route + " (" + why2 + ") | status: " + Setup.Status(Path.GetDirectoryName(exePath)));
+                    var rec = Recommend.For(game, exePath);
+                    log.AppendLine("auto: depth " + (rec.Flat ? rec.Rule : "plain stereo") + " (" + rec.RuleWhy + ") | output " + rec.Output + " (" + rec.OutputWhy +
+                                   ") | upscale " + (rec.Upscale ? 1 : 0) + " (" + rec.UpscaleWhy + ") | separation " + rec.Separation.ToString(CultureInfo.InvariantCulture));
                 }
                 else if (a[0] == "--install")
                 {
-                    var o = new Options();
-                    o.Output = Arg(a, "--output") ?? Json.Str(Json.Obj(Json.Obj(game.Profile, "ini"), "Stereo"), "output") ?? "auto";
-                    string sep = Arg(a, "--separation") ?? Json.Str(Json.Obj(Json.Obj(game.Profile, "ini"), "Stereo"), "separation");
+                    var rec = Recommend.For(game, exePath);   // what is not given on the command line
+                    var o = new Options { Output = Arg(a, "--output") ?? rec.Output, Separation = rec.Separation, Upscale = rec.Upscale };
+                    string sep = Arg(a, "--separation");
                     if (sep != null) o.Separation = double.Parse(sep, CultureInfo.InvariantCulture);
-                    o.Upscale = (Arg(a, "--upscale") ?? Json.Str(Json.Obj(Json.Obj(game.Profile, "ini"), "Display"), "upscale")) == "1";
+                    if (Arg(a, "--upscale") != null) o.Upscale = Arg(a, "--upscale") == "1";
+                    log.AppendLine("auto: output " + rec.Output + " (" + rec.OutputWhy + "), upscale " + (rec.Upscale ? 1 : 0) + " (" + rec.UpscaleWhy + ")");
                     log.Append(Setup.Install(game, exePath, route, o));
                 }
                 else if (a[0] == "--uninstall")
@@ -164,7 +169,7 @@ namespace Flato3D
             games.Columns.Add(L.T("폴더", "Folder"), P(460));
             games.SelectedIndexChanged += (s, e) => { if (games.SelectedItems.Count > 0) ShowGame((Game)games.SelectedItems[0].Tag, null); };
 
-            var bottom = new TableLayoutPanel { Dock = DockStyle.Bottom, Height = P(330), ColumnCount = 1, Padding = new Padding(P(6)) };
+            var bottom = new TableLayoutPanel { Dock = DockStyle.Bottom, Height = P(380), ColumnCount = 1, Padding = new Padding(P(6)) };
             info.AutoSize = false;
             info.Dock = DockStyle.Fill;
 
@@ -215,7 +220,7 @@ namespace Flato3D
             logBox.ScrollBars = ScrollBars.Vertical;
             logBox.Dock = DockStyle.Fill;
 
-            bottom.RowStyles.Add(new RowStyle(SizeType.Absolute, P(100)));
+            bottom.RowStyles.Add(new RowStyle(SizeType.Absolute, P(150)));
             bottom.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             bottom.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             bottom.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -341,19 +346,20 @@ namespace Flato3D
             string why;
             string r = Library.DetectRoute(g, currentExe, out why);
             string arch = currentExe == null ? "?" : Pe.Arch(currentExe) ?? "?";
-            var stereo = Json.Obj(Json.Obj(g.Profile, "ini"), "Stereo");
-            sepBox.Value = (decimal)Math.Max(1, Math.Min(200, double.Parse(Json.Str(stereo, "separation") ?? "25", CultureInfo.InvariantCulture)));
-            int oi = Array.IndexOf(Outputs, Json.Str(stereo, "output") ?? "auto");
+            var rec = Recommend.For(g, currentExe);
+            ApplyInstalled(rec, currentExe);
+            sepBox.Value = (decimal)Math.Max(1, Math.Min(200, rec.Separation));
+            int oi = Array.IndexOf(Outputs, rec.Output);
             outputBox.SelectedIndex = oi < 0 ? 0 : oi;
-            // upscale: what the installed OGL3D.ini says, else the profile
-            string iniPath = currentExe == null ? null : Path.Combine(Path.GetDirectoryName(currentExe), "OGL3D.ini");
-            string up = iniPath != null && File.Exists(iniPath) ? Setup.IniGet(File.ReadAllText(iniPath, Encoding.UTF8), "Display", "upscale") : null;
-            upscaleBox.Checked = (up ?? Json.Str(Json.Obj(Json.Obj(g.Profile, "ini"), "Display"), "upscale")) == "1";
+            upscaleBox.Checked = rec.Upscale;
             int ri = Array.IndexOf(Routes, r);
             routeBox.SelectedIndex = ri < 0 ? 2 : ri;
             var sb = new StringBuilder();
             sb.AppendLine(g.Title + "   [" + Library.StatusText(g) + "]   " + Setup.Status(currentExe == null ? null : Path.GetDirectoryName(currentExe)));
             sb.AppendLine(L.T("판별: ", "Detected: ") + (r == Route.None ? L.T("불가", "not possible") : Route.Label(r)) + " — " + why + "   " + arch);
+            sb.AppendLine(L.T("깊이: ", "Depth: ") + RuleLabel(rec) + " (" + rec.RuleWhy + ")   " +
+                          L.T("출력: ", "Output: ") + outputBox.Items[outputBox.SelectedIndex] + " (" + rec.OutputWhy + ")");
+            sb.AppendLine(L.T("업스케일: ", "Upscale: ") + (rec.Upscale ? L.T("켬", "on") : L.T("끔", "off")) + " (" + rec.UpscaleWhy + ")");
             foreach (var n in Json.Arr(g.Profile, "known_issues").Take(2)) sb.AppendLine("• " + n);
             if (g.Profile == null && Json.Str(g.Candidate, "note") is string note && note.Length > 0) sb.AppendLine("• " + note);
             foreach (var n in Json.Arr(g.Profile, "remove")) sb.AppendLine(L.T("• 설치 때 옮겨 둠: ", "• moved aside on install: ") + n);
@@ -361,6 +367,29 @@ namespace Flato3D
             EnableActions(currentExe != null);
             installBtn.Enabled = currentExe != null && r != Route.None;
             removeBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName));
+        }
+
+        static string RuleLabel(Recommendation rec)
+        {
+            if (!rec.Flat) return L.T("일반 입체 (2.5D)", "plain stereo (2.5D)");
+            return rec.Rule == "feet" ? L.T("발 위치 (어드벤처)", "feet (adventure)") : L.T("그리는 순서", "drawing order");
+        }
+
+        // An installed Flato3D setup shows its own values (also those saved in game with Ctrl+F7).
+        static void ApplyInstalled(Recommendation rec, string exe)
+        {
+            string dir = exe == null ? null : Path.GetDirectoryName(exe);
+            string ini = dir == null ? null : Path.Combine(dir, "OGL3D.ini");
+            if (ini == null || !File.Exists(ini)) return;
+            string text = File.ReadAllText(ini, Encoding.UTF8);
+            if (!File.Exists(Path.Combine(dir, Setup.ManifestName)) && !Regex.IsMatch(text, @"^\[Flat\]", RegexOptions.Multiline)) return;
+            string installed = L.T("설치된 설정", "installed setting");
+            double sep;
+            if (double.TryParse(Setup.IniGet(text, "Stereo", "separation"), NumberStyles.Float, CultureInfo.InvariantCulture, out sep)) rec.Separation = sep;
+            string o = Setup.IniGet(text, "Stereo", "output");
+            if (Array.IndexOf(Outputs, o) >= 0) { rec.Output = o; rec.OutputWhy = installed; }
+            string u = Setup.IniGet(text, "Display", "upscale");
+            if (u != null) { rec.Upscale = u == "1"; rec.UpscaleWhy = installed; }
         }
 
         void BrowseExe()

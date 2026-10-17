@@ -232,7 +232,6 @@ namespace Flato3D
             return Json.Str(g.Candidate, "depth_rule") == "feet_y" ? "feet" : "order";
         }
 
-        // Sets key = value in [section]; adds the key (or the section) when missing.
         // Value of key in [section], or null.
         public static string IniGet(string text, string section, string key)
         {
@@ -248,6 +247,7 @@ namespace Flato3D
             return null;
         }
 
+        // Sets key = value in [section]; adds the key (or the section) when missing.
         public static string IniSet(string text, string section, string key, string value)
         {
             string nl = text.Contains("\r\n") ? "\r\n" : "\n";

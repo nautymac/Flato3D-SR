@@ -267,8 +267,90 @@ namespace Flato3D
         }
     }
 
+    // What the installer pre-selects for a game, with the reason shown for each choice.
+    class Recommendation
+    {
+        public string Output = "auto", Rule = "order";
+        public bool Upscale, Flat = true;
+        public double Separation = 25;
+        public string OutputWhy = "", UpscaleWhy = "", RuleWhy = "";
+    }
+
+    static class Recommend
+    {
+        static readonly string[] SrRuntimeDirs = {
+            @"C:\Program Files\Acer\SpatialLabs\Platform\bin", @"C:\Program Files\Simulated Reality\Platform\bin", @"C:\Program Files\LeiaSR\Platform\bin" };
+
+        // An SR display's runtime is installed (Acer SpatialLabs, Samsung Odyssey 3D, Leia SR).
+        public static bool SrRuntime()
+        {
+            return SrRuntimeDirs.Any(d => File.Exists(Path.Combine(d, "SimulatedRealityCore.dll")));
+        }
+
+        // Profile first, then the candidate list (PCGamingWiki), the exe and this PC.
+        public static Recommendation For(Game g, string exe)
+        {
+            var r = new Recommendation();
+            var ini = Json.Obj(g.Profile, "ini");
+            Dictionary<string, object> stereo = Json.Obj(ini, "Stereo"), flat = Json.Obj(ini, "Flat"), disp = Json.Obj(ini, "Display");
+            string profile = L.T("프로필", "profile");
+
+            string sep = Json.Str(stereo, "separation");
+            if (sep != null) r.Separation = double.Parse(sep, System.Globalization.CultureInfo.InvariantCulture);
+
+            // depth: 2.5D games get plain stereo, adventure games stand sprites on their feet, the rest go by drawing order
+            if (Json.Str(flat, "enable") == "0" || (flat == null && Json.Str(g.Candidate, "kind") == "1"))
+            {
+                r.Flat = false;
+                r.RuleWhy = flat != null ? profile : L.T("2.5D 게임 (후보 목록)", "2.5D game (candidate list)");
+            }
+            else if (Json.Str(flat, "rule") != null)
+            {
+                r.Rule = Json.Str(flat, "rule");
+                r.RuleWhy = profile;
+            }
+            else
+            {
+                r.Rule = Json.Str(g.Candidate, "depth_rule") == "feet_y" ? "feet" : "order";
+                string genre = Json.Str(g.Candidate, "genre");
+                r.RuleWhy = g.Candidate == null ? L.T("기본값", "default") : L.T("후보 목록", "candidate list") + (genre != null ? ": " + genre : "");
+            }
+
+            // output: an SR display when its runtime is installed, else side by side
+            string o = Json.Str(stereo, "output");
+            if (o == "sbs" || o == "tab") { r.Output = o; r.OutputWhy = profile; }
+            else if (SrRuntime()) { r.Output = "auto"; r.OutputWhy = L.T("SR 런타임 있음", "SR runtime found"); }
+            else { r.Output = "sbs"; r.OutputWhy = L.T("SR 런타임 없음", "no SR runtime"); }
+
+            // upscale: when the game cannot render at 4K (or its UI stays tiny there), unless Windows cannot scale it
+            string pu = Json.Str(disp, "upscale"), cu = Json.Str(g.Candidate, "upscale");
+            string uhd = Json.Str(g.Candidate, "uhd"), note = Json.Str(g.Candidate, "uhd_note") ?? "";
+            string basis = "PCGamingWiki 4K: " + uhd + (note.Length > 0 ? " — " + (note.Length > 80 ? note.Substring(0, 80) + "..." : note) : "");
+            if (pu != null) { r.Upscale = pu == "1"; r.UpscaleWhy = profile; }
+            else if (cu == "1" && exe != null && Pe.DpiAware(exe))
+                r.UpscaleWhy = L.T("4K가 맞지 않지만 exe가 고해상도 인식(DPI aware)이라 업스케일이 듣지 않음", "4K does not fit, but the exe is DPI aware: upscale has no effect") + " (" + basis + ")";
+            else if (cu == "1") { r.Upscale = true; r.UpscaleWhy = basis; }
+            else if (cu == "0") r.UpscaleWhy = basis;
+            else r.UpscaleWhy = L.T("4K 정보 없음", "no 4K information");
+            return r;
+        }
+    }
+
     static class Pe
     {
+        // The exe's manifest declares DPI awareness: Windows never scales it, so upscale mode cannot
+        // make it render at a lower resolution.
+        public static bool DpiAware(string exe)
+        {
+            try
+            {
+                if (new FileInfo(exe).Length > 256L << 20) return false;
+                string s = Encoding.GetEncoding(28591).GetString(File.ReadAllBytes(exe));
+                return Regex.IsMatch(s, @"<(?:\w+:)?dpiAware(?:ness)?\b[^>]*>\s*(?:true|per ?monitor)", RegexOptions.IgnoreCase);
+            }
+            catch { return false; }
+        }
+
         public static string Arch(string exe)
         {
             try
