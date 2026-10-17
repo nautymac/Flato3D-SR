@@ -33,8 +33,39 @@ namespace Flato3D
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Flato3D", "reports");
         }
 
-        // Writes the report folder (report.txt, the game's logs and settings, its latest dump) and returns it.
-        public static string Create(Game g, string exe, string symptom, out string summary)
+        // Screenshots taken lately that may show the problem: the game's Steam screenshots, Windows and Game Bar captures.
+        public static List<string> RecentScreenshots(Game g, TimeSpan age)
+        {
+            var dirs = new List<string>();
+            string steam = Library.SteamPath(), ud = steam == null ? null : Path.Combine(steam, "userdata");
+            if (ud != null && g.SteamAppId != null && Directory.Exists(ud))
+                foreach (string u in Directory.GetDirectories(ud)) dirs.Add(Path.Combine(u, "760", "remote", g.SteamAppId, "screenshots"));
+            foreach (string pics in new[] { Environment.GetFolderPath(Environment.SpecialFolder.MyPictures),
+                                            Path.Combine(Environment.GetEnvironmentVariable("OneDrive") ?? "", "Pictures"),
+                                            Path.Combine(Environment.GetEnvironmentVariable("OneDrive") ?? "", "사진") })
+            {
+                dirs.Add(Path.Combine(pics, "Screenshots"));
+                dirs.Add(Path.Combine(pics, "스크린샷"));
+            }
+            dirs.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Captures"));
+            DateTime since = DateTime.Now - age;
+            var found = new List<string>();
+            foreach (string d in dirs.Where(d => d.Length > 3).Distinct(StringComparer.OrdinalIgnoreCase))
+            {
+                try
+                {
+                    if (!Directory.Exists(d)) continue;
+                    found.AddRange(Directory.GetFiles(d).Where(f => Regex.IsMatch(Path.GetExtension(f), @"^\.(png|jpe?g|bmp)$", RegexOptions.IgnoreCase) &&
+                                                                    File.GetLastWriteTime(f) > since));
+                }
+                catch { }
+            }
+            return found.OrderByDescending(File.GetLastWriteTime).Take(20).ToList();
+        }
+
+        // Writes the report folder (report.txt, the game's logs and settings, its latest dump, the chosen
+        // screenshots) and returns it.
+        public static string Create(Game g, string exe, string symptom, IEnumerable<string> screenshots, out string summary)
         {
             bool pre;
             string dir = Path.Combine(Folder(out pre), DateTime.Now.ToString("yyyy-MM-dd_HHmmss", CultureInfo.InvariantCulture) + "_" + Safe(g.Title));
@@ -74,6 +105,14 @@ namespace Flato3D
                          " (" + AppDomain.CurrentDomain.BaseDirectory + ")");
             s.AppendLine("windows: " + WindowsVersion());
             s.AppendLine("SR runtime: " + (Recommend.SrRuntime() ? "yes" : "no"));
+            int shot = 0;
+            foreach (string img in screenshots ?? Enumerable.Empty<string>())
+            {
+                if (!File.Exists(img)) continue;
+                string name = string.Format(CultureInfo.InvariantCulture, "screenshot_{0:00}{1}", ++shot, Path.GetExtension(img).ToLowerInvariant());
+                File.Copy(img, Path.Combine(dir, name));
+                s.AppendLine("screenshot: " + name + " (" + Path.GetFileName(img) + ", " + File.GetLastWriteTime(img).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) + ")");
+            }
             s.AppendLine();
 
             // the game's own files next to the exe that matter here
@@ -104,7 +143,9 @@ namespace Flato3D
             if (File.Exists(zip)) File.Delete(zip);
             ZipFile.CreateFromDirectory(dir, zip, CompressionLevel.Optimal, false);
             string body = summary.Length > 5000 ? summary.Substring(0, 5000) + "\n...(report.txt in the zip)" : summary;
-            body = L.T("아래에 이 zip 파일을 끌어다 놓아 주세요: ", "Please drag this zip file in here: ") + Path.GetFileName(zip) + "\n\n```\n" + body + "\n```";
+            body = L.T("아래에 이 zip 파일을 끌어다 놓아 주세요: ", "Please drag this zip file in here: ") + Path.GetFileName(zip) +
+                   L.T("\n스크린샷(screenshot_*.png/jpg)도 함께 끌어다 놓으면 이슈에서 바로 보입니다.", "\nDrag the screenshots (screenshot_*.png/jpg) in too, so they show in the issue.") +
+                   "\n\n```\n" + body + "\n```";
             string url = IssuesUrl + "?labels=bug&title=" + Uri.EscapeDataString("[" + g.Title + "] ") + "&body=" + Uri.EscapeDataString(body);
             Process.Start(url);
             Process.Start("explorer.exe", "/select,\"" + zip + "\"");

@@ -13,6 +13,7 @@ https://github.com/nautymac/Flato3D-SR
    설치 기록은 게임 exe 옆의 Flato3D_install.json에 남습니다.
 6. 문제가 있으면 [이상 로그]를 누르고 증상을 적습니다. 로그와 설정이 한 폴더에 모이고, 원하면 GitHub 문제 보고 페이지가 열립니다.
    문제 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다.
+   스크린샷은 [파일 추가]나 Ctrl+V(Win+Shift+S로 캡처한 것)로 넣고, 최근 캡처는 목록에서 체크합니다.
 초록색 게임은 확인된 설정(프로필)이 있습니다. 다른 게임은 기본 설정으로 시도하며, 게임마다 결과가 다를 수 있습니다.
 Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에뮬레이터)은 이 방법으로 할 수 없습니다.
 
@@ -29,6 +30,7 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
    ReShade) and registry values. The record is Flato3D_install.json next to the game exe.
 6. Something wrong? Press [Report problem] and describe it: logs and settings are collected in one folder, and a GitHub
    issue page can be opened. Press Ctrl+F12 in game at the problem scene first to include both eyes.
+   Add screenshots with [Add files...] or Ctrl+V (a Win+Shift+S capture); recent captures are listed to tick.
 Green games have a tested profile; others are tried with default settings and results vary per game.
 Direct3D 12, Vulkan and games that output one finished image (DOSBox, ScummVM, emulators) are not possible this way.
 

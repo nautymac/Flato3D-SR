@@ -59,7 +59,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
    - an installed game shows its installed settings (including values saved in game with Ctrl+F7). Everything can be changed.
 3. Pick the output and the separation, then **Install**. Without an SR display (Acer, Samsung), choose **side by side** or **top and bottom** to match your 3D display. If the game cannot use the native resolution (e.g. 4K) or its text gets too small, tick **Upscale** and set the game to 1920x1080: it renders at that size and is shown enlarged at the native resolution (`[Display] upscale`). Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
-5. Something wrong? Press **Report problem** and describe it. The logs, the settings and the last Ctrl+F12 dump are collected in one folder, and a [GitHub issue](https://github.com/nautymac/Flato3D-SR/issues) page can be opened: drag the zip it made into the issue.
+5. Something wrong? Press **Report problem** and describe it. Add screenshots as files or with Ctrl+V (recent captures are listed to tick); they go into one folder with the logs, the settings and the last Ctrl+F12 dump, and a [GitHub issue](https://github.com/nautymac/Flato3D-SR/issues) page can be opened: drag the zip it made into the issue.
 
 The **Candidate list** tab shows the 544 flat 2D candidates with their route.
 

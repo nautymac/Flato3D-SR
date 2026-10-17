@@ -97,7 +97,8 @@ namespace Flato3D
                 else if (a[0] == "--report")
                 {
                     string summary;
-                    log.AppendLine("report: " + Report.Create(game, exePath, Arg(a, "--symptom"), out summary));
+                    var images = a.Select((x, i) => x == "--image" && i + 1 < a.Length ? a[i + 1] : null).Where(x => x != null).ToList();
+                    log.AppendLine("report: " + Report.Create(game, exePath, Arg(a, "--symptom"), images, out summary));
                 }
                 else if (a[0] == "--uninstall")
                     log.Append(Setup.Uninstall(Path.GetDirectoryName(exePath)));
@@ -279,7 +280,8 @@ namespace Flato3D
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
                 L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
                 L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
-                L.T("  이상 로그: 문제가 있으면 증상을 적어 보고합니다. 로그, 설정, 마지막 Ctrl+F12 덤프가 한 폴더에 모이고, 원하면 GitHub 이슈 페이지가 열립니다.", "  Report problem: describe what went wrong; logs, settings and the last Ctrl+F12 dump go into one folder, optionally to a GitHub issue."),
+                L.T("  이상 로그: 문제가 있으면 증상을 적고 스크린샷(파일 추가, Ctrl+V)을 넣어 보고합니다. 로그, 설정, 마지막 Ctrl+F12 덤프가 함께 한 폴더에 모이고, 원하면 GitHub 이슈 페이지가 열립니다.",
+                    "  Report problem: describe what went wrong and add screenshots (files, Ctrl+V); logs, settings and the last Ctrl+F12 dump go into one folder, optionally to a GitHub issue."),
                 "",
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
@@ -437,19 +439,84 @@ namespace Flato3D
             RefreshGame(current);
         }
 
+        class Shot
+        {
+            public string Path, Label;
+            public override string ToString() { return Label; }
+        }
+
         void DoReport()
         {
             if (current == null) return;
             bool pre;
             string folder = Report.Folder(out pre);
             using (var f = new Form { Text = L.T("이상 로그", "Report a problem") + " — " + current.Title, Font = Font, StartPosition = FormStartPosition.CenterParent,
-                                      FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false, ShowInTaskbar = false, ClientSize = new Size(P(620), P(360)) })
+                                      FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false, ShowInTaskbar = false, ClientSize = new Size(P(760), P(600)) })
             {
                 var layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, Padding = new Padding(P(10)) };
                 layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+                layout.RowStyles.Add(new RowStyle(SizeType.Percent, 40));
+                layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                layout.RowStyles.Add(new RowStyle(SizeType.Percent, 60));
                 layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
                 layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+
+                // screenshots: ticked ones go into the report; recent captures are offered unticked
+                var shots = new CheckedListBox { Dock = DockStyle.Fill, CheckOnClick = true, HorizontalScrollbar = true };
+                var preview = new PictureBox { Dock = DockStyle.Fill, SizeMode = PictureBoxSizeMode.Zoom, BorderStyle = BorderStyle.FixedSingle };
+                var shotArea = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, Margin = new Padding(0) };
+                shotArea.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55));
+                shotArea.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45));
+                shotArea.Controls.Add(shots, 0, 0);
+                shotArea.Controls.Add(preview, 1, 0);
+                Action<string, bool, string> addShot = (path, tick, tag) =>
+                {
+                    if (shots.Items.Cast<Shot>().Any(x => string.Equals(x.Path, path, StringComparison.OrdinalIgnoreCase))) return;
+                    shots.Items.Add(new Shot { Path = path, Label = tag + Path.GetFileName(path) + "  (" + File.GetLastWriteTime(path).ToString("HH:mm") + ")" }, tick);
+                    shots.SelectedIndex = shots.Items.Count - 1;
+                };
+                foreach (string r in Report.RecentScreenshots(current, TimeSpan.FromHours(2))) addShot(r, false, L.T("최근: ", "recent: "));
+                shots.SelectedIndexChanged += (s, e) =>
+                {
+                    var old = preview.Image;
+                    preview.Image = null;
+                    if (old != null) old.Dispose();
+                    var sel = shots.SelectedItem as Shot;
+                    if (sel == null) return;
+                    try { using (var img = Image.FromFile(sel.Path)) preview.Image = new Bitmap(img); } catch { }
+                };
+                int pasted = 0;
+                Action paste = () =>
+                {
+                    if (Clipboard.ContainsImage())
+                    {
+                        string p = Path.Combine(Path.GetTempPath(), "Flato3D_paste_" + DateTime.Now.ToString("HHmmss") + "_" + (++pasted) + ".png");
+                        using (var img = Clipboard.GetImage()) img.Save(p, System.Drawing.Imaging.ImageFormat.Png);
+                        addShot(p, true, L.T("붙여넣음: ", "pasted: "));
+                    }
+                    else if (Clipboard.ContainsFileDropList())
+                        foreach (string p in Clipboard.GetFileDropList())
+                            if (Regex.IsMatch(Path.GetExtension(p), @"^\.(png|jpe?g|bmp)$", RegexOptions.IgnoreCase)) addShot(p, true, "");
+                };
+                var shotButtons = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, WrapContents = false };
+                var addFile = new Button { Text = L.T("파일 추가...", "Add files..."), AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
+                var pasteBtn = new Button { Text = L.T("붙여넣기 (Ctrl+V)", "Paste (Ctrl+V)"), AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
+                var removeShot = new Button { Text = L.T("빼기", "Remove"), AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
+                addFile.Click += (s, e) =>
+                {
+                    using (var d = new OpenFileDialog { Multiselect = true, Filter = L.T("이미지", "Images") + "|*.png;*.jpg;*.jpeg;*.bmp" })
+                        if (d.ShowDialog(f) == DialogResult.OK) foreach (string p in d.FileNames) addShot(p, true, "");
+                };
+                pasteBtn.Click += (s, e) => paste();
+                removeShot.Click += (s, e) => { if (shots.SelectedIndex >= 0) shots.Items.RemoveAt(shots.SelectedIndex); };
+                shotButtons.Controls.AddRange(new Control[] { addFile, pasteBtn, removeShot });
+                f.KeyPreview = true;
+                f.KeyDown += (s, e) =>   // Ctrl+V with an image (not text) on the clipboard adds a screenshot, wherever the focus is
+                {
+                    if (e.Control && e.KeyCode == Keys.V && (Clipboard.ContainsImage() || Clipboard.ContainsFileDropList())) { paste(); e.SuppressKeyPress = true; }
+                };
+                f.FormClosed += (s, e) => { if (preview.Image != null) preview.Image.Dispose(); };
                 var text = new Label { AutoSize = true, MaximumSize = new Size(P(590), 0), Text = L.T(
                     "어떤 문제가 있었나요? (예: 캐릭터가 배경 뒤로 들어감, 시작하면 멈춤, 화면이 검음)\r\n" +
                     "문제 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다. 로그와 설정은 자동으로 모읍니다.\r\n저장 위치: ",
@@ -464,15 +531,22 @@ namespace Flato3D
                 buttons.Controls.AddRange(new Control[] { cancel, ok });
                 layout.Controls.Add(text, 0, 0);
                 layout.Controls.Add(box, 0, 1);
-                layout.Controls.Add(gh, 0, 2);
-                layout.Controls.Add(buttons, 0, 3);
+                layout.Controls.Add(new Label { AutoSize = true, Padding = new Padding(0, P(8), 0, P(2)), Text = L.T(
+                    "스크린샷: 체크한 것만 들어갑니다. Win+Shift+S로 캡처한 뒤 Ctrl+V로 붙여 넣을 수 있습니다. 최근 캡처(2시간)는 미리 목록에 있습니다.",
+                    "Screenshots: only ticked ones are included. Capture with Win+Shift+S and paste with Ctrl+V; recent captures (2 hours) are listed.") }, 0, 2);
+                layout.Controls.Add(shotArea, 0, 3);
+                layout.Controls.Add(shotButtons, 0, 4);
+                layout.Controls.Add(gh, 0, 5);
+                layout.Controls.Add(buttons, 0, 6);
                 f.Controls.Add(layout);
                 f.CancelButton = cancel;
                 if (f.ShowDialog(this) != DialogResult.OK) return;
                 try
                 {
                     string summary;
-                    string dir = Report.Create(current, currentExe, box.Text, out summary);
+                    var images = shots.CheckedItems.Cast<Shot>().Select(x => x.Path).ToList();
+                    string dir = Report.Create(current, currentExe, box.Text, images, out summary);
+                    foreach (string p in images.Where(p => Path.GetFileName(p).StartsWith("Flato3D_paste_"))) { try { File.Delete(p); } catch { } }
                     var msg = new StringBuilder(L.T("이상 로그를 저장했습니다: ", "Report saved: ") + dir + "\r\n");
                     if (pre) msg.AppendLine(L.T("OneDrive pre-release 폴더입니다. 이 보고를 기준으로 수정합니다.", "This is the OneDrive pre-release folder; fixes start from here."));
                     if (gh.Checked) msg.AppendLine(L.T("GitHub 보고용 zip: ", "zip for the GitHub issue: ") + Report.OpenIssue(dir, current, summary));

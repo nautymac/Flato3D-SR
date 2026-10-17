@@ -224,13 +224,14 @@
 - **들어가는 것**
   - `report.txt`: 증상, 게임·exe·경로·프로필·후보 정보, 자동 선택과 그 근거, `OGL3D.ini` 주요 값, 설치기·Windows·SR 런타임, exe 옆 DLL/ini/log 목록, `OGL3D.log`의 이상한 줄·처음·끝
   - 파일: `OGL3D.log`(끝 8MB), `OGL3D.ini`, `Flato3D_install.json`, `Flato3D_loader_*.log`, 그날의 마지막 Ctrl+F12 덤프
+  - 스크린샷 `screenshot_NN.*`: 사용자가 체크한 것. 파일 추가, Ctrl+V 붙여넣기(Win+Shift+S 캡처)로 넣습니다. 이 게임의 Steam 스크린샷과 Windows·Game Bar 캡처 중 최근 2시간 것은 체크하지 않은 채 목록에 미리 나옵니다.
   - 경로의 사용자 이름은 `<user>`로 가립니다.
-- **명령줄:** `Flato3DInstaller.exe --report "<exe>" --symptom "<증상>"`
+- **명령줄:** `Flato3DInstaller.exe --report "<exe>" --symptom "<증상>" [--image <파일> ...]`
 
 사용자가 "이상로그 수정해줘"라고 하면 다음 순서로 합니다.
 
 1. `reports\` 아래에서 `handled.txt`가 없는 폴더를 오래된 것부터 봅니다. 공개 보고는 `gh issue list -R nautymac/Flato3D-SR --label bug --state open`으로 봅니다.
-2. `report.txt`에서 증상, 경로, 설정, 로그의 이상한 줄을 읽습니다. 덤프가 있으면 `eyes.py`, `dispmap.py`로 봅니다.
+2. `report.txt`에서 증상, 경로, 설정, 로그의 이상한 줄을 읽고, 스크린샷을 봅니다. 덤프가 있으면 `eyes.py`, `dispmap.py`로 봅니다.
 3. 증상에 맞는 체크포인트로 돌아가 원인을 확인하고 고칩니다. CP1 첫 실행 문제, CP3/CP4 깊이 문제, 증상별 표를 참고합니다.
    - 재현이 필요하면 프로필의 `test` 절차로 자동 실행합니다. 사용자가 PC를 쓰는 중이면 기다립니다.
 4. 프로필, `GAMES.ko.md`, 증상별 표에 기록하고 커밋·푸시합니다. 그다음 pre-release 패키지를 갱신합니다.
