@@ -94,6 +94,11 @@ namespace Flato3D
                     log.AppendLine("auto: output " + rec.Output + " (" + rec.OutputWhy + "), upscale " + (rec.Upscale ? 1 : 0) + " (" + rec.UpscaleWhy + ")");
                     log.Append(Setup.Install(game, exePath, route, o));
                 }
+                else if (a[0] == "--report")
+                {
+                    string summary;
+                    log.AppendLine("report: " + Report.Create(game, exePath, Arg(a, "--symptom"), out summary));
+                }
                 else if (a[0] == "--uninstall")
                     log.Append(Setup.Uninstall(Path.GetDirectoryName(exePath)));
                 else { log.AppendLine("unknown command " + a[0]); rc = 1; }
@@ -113,7 +118,7 @@ namespace Flato3D
         readonly Label info = new Label();
         readonly ComboBox routeBox = new ComboBox(), outputBox = new ComboBox();
         readonly NumericUpDown sepBox = new NumericUpDown();
-        readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button();
+        readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button(), reportBtn = new Button();
         List<Game> all = new List<Game>();
         Game current;
         string currentExe;
@@ -208,7 +213,10 @@ namespace Flato3D
             runBtn.Text = L.T("실행", "Run");
             folderBtn.Text = L.T("폴더 열기", "Open folder");
             logBtn.Text = L.T("로그 보기", "Show log");
-            foreach (var b in new[] { installBtn, removeBtn, runBtn, folderBtn, logBtn }) { b.AutoSize = true; b.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(b); }
+            reportBtn.Text = L.T("이상 로그", "Report problem");
+            tips.SetToolTip(reportBtn, L.T("이 게임의 문제를 로그, 설정과 함께 보고합니다.", "Report a problem with this game, with its logs and settings."));
+            foreach (var b in new[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn }) { b.AutoSize = true; b.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(b); }
+            reportBtn.Click += (s, e) => DoReport();
             installBtn.Click += (s, e) => DoInstall();
             removeBtn.Click += (s, e) => DoUninstall();
             runBtn.Click += (s, e) => DoRun();
@@ -271,6 +279,7 @@ namespace Flato3D
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
                 L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
                 L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
+                L.T("  이상 로그: 문제가 있으면 증상을 적어 보고합니다. 로그, 설정, 마지막 Ctrl+F12 덤프가 한 폴더에 모이고, 원하면 GitHub 이슈 페이지가 열립니다.", "  Report problem: describe what went wrong; logs, settings and the last Ctrl+F12 dump go into one folder, optionally to a GitHub issue."),
                 "",
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
@@ -335,7 +344,7 @@ namespace Flato3D
 
         void EnableActions(bool on)
         {
-            foreach (Control c in new Control[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, routeBox, outputBox, sepBox, upscaleBox }) c.Enabled = on;
+            foreach (Control c in new Control[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn, routeBox, outputBox, sepBox, upscaleBox }) c.Enabled = on;
         }
 
         void ShowGame(Game g, string exe)
@@ -365,6 +374,7 @@ namespace Flato3D
             foreach (var n in Json.Arr(g.Profile, "remove")) sb.AppendLine(L.T("• 설치 때 옮겨 둠: ", "• moved aside on install: ") + n);
             info.Text = sb.ToString();
             EnableActions(currentExe != null);
+            reportBtn.Enabled = true;   // also when the exe was not found or the game cannot be done
             installBtn.Enabled = currentExe != null && r != Route.None;
             removeBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName));
         }
@@ -425,6 +435,51 @@ namespace Flato3D
             try { logBox.Text = Setup.Install(current, currentExe, route, o).Replace("\n", "\r\n"); }
             catch (Exception e) { logBox.Text = L.T("설치 실패: ", "Install failed: ") + e.Message; }
             RefreshGame(current);
+        }
+
+        void DoReport()
+        {
+            if (current == null) return;
+            bool pre;
+            string folder = Report.Folder(out pre);
+            using (var f = new Form { Text = L.T("이상 로그", "Report a problem") + " — " + current.Title, Font = Font, StartPosition = FormStartPosition.CenterParent,
+                                      FormBorderStyle = FormBorderStyle.FixedDialog, MinimizeBox = false, MaximizeBox = false, ShowInTaskbar = false, ClientSize = new Size(P(620), P(360)) })
+            {
+                var layout = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, Padding = new Padding(P(10)) };
+                layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+                layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                layout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                var text = new Label { AutoSize = true, MaximumSize = new Size(P(590), 0), Text = L.T(
+                    "어떤 문제가 있었나요? (예: 캐릭터가 배경 뒤로 들어감, 시작하면 멈춤, 화면이 검음)\r\n" +
+                    "문제 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다. 로그와 설정은 자동으로 모읍니다.\r\n저장 위치: ",
+                    "What went wrong? (e.g. a character goes behind the background, the game hangs at start, black screen)\r\n" +
+                    "Press Ctrl+F12 in game at the problem scene first to include both eyes. Logs and settings are collected automatically.\r\nSaved in: ") +
+                    folder + (pre ? L.T(" (OneDrive pre-release)", " (OneDrive pre-release)") : "") };
+                var box = new TextBox { Multiline = true, ScrollBars = ScrollBars.Vertical, Dock = DockStyle.Fill, AcceptsReturn = true };
+                var gh = new CheckBox { AutoSize = true, Checked = !pre, Text = L.T("GitHub에도 보고 (공개 페이지가 열리고, 만든 zip을 거기에 끌어다 놓음)", "Also report on GitHub (opens a public page; drag the zip there)") };
+                var buttons = new FlowLayoutPanel { FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Fill, AutoSize = true };
+                var ok = new Button { Text = L.T("저장", "Save"), DialogResult = DialogResult.OK, AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
+                var cancel = new Button { Text = L.T("취소", "Cancel"), DialogResult = DialogResult.Cancel, AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
+                buttons.Controls.AddRange(new Control[] { cancel, ok });
+                layout.Controls.Add(text, 0, 0);
+                layout.Controls.Add(box, 0, 1);
+                layout.Controls.Add(gh, 0, 2);
+                layout.Controls.Add(buttons, 0, 3);
+                f.Controls.Add(layout);
+                f.CancelButton = cancel;
+                if (f.ShowDialog(this) != DialogResult.OK) return;
+                try
+                {
+                    string summary;
+                    string dir = Report.Create(current, currentExe, box.Text, out summary);
+                    var msg = new StringBuilder(L.T("이상 로그를 저장했습니다: ", "Report saved: ") + dir + "\r\n");
+                    if (pre) msg.AppendLine(L.T("OneDrive pre-release 폴더입니다. 이 보고를 기준으로 수정합니다.", "This is the OneDrive pre-release folder; fixes start from here."));
+                    if (gh.Checked) msg.AppendLine(L.T("GitHub 보고용 zip: ", "zip for the GitHub issue: ") + Report.OpenIssue(dir, current, summary));
+                    logBox.Text = msg.ToString();
+                }
+                catch (Exception e) { logBox.Text = L.T("이상 로그 저장 실패: ", "Report failed: ") + e.Message; }
+            }
         }
 
         void DoUninstall()
