@@ -156,6 +156,7 @@
 | `[Flat] silhouette_uv`, `silhouette_tex` | 그 프래그먼트 셰이더의 텍스처 좌표 varying(vec2)과 그림 샘플러 이름 | `dump_shaders = 1`로 셰이더를 보고 정함(FRAMED: `texcoordOut`, `texture1`) |
 | `[Flat] silhouette_depth`, `silhouette_threshold` | 앞으로 나오는 정도(depth_top 기준 비율), 어둡다고 볼 밝기(r, g, b 중 최댓값) | 기본 0.3, 0.15. 어두운 배경까지 나오면 threshold를 낮춤 |
 | `[Display] swap_interval` | 1 = 수직동기화 강제 | WineD3D 게임 기본 1 |
+| `[Display] upscale` | 1 = 게임은 DPI 비인식으로 낮은 해상도(4K 200%면 1920×1080)로 그리고, 래퍼가 기본 해상도 창에 확대해 표시. 해상도 변경은 막음 | 게임이 기본 해상도를 못 쓰거나 글씨가 너무 작을 때. 설치기의 **업스케일** |
 | `[Keys] swallow` | 래퍼 단축키를 게임에 전달하지 않음 | 기본 1. 문제 있으면 0 |
 | `[Debug] trace_steps`, `flicker_probe`, `dump_frames`, `trace_frames` | 분석용 | 끝나면 끔 |
 

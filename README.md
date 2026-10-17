@@ -53,7 +53,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 
 1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Green ones have a tested profile; the others show what the candidate list expects. Games not listed: **Choose an exe...**.
 2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe; the route can be changed.
-3. Pick the output and the separation, then **Install**. Without an SR display (Acer, Samsung), choose **side by side** or **top and bottom** to match your 3D display. Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
+3. Pick the output and the separation, then **Install**. Without an SR display (Acer, Samsung), choose **side by side** or **top and bottom** to match your 3D display. If the game cannot use the native resolution (e.g. 4K) or its text gets too small, tick **Upscale** and set the game to 1920x1080: it renders at that size and is shown enlarged at the native resolution (`[Display] upscale`). Other tools' graphics DLLs (geo-11, dgVoodoo, ReShade) are moved to `Flato3D_backup`; everything is recorded in `Flato3D_install.json` next to the exe.
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
 
 The **Candidate list** tab shows the 544 flat 2D candidates with their route.

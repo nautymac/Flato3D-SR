@@ -86,6 +86,7 @@ namespace Flato3D
                     o.Output = Arg(a, "--output") ?? Json.Str(Json.Obj(Json.Obj(game.Profile, "ini"), "Stereo"), "output") ?? "auto";
                     string sep = Arg(a, "--separation") ?? Json.Str(Json.Obj(Json.Obj(game.Profile, "ini"), "Stereo"), "separation");
                     if (sep != null) o.Separation = double.Parse(sep, CultureInfo.InvariantCulture);
+                    o.Upscale = (Arg(a, "--upscale") ?? Json.Str(Json.Obj(Json.Obj(game.Profile, "ini"), "Display"), "upscale")) == "1";
                     log.Append(Setup.Install(game, exePath, route, o));
                 }
                 else if (a[0] == "--uninstall")
@@ -101,7 +102,8 @@ namespace Flato3D
     class MainForm : Form
     {
         readonly ListView games = new ListView(), cands = new ListView();
-        readonly CheckBox onlyKnown = new CheckBox();
+        readonly CheckBox onlyKnown = new CheckBox(), upscaleBox = new CheckBox();
+        readonly ToolTip tips = new ToolTip { AutoPopDelay = 20000 };
         readonly TextBox exeBox = new TextBox(), logBox = new TextBox(), candFilter = new TextBox();
         readonly Label info = new Label();
         readonly ComboBox routeBox = new ComboBox(), outputBox = new ComboBox();
@@ -184,10 +186,16 @@ namespace Flato3D
             sepBox.Maximum = 200;
             sepBox.DecimalPlaces = 1;
             sepBox.Width = P(70);
+            upscaleBox.Text = L.T("업스케일", "Upscale");
+            upscaleBox.AutoSize = true;
+            upscaleBox.Padding = new Padding(P(12), P(4), 0, 0);
+            tips.SetToolTip(upscaleBox, L.T("게임이 기본 해상도(예: 4K)를 지원하지 않거나 글씨가 너무 작을 때 켭니다.\n게임은 1920×1080으로 두면, 화면에는 기본 해상도로 확대해 보여 줍니다.",
+                                            "For games that cannot use the native resolution (e.g. 4K) or whose text gets too small.\nSet the game to 1920x1080; it is shown enlarged at the native resolution."));
             row2.Controls.AddRange(new Control[] {
                 new Label { Text = L.T("경로:", "Route:"), AutoSize = true, Padding = new Padding(0, P(6), 0, 0) }, routeBox,
                 new Label { Text = L.T("출력:", "Output:"), AutoSize = true, Padding = new Padding(P(12), P(6), 0, 0) }, outputBox,
-                new Label { Text = L.T("분리값(%):", "Separation (%):"), AutoSize = true, Padding = new Padding(P(12), P(6), 0, 0) }, sepBox });
+                new Label { Text = L.T("분리값(%):", "Separation (%):"), AutoSize = true, Padding = new Padding(P(12), P(6), 0, 0) }, sepBox,
+                upscaleBox });
 
             var row3 = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, WrapContents = false };
             installBtn.Text = L.T("설치", "Install");
@@ -256,6 +264,8 @@ namespace Flato3D
                 L.T("  Direct3D 8~11 게임: WineD3D가 OpenGL로 바꾸고, version.dll 로더가 게임을 WineD3D로 보냅니다.", "  Direct3D 8-11 games: WineD3D turns them into OpenGL; the version.dll loader sends the game there."),
                 L.T("  Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에뮬레이터)은 할 수 없습니다.", "  Direct3D 12, Vulkan and games that output one finished image (DOSBox, ScummVM, emulators) are not possible."),
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
+                L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
+                L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
                 "",
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
@@ -320,7 +330,7 @@ namespace Flato3D
 
         void EnableActions(bool on)
         {
-            foreach (Control c in new Control[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, routeBox, outputBox, sepBox }) c.Enabled = on;
+            foreach (Control c in new Control[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, routeBox, outputBox, sepBox, upscaleBox }) c.Enabled = on;
         }
 
         void ShowGame(Game g, string exe)
@@ -335,6 +345,10 @@ namespace Flato3D
             sepBox.Value = (decimal)Math.Max(1, Math.Min(200, double.Parse(Json.Str(stereo, "separation") ?? "25", CultureInfo.InvariantCulture)));
             int oi = Array.IndexOf(Outputs, Json.Str(stereo, "output") ?? "auto");
             outputBox.SelectedIndex = oi < 0 ? 0 : oi;
+            // upscale: what the installed OGL3D.ini says, else the profile
+            string iniPath = currentExe == null ? null : Path.Combine(Path.GetDirectoryName(currentExe), "OGL3D.ini");
+            string up = iniPath != null && File.Exists(iniPath) ? Setup.IniGet(File.ReadAllText(iniPath, Encoding.UTF8), "Display", "upscale") : null;
+            upscaleBox.Checked = (up ?? Json.Str(Json.Obj(Json.Obj(g.Profile, "ini"), "Display"), "upscale")) == "1";
             int ri = Array.IndexOf(Routes, r);
             routeBox.SelectedIndex = ri < 0 ? 2 : ri;
             var sb = new StringBuilder();
@@ -372,7 +386,7 @@ namespace Flato3D
         void DoInstall()
         {
             if (current == null || currentExe == null) return;
-            var o = new Options { Output = Outputs[Math.Max(0, outputBox.SelectedIndex)], Separation = (double)sepBox.Value };
+            var o = new Options { Output = Outputs[Math.Max(0, outputBox.SelectedIndex)], Separation = (double)sepBox.Value, Upscale = upscaleBox.Checked };
             string route = Routes[Math.Max(0, routeBox.SelectedIndex)];
             if (Process.GetProcessesByName(Path.GetFileNameWithoutExtension(currentExe)).Length > 0)
             {

@@ -13,8 +13,9 @@ namespace Flato3D
 {
     class Options
     {
-        public string Output = "auto";   // auto (SR weaving when available, else SBS) | sbs | tab
+        public string Output = "auto";   // auto (SR display) | sbs | tab
         public double Separation = 25;
+        public bool Upscale;             // [Display] upscale: the game renders at a lower resolution, shown at the native one
     }
 
     static class Setup
@@ -150,8 +151,10 @@ namespace Flato3D
                 added.Add("OGL3D.ini");
             }
             text = IniSet(text, "Stereo", "output", o.Output);
+            text = IniSet(text, "Display", "upscale", o.Upscale ? "1" : "0");
             File.WriteAllText(ini, text, new UTF8Encoding(true));
-            log.AppendLine((keep ? L.T("OGL3D.ini 유지 (출력만 변경): ", "kept OGL3D.ini (output changed): ") : L.T("OGL3D.ini 작성: ", "wrote OGL3D.ini: ")) + "output = " + o.Output);
+            log.AppendLine((keep ? L.T("OGL3D.ini 유지 (출력, 업스케일만 변경): ", "kept OGL3D.ini (output, upscale changed): ") : L.T("OGL3D.ini 작성: ", "wrote OGL3D.ini: ")) +
+                           "output = " + o.Output + ", upscale = " + (o.Upscale ? "1" : "0"));
 
             foreach (var r in Json.Arr(g.Profile, "registry"))
             {
@@ -230,6 +233,21 @@ namespace Flato3D
         }
 
         // Sets key = value in [section]; adds the key (or the section) when missing.
+        // Value of key in [section], or null.
+        public static string IniGet(string text, string section, string key)
+        {
+            var lines = text.Replace("\r\n", "\n").Split('\n').ToList();
+            int start = lines.FindIndex(l => l.Trim().Equals("[" + section + "]", StringComparison.OrdinalIgnoreCase));
+            if (start < 0) return null;
+            var rx = new Regex(@"^\s*" + Regex.Escape(key) + @"\s*=\s*(.*?)\s*$", RegexOptions.IgnoreCase);
+            for (int i = start + 1; i < lines.Count && !lines[i].TrimStart().StartsWith("["); ++i)
+            {
+                var m = rx.Match(lines[i]);
+                if (m.Success) return m.Groups[1].Value;
+            }
+            return null;
+        }
+
         public static string IniSet(string text, string section, string key, string value)
         {
             string nl = text.Contains("\r\n") ? "\r\n" : "\n";
