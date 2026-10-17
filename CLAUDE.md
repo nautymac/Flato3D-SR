@@ -25,7 +25,7 @@
 - **커밋 순서:**
   1. `ogl3d/`에서 커밋 → `git push origin flato3d`
   2. 이 저장소에서 서브모듈과 자료를 커밋 → `git push`
-- **릴리스:** 작업이 끝날 때마다 `D:\OneDrive\AI\ClaudeCode\Flato3D_github_release`의 pre-release 패키지를 갱신합니다(`reports\`는 그대로 둠). GitHub 릴리스(배포 zip)는 사용자가 pre-release를 시험한 뒤에 올립니다.
+- **릴리스:** 작업이 끝날 때마다 `prerelease.ps1 -Wait`로 `D:\OneDrive\AI\ClaudeCode\Flato3D_github_release`의 pre-release 패키지를 갱신합니다. 이 스크립트는 `reports\`를 건드리지 않고, 사용자가 그 폴더의 설치기를 쓰는 중이면 닫힐 때까지 기다립니다. GitHub 릴리스(배포 zip)는 사용자가 pre-release를 시험한 뒤에 올립니다.
 - **"이상로그 수정해줘":** 설치기 **이상 로그** 버튼으로 모인 보고(`Flato3D_github_release\reports\`, 공개 보고는 GitHub `bug` 이슈)를 처리합니다. 절차는 WORKFLOW의 "이상 로그 처리"입니다.
 - **파일 편집:** PowerShell `Get-Content`/`Set-Content`로 소스를 다시 쓰지 않습니다(한글 깨짐). 작업 파일은 CRLF입니다.
 

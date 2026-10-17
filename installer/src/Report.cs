@@ -118,8 +118,9 @@ namespace Flato3D
             // the game's own files next to the exe that matter here
             if (gameDir != null && Directory.Exists(gameDir))
             {
-                s.AppendLine("files next to the exe:");
-                foreach (var f in new DirectoryInfo(gameDir).GetFiles().Where(f => Regex.IsMatch(f.Extension, @"^\.(dll|ini|log|json|cfg)$", RegexOptions.IgnoreCase)).OrderBy(f => f.Name))
+                s.AppendLine("files next to the exe (dll, ini, log, Flato3D):");
+                foreach (var f in new DirectoryInfo(gameDir).GetFiles().Where(f => Regex.IsMatch(f.Extension, @"^\.(dll|ini|log)$", RegexOptions.IgnoreCase) ||
+                                                                                   f.Name.StartsWith("Flato3D", StringComparison.OrdinalIgnoreCase)).OrderBy(f => f.Name))
                     s.AppendLine(string.Format(CultureInfo.InvariantCulture, "  {0,-34} {1,10:N0}  {2:yyyy-MM-dd HH:mm}", f.Name, f.Length, f.LastWriteTime));
                 s.AppendLine();
                 foreach (var f in new DirectoryInfo(gameDir).GetFiles().Where(f => Regex.IsMatch(f.Name, @"^(OGL3D\.ini|Flato3D_install\.json|Flato3D_loader_.*\.log|OGL3D\.log)$", RegexOptions.IgnoreCase)))
@@ -128,7 +129,14 @@ namespace Flato3D
                 var dump = new DirectoryInfo(gameDir).GetFiles("OGL3D_frame*.bmp").Where(f => f.LastWriteTime > DateTime.Now.AddDays(-1)).OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
                 if (dump != null) { File.Copy(dump.FullName, Path.Combine(dir, dump.Name)); s.AppendLine("dump: " + dump.Name); }
                 string log = Path.Combine(gameDir, "OGL3D.log");
-                if (File.Exists(log)) s.Append(LogExcerpt(ReadTail(log)));
+                if (File.Exists(log))
+                {
+                    // a log from an earlier day does not show the problem just seen
+                    var age = DateTime.Now - File.GetLastWriteTime(log);
+                    s.AppendLine("OGL3D.log last written " + File.GetLastWriteTime(log).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) +
+                                 (age.TotalHours >= 2 ? string.Format(CultureInfo.InvariantCulture, " ({0:0.#} hours before this report: an older run)", age.TotalHours) : ""));
+                    s.Append(LogExcerpt(ReadTail(log)));
+                }
                 else s.AppendLine("OGL3D.log: none (the wrapper was not loaded, or the game was not started since installing)");
             }
             summary = Redact(s.ToString());

@@ -519,9 +519,9 @@ namespace Flato3D
                 f.FormClosed += (s, e) => { if (preview.Image != null) preview.Image.Dispose(); };
                 var text = new Label { AutoSize = true, MaximumSize = new Size(P(590), 0), Text = L.T(
                     "어떤 문제가 있었나요? (예: 캐릭터가 배경 뒤로 들어감, 시작하면 멈춤, 화면이 검음)\r\n" +
-                    "문제 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다. 로그와 설정은 자동으로 모읍니다.\r\n저장 위치: ",
+                    "게임을 실행해 문제 장면에서 Ctrl+F12를 누른 뒤 보고하면 그때의 로그와 두 눈 이미지가 들어갑니다. 로그와 설정은 자동으로 모읍니다.\r\n저장 위치: ",
                     "What went wrong? (e.g. a character goes behind the background, the game hangs at start, black screen)\r\n" +
-                    "Press Ctrl+F12 in game at the problem scene first to include both eyes. Logs and settings are collected automatically.\r\nSaved in: ") +
+                    "Run the game, press Ctrl+F12 at the problem scene, then report: that run's log and both eyes are included. Logs and settings are collected automatically.\r\nSaved in: ") +
                     folder + (pre ? L.T(" (OneDrive pre-release)", " (OneDrive pre-release)") : "") };
                 var box = new TextBox { Multiline = true, ScrollBars = ScrollBars.Vertical, Dock = DockStyle.Fill, AcceptsReturn = true };
                 var gh = new CheckBox { AutoSize = true, Checked = !pre, Text = L.T("GitHub에도 보고 (공개 페이지가 열리고, 만든 zip을 거기에 끌어다 놓음)", "Also report on GitHub (opens a public page; drag the zip there)") };
