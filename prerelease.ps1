@@ -24,3 +24,4 @@ robocopy (Join-Path $root "dist\$name") (Join-Path $dst $name) /MIR /R:2 /W:2 /N
 if ($LASTEXITCODE -ge 8) { throw "robocopy failed ($LASTEXITCODE)" }
 Copy-Item (Join-Path $root "dist\$name.zip") (Join-Path $dst "$name.zip") -Force
 "pre-release: $dst\$name (+ .zip), $((Get-ChildItem (Join-Path $dst $name) -Recurse -File).Count) files"
+exit 0   # robocopy's 1..7 mean copied / extra files, not failure
