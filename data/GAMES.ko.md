@@ -12,7 +12,7 @@
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
-| Machinarium | OpenGL 고정 기능 · 직접 (`-ogl` 스위치) | feet (발 위치, 고정 기능) | 동작, 사용자 확인 전 | opengl32.dll x64, `[Inject] add_args = -ogl` |
+| Machinarium | OpenGL 고정 기능 · 직접 (`-ogl` 스위치) | feet (발 위치, 고정 기능) | 사용자 확인 완료 | opengl32.dll x64, `[Inject] add_args = -ogl` |
 | Samorost 2 | D3D11 (Adobe AIR) · WineD3D | feet, `plane_tall = 0.12` | 사용자 확인 완료 | 이름 바꾼 WineD3D x86, 로더, opengl32.dll x86, 업스케일 |
 
 ## 게임별 메모
@@ -77,7 +77,8 @@
   - 로봇 위에 그린 생각 풍선은 로봇보다 멀지 않고(-10px), 인벤토리 막대와 아이콘은 화면 깊이입니다.
   - 한계: 키 큰 배경 구조물(탑)은 바닥 경사를 따라 뒤로 기웁니다. 화면 아래까지 닿는 큰 앞쪽 조각은 위까지 가장 가까운 깊이(-24px)입니다.
 - 자동 테스트는 메뉴의 "게임 계속"(게임 좌표 1000,705)을 누릅니다. "새 게임 플레이"(1120,472)는 진행을 덮어쓰므로 사용자가 플레이한 뒤에는 누르지 않습니다.
-- 남은 일: 첫 장면들만 덤프로 봤습니다. 플레이와 사용자 확인이 필요합니다. 세이브는 Steam 클라우드(`userdata\<계정>\40700\remote\Machinarium.dat`)입니다.
+- 사용자가 feet 규칙으로 플레이하고 상태 보고 "잘 됨"을 남겼습니다(10-18, SR 출력, 분리값 38.33 저장).
+- 남은 일: 첫 장면들만 덤프로 측정했습니다. 세이브는 Steam 클라우드(`userdata\<계정>\40700\remote\Machinarium.dat`)입니다.
 
 **Samorost 2**: Adobe AIR 게임(x86)이라 Direct3D 11을 WineD3D로 바꿔 그립니다. 4K를 지원하지 않아 설치기가 업스케일을 켭니다.
 

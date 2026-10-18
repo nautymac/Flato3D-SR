@@ -41,9 +41,7 @@ namespace Flato3D
             var man = LoadManifest(exeDir);
             if (man != null)
             {
-                // the loader gone or unreadable: an antivirus quarantined or blocked it
-                bool loader = Json.Arr(man, "added").Any(a => string.Equals((string)a, "version.dll", StringComparison.OrdinalIgnoreCase));
-                if (loader && !Defender.Readable(Path.Combine(exeDir, "version.dll")))
+                if (LoaderBlocked(exeDir))
                     return L.T("설치됨 (version.dll 없음: 백신이 막았을 수 있음)", "installed (version.dll missing: an antivirus may have blocked it)");
                 return L.T("설치됨", "installed");
             }
@@ -55,6 +53,14 @@ namespace Flato3D
                 return flat ? L.T("수동 설치 (기록 없음)", "manual install (no record)") : L.T("OGL3D (3D 게임용)", "OGL3D (for 3D games)");
             }
             return "";
+        }
+
+        // The installed loader is gone or unreadable: an antivirus quarantined or blocked it.
+        public static bool LoaderBlocked(string exeDir)
+        {
+            var man = exeDir == null ? null : LoadManifest(exeDir);
+            bool loader = Json.Arr(man, "added").Any(a => string.Equals((string)a, "version.dll", StringComparison.OrdinalIgnoreCase));
+            return loader && !Defender.Readable(Path.Combine(exeDir, "version.dll"));
         }
 
         // Flato3D set up by hand (before the installer): OGL3D with a [Flat] section but no install record.

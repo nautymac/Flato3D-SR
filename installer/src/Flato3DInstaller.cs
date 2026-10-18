@@ -361,8 +361,12 @@ namespace Flato3D
                     "  Only NVIDIA GPUs are supported; on Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets the game to run on the NVIDIA GPU."),
                 L.T("  Windows Defender가 Direct3D 게임용 로더(version.dll)를 바이러스로 잘못 진단할 수 있습니다(예: Trojan:Win32/Cloxer). 악성 코드가 아니며, 막히면 3D가 나오지 않습니다.",
                     "  Windows Defender may wrongly flag the loader for Direct3D games (version.dll) as malware (e.g. Trojan:Win32/Cloxer). It is not; when blocked there is no 3D."),
+                L.T("    막히면 Flato3D 열에 \"version.dll 없음\"이 뜨고 [Defender 예외] 버튼이 주황색으로 바뀝니다. 그때 누른 뒤 [설치]를 다시 누르세요.",
+                    "    When it is blocked, the Flato3D column says \"version.dll missing\" and [Defender exclusion] turns coral: press it, then [Install] again."),
                 L.T("    [Defender 예외]를 누르면 그 게임의 version.dll만 예외로 등록합니다(관리자 권한 확인). 제거할 때 예외도 지울 수 있습니다.",
                     "    [Defender exclusion] adds that game's version.dll only (Windows asks for permission); uninstalling offers to remove it."),
+                L.T("  주황색 버튼이 지금 할 일입니다: 설치 안 된 게임은 [설치], 설치된 게임은 [실행].",
+                    "  The coral button is the next step: [Install] for a game not set up yet, [Run] for an installed one."),
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
                 L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
                 L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
@@ -477,6 +481,21 @@ namespace Flato3D
             if (currentExe != null && Setup.ManualInstall(Path.GetDirectoryName(currentExe)))
                 sb.AppendLine(L.T("• 설치 기록이 없어 [제거]가 꺼져 있습니다. [설치]를 한 번 누르면 기록이 생기고(지금 설정은 유지), 그다음부터 [제거]를 쓸 수 있습니다.",
                                   "• No install record, so [Uninstall] is off: press [Install] once to create it (the current settings are kept), then [Uninstall] works."));
+            // the main action follows the game's state: Install, Run, or the Defender exclusion when an
+            // antivirus took the loader (then Install again to put it back)
+            string gameDir = currentExe == null ? null : Path.GetDirectoryName(currentExe);
+            bool installed = gameDir != null && Setup.Status(gameDir) != "";
+            bool blocked = gameDir != null && Setup.LoaderBlocked(gameDir);
+            bool excluded = blocked && Setup.DefenderExclusions(gameDir).Any(p => string.Equals(p, Path.Combine(gameDir, "version.dll"), StringComparison.OrdinalIgnoreCase));
+            if (blocked)
+                sb.AppendLine("⚠ " + (excluded
+                    ? L.T("Defender 예외는 등록되어 있지만 로더(version.dll)가 없습니다. [설치]를 다시 누르세요.",
+                          "The Defender exclusion is in place but the loader (version.dll) is missing: press [Install] again.")
+                    : L.T("백신이 Flato3D 로더(version.dll)를 막았습니다(Windows Defender의 오진). 이대로는 3D가 나오지 않습니다. [Defender 예외]를 누른 뒤 [설치]를 다시 누르세요.",
+                          "An antivirus blocked the Flato3D loader (version.dll; a Windows Defender false positive), so there is no 3D. Press [Defender exclusion], then [Install] again.")));
+            Theme.Emphasize(installBtn, !installed || (blocked && excluded));
+            Theme.Emphasize(defenderBtn, blocked && !excluded);
+            Theme.Emphasize(runBtn, installed && !blocked);
             info.Text = sb.ToString();
             EnableActions(currentExe != null);
             reportBtn.Enabled = true;   // also when the exe was not found or the game cannot be done

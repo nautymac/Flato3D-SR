@@ -400,7 +400,7 @@
       "registry": [],
       "ini": {
         "Stereo": {
-          "separation": 25,
+          "separation": 38.33,
           "output": "auto"
         },
         "Flat": {
@@ -415,7 +415,8 @@
           "add_args": "-ogl"
         }
       },
-      "status": "working",
+      "status": "verified",
+      "verified_by_user": "2026-10-18 (play, SR weaving; status report works, separation 38.33 saved with Ctrl+F7)",
       "notes": [
         "The exe imports d3d12.dll and opengl32.dll; it draws with Direct3D 12 unless started with -ogl. Steam does not pass it, so OGL3D appends it ([Inject] add_args = -ogl, GetCommandLine redirected before the game reads it).",
         "With -ogl it draws fixed-function OpenGL (no shaders): orthographic sprites into one 3840x2160 framebuffer, copied to the window. The fixed-function path offsets the projection per draw; layers follow the drawing order (18-23 texture groups in the first scenes: far scrap heap, middle, props, foreground, the inventory bar in front).",

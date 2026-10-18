@@ -87,19 +87,37 @@ namespace Flato3D
         // The main action in coral; disabled it turns grey, or it would still look clickable.
         public static void Primary(Button b)
         {
-            b.Tag = "primary";
+            Emphasize(b, true);
+        }
+
+        // Switches a button between the coral main action and an ordinary one (the main action moves with
+        // the game's state: Install, Run, or Defender exclusion when an antivirus blocked the loader).
+        public static void Emphasize(Button b, bool on)
+        {
+            bool hooked = b.Tag as string == "primary" || b.Tag as string == "normal";
+            b.Tag = on ? "primary" : "normal";
             b.FlatStyle = FlatStyle.Flat;
             b.UseVisualStyleBackColor = false;
-            Action paint = () =>
+            PaintButton(b);
+            if (!hooked) b.EnabledChanged += (s, e) => PaintButton(b);
+        }
+
+        static void PaintButton(Button b)
+        {
+            if (b.Tag as string != "primary")
             {
-                b.BackColor = b.Enabled ? Coral : Raised;
-                b.ForeColor = b.Enabled ? Color.White : Dim;
-                b.FlatAppearance.BorderColor = b.Enabled ? Coral : Border;
-                b.FlatAppearance.MouseOverBackColor = b.Enabled ? CoralHover : Raised;
-                b.FlatAppearance.MouseDownBackColor = b.Enabled ? Coral : Raised;
-            };
-            paint();
-            b.EnabledChanged += (s, e) => paint();
+                b.BackColor = Raised;
+                b.ForeColor = Text;
+                b.FlatAppearance.BorderColor = Border;
+                b.FlatAppearance.MouseOverBackColor = RaisedHover;
+                b.FlatAppearance.MouseDownBackColor = Border;
+                return;
+            }
+            b.BackColor = b.Enabled ? Coral : Raised;
+            b.ForeColor = b.Enabled ? Color.White : Dim;
+            b.FlatAppearance.BorderColor = b.Enabled ? Coral : Border;
+            b.FlatAppearance.MouseOverBackColor = b.Enabled ? CoralHover : Raised;
+            b.FlatAppearance.MouseDownBackColor = b.Enabled ? Coral : Raised;
         }
 
         // Details view lists: dark header cells and rows, the selection in teal, the last column filling the width.
