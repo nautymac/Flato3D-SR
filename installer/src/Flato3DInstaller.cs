@@ -64,7 +64,8 @@ namespace Flato3D
                     {
                         string exe = Library.FindExe(g), why;
                         string r = Library.DetectRoute(g, exe, out why);
-                        log.AppendLine(string.Join(" | ", g.Title, g.Store, Library.StatusText(g), exe == null ? "-" : Pe.Arch(exe) ?? "?", r, why,
+                        System.Drawing.Color? mine;
+                        log.AppendLine(string.Join(" | ", g.Title, g.Store, MainForm.StatusFor(g, exe, out mine), exe == null ? "-" : Pe.Arch(exe) ?? "?", r, why,
                                                    Setup.Status(exe == null ? null : Path.GetDirectoryName(exe)), exe ?? g.Dir));
                     }
                     File.WriteAllText(a.Length > 1 ? a[1] : "flato3d_scan.txt", log.ToString(), Encoding.UTF8);
@@ -326,12 +327,14 @@ namespace Flato3D
             games.Items.Clear();
             foreach (var g in all)
             {
-                string st = Library.StatusText(g);
                 string exe = Library.FindExe(g);
+                Color? mine;
+                string st = StatusFor(g, exe, out mine);
                 string inst = Setup.Status(exe == null ? null : Path.GetDirectoryName(exe));
                 if (onlyKnown.Checked && st == "" && inst == "") continue;
                 var it = new ListViewItem(new[] { g.Title, g.Store, st, inst, g.Dir }) { Tag = g };
-                if (g.Profile != null) it.ForeColor = Color.DarkGreen;
+                if (mine != null) it.ForeColor = mine.Value;
+                else if (g.Profile != null) it.ForeColor = Color.DarkGreen;
                 else if (g.Candidate != null && new[] { "oneimage", "browser", "unsupported" }.Contains(Json.Str(g.Candidate, "api"))) it.ForeColor = Color.Gray;
                 games.Items.Add(it);
             }
@@ -383,7 +386,8 @@ namespace Flato3D
             int ri = Array.IndexOf(Routes, r);
             routeBox.SelectedIndex = ri < 0 ? 2 : ri;
             var sb = new StringBuilder();
-            sb.AppendLine(g.Title + "   [" + Library.StatusText(g) + "]   " + Setup.Status(currentExe == null ? null : Path.GetDirectoryName(currentExe)));
+            Color? mineColor;
+            sb.AppendLine(g.Title + "   [" + StatusFor(g, currentExe, out mineColor) + "]   " + Setup.Status(currentExe == null ? null : Path.GetDirectoryName(currentExe)));
             sb.AppendLine(L.T("판별: ", "Detected: ") + (r == Route.None ? L.T("불가", "not possible") : Route.Label(r)) + " — " + why + "   " + arch);
             sb.AppendLine(L.T("깊이: ", "Depth: ") + RuleLabel(rec) + " (" + rec.RuleWhy + ")   " +
                           L.T("출력: ", "Output: ") + outputBox.Items[outputBox.SelectedIndex] + " (" + rec.OutputWhy + ")");
@@ -641,11 +645,28 @@ namespace Flato3D
             catch (Exception e) { logBox.Text = e.Message; }
         }
 
+        // The status column: the user's own report for a game installed here (until it reaches the profile),
+        // else what the profile / candidate list says.
+        public static string StatusFor(Game g, string exe, out Color? color)
+        {
+            var us = Setup.UserStatus(exe == null ? null : Path.GetDirectoryName(exe));
+            string r = Json.Str(us, "result");
+            if (r == null) { color = null; return Library.StatusText(g); }
+            color = r == "works" ? Color.ForestGreen : r == "issues" ? Color.DarkOrange : Color.Firebrick;
+            return Report.ResultLabel(r) + L.T(" (내 확인 ", " (my check ") + Json.Str(us, "date") + ")";
+        }
+
         void RefreshGame(Game g)
         {
             string exe = currentExe;
             foreach (ListViewItem it in games.Items)
-                if (it.Tag == g) it.SubItems[3].Text = Setup.Status(Path.GetDirectoryName(exe));
+                if (it.Tag == g)
+                {
+                    Color? mine;
+                    it.SubItems[2].Text = StatusFor(g, exe, out mine);
+                    it.SubItems[3].Text = Setup.Status(Path.GetDirectoryName(exe));
+                    if (mine != null) it.ForeColor = mine.Value;
+                }
             ShowGame(g, exe);
         }
     }

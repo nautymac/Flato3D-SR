@@ -222,7 +222,7 @@
 
 ## 상태 보고 처리 ("상태보고 반영해줘", "이상로그 수정해줘")
 
-설치기의 **상태 보고** 버튼은 게임의 결과(`works` 잘 됨 / `issues` 일부 문제 / `broken` 안 됨)와 근거를 한 폴더에 모읍니다. 결과는 그 게임의 `Flato3D_install.json`(`user_status`)에도 남아 게임 목록에 "설치됨 · 잘 됨 10-18"처럼 표시됩니다.
+설치기의 **상태 보고** 버튼은 게임의 결과(`works` 잘 됨 / `issues` 일부 문제 / `broken` 안 됨)와 근거를 한 폴더에 모읍니다. 결과는 그 게임의 `Flato3D_install.json`(`user_status`)에도 남아 게임 목록의 **상태** 열에 "잘 됨 (내 확인 10-18)"처럼 바로 표시됩니다(초록/주황/빨강). 프로필의 공식 상태("확인됨")는 보고를 반영해 프로필을 고친 뒤 pre-release 설치기부터 바뀝니다.
 
 - **저장 위치**
   - 개발자 PC(OneDrive에 pre-release 폴더가 있으면): `D:\OneDrive\AI\ClaudeCode\Flato3D_github_release\reports\<날짜_시각>_<결과>_<게임>\`. 결과가 없는 예전 폴더는 문제 보고입니다.
