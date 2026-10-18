@@ -1,4 +1,5 @@
-// Problem reports ("이상 로그"): what is needed to look into a game's problem later, in one folder.
+// Status reports ("상태 보고": works / some problems / does not work): what is needed to record a game's
+// state or look into its problem later, in one folder.
 // On the developer's PCs the folder goes into the OneDrive pre-release folder
 // (<OneDrive>\AI\ClaudeCode\Flato3D_github_release\reports), where problems are picked up and fixed;
 // elsewhere into %LOCALAPPDATA%\Flato3D\reports, and the report can also be filed as a GitHub issue.
@@ -63,19 +64,33 @@ namespace Flato3D
             return found.OrderByDescending(File.GetLastWriteTime).Take(20).ToList();
         }
 
+        public static readonly string[] Results = { "works", "issues", "broken" };
+
+        public static string ResultLabel(string result)
+        {
+            switch (result)
+            {
+                case "works": return L.T("잘 됨", "works");
+                case "issues": return L.T("일부 문제", "some problems");
+                case "broken": return L.T("안 됨", "does not work");
+                default: return result ?? "";
+            }
+        }
+
         // Writes the report folder (report.txt, the game's logs and settings, its latest dump, the chosen
-        // screenshots) and returns it.
-        public static string Create(Game g, string exe, string symptom, IEnumerable<string> screenshots, out string summary)
+        // screenshots) and returns it. result: works | issues | broken.
+        public static string Create(Game g, string exe, string result, string symptom, IEnumerable<string> screenshots, out string summary)
         {
             bool pre;
-            string dir = Path.Combine(Folder(out pre), DateTime.Now.ToString("yyyy-MM-dd_HHmmss", CultureInfo.InvariantCulture) + "_" + Safe(g.Title));
+            string dir = Path.Combine(Folder(out pre), DateTime.Now.ToString("yyyy-MM-dd_HHmmss", CultureInfo.InvariantCulture) + "_" + (result ?? "report") + "_" + Safe(g.Title));
             Directory.CreateDirectory(dir);
             string gameDir = exe == null ? g.Dir : Path.GetDirectoryName(exe);
 
             var s = new StringBuilder();
-            s.AppendLine("Flato3D-SR problem report");
+            s.AppendLine("Flato3D-SR status report");
             s.AppendLine("time: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
-            s.AppendLine("symptom:");
+            s.AppendLine("result: " + (result ?? "-"));
+            s.AppendLine("symptom / note:");
             s.AppendLine(string.IsNullOrWhiteSpace(symptom) ? "(none given)" : symptom.Trim());
             s.AppendLine();
             s.AppendLine("game: " + g.Title + " | store " + (g.Store ?? "-") + " | steam appid " + (g.SteamAppId ?? "-"));
@@ -149,7 +164,7 @@ namespace Flato3D
         }
 
         // GitHub issue: the folder zipped next to it (attached by the user), the summary in the issue text.
-        public static string OpenIssue(string dir, Game g, string summary)
+        public static string OpenIssue(string dir, Game g, string result, string summary)
         {
             string zip = dir + ".zip";
             if (File.Exists(zip)) File.Delete(zip);
@@ -158,7 +173,8 @@ namespace Flato3D
             body = L.T("아래에 이 zip 파일을 끌어다 놓아 주세요: ", "Please drag this zip file in here: ") + Path.GetFileName(zip) +
                    L.T("\n스크린샷(screenshot_*.png/jpg)도 함께 끌어다 놓으면 이슈에서 바로 보입니다.", "\nDrag the screenshots (screenshot_*.png/jpg) in too, so they show in the issue.") +
                    "\n\n```\n" + body + "\n```";
-            string url = IssuesUrl + "?labels=bug&title=" + Uri.EscapeDataString("[" + g.Title + "] ") + "&body=" + Uri.EscapeDataString(body);
+            string title = "[" + g.Title + "] " + ResultLabel(result) + (result == "works" ? "" : ": ");
+            string url = IssuesUrl + (result == "works" ? "?" : "?labels=bug&") + "title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body);
             Process.Start(url);
             Process.Start("explorer.exe", "/select,\"" + zip + "\"");
             return zip;

@@ -11,8 +11,9 @@ https://github.com/nautymac/Flato3D-SR
 4. 게임을 평소처럼 실행합니다. Ctrl+F3/F4 분리값, Ctrl+F5/F6 화면 위치, Ctrl+F7 저장, Ctrl+T 3D 켜기/끄기.
 5. [제거]는 설치한 파일을 지우고, 옮겨 두었던 다른 도구의 파일(geo-11, dgVoodoo, ReShade)과 레지스트리를 되돌립니다.
    설치 기록은 게임 exe 옆의 Flato3D_install.json에 남습니다.
-6. 문제가 있으면 [이상 로그]를 누르고 증상을 적습니다. 로그와 설정이 한 폴더에 모이고, 원하면 GitHub 문제 보고 페이지가 열립니다.
-   문제 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다.
+6. 게임을 해 본 뒤 [상태 보고]를 누르고 결과(잘 됨 / 일부 문제 / 안 됨)를 고릅니다. 결과는 게임 목록에 표시됩니다.
+   문제가 있으면 증상을 적습니다. 로그와 설정이 한 폴더에 모이고, 원하면 GitHub 보고 페이지가 열립니다.
+   그 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다.
    스크린샷은 [파일 추가]나 Ctrl+V(Win+Shift+S로 캡처한 것)로 넣고, 최근 캡처는 목록에서 체크합니다.
 알아 둘 것
 - NVIDIA GPU에서만 동작을 보장합니다. Intel GPU에서는 셰이더가 깨진 적이 있습니다. NVIDIA와 다른 GPU가 함께 있는
@@ -36,8 +37,9 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
 4. Start the game as usual. Ctrl+F3/F4 separation, Ctrl+F5/F6 screen plane, Ctrl+F7 save, Ctrl+T 3D on/off.
 5. [Uninstall] removes the installed files and puts back other tools' files it moved aside (geo-11, dgVoodoo,
    ReShade) and registry values. The record is Flato3D_install.json next to the game exe.
-6. Something wrong? Press [Report problem] and describe it: logs and settings are collected in one folder, and a GitHub
-   issue page can be opened. Press Ctrl+F12 in game at the problem scene first to include both eyes.
+6. After playing, press [Report status] and choose the result (works / some problems / does not work); the game list
+   shows it. Describe a problem if there is one: logs and settings are collected in one folder, and a GitHub issue page
+   can be opened. Press Ctrl+F12 in game at that scene first to include both eyes.
    Add screenshots with [Add files...] or Ctrl+V (a Win+Shift+S capture); recent captures are listed to tick.
 Good to know
 - Only NVIDIA GPUs are supported; on Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets

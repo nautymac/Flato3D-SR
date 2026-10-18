@@ -214,24 +214,26 @@
    - 커밋 메시지는 영어로 쓰고, 무엇을 왜 바꿨는지 적습니다.
 4. **배포:** `installer\src\build.cmd` → `package.ps1` → `dist\Flato3D-SR-<버전>.zip` (GitHub 릴리스는 사용자 확인 뒤).
 
-## 이상 로그 처리 ("이상로그 수정해줘")
+## 상태 보고 처리 ("상태보고 반영해줘", "이상로그 수정해줘")
 
-설치기의 **이상 로그** 버튼은 게임 문제를 한 폴더에 모읍니다.
+설치기의 **상태 보고** 버튼은 게임의 결과(`works` 잘 됨 / `issues` 일부 문제 / `broken` 안 됨)와 근거를 한 폴더에 모읍니다. 결과는 그 게임의 `Flato3D_install.json`(`user_status`)에도 남아 게임 목록에 "설치됨 · 잘 됨 10-18"처럼 표시됩니다.
 
 - **저장 위치**
-  - 개발자 PC(OneDrive에 pre-release 폴더가 있으면): `D:\OneDrive\AI\ClaudeCode\Flato3D_github_release\reports\<날짜_시각>_<게임>\`
+  - 개발자 PC(OneDrive에 pre-release 폴더가 있으면): `D:\OneDrive\AI\ClaudeCode\Flato3D_github_release\reports\<날짜_시각>_<결과>_<게임>\`. 결과가 없는 예전 폴더는 문제 보고입니다.
   - 그 밖: `%LOCALAPPDATA%\Flato3D\reports\`
-  - "GitHub에도 보고"를 고르면 zip을 만들고, `bug` 라벨이 붙은 이슈 페이지를 엽니다.
+  - "GitHub에도 보고"를 고르면 zip을 만들고 이슈 페이지를 엽니다. 문제 보고는 `bug` 라벨이 붙습니다.
 - **들어가는 것**
-  - `report.txt`: 증상, 게임·exe·경로·프로필·후보 정보, 자동 선택과 그 근거, `OGL3D.ini` 주요 값, 설치기·Windows·SR 런타임, exe 옆 DLL/ini/log 목록, `OGL3D.log`의 이상한 줄·처음·끝
+  - `report.txt`: 결과, 메모·증상, 게임·exe·경로·프로필·후보 정보, 자동 선택과 그 근거, `OGL3D.ini` 주요 값, 설치기·Windows·SR 런타임·GPU, 로더 상태, exe 옆 DLL/ini/log 목록, `OGL3D.log`의 이상한 줄·처음·끝
   - 파일: `OGL3D.log`(끝 8MB), `OGL3D.ini`, `Flato3D_install.json`, `Flato3D_loader_*.log`, 그날의 마지막 Ctrl+F12 덤프
   - 스크린샷 `screenshot_NN.*`: 사용자가 체크한 것. 파일 추가, Ctrl+V 붙여넣기(Win+Shift+S 캡처)로 넣습니다. 이 게임의 Steam 스크린샷과 Windows·Game Bar 캡처 중 최근 2시간 것은 체크하지 않은 채 목록에 미리 나옵니다.
   - 경로의 사용자 이름은 `<user>`로 가립니다.
-- **명령줄:** `Flato3DInstaller.exe --report "<exe>" --symptom "<증상>" [--image <파일> ...]`
+- **명령줄:** `Flato3DInstaller.exe --report "<exe>" --result works|issues|broken --symptom "<메모>" [--image <파일> ...]`
 
-사용자가 "이상로그 수정해줘"라고 하면 다음 순서로 합니다.
+사용자가 "상태보고 반영해줘"나 "이상로그 수정해줘"라고 하면 다음 순서로 합니다.
 
-1. `reports\` 아래에서 `handled.txt`가 없는 폴더를 오래된 것부터 봅니다. 공개 보고는 `gh issue list -R nautymac/Flato3D-SR --label bug --state open`으로 봅니다.
+1. `reports\` 아래에서 `handled.txt`가 없는 폴더를 오래된 것부터 봅니다. 공개 보고는 `gh issue list -R nautymac/Flato3D-SR --state open`으로 봅니다.
+   - **`works`(잘 됨):** 프로필의 `status`를 `verified`로, `verified_by_user`에 날짜와 출력을 적습니다. 그 설정(`OGL3D.ini` 주요 값)을 프로필 `ini`에 반영하고, `GAMES.ko.md`와 후보 목록의 `status`를 고칩니다. 프로필이 없는 게임이면 새로 만듭니다. 그다음 4~6으로 갑니다.
+   - **`issues` / `broken`:** 2~6을 합니다.
 2. `report.txt`에서 증상, 경로, 설정, 로그의 이상한 줄을 읽고, 스크린샷을 봅니다. 덤프가 있으면 `eyes.py`, `dispmap.py`로 봅니다.
 3. 증상에 맞는 체크포인트로 돌아가 원인을 확인하고 고칩니다. CP1 첫 실행 문제, CP3/CP4 깊이 문제, 증상별 표를 참고합니다.
    - 재현이 필요하면 프로필의 `test` 절차로 자동 실행합니다. 사용자가 PC를 쓰는 중이면 기다립니다.

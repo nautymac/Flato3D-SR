@@ -36,7 +36,8 @@ namespace Flato3D
                 bool loader = Json.Arr(man, "added").Any(a => string.Equals((string)a, "version.dll", StringComparison.OrdinalIgnoreCase));
                 if (loader && !Defender.Readable(Path.Combine(exeDir, "version.dll")))
                     return L.T("설치됨 (version.dll 없음: 백신이 막았을 수 있음)", "installed (version.dll missing: an antivirus may have blocked it)");
-                return L.T("설치됨", "installed");
+                var us = Json.Obj(man, "user_status");   // the user's own status report
+                return L.T("설치됨", "installed") + (us == null ? "" : " · " + Report.ResultLabel(Json.Str(us, "result")) + " " + Json.Str(us, "date"));
             }
             string gl = Path.Combine(exeDir, "opengl32.dll");
             if (File.Exists(gl) && Pe.HasAscii(gl, "OGL3D"))
@@ -252,6 +253,16 @@ namespace Flato3D
             File.Delete(Path.Combine(exeDir, ManifestName));
             log.AppendLine(L.T("제거 완료", "uninstalled"));
             return log.ToString();
+        }
+
+        // The user's latest status report for the game, shown in the game list (only for games installed here).
+        public static void RecordUserStatus(string dir, string result, string note)
+        {
+            var man = LoadManifest(dir);
+            if (man == null) return;
+            man["user_status"] = new Dictionary<string, object> {
+                { "result", result }, { "date", DateTime.Now.ToString("MM-dd", CultureInfo.InvariantCulture) }, { "note", note ?? "" } };
+            File.WriteAllText(Path.Combine(dir, ManifestName), Json.Dump(man), new UTF8Encoding(false));
         }
 
         // Defender exclusions added for the game (removed again on request when uninstalling)
