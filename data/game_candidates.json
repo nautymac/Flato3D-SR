@@ -16599,7 +16599,7 @@
    "api": "d3d11",
    "phase": 3,
    "bits": "x64",
-   "note": "-force-glcore로 OpenGL 시도 가능(게임마다 다름)",
+   "note": "Flato3D 확인: Unity D3D11 -> WineD3D, group=draw",
    "d3d": [
     "9.0c",
     "11"
@@ -16621,7 +16621,7 @@
     "Zombies"
    ],
    "pcgw_page": "Guns, Gore & Cannoli 2",
-   "status": "untested",
+   "status": "verified",
    "uhd": "true",
    "uhd_note": "",
    "upscale": "0"

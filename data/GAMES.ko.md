@@ -10,6 +10,7 @@
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
 | Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
+| Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
 
 ## 게임별 메모
 
@@ -49,3 +50,8 @@
 **Intravenous 2**: 설치기로 처음 설치한 게임입니다. 후보 목록의 기본값(탑다운, order 규칙)으로 설치했고, 사용자가 플레이로 확인했습니다. LÖVE 셰이더 중 밑줄로 시작하는 출력 이름 때문에 변환이 실패하던 문제를 래퍼에서 고쳤습니다.
 
 - 남은 일: 덤프로 층별 시차를 측정하지 않았습니다.
+
+**Guns, Gore and Cannoli 2**: Unity 5.6(플레이어가 exe에 들어 있음). exe가 opengl32.dll을 가져와서 설치기가 처음에 OpenGL 경로를 골랐는데, Unity는 Direct3D 11로 그리기 때문에 평면이었습니다(`ggc2_Data\output_log.txt`의 `Direct3D 11.0`). 설치기가 이제 Unity를 먼저 알아보고 Unity 로그의 API로 경로를 정합니다. Huntdown과 같은 WineD3D 경로와 Unity 설정(`group = draw`, `order_curve = 0.5`)으로 다시 설치했고, 사용자가 플레이로 확인했습니다.
+
+- Windows Defender가 x64 로더(`version.dll`)를 `Trojan:Win32/Cloxer`로 잘못 진단합니다. 이 PC는 예외로 등록했습니다.
+- 남은 일: 덤프로 층별 시차를 측정하지 않았습니다. 세이브는 `AppData\LocalLow\Crazy Monkey Studios\Guns Gore and Cannoli 2`입니다.

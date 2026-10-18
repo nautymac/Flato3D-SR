@@ -329,6 +329,59 @@
         "reaches": "main menu -> New game (intro video follows)",
         "notes": "With output = sbs the menu sits at half x: New game at (560,828) on a 3840x2160 screen."
       }
+    },
+    {
+      "id": "guns-gore-and-cannoli-2",
+      "name": "Guns, Gore and Cannoli 2",
+      "steam_appid": 525510,
+      "folder": "Guns, Gore and Cannoli 2",
+      "exe": "ggc2.exe",
+      "arch": "x64",
+      "engine": "Unity 5.6.6f2 (player embedded in the exe)",
+      "api": "Direct3D 11 (the exe imports opengl32.dll, but Unity renders with Direct3D 11)",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "group": "draw",
+          "order_curve": 0.5
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "verified",
+      "verified_by_user": "2026-10-18 (gameplay, SR weaving)",
+      "notes": [
+        "The first install took the OpenGL route because the exe imports opengl32.dll, and stayed flat: Unity's output_log.txt says Direct3D 11. The installer now recognises Unity (the ggc2_Data folder) and takes the route from that log.",
+        "Same setup as Huntdown (Unity): renamed WineD3D set + loader, group = draw, order_curve = 0.5, swap_interval = 1."
+      ],
+      "known_issues": [
+        "Not measured with dumps yet; depth checked by the user in play.",
+        "Windows Defender flags the x64 loader (version.dll) as Trojan:Win32/Cloxer (false positive): exclude it with the installer's [Defender exclusion]."
+      ],
+      "test": {
+        "proc": "ggc2",
+        "steps": "wait:30,ctrlkey:7B,wait:4",
+        "reaches": "title screen, then Ctrl+F12 dump (menu navigation not recorded yet)",
+        "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\Crazy Monkey Studios\\Guns Gore and Cannoli 2 - back up before play tests."
+      }
     }
   ]
 }
