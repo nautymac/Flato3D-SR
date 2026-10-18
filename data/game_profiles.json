@@ -421,15 +421,17 @@
         "With -ogl it draws fixed-function OpenGL (no shaders): orthographic sprites into one 3840x2160 framebuffer, copied to the window. The fixed-function path offsets the projection per draw; layers follow the drawing order (18-23 texture groups in the first scenes: far scrap heap, middle, props, foreground, the inventory bar in front).",
         "It clears only the stencil buffer between masked pieces (glClear(GL_STENCIL_BUFFER_BIT)); those clears do not start a new picture, or the scene collapsed into 2-3 layers.",
         "Renders at the native 4K: no upscale (PCGamingWiki's 'no 4K' is about the old Flash version).",
-        "Steam asks how to start it (Machinarium / Play with DirectX 9 / Play with DirectX 12): choose the first entry. The other two were not tried."
+        "Steam asks how to start it (Machinarium / Play with DirectX 9 / Play with DirectX 12): choose the first entry. The other two were not tried.",
+        "Scenes are drawn as Flash shapes with bitmap fills; pieces of the background picture are drawn again later (walk-behinds). User report 2026-10-18 (tower scene): such a piece stood out as a rectangle. A fixed-function draw that maps the same texture onto the screen exactly as an earlier picture now joins that picture's layer, unless it covers something drawn on the picture since (the ground edge over the robot's feet stays in front)."
       ],
       "known_issues": [
-        "Checked with dumps in the first scenes only; not played through yet."
+        "Checked with dumps in the first scenes only; not played through yet.",
+        "Order rule: characters stand well in front of the painted ground they walk on (robot +12..20 px vs background +68 at separation 25); a feet rule for fixed-function draws would place them on the ground."
       ],
       "test": {
         "proc": "Machinarium",
-        "steps": "wait:28,click:1920:1080,wait:6,click:1920:1080,wait:6,click:1920:1080,wait:10,click:1120:472,wait:18,ctrlkey:7B,wait:5",
-        "reaches": "clicks through the intro screens into the first scene (scrap heap), then Ctrl+F12 dump",
+        "steps": "wait:28,click:1920:1080,wait:6,click:1920:1080,wait:6,click:1920:1080,wait:8,click:1000:705,wait:15,move:3000:300,wait:2,ctrlkey:7B,wait:5",
+        "reaches": "clicks through the intro screens, then the menu's Continue (game coordinates 1000,705; New game is at 1120,472 and overwrites the saved progress - do not click it once the user has played), then Ctrl+F12 dump",
         "notes": "Steam's launch chooser needs a click: for automated runs put a temporary steam_appid.txt (40700) next to the exe, start the exe itself, and delete the file afterwards. Saves: Steam Cloud, <Steam>\\userdata\\<account>\\40700\\remote\\Machinarium.dat (7 slots and the settings; the Amanita-Design.Machinarium folders in %APPDATA% / %LOCALAPPDATA% stay empty) - back it up before play tests. Set output = sbs for automated checks."
       }
     },
