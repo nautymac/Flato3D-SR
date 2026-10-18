@@ -132,12 +132,17 @@ namespace Flato3D
             if (keep && !added.Any(a => string.Equals((string)a, "OGL3D.ini", StringComparison.OrdinalIgnoreCase))) added.Add("OGL3D.ini");
             if (!keep)
             {
-                // 2.5D games (a perspective scene: real depth reaches the GPU) use plain OGL3D stereo
-                bool flat = Json.Str(g.Candidate, "kind") != "1";
-                text = IniSet(text, "Flat", "enable", flat ? "1" : "0");
+                text = IniSet(text, "Flat", "enable", "1");
                 text = IniSet(text, "Flat", "rule", DefaultRule(g));
                 text = IniSet(text, "Flat", "depth_screen", "0.3");
                 if (route != Route.OpenGL) text = IniSet(text, "Display", "swap_interval", "1");
+                if (Library.IsUnity(exe))
+                {
+                    // Unity draws each parallax plane separately (often from one atlas): a layer per draw,
+                    // with more of the depth range for the far layers (Huntdown)
+                    text = IniSet(text, "Flat", "group", "draw");
+                    text = IniSet(text, "Flat", "order_curve", "0.5");
+                }
                 foreach (var sec in Json.Obj(g.Profile, "ini") ?? new Dictionary<string, object>())
                     foreach (var kv in (Dictionary<string, object>)sec.Value)
                         text = IniSet(text, sec.Key, kv.Key, Convert.ToString(kv.Value, CultureInfo.InvariantCulture));

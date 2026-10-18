@@ -38,7 +38,7 @@ The step-by-step procedure for converting a new game (checkpoints, measurements,
 | `ogl3d/` | submodule: OGL3D-SR, branch `flato3d` (the stereo and depth engine) |
 | `installer/` | the installer (C# WinForms) and the package's README and third-party notice |
 | `loader/` | `version.dll` proxy that sends the game to the WineD3D copies |
-| `data/` | game profiles, the list of worked games, the candidate list (544 games) |
+| `data/` | game profiles, the list of worked games, the candidate list (544 games: 448 flat 2D, 96 ordinary stereo games left to Geo Gaming Hub) |
 | `tools/analysis/` | test harness, disparity maps, per-draw images (see its README) |
 | `tools/library_survey/` | builds the candidate list from Steam and PCGamingWiki data |
 | `tools/stackdump/` | prints every thread's stack of a hung game |
@@ -53,7 +53,9 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 
 1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Green ones have a tested profile; the others show what the candidate list expects. Games not listed: **Choose an exe...**.
 2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe. The depth rule, the output and upscale are pre-selected from what is known about the game, with the reason shown:
-   - depth rule: the profile, else the candidate list's genre (adventure: feet, 2.5D: plain stereo, others: drawing order)
+   - route: Unity games by the API their last run reported (Unity's player imports OpenGL but renders with Direct3D 11 by default)
+   - depth rule: the profile, else the candidate list's genre (adventure: feet, others: drawing order; Unity: a layer per draw)
+   - games with real depth (2.5D, 3D) are not installed here: Geo Gaming Hub gives them ordinary stereo
    - output: SR display when this PC has the SR runtime, else side by side
    - upscale: games that PCGamingWiki lists without 4K support or with a UI that stays tiny at 4K (not when the exe is DPI aware)
    - an installed game shows its installed settings (including values saved in game with Ctrl+F7). Everything can be changed.
@@ -61,7 +63,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
 5. Something wrong? Press **Report problem** and describe it. Add screenshots as files or with Ctrl+V (recent captures are listed to tick); they go into one folder with the logs, the settings and the last Ctrl+F12 dump, and a [GitHub issue](https://github.com/nautymac/Flato3D-SR/issues) page can be opened: drag the zip it made into the issue.
 
-The **Candidate list** tab shows the 544 flat 2D candidates with their route.
+The **Candidate list** tab shows the 448 flat 2D candidates with their route.
 
 Hotkeys:
 

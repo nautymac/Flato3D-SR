@@ -223,15 +223,17 @@ namespace Flato3D
             string pr = Json.Str(g.Profile, "route"), papi = Json.Str(g.Profile, "api") ?? "";
             if (pr == "opengl") { why = L.T("프로필", "profile"); return Route.OpenGL; }
             if (pr == "wined3d") { why = L.T("프로필", "profile"); return papi.Contains("9") || papi.Contains(" 8") ? Route.D3D9 : Route.D3D11; }
+            // games with real depth (2.5D, 3D-rendered) get ordinary stereo from Geo Gaming Hub, not here
+            if (Json.Str(g.Candidate, "kind") == "1") { why = L.T("일반 입체 게임: Geo Gaming Hub에서 설치", "ordinary stereo game: install it with Geo Gaming Hub"); return Route.None; }
             if (exe != null && File.Exists(exe))
             {
                 var imp = Pe.Imports(exe);
                 if (imp.Contains("d3d12.dll") || imp.Contains("vulkan-1.dll")) { why = L.T("exe가 D3D12/Vulkan을 가져옴", "the exe imports D3D12/Vulkan"); return Route.None; }
+                // Unity's player imports opengl32 but renders with Direct3D 11 on Windows unless told otherwise
+                if (IsUnity(exe)) return UnityRoute(g, exe, out why);
                 if (imp.Contains("d3d11.dll") || imp.Contains("dxgi.dll") || imp.Contains("d3d10.dll") || imp.Contains("d3d10_1.dll")) { why = L.T("exe가 D3D10/11을 가져옴", "the exe imports D3D10/11"); return Route.D3D11; }
                 if (imp.Contains("d3d9.dll") || imp.Contains("d3d8.dll") || imp.Contains("ddraw.dll")) { why = L.T("exe가 D3D8/9를 가져옴", "the exe imports D3D8/9"); return Route.D3D9; }
                 if (imp.Contains("opengl32.dll")) { why = L.T("exe가 OpenGL을 가져옴", "the exe imports OpenGL"); return Route.OpenGL; }
-                string dir = Path.GetDirectoryName(exe);
-                if (File.Exists(Path.Combine(dir, "UnityPlayer.dll"))) { why = L.T("Unity (기본 D3D11)", "Unity (D3D11 by default)"); return Route.D3D11; }
                 if (exe.EndsWith("-Shipping.exe", StringComparison.OrdinalIgnoreCase)) { why = L.T("Unreal Engine (기본 D3D11)", "Unreal Engine (D3D11 by default)"); return Route.D3D11; }
             }
             switch (Json.Str(g.Candidate, "api"))
@@ -248,13 +250,55 @@ namespace Flato3D
             return Route.D3D11;
         }
 
+        // A Unity player: UnityPlayer.dll (2017.2+), or the <exe>_Data folder of an older embedded player.
+        public static bool IsUnity(string exe)
+        {
+            if (exe == null) return false;
+            string dir = Path.GetDirectoryName(exe), data = Path.Combine(dir, Path.GetFileNameWithoutExtension(exe) + "_Data");
+            return File.Exists(Path.Combine(dir, "UnityPlayer.dll")) ||
+                   (Directory.Exists(data) && (Directory.Exists(Path.Combine(data, "Managed")) || File.Exists(Path.Combine(data, "globalgamemanagers")) ||
+                                               File.Exists(Path.Combine(data, "mainData")) || File.Exists(Path.Combine(data, "data.unity3d"))));
+        }
+
+        // Unity: the API its last run reported (output_log.txt, or Player.log under LocalLow\<company>\<product>),
+        // else the candidate list, else Direct3D 11 (the Windows default).
+        static string UnityRoute(Game g, string exe, out string why)
+        {
+            string data = Path.Combine(Path.GetDirectoryName(exe), Path.GetFileNameWithoutExtension(exe) + "_Data");
+            var logs = new List<string> { Path.Combine(data, "output_log.txt") };
+            try
+            {
+                string[] info = File.Exists(Path.Combine(data, "app.info")) ? File.ReadAllLines(Path.Combine(data, "app.info")) : new string[0];
+                string lowDir = Path.Combine(Path.GetDirectoryName(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)), "LocalLow");
+                if (info.Length >= 2) logs.Add(Path.Combine(lowDir, info[0].Trim(), info[1].Trim(), "Player.log"));
+            }
+            catch { }
+            foreach (string log in logs.Where(File.Exists).OrderByDescending(File.GetLastWriteTime))
+            {
+                string head;
+                try
+                {
+                    using (var fs = new FileStream(log, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                    using (var r = new StreamReader(fs)) { var buf = new char[16384]; head = new string(buf, 0, r.Read(buf, 0, buf.Length)); }
+                }
+                catch { continue; }
+                var m = Regex.Match(head, @"Version:\s+(Direct3D (\d+)|OpenGL)[^\r\n]*");
+                if (!m.Success) continue;
+                why = L.T("Unity, 지난 실행: ", "Unity, last run: ") + m.Value.Substring(8).Trim();
+                return m.Groups[2].Success ? (int.Parse(m.Groups[2].Value) >= 10 ? Route.D3D11 : Route.D3D9) : Route.OpenGL;
+            }
+            if (Json.Str(g.Candidate, "api") == "d3d9") { why = L.T("Unity, 후보 목록 (D3D9)", "Unity, candidate list (D3D9)"); return Route.D3D9; }
+            why = L.T("Unity (기본 D3D11)", "Unity (D3D11 by default)");
+            return Route.D3D11;
+        }
+
         // What the list shows for a game.
         public static string StatusText(Game g)
         {
             string st = Json.Str(g.Profile, "status");
             if (st == "verified") return L.T("확인됨", "verified");
             if (st != null) return L.T("동작 (프로필)", "works (profile)");
-            if (Json.Str(g.Candidate, "kind") == "1") return L.T("2.5D (일반 입체)", "2.5D (plain stereo)");
+            if (Json.Str(g.Candidate, "kind") == "1") return L.T("일반 입체 (Geo Gaming Hub)", "ordinary stereo (Geo Gaming Hub)");
             switch (Json.Str(g.Candidate, "api"))
             {
                 case null: return "";
@@ -298,11 +342,17 @@ namespace Flato3D
             string sep = Json.Str(stereo, "separation");
             if (sep != null) r.Separation = double.Parse(sep, System.Globalization.CultureInfo.InvariantCulture);
 
-            // depth: 2.5D games get plain stereo, adventure games stand sprites on their feet, the rest go by drawing order
+            // depth: adventure games stand sprites on their feet, the rest go by drawing order (games with real
+            // depth are not done here: Geo Gaming Hub)
             if (Json.Str(flat, "enable") == "0" || (flat == null && Json.Str(g.Candidate, "kind") == "1"))
             {
                 r.Flat = false;
-                r.RuleWhy = flat != null ? profile : L.T("2.5D 게임 (후보 목록)", "2.5D game (candidate list)");
+                r.RuleWhy = flat != null ? profile : L.T("일반 입체 게임 → Geo Gaming Hub", "ordinary stereo game → Geo Gaming Hub");
+            }
+            else if (flat == null && Library.IsUnity(exe))
+            {
+                r.Rule = Json.Str(g.Candidate, "depth_rule") == "feet_y" ? "feet" : "order";
+                r.RuleWhy = L.T("Unity: draw마다 한 층", "Unity: a layer per draw");
             }
             else if (Json.Str(flat, "rule") != null)
             {

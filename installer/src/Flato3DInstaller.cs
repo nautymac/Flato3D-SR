@@ -252,7 +252,8 @@ namespace Flato3D
             candFilter.Width = P(300);
             candFilter.TextChanged += (s, e) => FillCandidates();
             top.Controls.AddRange(new Control[] { new Label { Text = L.T("검색:", "Search:"), AutoSize = true, Padding = new Padding(0, P(4), 0, 0) }, candFilter,
-                new Label { Text = L.T("후보 = 평면 2D로 분류된 게임. 경로가 있어도 게임마다 시험이 필요합니다.", "Candidates are games classified as flat 2D. Each still needs testing."), AutoSize = true, Padding = new Padding(P(12), P(4), 0, 0) } });
+                new Label { Text = L.T("후보 = 평면 2D로 분류된 게임. 경로가 있어도 게임마다 시험이 필요합니다. 일반 입체 게임은 Geo Gaming Hub에서 다룹니다.",
+                                       "Candidates are games classified as flat 2D. Each still needs testing. Ordinary stereo games are in Geo Gaming Hub."), AutoSize = true, Padding = new Padding(P(12), P(4), 0, 0) } });
             cands.View = View.Details;
             cands.FullRowSelect = true;
             cands.Dock = DockStyle.Fill;
@@ -277,6 +278,7 @@ namespace Flato3D
                 L.T("  OpenGL 게임: opengl32.dll(OGL3D-SR)이 두 눈을 그립니다.", "  OpenGL games: opengl32.dll (OGL3D-SR) renders both eyes."),
                 L.T("  Direct3D 8~11 게임: WineD3D가 OpenGL로 바꾸고, version.dll 로더가 게임을 WineD3D로 보냅니다.", "  Direct3D 8-11 games: WineD3D turns them into OpenGL; the version.dll loader sends the game there."),
                 L.T("  Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에뮬레이터)은 할 수 없습니다.", "  Direct3D 12, Vulkan and games that output one finished image (DOSBox, ScummVM, emulators) are not possible."),
+                L.T("  원근이 있는 일반 입체 게임(2.5D, 3D)은 여기서 다루지 않습니다. Geo Gaming Hub에서 설치합니다.", "  Games with real depth (2.5D, 3D) are not done here: install them with Geo Gaming Hub."),
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
                 L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
                 L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
@@ -332,6 +334,7 @@ namespace Flato3D
             {
                 string title = Json.Str(c, "title") ?? "";
                 if (f.Length > 0 && !title.ToLowerInvariant().Contains(f)) continue;
+                if (Json.Str(c, "kind") == "1") continue;   // ordinary stereo games: Geo Gaming Hub
                 string api = Json.Str(c, "api") ?? "";
                 string route = api == "opengl" ? Route.Label(Route.OpenGL) : api == "opengl_alt" ? L.T("OpenGL (전환 필요)", "OpenGL (switch needed)") :
                                api == "d3d9" ? Route.Label(Route.D3D9) : api == "d3d11" ? Route.Label(Route.D3D11) :
@@ -383,7 +386,7 @@ namespace Flato3D
 
         static string RuleLabel(Recommendation rec)
         {
-            if (!rec.Flat) return L.T("일반 입체 (2.5D)", "plain stereo (2.5D)");
+            if (!rec.Flat) return L.T("일반 입체 게임 (Geo Gaming Hub)", "ordinary stereo game (Geo Gaming Hub)");
             return rec.Rule == "feet" ? L.T("발 위치 (어드벤처)", "feet (adventure)") : L.T("그리는 순서", "drawing order");
         }
 

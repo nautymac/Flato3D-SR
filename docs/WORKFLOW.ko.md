@@ -23,7 +23,7 @@
 
 ## CP0 사전 조사
 
-1. **목록 확인:** `data/game_profiles.json`(작업한 게임)과 `data/game_candidates.json`(후보 544개의 API, 엔진, 깊이 규칙 추정)을 먼저 봅니다.
+1. **목록 확인:** `data/game_profiles.json`(작업한 게임)과 `data/game_candidates.json`(후보 544개의 API, 엔진, 깊이 규칙 추정)을 먼저 봅니다. `kind = 1`(원근이 있는 일반 입체 게임 96개)은 Flato3D 대상이 아니고 Geo Gaming Hub에서 다룹니다.
 2. **exe 판별:** 설치기 명령줄로 32/64비트와 경로를 봅니다.
    ```
    installer\bin\Flato3DInstaller.exe --detect "<게임 exe>" --log detect.txt
@@ -53,7 +53,8 @@
    | 저해상도 버퍼에 그린 뒤 화면으로 늘림 | 자동 처리(레이어 캐시). 화면 비율이 아니면 `cache_scale` | DK |
    | draw마다 glScissor를 거는 게임 | `screen_batch = 0` | FRAMED |
    | 인물이 이미 합쳐진 그림(동영상 칸 등) 안의 검은 실루엣 | `silhouette = <프로그램 해시>`, 셰이더의 좌표·텍스처 이름 | FRAMED |
-   | 2.5D(원근이 있는 장면) | `[Flat] enable = 0` (일반 OGL3D 입체) | Broken Age |
+   | Unity (exe가 opengl32를 가져와도 기본은 D3D11) | 경로는 `<exe>_Data\output_log.txt`나 `Player.log`의 `Version:` 줄로 판별, `group = draw`, `order_curve = 0.5` | Huntdown, GGC2 |
+   | 2.5D·3D(원근이 있는 장면) | Flato3D 대상 아님: Geo Gaming Hub에서 일반 입체로 설치 | Broken Age |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
 6. **세이브 백업:** 플레이를 진행해야 하면 세이브 폴더를 `test-backups\<게임>\`에 먼저 복사합니다. 세이브 위치는 PCGamingWiki나 Steam Cloud 경로로 찾습니다.
@@ -143,7 +144,7 @@
 | --- | --- | --- |
 | `[Stereo] separation` | 분리값(%) | 깊이 전체가 약하거나 강할 때. 평면 게임은 25 전후 |
 | `[Stereo] output` | auto(SR 디스플레이) / sbs / tab. 설치기에서는 "SR 디스플레이 (Acer, Samsung)", "좌우 SBS", "위아래" | 원격 확인은 sbs. SR 디스플레이가 아니면 sbs/tab을 직접 고름 |
-| `[Flat] enable` | 평면 깊이 사용 | 2.5D 게임은 0 |
+| `[Flat] enable` | 평면 깊이 사용 | Flato3D에서는 항상 1(일반 입체 게임은 Geo Gaming Hub) |
 | `[Flat] rule` | feet(발 위치) / order(그리는 순서) | CP0 표 참고 |
 | `[Flat] depth_screen` | 화면 위치에 놓이는 깊이 | HUD가 튀어나오면 낮추고(0~0.3), 전체가 뒤로 멀면 높임. 게임 중 Ctrl+F5/F6 |
 | `[Flat] depth_top` | 깊이 범위 | 보통 1 |
