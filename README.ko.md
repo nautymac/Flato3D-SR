@@ -10,7 +10,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 
 설치된 SR 런타임을 통해 렌티큘러 SR 패널(Acer SpatialLabs, Leia SR 디스플레이)용으로 위빙합니다. SR 출력은 끌 수 있습니다. 끄면 SBS나 상하 출력으로 다른 3D 디스플레이에서도 쓸 수 있습니다.
 
-상태: 초기 단계입니다. 일곱 게임이 동작하며, 자세한 내용은 [data/GAMES.ko.md](data/GAMES.ko.md)에 있습니다.
+상태: 초기 단계입니다. 여덟 게임이 동작하며, 자세한 내용은 [data/GAMES.ko.md](data/GAMES.ko.md)에 있습니다.
 
 | 게임 | API | 경로 | 깊이 규칙 |
 | --- | --- | --- | --- |
@@ -21,6 +21,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 | Astral Ascent | Direct3D 11 (Chowdren) | WineD3D | 그리는 순서, 임시 버퍼는 한 층 |
 | Intravenous 2 | OpenGL (LÖVE) | 직접 | 그리는 순서 |
 | Guns, Gore and Cannoli 2 | Direct3D 11 (Unity) | WineD3D | 그리는 순서, draw마다 한 층 |
+| Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) | 직접 | 그리는 순서 (draw 단위) |
 
 ## 동작 방식
 

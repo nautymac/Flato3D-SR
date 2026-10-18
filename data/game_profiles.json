@@ -382,6 +382,51 @@
         "reaches": "title screen, then Ctrl+F12 dump (menu navigation not recorded yet)",
         "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\Crazy Monkey Studios\\Guns Gore and Cannoli 2 - back up before play tests."
       }
+    },
+    {
+      "id": "rocketbirds-hardboiled-chicken",
+      "name": "Rocketbirds: Hardboiled Chicken",
+      "steam_appid": 215510,
+      "folder": "rocketbirds_hardboiled",
+      "exe": "Game.exe",
+      "arch": "x86",
+      "engine": "PSSG (NVIDIA Cg runtime, shaders compiled with the arbvp1/arbfp1 assembly profiles)",
+      "api": "OpenGL (ARB assembly vertex/fragment programs, no GLSL)",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "screen_batch": 0
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Installed on the OpenGL route the game stayed flat: 'shaders injected 0' - the PSSG engine calls cgCreateProgram with arbvp1/arbfp1, so its draws run ARB assembly programs. The wrapper now rewrites ARB vertex programs (offset from program.env[255]) and reads the texture units of ARB fragment programs.",
+        "Forcing Cg to GLSL ([Inject] cg_glsl = 1) turned the screen white: the engine passes its own profile and assembly-only options (-profileopts MaxLocalParams=256). Keep cg_glsl = 0.",
+        "screen_batch = 0: the game sets a viewport/scissor before every pass, so later batches are not UI.",
+        "Measured (separation 17.9 set in game): chapter 1 title 'Sito in the Jungle' foreground tree silhouette near, jungle and poster wall behind; first gameplay (unloading area) -28..+44 px, median +24."
+      ],
+      "known_issues": [
+        "Depth per draw only (an ARB vertex program has no geometry shader for a per-sprite spread inside one draw).",
+        "Starts with a 'connect an Xbox 360 controller' prompt (Enter continues)."
+      ],
+      "test": {
+        "proc": "Game",
+        "steps": "wait:35,key:0D,wait:6,key:0D,wait:6,key:0D,wait:12,ctrlkey:7B,wait:5",
+        "reaches": "controller prompt -> chapter 1 title -> first gameplay (unloading area), then Ctrl+F12 dump",
+        "notes": "Saves are in the game folder's Save\\ (P0-LEVEL, PROFILES, SETTINGS): back up to test-backups\\Rocketbirds\\Save and restore after tests. Set output = sbs before automated checks (the user watches remotely)."
+      }
     }
   ]
 }

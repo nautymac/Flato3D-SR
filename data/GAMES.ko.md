@@ -11,6 +11,7 @@
 | Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
+| Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
 
 ## 게임별 메모
 
@@ -55,3 +56,8 @@
 
 - Windows Defender가 x64 로더(`version.dll`)를 `Trojan:Win32/Cloxer`로 잘못 진단합니다. 이 PC는 예외로 등록했습니다.
 - 남은 일: 덤프로 층별 시차를 측정하지 않았습니다. 세이브는 `AppData\LocalLow\Crazy Monkey Studios\Guns Gore and Cannoli 2`입니다.
+
+**Rocketbirds: Hardboiled Chicken**: PSSG 엔진이 NVIDIA Cg로 셰이더를 ARB 어셈블리 프로그램(arbvp1/arbfp1)으로 컴파일합니다. GLSL이 하나도 없어 처음에는 평면이었습니다(로그 `shaders injected 0`). 래퍼가 이제 ARB 정점 프로그램을 고쳐 눈마다 위치를 옮기고, ARB 조각 프로그램이 읽는 텍스처 유닛을 알아냅니다. Cg를 GLSL로 바꾸는 방법(`cg_glsl = 1`)은 화면이 하얘져서 쓰지 않습니다. `screen_batch = 0`이 필요합니다.
+
+- 측정: 1장 제목 화면은 앞의 나무 실루엣이 가깝고 정글과 포스터 벽이 뒤에 있습니다. 첫 게임 화면(하역장)은 −28~+44px, 중간값 +24px입니다.
+- 남은 일: draw 단위 깊이만 있습니다(ARB 프로그램에는 지오메트리 셰이더가 없어 한 draw 안의 스프라이트를 나눌 수 없음). 사용자 확인이 필요합니다. 세이브는 게임 폴더의 `Save\`입니다.

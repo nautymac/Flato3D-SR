@@ -54,6 +54,7 @@
    | draw마다 glScissor를 거는 게임 | `screen_batch = 0` | FRAMED |
    | 인물이 이미 합쳐진 그림(동영상 칸 등) 안의 검은 실루엣 | `silhouette = <프로그램 해시>`, 셰이더의 좌표·텍스처 이름 | FRAMED |
    | Unity (exe가 opengl32를 가져와도 기본은 D3D11) | 경로는 `<exe>_Data\output_log.txt`나 `Player.log`의 `Version:` 줄로 판별, `group = draw`, `order_curve = 0.5` | Huntdown, GGC2 |
+   | NVIDIA Cg로 ARB 어셈블리 프로그램을 쓰는 엔진 (PSSG 등, exe 옆 `cg.dll`/`cgGL.dll`) | 래퍼가 ARB 정점 프로그램을 자동으로 고침. 대개 `screen_batch = 0` | Rocketbirds |
    | 2.5D·3D(원근이 있는 장면) | Flato3D 대상 아님: Geo Gaming Hub에서 일반 입체로 설치 | Broken Age |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
@@ -156,6 +157,8 @@
 | `[Flat] silhouette` | 이 프로그램(해시, 쉼표로 여러 개)이 그리는 그림 안에서 어두운 픽셀을 그림보다 앞으로 | 인물이 한 장의 그림에 합쳐져 들어오는데 인물이 검은 실루엣일 때 |
 | `[Flat] silhouette_uv`, `silhouette_tex` | 그 프래그먼트 셰이더의 텍스처 좌표 varying(vec2)과 그림 샘플러 이름 | `dump_shaders = 1`로 셰이더를 보고 정함(FRAMED: `texcoordOut`, `texture1`) |
 | `[Flat] silhouette_depth`, `silhouette_threshold` | 앞으로 나오는 정도(depth_top 기준 비율), 어둡다고 볼 밝기(r, g, b 중 최댓값) | 기본 0.3, 0.15. 어두운 배경까지 나오면 threshold를 낮춤 |
+| `[Inject] arb_programs` | ARB 어셈블리 정점 프로그램(`!!ARBvp1.0`, Cg arbvp1)을 고쳐 입체로 | 기본 1. 문제가 있으면 0 |
+| `[Inject] cg_glsl` | Cg의 `cgGLGetLatestProfile`이 GLSL 프로필을 돌려주게 함, `cgCreateProgram` 결과 기록 | 기본 0. 엔진이 프로필을 직접 정하면 화면이 깨짐(Rocketbirds는 하얀 화면) |
 | `[Display] swap_interval` | 1 = 수직동기화 강제 | WineD3D 게임 기본 1 |
 | `[Display] upscale` | 1 = 게임은 DPI 비인식으로 낮은 해상도(4K 200%면 1920×1080)로 그리고, 래퍼가 기본 해상도 창에 확대해 표시. 해상도 변경은 막음 | 게임이 기본 해상도를 못 쓰거나 글씨가 너무 작을 때. 설치기의 **업스케일** |
 | `[Keys] swallow` | 래퍼 단축키를 게임에 전달하지 않음 | 기본 1. 문제 있으면 0 |
@@ -179,6 +182,8 @@
 | 칸·그림 안의 인물이 평면 | 인물이 이미 한 장의 그림에 합쳐져 들어옴 | 인물이 어두운 실루엣이면 `silhouette`(그 셰이더에서 어두운 픽셀만 눈마다 옮김). 로그의 `silhouette depth: ... rewritten`, `shift N px` 확인. 밝은 인물은 미해결(AI 깊이) |
 | 깊이 단계가 거칢 | 저해상도 버퍼 픽셀 단위로만 이동 | 미해결(캐시를 크게 그리기 예정) |
 | `renamed vertex shader N failed to compile` (`'__'` 예약어 오류) | 밑줄로 시작하는 셰이더 출력 이름에 접두사를 붙여 `__`가 생김(LÖVE) | 밑줄로 시작하면 다른 접두사 사용(수정됨) |
+| 화면 전체가 평면이고 로그에 `shaders injected 0` | GLSL이 아니라 ARB 어셈블리 프로그램(Cg arbvp1) 또는 고정 기능으로 그림 | ARB는 자동 처리(로그 `ARB vertex program N rewritten`). draw 기록에 `(arbvp)`가 보이면 적용된 것 |
+| ARB 프로그램인데 모든 draw가 화면 깊이 | 프로그램이 읽는 유닛을 몰라 남은 렌더 타깃을 보고 합성으로 판정, 또는 패스마다 viewport를 걸어 UI 묶음으로 판정 | 조각 프로그램의 `texture[n]`으로 유닛 판별(수정됨), `screen_batch = 0` |
 | 위빙 화면에 가로줄(티어링) | 게임이 수직동기화를 끔 | `swap_interval = 1` |
 | 게임 기능이 단축키와 같이 켜짐 | 게임이 Ctrl을 무시하고 F키를 봄 | `swallow = 1`(기본) |
 
@@ -198,6 +203,7 @@
 ## CP6 사용자 확인
 
 - 원격으로 보는 경우 `output = sbs`로 둡니다. 실행 중 Ctrl+Alt+W로 위빙을 켜고 끌 수 있습니다.
+- 자동 실행(gametest)으로 확인할 때도 먼저 `output = sbs`로 바꿉니다. 사용자가 원격으로 지켜보기 때문입니다(설치기 기본값 `auto`는 SR 위빙).
 - 사용자가 PC를 쓰는 동안에는 자동 실행(gametest)을 돌리지 않습니다. 창을 앞으로 가져오고 키를 보내기 때문입니다.
 - 사용자가 맞춘 값(Ctrl+F7 저장)은 덮어쓰지 않습니다. 바꿔야 하면 이유를 알리고 바꿉니다.
 
