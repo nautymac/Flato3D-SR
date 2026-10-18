@@ -10,7 +10,7 @@ Flato3D gives flat 2D games, pixel art or hand-drawn, real stereo depth. A flat 
 
 The picture is woven for lenticular SR panels (Acer SpatialLabs, Leia SR displays) through the installed SR runtime. The SR output can be turned off: side-by-side and top-and-bottom work with any other 3D display.
 
-Status: early. Nine games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
+Status: early. Ten games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 
 | Game | API | Route | Depth rule |
 | --- | --- | --- | --- |
@@ -23,6 +23,7 @@ Status: early. Nine games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 | Guns, Gore and Cannoli 2 | Direct3D 11 (Unity) | WineD3D | drawing order, one layer per draw |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB programs) | direct | drawing order (per draw) |
 | Machinarium | OpenGL fixed function (`-ogl` switch) | direct | feet |
+| Samorost 2 | Direct3D 11 (Adobe AIR) | WineD3D | feet, pieces of a picture on the floor slope |
 
 ## How it works
 

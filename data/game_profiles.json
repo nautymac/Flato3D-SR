@@ -480,6 +480,62 @@
         "reaches": "controller prompt -> chapter 1 title -> first gameplay (unloading area), then Ctrl+F12 dump",
         "notes": "Saves are in the game folder's Save\\ (P0-LEVEL, PROFILES, SETTINGS): back up to test-backups\\Rocketbirds\\Save and restore after tests. Set output = sbs before automated checks (the user watches remotely)."
       }
+    },
+    {
+      "id": "samorost-2",
+      "name": "Samorost 2",
+      "steam_appid": 40720,
+      "folder": "Samorost 2",
+      "exe": "Samorost2.exe",
+      "arch": "x86",
+      "engine": "Adobe AIR captive runtime (Flash content drawn with Stage3D; some objects through filter buffers)",
+      "api": "Direct3D 11 (Adobe AIR Stage3D)",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x86-renamed/w3d11.dll",
+        "wined3d-11.19/x86-renamed/wxgi.dll",
+        "wined3d-11.19/x86-renamed/w3d10core.dll",
+        "wined3d-11.19/x86-renamed/wined3d.dll",
+        "loader/x86/version.dll",
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "feet",
+          "depth_screen": 0.3,
+          "plane_tall": 0.12
+        },
+        "Display": {
+          "upscale": 1,
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "verified_by_user": "2026-10-18 (seams gone, SR weaving; the user saved separation 32.9 and depth_screen 0.75 with Ctrl+F7)",
+      "notes": [
+        "Installed by the installer on the WineD3D Direct3D 11 route (renamed set + loader), feet rule from the candidate list, upscale on (no 4K).",
+        "With upscale the game first showed 'not responding' and ignored clicks: the presentation window was made on WineD3D's render thread. Fixed in the wrapper (the window is made on the game window's thread).",
+        "Scene pictures are split into pieces (a tentacle is drawn as an upper and a lower piece; the spaceship as several). Under the feet rule each narrow piece stood at its own bottom edge, so a horizontal line and rectangles showed where pieces meet (user report). New key plane_tall = 0.12: a piece at least 1/16 of the screen high follows the floor slope whatever its width (plane_size/plane_height need wide AND high), so the pieces line up; the bottom strip of the ground (wide, low pieces) too. Small sprites (characters, crates) still stand at their bottom edge. The order rule was tried and was worse (pieces in different layers).",
+        "With depth_screen 0.75 the floor came nearer than sprite_min (-0.25) allowed sprites, so pieces at the bottom stepped back (a horizontal line near the bottom). sprite_min now moves with depth_screen (unchanged at depth_screen 0).",
+        "Measured (tentacle scene, the user's separation 32.9 / depth_screen 0.75): one slope from +30 (top) to -90 px (bottom) without steps."
+      ],
+      "known_issues": [
+        "Objects drawn through filter buffers (some seed heads on the tentacles) come out near the screen (+2 px) in front of their stems (+30..40): their depth is worked out in the small buffer, not on the screen.",
+        "Tall objects lean back with the floor slope instead of standing upright (the price of no seams)."
+      ],
+      "test": {
+        "proc": "Samorost2",
+        "steps": "wait:20,click:1920:1080,wait:15,click:1920:1300,wait:20,ctrlkey:7B,wait:5",
+        "reaches": "title -> first scene (the spaceship on the hill), then Ctrl+F12 dump",
+        "notes": "Steam app 40720 (steam://rungameid/40720). Saves: %APPDATA%\\amanitadesign.samorost3\\Local Store (s2save.bin, init.dat) - back up before play tests. Set output = sbs for automated checks; OGL3D reloads OGL3D.ini while the game runs."
+      }
     }
   ]
 }

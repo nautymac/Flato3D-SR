@@ -13,6 +13,7 @@
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
 | Machinarium | OpenGL 고정 기능 · 직접 (`-ogl` 스위치) | feet (발 위치, 고정 기능) | 동작, 사용자 확인 전 | opengl32.dll x64, `[Inject] add_args = -ogl` |
+| Samorost 2 | D3D11 (Adobe AIR) · WineD3D | feet, `plane_tall = 0.12` | 동작, 이음매는 사용자 확인 | 이름 바꾼 WineD3D x86, 로더, opengl32.dll x86, 업스케일 |
 
 ## 게임별 메모
 
@@ -77,3 +78,11 @@
   - 한계: 키 큰 배경 구조물(탑)은 바닥 경사를 따라 뒤로 기웁니다. 화면 아래까지 닿는 큰 앞쪽 조각은 위까지 가장 가까운 깊이(-24px)입니다.
 - 자동 테스트는 메뉴의 "게임 계속"(게임 좌표 1000,705)을 누릅니다. "새 게임 플레이"(1120,472)는 진행을 덮어쓰므로 사용자가 플레이한 뒤에는 누르지 않습니다.
 - 남은 일: 첫 장면들만 덤프로 봤습니다. 플레이와 사용자 확인이 필요합니다. 세이브는 Steam 클라우드(`userdata\<계정>\40700\remote\Machinarium.dat`)입니다.
+
+**Samorost 2**: Adobe AIR 게임(x86)이라 Direct3D 11을 WineD3D로 바꿔 그립니다. 4K를 지원하지 않아 설치기가 업스케일을 켭니다.
+
+- 업스케일에서 "응답하지 않습니다"가 뜨고 클릭이 안 먹던 문제: 표시 창이 WineD3D의 그리기 스레드에 만들어져 메시지를 처리하는 곳이 없었습니다. 표시 창을 게임 창의 스레드에서 만들도록 래퍼를 고쳤습니다.
+- 장면 그림을 조각으로 나눠 그립니다(덩굴 한 줄기가 위아래 두 조각, 우주선이 여러 조각). feet 규칙에서 좁은 조각마다 자기 아래 끝에 서서, 조각이 만나는 곳에 가로줄과 사각형이 보였습니다(사용자 보고). 새 키 `plane_tall = 0.12`: 화면 높이 1/16 이상인 조각은 폭과 상관없이 바닥 경사를 따릅니다. 넓고 낮은 맨 아래 땅 띠도 여기에 걸립니다. order 규칙도 시험했지만 조각이 다른 층으로 갈려 더 나빴습니다.
+- 사용자가 `depth_screen 0.75`(장면을 앞으로)로 저장하자, 바닥이 `sprite_min`보다 가까워져 아래쪽 조각이 뒤로 물러나 가로줄이 생겼습니다. `sprite_min`이 이제 `depth_screen`을 따라 움직입니다(`depth_screen 0`이면 전과 같음).
+- 측정(덩굴 장면, 분리값 32.9, depth_screen 0.75): 위 +30에서 아래 -90px까지 단절 없는 경사.
+- 남은 일: 필터 버퍼로 그리는 일부 물체(덩굴 끝 씨앗 송이)가 줄기보다 앞(+2px, 줄기 +30~40px)에 뜹니다. 큰 물체는 바닥 경사를 따라 뒤로 기웁니다. 세이브는 `%APPDATA%\amanitadesign.samorost3\Local Store`입니다.
