@@ -267,7 +267,8 @@
           "swap_interval": 1
         }
       },
-      "status": "working",
+      "status": "verified",
+      "verified_by_user": "2026-10-18 (NVIDIA GPU; on an Intel GPU the sky differed between the eyes, report 2026-10-17)",
       "verified_by_user": null,
       "notes": [
         "The exe binds d3d11.dll before any of our code runs; the loader points that import at w3d11.dll (the system d3d11 stays for the GPU driver).",
@@ -278,6 +279,7 @@
         "Played through the hub areas (ruins, altar, garden, cliff) with movement, jumps and attacks: no hangs or errors, 60 fps, one A-B-A flicker that was a game effect in both eyes. Garden: sky +40..64 px, ground +28, trees +20, characters 0..-6, pergola -12, low clouds -14, HUD -20. Cliff: far islands +40..64, rock island +28, characters 0, big foreground cliff -18."
       ],
       "known_issues": [
+        "Intel GPU (another PC, report 2026-10-17): the background sky differs between the eyes. NVIDIA works; only NVIDIA GPUs are supported.",
         "Characters stand in front of the ground they walk on (the ground is drawn before them, so drawing order puts it farther): up to about 30 px in the garden.",
         "Dialogue scenes: portrait, box and text are one flat UI layer in front of the scene."
       ],

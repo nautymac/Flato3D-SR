@@ -8,7 +8,7 @@
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
-| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
+| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 사용자 확인 완료 (NVIDIA) | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
@@ -49,6 +49,7 @@
 - 허브 지역(폐허, 제단, 정원, 절벽)을 이동, 점프, 공격하며 지나갔습니다. 멈춤이나 오류 없이 60fps였습니다. 깜빡임은 한 번 잡혔는데 두 눈에 똑같이 나타난 게임 효과였습니다.
 - 정원: 하늘 +40~64px, 바닥 +28px, 나무 +20px, 캐릭터 0~−6px, 앞 아치 −12px, HUD −20px. 절벽: 먼 섬 +40~64px, 바위섬 +28px, 앞 절벽 −18px.
 - 남은 일: 캐릭터가 서 있는 바닥보다 앞에 떠 보입니다(정원에서 약 30px). 게임이 바닥을 먼저 그리기 때문입니다. 대화 장면은 초상화, 대화창, 글자가 한 UI 층입니다.
+- 사용자 확인(10-18): NVIDIA GPU에서는 잘 됩니다. Intel GPU PC에서는 배경 하늘이 두 눈에서 다르게 나왔습니다(10-17 보고). NVIDIA만 보장하는 범위로 기록했습니다.
 
 **Intravenous 2**: 설치기로 처음 설치한 게임입니다. 후보 목록의 기본값(탑다운, order 규칙)으로 설치했고, 사용자가 플레이로 확인했습니다. LÖVE 셰이더 중 밑줄로 시작하는 출력 이름 때문에 변환이 실패하던 문제를 래퍼에서 고쳤습니다.
 
