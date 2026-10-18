@@ -9,6 +9,7 @@ Run from this folder (Python 3, network access to store.steampowered.com, api.st
     python -I classify.py       # 2D detection + PCGamingWiki engine/API -> candidates.json
     python -I resolution.py     # PCGamingWiki "4K Ultra HD" -> uhd, uhd_note, upscale in data/game_candidates*.json
     python -I build_page.py out.html ../../data/game_candidates.json
+    python -I build_targets_page.py out.html   # survey page of the Flato3D targets only, from data/ (statuses from the profiles)
 
 Sources: `E:\Steam\appcache\appinfo.vdf` + `appcache\librarycache` (owned games), `%APPDATA%\heroic\store_cache\*.json`,
 Steam IStoreBrowseService tags (with weights), PCGamingWiki page wikitext (engine, Direct3D/OpenGL/Vulkan, 32/64-bit,

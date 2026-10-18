@@ -102,22 +102,21 @@ tr.test td:first-child { box-shadow: inset 3px 0 0 var(--left); }
   <header>
     <div class="brand" aria-hidden="true"><span class="l">FLATO</span><span class="r">3D</span></div>
     <h1>보유 라이브러리의 Flato3D 후보 게임</h1>
-    <p class="lede">Steam·Epic·GOG·Amazon 보유 목록에서 평면 2D·픽셀 게임을 골라, 렌더링 경로와 권장 깊이 규칙을 붙인 표입니다. 설치하지 않은 게임은 Steam 태그와 PCGamingWiki 정보로 판별했으므로 실제 실행 전까지는 추정입니다.</p>
+    <p class="lede">Steam·Epic·GOG·Amazon 보유 목록 중 Flato3D로 입체를 줄 수 있는 평면 2D 게임(픽셀, 일러스트)만 모아 렌더링 경로와 권장 깊이 규칙을 붙인 표입니다. 설치하지 않은 게임은 Steam 태그와 PCGamingWiki 정보로 판별했으므로 실제 실행 전까지는 추정입니다.</p>
     <p class="src" id="src"></p>
   </header>
 
   <section class="routes" id="routes" aria-label="렌더링 경로별 개수"></section>
 
   <section class="legend" aria-label="용어">
-    <div><b>종류 1 · 2.5D</b> 원근 카메라나 3D 엔진이라 깊이가 이미 있음. 지금 도구(geo-11, OGL3D)로 자동 입체.</div>
-    <div><b>종류 2·3 · 레이어</b> 평면 스프라이트를 따로 그림. z 값(2) 또는 규칙(3)으로 깊이를 줌. 2와 3은 실행해 봐야 구분됨.</div>
-    <div><b>종류 4 · 한 장 화면</b> 에뮬레이터·DOSBox·소프트웨어 렌더링. 완성 이미지만 오므로 AI 깊이 추정만 가능.</div>
+    <div><b>레이어 게임</b> 평면 스프라이트와 배경을 따로 그리는 게임. 그리는 순서, 발끝 위치 같은 규칙으로 층마다 깊이를 줌.</div>
     <div><b>깊이 규칙</b> 발끝 Y(어드벤처), 패럴랙스(횡스크롤), 그리기 순서(탑뷰·고정 화면·비주얼 노벨). 장르 태그에서 제안한 기본값.</div>
+    <div><b>빠진 게임</b> 원근이 있는 일반 입체 게임(2.5D, 3D)은 Geo Gaming Hub에서 다룸. 완성 화면 한 장만 내는 게임(에뮬레이터 등), 브라우저 엔진, D3D12/Vulkan 게임은 이 방법으로 할 수 없음.</div>
+    <div><b>업스케일</b> PCGamingWiki 기준 4K를 못 쓰거나 4K에서 글씨가 너무 작은 게임. 설치기가 업스케일을 미리 켬.</div>
   </section>
 
   <section class="filters" aria-label="필터">
     <input type="search" id="q" placeholder="게임, 개발사, 엔진 검색" aria-label="검색">
-    <div class="group" id="g-kind"><span>종류</span></div>
     <div class="group" id="g-style"><span>그래픽</span></div>
     <div class="group" id="g-rule"><span>깊이 규칙</span></div>
     <div class="group" id="g-store"><span>스토어</span></div>
@@ -140,19 +139,16 @@ const META = /*META*/{};
 const TEST = new Set(META.test || []);
 
 const ROUTES = [
-  ['opengl', 'OpenGL', 'OGL3D로 바로 테스트 (1단계)', 'var(--ok)'],
-  ['opengl_alt', 'OpenGL 전환', '설정·실행 옵션으로 OpenGL 가능 (1단계)', 'var(--ok)'],
-  ['d3d11', 'D3D10/11', '자체 D3D11 런타임 필요 (3단계)', 'var(--accent)'],
-  ['d3d9', 'D3D9 이하', 'dgVoodoo로 D3D11 변환 (3단계)', 'var(--warn)'],
-  ['oneimage', '한 장 화면', '에뮬레이터 등, AI 깊이만', 'var(--muted)'],
-  ['browser', 'Chromium 계열', 'RPG Maker MV/MZ·NW.js, 어려움', 'var(--bad)'],
-  ['unsupported', 'D3D12/Vulkan', '지원 계획 없음', 'var(--bad)'],
+  ['opengl', 'OpenGL', 'OGL3D가 바로 처리', 'var(--ok)'],
+  ['opengl_alt', 'OpenGL 전환', '설정·실행 옵션으로 OpenGL', 'var(--ok)'],
+  ['d3d11', 'D3D10/11', 'WineD3D로 OpenGL 변환', 'var(--accent)'],
+  ['d3d9', 'D3D9 이하', 'WineD3D로 OpenGL 변환', 'var(--warn)'],
   ['unknown', '정보 없음', 'PCGamingWiki에 API 정보 없음', 'var(--line)'],
 ];
 const ROUTE_LABEL = Object.fromEntries(ROUTES.map(r => [r[0], r[1]]));
 const RULE_LABEL = { feet_y: '발끝 Y', parallax: '패럴랙스', draw_order: '그리기 순서', auto: '자동(원근)', ai: 'AI 깊이' };
 const KIND_LABEL = { 1: '1 · 2.5D', 2: '2 · z 레이어', 3: '2·3 · 레이어', 4: '4 · 한 장' };
-const STATUS_LABEL = { verified: ['검증됨', 'inst'], checked: ['설치본 확인', 'chk'] };
+const STATUS_LABEL = { verified: ['확인됨', 'inst'], checked: ['동작', 'chk'] };
 const STORE_LABEL = { steam: 'Steam', epic: 'Epic', gog: 'GOG', amazon: 'Amazon' };
 
 const state = { q: '', route: null, kind: new Set(), style: new Set(), rule: new Set(), store: new Set(), inst: new Set(), sort: ['phase', 1] };
@@ -174,11 +170,10 @@ function chipGroup(id, key, items) {
     g.appendChild(b);
   }
 }
-chipGroup('g-kind', 'kind', [[1, '1 · 2.5D'], [3, '2·3 · 레이어'], [4, '4 · 한 장']]);
 chipGroup('g-style', 'style', [['pixel', '픽셀'], ['illustrated', '일러스트']]);
 chipGroup('g-rule', 'rule', [['feet_y', '발끝 Y'], ['parallax', '패럴랙스'], ['draw_order', '그리기 순서']]);
 chipGroup('g-store', 'store', [['steam', 'Steam'], ['epic', 'Epic'], ['gog', 'GOG'], ['amazon', 'Amazon']]);
-chipGroup('g-inst', 'inst', [['yes', '설치됨'], ['test', '테스트 게임'], ['known', '확인·검증됨']]);
+chipGroup('g-inst', 'inst', [['yes', '설치됨'], ['test', '프로필 있음'], ['known', '확인·동작']]);
 
 const routesEl = document.getElementById('routes');
 const total = DATA.length || 1;
@@ -197,7 +192,7 @@ for (const [key, label, desc, color] of ROUTES) {
 }
 
 const COLS = [
-  ['title', '게임'], ['api', '렌더링 경로'], ['kind', '종류'], ['rule', '깊이 규칙'],
+  ['title', '게임'], ['api', '렌더링 경로'], ['kind', '그래픽'], ['rule', '깊이 규칙'],
   ['engine', '엔진'], ['bits', '비트'], ['stores', '스토어'], ['tags', '주요 태그'],
 ];
 const thead = document.getElementById('thead');
@@ -221,7 +216,7 @@ function sortVal(d, key) {
   switch (key) {
     case 'title': return d.title.toLowerCase();
     case 'api': case 'phase': return d.phase * 100 + ROUTES.findIndex(r => r[0] === d.api) * 10 + (d.status === 'untested' ? 1 : 0);
-    case 'kind': return d.kind;
+    case 'kind': return d.style;
     case 'rule': return RULE_LABEL[d.depth_rule] || '';
     case 'engine': return (d.engine[0] || '￿').toLowerCase();
     case 'bits': return d.bits || '￿';
@@ -261,9 +256,9 @@ function render() {
     const test = TEST.has(d.steam_appid);
     const api = [d.d3d.length ? 'D3D ' + d.d3d.join('/') : '', d.opengl && !/^(false|unknown)$/i.test(d.opengl) ? 'GL' + (d.opengl === 'true' ? '' : ' ' + d.opengl) : '', d.vulkan && !/^(false|unknown)$/i.test(d.vulkan) ? 'VK' : ''].filter(Boolean).join(' · ');
     return `<tr class="${test ? 'test' : ''}">
-      <td><div class="title">${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">${esc(d.title)}</a>` : esc(d.title)}${d.installed ? '<span class="badge">설치됨</span>' : ''}${STATUS_LABEL[d.status] ? `<span class="badge ${STATUS_LABEL[d.status][1]}">${STATUS_LABEL[d.status][0]}</span>` : ''}${test ? '<span class="badge test">테스트</span>' : ''}</div><div class="sub">${esc(d.developer)}</div></td>
+      <td><div class="title">${link ? `<a href="${esc(link)}" target="_blank" rel="noopener">${esc(d.title)}</a>` : esc(d.title)}${d.installed ? '<span class="badge">설치됨</span>' : ''}${STATUS_LABEL[d.status] ? `<span class="badge ${STATUS_LABEL[d.status][1]}">${STATUS_LABEL[d.status][0]}</span>` : ''}${test ? '<span class="badge test">테스트</span>' : ''}${d.upscale === '1' ? `<span class="badge" title="${esc('PCGamingWiki 4K: ' + d.uhd + (d.uhd_note ? ' - ' + d.uhd_note : ''))}">업스케일</span>` : ''}</div><div class="sub">${esc(d.developer)}</div></td>
       <td><span class="pill p-${d.api}">${esc(ROUTE_LABEL[d.api])}</span><div class="sub mono">${esc(api)}</div>${d.note ? `<div class="sub">${esc(d.note)}</div>` : ''}</td>
-      <td class="k${d.kind}">${esc(KIND_LABEL[d.kind])}<div class="sub">${d.style === 'pixel' ? '픽셀' : '일러스트'}</div></td>
+      <td>${d.style === 'pixel' ? '픽셀' : '일러스트'}${d.kind === 2 ? '<div class="sub">z 레이어</div>' : ''}</td>
       <td>${esc(RULE_LABEL[d.depth_rule] || '')}</td>
       <td>${esc(d.engine.join(', ') || '—')}</td>
       <td class="mono">${esc(d.bits || '—')}</td>

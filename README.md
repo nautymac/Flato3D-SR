@@ -40,7 +40,7 @@ The step-by-step procedure for converting a new game (checkpoints, measurements,
 | `ogl3d/` | submodule: OGL3D-SR, branch `flato3d` (the stereo and depth engine) |
 | `installer/` | the installer (C# WinForms) and the package's README and third-party notice |
 | `loader/` | `version.dll` proxy that sends the game to the WineD3D copies |
-| `data/` | game profiles, the list of worked games, the candidate list (544 games: 448 flat 2D, 96 ordinary stereo games left to Geo Gaming Hub) |
+| `data/` | game profiles, the list of worked games, the candidate list (544 games: 420 Flato3D targets, 96 ordinary stereo games left to Geo Gaming Hub, 28 that cannot be done this way) |
 | `tools/analysis/` | test harness, disparity maps, per-draw images (see its README) |
 | `tools/library_survey/` | builds the candidate list from Steam and PCGamingWiki data |
 | `tools/stackdump/` | prints every thread's stack of a hung game |
@@ -73,7 +73,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
   - Choose the game in the installer and press **Defender exclusion** to exclude that game's `version.dll` only (Windows asks for permission). If it was already quarantined, press **Install** again.
   - **Uninstall** offers to remove the exclusion. With another antivirus, exclude the same file there.
 
-The **Candidate list** tab shows the 448 flat 2D candidates with their route.
+The **Candidate list** tab shows the 420 flat 2D candidates Flato3D can do, with their route (the game list and the survey page show only these as well).
 
 Hotkeys:
 

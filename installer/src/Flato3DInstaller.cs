@@ -319,8 +319,8 @@ namespace Flato3D
             candFilter.Width = P(300);
             candFilter.TextChanged += (s, e) => FillCandidates();
             top.Controls.AddRange(new Control[] { new Label { Text = L.T("검색:", "Search:"), AutoSize = true, Padding = new Padding(0, P(4), 0, 0) }, candFilter,
-                new Label { Text = L.T("후보 = 평면 2D로 분류된 게임. 경로가 있어도 게임마다 시험이 필요합니다. 일반 입체 게임은 Geo Gaming Hub에서 다룹니다.",
-                                       "Candidates are games classified as flat 2D. Each still needs testing. Ordinary stereo games are in Geo Gaming Hub."), AutoSize = true, Padding = new Padding(P(12), P(4), 0, 0) } });
+                new Label { Text = L.T("Flato3D로 할 수 있는 평면 2D 후보입니다. 경로가 있어도 게임마다 시험이 필요합니다. 일반 입체 게임은 Geo Gaming Hub에서 다룹니다.",
+                                       "Flat 2D candidates Flato3D can do; each still needs testing. Ordinary stereo games are in Geo Gaming Hub."), AutoSize = true, Padding = new Padding(P(12), P(4), 0, 0) } });
             cands.View = View.Details;
             cands.FullRowSelect = true;
             cands.Dock = DockStyle.Fill;
@@ -417,7 +417,9 @@ namespace Flato3D
             {
                 string title = Json.Str(c, "title") ?? "";
                 if (f.Length > 0 && !title.ToLowerInvariant().Contains(f)) continue;
-                if (Json.Str(c, "kind") == "1") continue;   // ordinary stereo games: Geo Gaming Hub
+                // only what Flato3D can do: not ordinary stereo games (Geo Gaming Hub), not one-image / browser / D3D12-Vulkan
+                if (Json.Str(c, "kind") == "1" || Json.Str(c, "kind") == "4" ||
+                    new[] { "oneimage", "browser", "unsupported" }.Contains(Json.Str(c, "api"))) continue;
                 string api = Json.Str(c, "api") ?? "";
                 string route = api == "opengl" ? Route.Label(Route.OpenGL) : api == "opengl_alt" ? L.T("OpenGL (전환 필요)", "OpenGL (switch needed)") :
                                api == "d3d9" ? Route.Label(Route.D3D9) : api == "d3d11" ? Route.Label(Route.D3D11) :
