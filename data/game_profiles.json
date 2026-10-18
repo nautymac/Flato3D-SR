@@ -517,8 +517,8 @@
           "swap_interval": 1
         }
       },
-      "status": "working",
-      "verified_by_user": "2026-10-18 (seams gone, SR weaving; the user saved separation 32.9 and depth_screen 0.75 with Ctrl+F7)",
+      "status": "verified",
+      "verified_by_user": "2026-10-18 (play, SR weaving; seams gone; the user saved separation 32.9 and depth_screen 0.75 with Ctrl+F7)",
       "notes": [
         "Installed by the installer on the WineD3D Direct3D 11 route (renamed set + loader), feet rule from the candidate list, upscale on (no 4K).",
         "With upscale the game first showed 'not responding' and ignored clicks: the presentation window was made on WineD3D's render thread. Fixed in the wrapper (the window is made on the game window's thread).",
