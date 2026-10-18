@@ -22,7 +22,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 | Intravenous 2 | OpenGL (LÖVE) | 직접 | 그리는 순서 |
 | Guns, Gore and Cannoli 2 | Direct3D 11 (Unity) | WineD3D | 그리는 순서, draw마다 한 층 |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) | 직접 | 그리는 순서 (draw 단위) |
-| Machinarium | OpenGL 고정 기능 (`-ogl` 스위치) | 직접 | 그리는 순서 (텍스처 단위) |
+| Machinarium | OpenGL 고정 기능 (`-ogl` 스위치) | 직접 | feet (발 위치) |
 
 ## 동작 방식
 

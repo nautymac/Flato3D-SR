@@ -405,7 +405,7 @@
         },
         "Flat": {
           "enable": 1,
-          "rule": "order",
+          "rule": "feet",
           "depth_screen": 0.3
         },
         "Display": {
@@ -422,11 +422,12 @@
         "It clears only the stencil buffer between masked pieces (glClear(GL_STENCIL_BUFFER_BIT)); those clears do not start a new picture, or the scene collapsed into 2-3 layers.",
         "Renders at the native 4K: no upscale (PCGamingWiki's 'no 4K' is about the old Flash version).",
         "Steam asks how to start it (Machinarium / Play with DirectX 9 / Play with DirectX 12): choose the first entry. The other two were not tried.",
-        "Scenes are drawn as Flash shapes with bitmap fills; pieces of the background picture are drawn again later (walk-behinds). User report 2026-10-18 (tower scene): such a piece stood out as a rectangle. A fixed-function draw that maps the same texture onto the screen exactly as an earlier picture now joins that picture's layer, unless it covers something drawn on the picture since (the ground edge over the robot's feet stays in front)."
+        "Scenes are drawn as Flash shapes with bitmap fills; pieces of the background picture are drawn again later (walk-behinds). User report 2026-10-18 (tower scene): such a piece stood out as a rectangle. A fixed-function draw that maps the same texture onto the screen exactly as an earlier picture now joins that picture's layer, unless it covers something drawn on the picture since (the ground edge over the robot's feet stays in front).",
+        "Rule feet since 2026-10-18 (fixed-function feet rule, OGL3D-SR flato3d): the scene picture is the floor sloping back (+60 top .. -26 bottom px at separation 25), walk-behinds keep its slope, the robot's parts (shadow, legs, body, head: two textures) stand together at its feet (-2 px on its ledge), a thought bubble drawn over the robot is no farther than it, the inventory bar and its icons stay at the screen. Under the order rule the robot stood ~50 px in front of the ground it walks on."
       ],
       "known_issues": [
-        "Checked with dumps in the first scenes only; not played through yet.",
-        "Order rule: characters stand well in front of the painted ground they walk on (robot +12..20 px vs background +68 at separation 25); a feet rule for fixed-function draws would place them on the ground."
+        "Checked with dumps in the first scenes and the tower scene only; not played through yet.",
+        "Feet rule: tall pieces of the scene picture lean back with the floor slope (the towers); big foreground pieces reaching the screen bottom sit at sprite_min (-24 px) up to their top."
       ],
       "test": {
         "proc": "Machinarium",

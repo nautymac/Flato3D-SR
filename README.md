@@ -22,7 +22,7 @@ Status: early. Nine games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 | Intravenous 2 | OpenGL (LÖVE) | direct | drawing order |
 | Guns, Gore and Cannoli 2 | Direct3D 11 (Unity) | WineD3D | drawing order, one layer per draw |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB programs) | direct | drawing order (per draw) |
-| Machinarium | OpenGL fixed function (`-ogl` switch) | direct | drawing order (per texture) |
+| Machinarium | OpenGL fixed function (`-ogl` switch) | direct | feet |
 
 ## How it works
 
