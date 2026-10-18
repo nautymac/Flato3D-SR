@@ -221,10 +221,12 @@ namespace Flato3D
             var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
             var refresh = new Button { Text = L.T("새로 고침", "Refresh"), AutoSize = true };
             refresh.Click += (s, e) => Rescan();
-            var browse = new Button { Text = L.T("exe 직접 고르기...", "Choose an exe..."), AutoSize = true };
+            var browse = new Button { Text = L.T("게임 추가 (exe 고르기)...", "Add a game (choose its exe)..."), AutoSize = true };
             browse.Click += (s, e) => BrowseExe();
+            tips.SetToolTip(browse, L.T("목록에 없는 게임의 exe를 고르면 32/64비트와 경로를 판별합니다. 설치하면 목록에 나오고, [상태 보고]로 결과를 알려 주면 프로필이 만들어집니다.",
+                                        "Choose the exe of a game the list does not show: 32/64-bit and the route are detected. Installed, it shows in the list; [Report status] turns it into a profile."));
             top.Controls.AddRange(new Control[] { refresh, browse, new Label { AutoSize = true, Padding = new Padding(P(10), P(6), 0, 0), ForeColor = Theme.Dim,
-                Text = L.T("Flato3D로 할 수 있는 평면 2D 게임만 나옵니다. 목록에 없는 게임은 exe를 직접 고르세요.", "Only flat 2D games Flato3D can do are listed; for others choose the exe.") } });
+                Text = L.T("Flato3D로 할 수 있는 평면 2D 게임만 나옵니다. 목록에 없는 게임은 [게임 추가]로 exe를 고르세요.", "Only flat 2D games Flato3D can do are listed; add others with [Add a game].") } });
 
             games.View = View.Details;
             games.FullRowSelect = true;
@@ -500,21 +502,33 @@ namespace Flato3D
         void BrowseExe()
         {
             using (var d = new OpenFileDialog { Filter = L.T("실행 파일|*.exe", "Executables|*.exe") })
+                if (d.ShowDialog(this) == DialogResult.OK) OpenExe(d.FileName);
+        }
+
+        // "Change exe": another exe of the selected game, or (nothing selected, or a file from another
+        // folder) any game's exe - also games the list leaves out.
+        void ChangeExe()
+        {
+            string start = current != null && Directory.Exists(current.Dir) ? current.Dir : "";
+            using (var d = new OpenFileDialog { Filter = L.T("실행 파일|*.exe", "Executables|*.exe"), InitialDirectory = start })
             {
                 if (d.ShowDialog(this) != DialogResult.OK) return;
-                string dir = Path.GetDirectoryName(d.FileName);
-                var g = all.FirstOrDefault(x => d.FileName.StartsWith(x.Dir.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase))
-                        ?? new Game { Title = Path.GetFileName(dir), Store = "", Dir = dir };
-                if (g.Profile == null && g.Candidate == null) Library.Match(g);
-                ShowGame(g, d.FileName);
+                if (current != null && d.FileName.StartsWith(current.Dir.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase)) ShowGame(current, d.FileName);
+                else OpenExe(d.FileName);
             }
         }
 
-        void ChangeExe()
+        // The game an exe belongs to (a scanned one, or a new entry named after its folder), selected in the
+        // list when the list shows it.
+        void OpenExe(string file)
         {
-            if (current == null) return;
-            using (var d = new OpenFileDialog { Filter = L.T("실행 파일|*.exe", "Executables|*.exe"), InitialDirectory = current.Dir })
-                if (d.ShowDialog(this) == DialogResult.OK) ShowGame(current, d.FileName);
+            string dir = Path.GetDirectoryName(file);
+            var g = all.FirstOrDefault(x => file.StartsWith(x.Dir.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase))
+                    ?? new Game { Title = Path.GetFileName(dir), Store = "", Dir = dir };
+            if (g.Profile == null && g.Candidate == null) Library.Match(g);
+            foreach (ListViewItem it in games.Items)
+                if (it.Tag == g) { it.Selected = true; it.EnsureVisible(); }
+            ShowGame(g, file);
         }
 
         void DoInstall()

@@ -5,7 +5,8 @@ https://github.com/nautymac/Flato3D-SR
 1. 이 폴더를 아무 곳에나 풀고 Flato3DInstaller.exe를 실행합니다. 폴더 구성은 바꾸지 마세요.
 2. 게임 탭에서 게임을 고르면 32/64비트, 경로(OpenGL / Direct3D → WineD3D), 깊이 방식, 출력, 업스케일이
    게임 정보(확인된 프로필, PCGamingWiki의 4K 지원 여부, exe, 이 PC의 SR 런타임)로 미리 골라지고, 그 근거가 표시됩니다.
-   목록에 없는 게임은 [exe 직접 고르기]로 고릅니다.
+   목록에는 Flato3D로 할 수 있는 게임만 나옵니다. 목록에 없는 게임은 [게임 추가 (exe 고르기)]로 exe를 고릅니다.
+   설치하면 목록에 계속 나오고, 해 본 뒤 [상태 보고]를 하면 프로필로 만들어집니다.
 3. 출력(SR 디스플레이(Acer, Samsung) / 좌우 SBS / 위아래)과 분리값을 정하고 [설치]를 누릅니다.
    게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 [업스케일]을 켜고, 게임은 1920×1080으로 둡니다.
 4. 게임을 평소처럼 실행합니다. Ctrl+F3/F4 분리값, Ctrl+F5/F6 화면 위치, Ctrl+F7 저장, Ctrl+T 3D 켜기/끄기.
@@ -31,7 +32,8 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
 2. Choose a game on the Games tab: 32/64-bit, the route (OpenGL / Direct3D -> WineD3D), the depth rule, the output and
    upscale are pre-selected from what is known about the game (tested profile, PCGamingWiki 4K support, the exe, the SR
    runtime on this PC), with the reason shown for each.
-   Games not in the list: [Choose an exe...].
+   Only games Flato3D can do are listed. Other games: [Add a game (choose its exe)...]; once installed they stay in
+   the list, and a [Report status] after playing turns them into a profile.
 3. Pick the output (SR display (Acer, Samsung) / side by side / top and bottom) and the separation, then [Install].
    If the game cannot use the native resolution (e.g. 4K) or its text is too small, tick [Upscale] and set the game to 1920x1080.
 4. Start the game as usual. Ctrl+F3/F4 separation, Ctrl+F5/F6 screen plane, Ctrl+F7 save, Ctrl+T 3D on/off.

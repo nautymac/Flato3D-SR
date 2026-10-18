@@ -53,7 +53,7 @@ Clone with `git clone --recursive https://github.com/nautymac/Flato3D-SR`.
 
 Download the package from the releases page, unpack it anywhere and run `Flato3DInstaller.exe` (Windows 10/11, .NET Framework 4.x, which Windows includes).
 
-1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Green ones have a tested profile; the others show what the candidate list expects. Games not listed: **Choose an exe...**.
+1. The **Games** tab lists the games installed through Steam and Heroic (Epic, GOG). Teal ones have a tested profile; the others show what the candidate list expects. Only games Flato3D can do are listed. A game that is not listed (another store, a standalone install, a game the survey missed): **Add a game (choose its exe)...**. Once installed it stays in the list, and a **Report status** after playing turns it into a profile.
 2. Choosing a game detects 32/64-bit and the route (OpenGL, or Direct3D 8/9 or 10/11 through WineD3D) from the exe. The depth rule, the output and upscale are pre-selected from what is known about the game, with the reason shown:
    - route: Unity games by the API their last run reported (Unity's player imports OpenGL but renders with Direct3D 11 by default)
    - depth rule: the profile, else the candidate list's genre (adventure: feet, others: drawing order; Unity: a layer per draw)
