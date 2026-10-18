@@ -63,6 +63,14 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
 5. Something wrong? Press **Report problem** and describe it. Add screenshots as files or with Ctrl+V (recent captures are listed to tick); they go into one folder with the logs, the settings and the last Ctrl+F12 dump, and a [GitHub issue](https://github.com/nautymac/Flato3D-SR/issues) page can be opened: drag the zip it made into the issue.
 
+### Good to know
+
+- **Only NVIDIA GPUs are supported.** On Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets Windows' graphics setting for the game to the NVIDIA GPU (high performance); uninstall puts it back.
+- **Windows Defender false positive:** Defender may flag the loader for Direct3D games (`version.dll`) as malware (e.g. `Trojan:Win32/Cloxer`). It sends the DLLs the game loads to WineD3D and is not malware (its source is `loader/` in this repository).
+  - When it is blocked there is no 3D, and the installer shows "version.dll missing".
+  - Choose the game in the installer and press **Defender exclusion** to exclude that game's `version.dll` only (Windows asks for permission). If it was already quarantined, press **Install** again.
+  - **Uninstall** offers to remove the exclusion. With another antivirus, exclude the same file there.
+
 The **Candidate list** tab shows the 448 flat 2D candidates with their route.
 
 Hotkeys:

@@ -251,6 +251,8 @@
 - **프레임 3 멈춤:** 자동 실행에서 가끔 생깁니다. 한 번 더 실행합니다(재시도 반복문 사용).
 - **덤프 크기:** 4K 덤프는 장당 16MB입니다. 끝나면 지웁니다.
 - **세이브:** 플레이 테스트 전에 백업하고, 끝나면 되돌립니다. Steam Cloud는 로컬 변경을 올리므로 따로 처리할 필요가 없었습니다.
+- **Defender 오탐 (2026-10-18~):** x64 로더 `version.dll`이 `Trojan:Win32/Cloxer`로 진단되어 격리됩니다(클라우드 판정이라 다시 빌드해도 곧 다시 걸림, x86은 아직 아님). 이 PC는 로더 경로들(`loader\bin`, `dist`, pre-release의 `loader`와 zip, WineD3D 게임들의 `version.dll`)을 예외로 등록했습니다. 새 게임에 설치하면 그 `version.dll`도 설치기의 **Defender 예외**로 등록해야 합니다. 증상: 설치기에 "version.dll 없음", 게임은 평면.
+- **GPU:** NVIDIA에서만 보장합니다. Intel GPU에서는 셰이더가 깨진 적이 있습니다. 하이브리드 노트북은 설치기가 `HKCU\Software\Microsoft\DirectX\UserGpuPreferences`에 `GpuPreference=2;`를 기록합니다.
 - **측정 중 값이 바뀜:** 덤프 로그의 `separation N%`가 ini 값과 다르면 누군가 Ctrl+F3/F4를 눌렀습니다(`separation ... flat screen depth` 줄). 측정값은 그 분리값으로 환산합니다.
 - **데스크탑에 위빙이 남음:** SR 렌즈를 켠 게임이 끄지 않고 종료하면 렌즈가 켜진 채 남습니다. 새 프로그램의 렌즈 끄기나 SRSession 재시작으로는 안 풀리고, `Restart-Service 'SR Service'`(관리자)로 풉니다.
 - **알려진 미해결:** 캐릭터가 바닥 앞에 뜸, 저해상도 캐시의 거친 깊이 단계, 합쳐진 그림 안의 밝은 인물, 프레임 3 멈춤.

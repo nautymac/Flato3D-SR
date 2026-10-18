@@ -14,6 +14,14 @@ https://github.com/nautymac/Flato3D-SR
 6. 문제가 있으면 [이상 로그]를 누르고 증상을 적습니다. 로그와 설정이 한 폴더에 모이고, 원하면 GitHub 문제 보고 페이지가 열립니다.
    문제 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다.
    스크린샷은 [파일 추가]나 Ctrl+V(Win+Shift+S로 캡처한 것)로 넣고, 최근 캡처는 목록에서 체크합니다.
+알아 둘 것
+- NVIDIA GPU에서만 동작을 보장합니다. Intel GPU에서는 셰이더가 깨진 적이 있습니다. NVIDIA와 다른 GPU가 함께 있는
+  노트북은 설치할 때 게임을 NVIDIA GPU(고성능)로 실행하도록 Windows 그래픽 설정을 바꾸고, 제거하면 되돌립니다.
+- Windows Defender가 Direct3D 게임용 로더(version.dll)를 바이러스로 잘못 진단할 수 있습니다(예: Trojan:Win32/Cloxer).
+  게임이 불러오는 DLL을 WineD3D로 돌리는 방식 때문이며 악성 코드가 아닙니다(소스: github.com/nautymac/Flato3D-SR).
+  막히면 3D가 나오지 않습니다. 설치기에서 그 게임을 고르고 [Defender 예외]를 누르면 그 version.dll만 예외로 등록합니다
+  (관리자 권한 확인). 이미 격리됐다면 그 뒤 [설치]를 다시 누릅니다. [제거]할 때 예외도 지울 수 있습니다.
+  다른 백신을 쓰면 그 백신에서 게임 폴더의 version.dll을 예외로 등록하세요.
 초록색 게임은 확인된 설정(프로필)이 있습니다. 다른 게임은 기본 설정으로 시도하며, 게임마다 결과가 다를 수 있습니다.
 Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에뮬레이터)은 이 방법으로 할 수 없습니다.
 
@@ -31,6 +39,14 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
 6. Something wrong? Press [Report problem] and describe it: logs and settings are collected in one folder, and a GitHub
    issue page can be opened. Press Ctrl+F12 in game at the problem scene first to include both eyes.
    Add screenshots with [Add files...] or Ctrl+V (a Win+Shift+S capture); recent captures are listed to tick.
+Good to know
+- Only NVIDIA GPUs are supported; on Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets
+  Windows' graphics setting for the game to the NVIDIA GPU (high performance); uninstall puts it back.
+- Windows Defender may wrongly flag the loader for Direct3D games (version.dll) as malware (e.g. Trojan:Win32/Cloxer).
+  It sends the DLLs the game loads to WineD3D and is not malware (source: github.com/nautymac/Flato3D-SR). When it is
+  blocked there is no 3D: choose the game in the installer and press [Defender exclusion] to exclude that version.dll
+  only (Windows asks for permission); if it was already quarantined, press [Install] again. [Uninstall] offers to remove
+  the exclusion. With another antivirus, exclude the game folder's version.dll there.
 Green games have a tested profile; others are tried with default settings and results vary per game.
 Direct3D 12, Vulkan and games that output one finished image (DOSBox, ScummVM, emulators) are not possible this way.
 

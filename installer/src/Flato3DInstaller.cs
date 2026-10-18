@@ -119,7 +119,7 @@ namespace Flato3D
         readonly Label info = new Label();
         readonly ComboBox routeBox = new ComboBox(), outputBox = new ComboBox();
         readonly NumericUpDown sepBox = new NumericUpDown();
-        readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button(), reportBtn = new Button();
+        readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button(), reportBtn = new Button(), defenderBtn = new Button();
         List<Game> all = new List<Game>();
         Game current;
         string currentExe;
@@ -216,8 +216,12 @@ namespace Flato3D
             logBtn.Text = L.T("로그 보기", "Show log");
             reportBtn.Text = L.T("이상 로그", "Report problem");
             tips.SetToolTip(reportBtn, L.T("이 게임의 문제를 로그, 설정과 함께 보고합니다.", "Report a problem with this game, with its logs and settings."));
-            foreach (var b in new[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn }) { b.AutoSize = true; b.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(b); }
+            defenderBtn.Text = L.T("Defender 예외", "Defender exclusion");
+            tips.SetToolTip(defenderBtn, L.T("Windows Defender가 Flato3D 로더(version.dll)를 잘못 막을 때, 이 게임의 version.dll만 예외로 등록합니다.",
+                                             "When Windows Defender wrongly blocks the Flato3D loader (version.dll), exclude this game's version.dll only."));
+            foreach (var b in new[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn, defenderBtn }) { b.AutoSize = true; b.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(b); }
             reportBtn.Click += (s, e) => DoReport();
+            defenderBtn.Click += (s, e) => DoDefender();
             installBtn.Click += (s, e) => DoInstall();
             removeBtn.Click += (s, e) => DoUninstall();
             runBtn.Click += (s, e) => DoRun();
@@ -279,6 +283,14 @@ namespace Flato3D
                 L.T("  Direct3D 8~11 게임: WineD3D가 OpenGL로 바꾸고, version.dll 로더가 게임을 WineD3D로 보냅니다.", "  Direct3D 8-11 games: WineD3D turns them into OpenGL; the version.dll loader sends the game there."),
                 L.T("  Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에뮬레이터)은 할 수 없습니다.", "  Direct3D 12, Vulkan and games that output one finished image (DOSBox, ScummVM, emulators) are not possible."),
                 L.T("  원근이 있는 일반 입체 게임(2.5D, 3D)은 여기서 다루지 않습니다. Geo Gaming Hub에서 설치합니다.", "  Games with real depth (2.5D, 3D) are not done here: install them with Geo Gaming Hub."),
+                "",
+                L.T("알아 둘 것", "Good to know"),
+                L.T("  NVIDIA GPU에서만 동작을 보장합니다. Intel GPU에서는 셰이더가 깨진 적이 있습니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU로 실행하도록 설정합니다.",
+                    "  Only NVIDIA GPUs are supported; on Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets the game to run on the NVIDIA GPU."),
+                L.T("  Windows Defender가 Direct3D 게임용 로더(version.dll)를 바이러스로 잘못 진단할 수 있습니다(예: Trojan:Win32/Cloxer). 악성 코드가 아니며, 막히면 3D가 나오지 않습니다.",
+                    "  Windows Defender may wrongly flag the loader for Direct3D games (version.dll) as malware (e.g. Trojan:Win32/Cloxer). It is not; when blocked there is no 3D."),
+                L.T("    [Defender 예외]를 누르면 그 게임의 version.dll만 예외로 등록합니다(관리자 권한 확인). 제거할 때 예외도 지울 수 있습니다.",
+                    "    [Defender exclusion] adds that game's version.dll only (Windows asks for permission); uninstalling offers to remove it."),
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
                 L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
                 L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
@@ -377,9 +389,13 @@ namespace Flato3D
             foreach (var n in Json.Arr(g.Profile, "known_issues").Take(2)) sb.AppendLine("• " + n);
             if (g.Profile == null && Json.Str(g.Candidate, "note") is string note && note.Length > 0) sb.AppendLine("• " + note);
             foreach (var n in Json.Arr(g.Profile, "remove")) sb.AppendLine(L.T("• 설치 때 옮겨 둠: ", "• moved aside on install: ") + n);
+            if (Gpu.Known && !Gpu.Nvidia) sb.AppendLine("⚠ " + Gpu.Warning());
             info.Text = sb.ToString();
             EnableActions(currentExe != null);
             reportBtn.Enabled = true;   // also when the exe was not found or the game cannot be done
+            // the loader is only installed on the WineD3D routes
+            defenderBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName)) &&
+                                  r != Route.OpenGL && r != Route.None;
             installBtn.Enabled = currentExe != null && r != Route.None;
             removeBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName));
         }
@@ -563,8 +579,34 @@ namespace Flato3D
         {
             if (current == null || currentExe == null) return;
             if (MessageBox.Show(this, L.T("Flato3D를 이 게임에서 제거하고 원래 파일을 되돌릴까요?", "Remove Flato3D from this game and restore the original files?"), Text, MessageBoxButtons.OKCancel) != DialogResult.OK) return;
-            try { logBox.Text = Setup.Uninstall(Path.GetDirectoryName(currentExe)).Replace("\n", "\r\n"); }
+            string dir = Path.GetDirectoryName(currentExe);
+            var exclusions = Setup.DefenderExclusions(dir);
+            try { logBox.Text = Setup.Uninstall(dir).Replace("\n", "\r\n"); }
             catch (Exception e) { logBox.Text = L.T("제거 실패: ", "Uninstall failed: ") + e.Message; }
+            if (exclusions.Count > 0 &&
+                MessageBox.Show(this, L.T("이 게임에 등록한 Defender 예외도 지울까요?\r\n", "Also remove the Defender exclusion added for this game?\r\n") + string.Join("\r\n", exclusions),
+                                Text, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                foreach (string p in exclusions)
+                    logBox.AppendText("\r\n" + (Defender.Exclude(p, false) ? L.T("Defender 예외 지움: ", "Defender exclusion removed: ") : L.T("Defender 예외를 지우지 못함: ", "Could not remove the Defender exclusion: ")) + p);
+            RefreshGame(current);
+        }
+
+        void DoDefender()
+        {
+            if (current == null || currentExe == null) return;
+            string dir = Path.GetDirectoryName(currentExe), dll = Path.Combine(dir, "version.dll");
+            if (MessageBox.Show(this, Defender.Notice() + "\r\n\r\n" +
+                                L.T("다음 파일을 Windows Defender 예외로 등록할까요? 관리자 권한 확인 창이 뜹니다.\r\n", "Add this file to the Windows Defender exclusions? Windows will ask for permission.\r\n") + dll,
+                                Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Information) != DialogResult.OK) return;
+            if (Defender.Exclude(dll, true))
+            {
+                Setup.RecordDefender(dir, dll, true);
+                logBox.Text = L.T("Defender 예외 등록: ", "Defender exclusion added: ") + dll + "\r\n" +
+                              (Defender.Readable(dll) ? "" : L.T("version.dll이 이미 격리되었습니다. [설치]를 다시 누르세요.", "version.dll was already quarantined: press [Install] again."));
+            }
+            else
+                logBox.Text = L.T("Defender 예외를 등록하지 못했습니다. 권한 확인을 취소했거나 다른 백신을 쓰는 경우입니다. 그 백신에서 이 파일을 예외로 등록하세요: ",
+                                  "Could not add the Defender exclusion: the permission prompt was declined, or another antivirus is active. Exclude this file there: ") + dll;
             RefreshGame(current);
         }
 

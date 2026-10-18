@@ -29,7 +29,15 @@ namespace Flato3D
         public static string Status(string exeDir)
         {
             if (exeDir == null) return "";
-            if (File.Exists(Path.Combine(exeDir, ManifestName))) return L.T("설치됨", "installed");
+            var man = LoadManifest(exeDir);
+            if (man != null)
+            {
+                // the loader gone or unreadable: an antivirus quarantined or blocked it
+                bool loader = Json.Arr(man, "added").Any(a => string.Equals((string)a, "version.dll", StringComparison.OrdinalIgnoreCase));
+                if (loader && !Defender.Readable(Path.Combine(exeDir, "version.dll")))
+                    return L.T("설치됨 (version.dll 없음: 백신이 막았을 수 있음)", "installed (version.dll missing: an antivirus may have blocked it)");
+                return L.T("설치됨", "installed");
+            }
             string gl = Path.Combine(exeDir, "opengl32.dll");
             if (File.Exists(gl) && Pe.HasAscii(gl, "OGL3D"))
             {
@@ -175,6 +183,26 @@ namespace Flato3D
                 log.AppendLine(L.T("레지스트리: ", "registry: ") + key + " " + name + " = " + Json.Str(e, "value"));
             }
 
+            // laptops with an NVIDIA GPU next to another one: the game runs on the NVIDIA GPU (Windows graphics
+            // setting "high performance"), the only GPU Flato3D is supported on
+            const string gpuKey = @"HKCU\Software\Microsoft\DirectX\UserGpuPreferences";
+            if (Gpu.Hybrid && !regs.Any(x => Json.Str((Dictionary<string, object>)x, "key") == gpuKey && Json.Str((Dictionary<string, object>)x, "name") == exe))
+                using (var k = Registry.CurrentUser.CreateSubKey(gpuKey.Substring(5)))
+                {
+                    object old = k.GetValue(exe);
+                    regs.Add(new Dictionary<string, object> { { "key", gpuKey }, { "name", exe }, { "type", "sz" }, { "old", old as string } });
+                    k.SetValue(exe, "GpuPreference=2;", RegistryValueKind.String);
+                    log.AppendLine(L.T("그래픽 설정: 이 게임은 NVIDIA GPU(고성능)로 실행", "graphics setting: this game runs on the NVIDIA GPU (high performance)"));
+                }
+            if (Gpu.Known && !Gpu.Nvidia) log.AppendLine(Gpu.Warning());
+            if (route != Route.OpenGL)
+            {
+                log.AppendLine(Defender.Notice());
+                if (!Defender.Readable(Path.Combine(dir, "version.dll")))
+                    log.AppendLine(L.T("경고: 백신이 version.dll을 막았습니다. [Defender 예외]를 누른 뒤 다시 설치하세요.",
+                                       "Warning: an antivirus blocked version.dll. Press [Defender exclusion], then install again."));
+            }
+
             man["version"] = 1;
             man["date"] = DateTime.Now.ToString("s");
             man["game"] = g.Title;
@@ -216,6 +244,7 @@ namespace Flato3D
                 {
                     if (k == null) continue;
                     if (old == null) k.DeleteValue(name, false);
+                    else if (Json.Str(e, "type") == "sz") k.SetValue(name, old, RegistryValueKind.String);
                     else k.SetValue(name, Convert.ToInt32(old, CultureInfo.InvariantCulture), RegistryValueKind.DWord);
                 }
                 log.AppendLine(L.T("레지스트리 되돌림: ", "registry restored: ") + key + " " + name);
@@ -223,6 +252,23 @@ namespace Flato3D
             File.Delete(Path.Combine(exeDir, ManifestName));
             log.AppendLine(L.T("제거 완료", "uninstalled"));
             return log.ToString();
+        }
+
+        // Defender exclusions added for the game (removed again on request when uninstalling)
+        public static List<string> DefenderExclusions(string dir)
+        {
+            return Json.Arr(LoadManifest(dir), "defender").Select(x => (string)x).ToList();
+        }
+
+        public static void RecordDefender(string dir, string path, bool add)
+        {
+            var man = LoadManifest(dir);
+            if (man == null) return;
+            var list = DefenderExclusions(dir);
+            list.RemoveAll(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase));
+            if (add) list.Add(path);
+            man["defender"] = list.Cast<object>().ToList();
+            File.WriteAllText(Path.Combine(dir, ManifestName), Json.Dump(man), new UTF8Encoding(false));
         }
 
         static Dictionary<string, object> LoadManifest(string dir)

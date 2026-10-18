@@ -105,6 +105,10 @@ namespace Flato3D
                          " (" + AppDomain.CurrentDomain.BaseDirectory + ")");
             s.AppendLine("windows: " + WindowsVersion());
             s.AppendLine("SR runtime: " + (Recommend.SrRuntime() ? "yes" : "no"));
+            s.AppendLine("GPU: " + (Gpu.Known ? string.Join(" | ", Gpu.Names()) : "?") + (Gpu.Hybrid ? " (hybrid)" : ""));
+            if (gameDir != null && File.Exists(Path.Combine(gameDir, "version.dll")))
+                s.AppendLine("loader version.dll: " + (Defender.Readable(Path.Combine(gameDir, "version.dll")) ? "readable" : "BLOCKED (antivirus?)") +
+                             " | Defender exclusions recorded: " + string.Join(", ", Setup.DefenderExclusions(gameDir)));
             int shot = 0;
             foreach (string img in screenshots ?? Enumerable.Empty<string>())
             {
