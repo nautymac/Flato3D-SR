@@ -185,6 +185,7 @@
 | 화면 전체가 평면이고 로그에 `shaders injected 0` | GLSL이 아니라 ARB 어셈블리 프로그램(Cg arbvp1) 또는 고정 기능으로 그림 | ARB는 자동 처리(로그 `ARB vertex program N rewritten`). draw 기록에 `(arbvp)`가 보이면 적용된 것. 고정 기능은 `fixed_function = 1`(기본)이면 정사영 draw의 투영 행렬을 층마다 옮김(Machinarium) |
 | 장면이 2~3층으로 뭉치고 `layout events` 줄에 `scratch targets: fbNxK` | 한 프레임에 같은 버퍼를 여러 번 지워 임시 버퍼로 판정됨 | 색까지 지울 때만 셈(스텐실만 지우는 마스크는 제외, Machinarium), 최종 화면(root)은 임시 버퍼로 보지 않음(Rocketbirds는 HUD가 보이는 프레임에서 뭉쳤음) (수정됨) |
 | 배경의 일부가 직사각형으로 잘려 앞에 뜸 | 배경 그림 일부를 나중에 다시 그리는 가림막(walk-behind)이 그리는 순서대로 앞으로 나옴 | 고정 기능: 앞서 그린 그림과 같은 텍스처를 같은 위치 대응으로 다시 그리면 그 그림의 층(추적 기록 `(repeats an earlier picture)`). 그사이 그린 물체를 덮는 조각은 앞에 남김(수정됨, Machinarium). 셰이더 경로는 아직 없음 |
+| 업스케일을 켠 Direct3D(WineD3D) 게임이 "응답하지 않습니다"가 뜨고 클릭이 안 먹음 | 표시 창이 WineD3D 렌더링 스레드에 만들어져 메시지를 처리하는 곳이 없고, `HTTRANSPARENT`가 다른 스레드의 게임 창으로 마우스를 넘기지 못함 | 표시 창을 게임 창의 스레드에서 만듦(로그 `window made there`)(수정됨, Samorost 2) |
 | exe가 Direct3D 12/9를 쓰는데 OpenGL 모드가 따로 있음 | 실행 스위치(`-ogl` 등)를 Steam이 넘기지 않음 | `[Inject] add_args = -ogl`: 게임이 명령줄을 읽기 전에 붙임. 로그 `command line: "-ogl" appended` 확인(Machinarium) |
 | ARB 프로그램인데 모든 draw가 화면 깊이 | 프로그램이 읽는 유닛을 몰라 남은 렌더 타깃을 보고 합성으로 판정, 또는 패스마다 viewport를 걸어 UI 묶음으로 판정 | 조각 프로그램의 `texture[n]`으로 유닛 판별(수정됨), `screen_batch = 0` |
 | 위빙 화면에 가로줄(티어링) | 게임이 수직동기화를 끔 | `swap_interval = 1` |
