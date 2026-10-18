@@ -29,10 +29,30 @@ namespace Flato3D
                 MessageBox.Show(msg, "Flato3D-SR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 2;
             }
-            if (args.Length > 0) return Cli(args);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            if (args.Length > 1 && args[0] == "--screenshot") return Screenshot(args[1], args.Length > 2 ? args[2] : null);
+            if (args.Length > 0) return Cli(args);
             Application.Run(new MainForm());
+            return 0;
+        }
+
+        // Renders the main window off-screen into a PNG (checking the look without taking the user's screen);
+        // game: title of the game to select first.
+        static int Screenshot(string png, string game)
+        {
+            using (var f = new MainForm { StartPosition = FormStartPosition.Manual, Location = new Point(-30000, -30000), ShowInTaskbar = false })
+            {
+                f.Show();
+                Application.DoEvents();
+                f.SelectForScreenshot(game);
+                Application.DoEvents();
+                using (var bmp = new Bitmap(f.Width, f.Height))
+                {
+                    f.DrawToBitmap(bmp, new Rectangle(0, 0, f.Width, f.Height));
+                    bmp.Save(png, System.Drawing.Imaging.ImageFormat.Png);
+                }
+            }
             return 0;
         }
 
@@ -140,20 +160,63 @@ namespace Flato3D
             ClientSize = new Size(P(1180), P(780));
             MinimumSize = new Size(P(900), P(600));
             try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } catch { }
+            BackColor = Theme.Bg;
+            ForeColor = Theme.Text;
+            Theme.TitleBar(this);
 
-            var tabs = new TabControl { Dock = DockStyle.Fill };
-            var t1 = new TabPage(L.T("게임", "Games"));
-            var t2 = new TabPage(L.T("후보 목록", "Candidate list"));
-            var t3 = new TabPage(L.T("도움말", "Help"));
-            tabs.TabPages.AddRange(new[] { t1, t2, t3 });
-            Controls.Add(tabs);
+            var t1 = new Panel { Dock = DockStyle.Fill };
+            var t2 = new Panel { Dock = DockStyle.Fill };
+            var t3 = new Panel { Dock = DockStyle.Fill };
+            var pages = new Panel { Dock = DockStyle.Fill, Padding = new Padding(P(6)) };
+            pages.Controls.AddRange(new Control[] { t1, t2, t3 });
+            Controls.Add(pages);
+            Controls.Add(BuildHeader(new[] { L.T("게임", "Games"), L.T("후보 목록", "Candidate list"), L.T("도움말", "Help") }, new Control[] { t1, t2, t3 }));
             BuildGamesTab(t1);
             BuildCandidatesTab(t2);
             BuildHelpTab(t3);
+            Theme.Primary(installBtn);
+            Theme.Apply(this);
             Shown += (s, e) => Rescan();
         }
 
-        void BuildGamesTab(TabPage t)
+        // Header bar in the icon's colours: the icon, "Flato" in coral and "3D" in teal, then the pages as tabs
+        // (the active one underlined in coral). Replaces the system tab control, which cannot be coloured.
+        Control BuildHeader(string[] names, Control[] pages)
+        {
+            var bar = new FlowLayoutPanel { Dock = DockStyle.Top, Height = P(50), WrapContents = false, BackColor = Theme.Header, Padding = new Padding(P(12), 0, 0, 0) };
+            var logo = new PictureBox { Size = new Size(P(32), P(32)), SizeMode = PictureBoxSizeMode.Zoom, Margin = new Padding(0, P(9), P(8), 0), Image = Theme.AppIcon(P(32)),
+                                        BackColor = Theme.Header };
+            var name = new Theme.Wordmark(new Font("Segoe UI Semibold", 14f)) { Margin = new Padding(0, P(12), P(30), 0) };
+            bar.Controls.AddRange(new Control[] { logo, name });
+            var tabs = new List<Label>();
+            Action<int> select = i =>
+            {
+                for (int k = 0; k < pages.Length; ++k)
+                {
+                    pages[k].Visible = k == i;
+                    tabs[k].ForeColor = k == i ? Theme.Text : Theme.Dim;
+                    tabs[k].Invalidate();
+                }
+            };
+            for (int i = 0; i < names.Length; ++i)
+            {
+                int idx = i;
+                var t = new Label { Text = names[i], AutoSize = true, Font = new Font("Segoe UI", 10.5f), Padding = new Padding(P(10), P(15), P(10), P(11)),
+                                    Margin = new Padding(0), Cursor = Cursors.Hand, ForeColor = Theme.Dim };
+                t.Click += (s, e) => select(idx);
+                t.Paint += (s, e) =>
+                {
+                    if (!pages[idx].Visible) return;
+                    using (var b = new SolidBrush(Theme.Coral)) e.Graphics.FillRectangle(b, P(8), t.Height - P(3), t.Width - P(16), P(3));
+                };
+                tabs.Add(t);
+                bar.Controls.Add(t);
+            }
+            select(0);
+            return bar;
+        }
+
+        void BuildGamesTab(Control t)
         {
             var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
             onlyKnown.Text = L.T("Flato3D 대상만 보기 (프로필·후보)", "Only Flato3D games (profiles, candidates)");
@@ -253,7 +316,7 @@ namespace Flato3D
             EnableActions(false);
         }
 
-        void BuildCandidatesTab(TabPage t)
+        void BuildCandidatesTab(Control t)
         {
             var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
             candFilter.Width = P(300);
@@ -275,7 +338,7 @@ namespace Flato3D
             FillCandidates();
         }
 
-        void BuildHelpTab(TabPage t)
+        void BuildHelpTab(Control t)
         {
             var box = new TextBox { Multiline = true, ReadOnly = true, Dock = DockStyle.Fill, ScrollBars = ScrollBars.Vertical, Font = new Font("Segoe UI", 10f) };
             box.Text = string.Join("\r\n", new[] {
@@ -334,8 +397,8 @@ namespace Flato3D
                 if (onlyKnown.Checked && st == "" && inst == "") continue;
                 var it = new ListViewItem(new[] { g.Title, g.Store, st, inst, g.Dir }) { Tag = g };
                 if (mine != null) it.ForeColor = mine.Value;
-                else if (g.Profile != null) it.ForeColor = Color.DarkGreen;
-                else if (g.Candidate != null && new[] { "oneimage", "browser", "unsupported" }.Contains(Json.Str(g.Candidate, "api"))) it.ForeColor = Color.Gray;
+                else if (g.Profile != null) it.ForeColor = Theme.Profile;
+                else if (g.Candidate != null && new[] { "oneimage", "browser", "unsupported" }.Contains(Json.Str(g.Candidate, "api"))) it.ForeColor = Theme.Muted;
                 games.Items.Add(it);
             }
             games.EndUpdate();
@@ -579,6 +642,9 @@ namespace Flato3D
                 layout.Controls.Add(buttons, 0, 7);
                 f.Controls.Add(layout);
                 f.CancelButton = cancel;
+                Theme.TitleBar(f);
+                Theme.Primary(ok);
+                Theme.Apply(f);
                 if (f.ShowDialog(this) != DialogResult.OK) return;
                 string result = (string)radios.First(r => r.Checked).Tag;
                 try
@@ -645,6 +711,14 @@ namespace Flato3D
             catch (Exception e) { logBox.Text = e.Message; }
         }
 
+        // --screenshot: fills the list now (Shown does that in normal use) and selects the given game
+        public void SelectForScreenshot(string game)
+        {
+            Rescan();
+            foreach (ListViewItem it in games.Items)
+                if (game != null && it.Text.IndexOf(game, StringComparison.OrdinalIgnoreCase) >= 0) { it.Selected = true; it.EnsureVisible(); break; }
+        }
+
         // The status column: the user's own report for a game installed here (until it reaches the profile),
         // else what the profile / candidate list says.
         public static string StatusFor(Game g, string exe, out Color? color)
@@ -652,7 +726,7 @@ namespace Flato3D
             var us = Setup.UserStatus(exe == null ? null : Path.GetDirectoryName(exe));
             string r = Json.Str(us, "result");
             if (r == null) { color = null; return Library.StatusText(g); }
-            color = r == "works" ? Color.ForestGreen : r == "issues" ? Color.DarkOrange : Color.Firebrick;
+            color = r == "works" ? Theme.Works : r == "issues" ? Theme.Issues : Theme.Broken;
             return Report.ResultLabel(r) + L.T(" (내 확인 ", " (my check ") + Json.Str(us, "date") + ")";
         }
 
