@@ -57,6 +57,12 @@ namespace Flato3D
             return "";
         }
 
+        // Flato3D set up by hand (before the installer): OGL3D with a [Flat] section but no install record.
+        public static bool ManualInstall(string exeDir)
+        {
+            return exeDir != null && LoadManifest(exeDir) == null && Status(exeDir) == L.T("수동 설치 (기록 없음)", "manual install (no record)");
+        }
+
         // Files the route puts next to the exe: (source, name).
         static List<KeyValuePair<string, string>> Files(string route, string arch, HashSet<string> imports)
         {

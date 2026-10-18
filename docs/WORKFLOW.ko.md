@@ -182,7 +182,9 @@
 | 칸·그림 안의 인물이 평면 | 인물이 이미 한 장의 그림에 합쳐져 들어옴 | 인물이 어두운 실루엣이면 `silhouette`(그 셰이더에서 어두운 픽셀만 눈마다 옮김). 로그의 `silhouette depth: ... rewritten`, `shift N px` 확인. 밝은 인물은 미해결(AI 깊이) |
 | 깊이 단계가 거칢 | 저해상도 버퍼 픽셀 단위로만 이동 | 미해결(캐시를 크게 그리기 예정) |
 | `renamed vertex shader N failed to compile` (`'__'` 예약어 오류) | 밑줄로 시작하는 셰이더 출력 이름에 접두사를 붙여 `__`가 생김(LÖVE) | 밑줄로 시작하면 다른 접두사 사용(수정됨) |
-| 화면 전체가 평면이고 로그에 `shaders injected 0` | GLSL이 아니라 ARB 어셈블리 프로그램(Cg arbvp1) 또는 고정 기능으로 그림 | ARB는 자동 처리(로그 `ARB vertex program N rewritten`). draw 기록에 `(arbvp)`가 보이면 적용된 것 |
+| 화면 전체가 평면이고 로그에 `shaders injected 0` | GLSL이 아니라 ARB 어셈블리 프로그램(Cg arbvp1) 또는 고정 기능으로 그림 | ARB는 자동 처리(로그 `ARB vertex program N rewritten`). draw 기록에 `(arbvp)`가 보이면 적용된 것. 고정 기능은 `fixed_function = 1`(기본)이면 정사영 draw의 투영 행렬을 층마다 옮김(Machinarium) |
+| 장면이 2~3층으로 뭉치고 `layout events` 줄에 `scratch targets: fbNxK` | 한 프레임에 같은 버퍼를 여러 번 지워 임시 버퍼로 판정됨 | 색까지 지울 때만 셈(스텐실만 지우는 마스크는 제외, Machinarium), 최종 화면(root)은 임시 버퍼로 보지 않음(Rocketbirds는 HUD가 보이는 프레임에서 뭉쳤음) (수정됨) |
+| exe가 Direct3D 12/9를 쓰는데 OpenGL 모드가 따로 있음 | 실행 스위치(`-ogl` 등)를 Steam이 넘기지 않음 | `[Inject] add_args = -ogl`: 게임이 명령줄을 읽기 전에 붙임. 로그 `command line: "-ogl" appended` 확인(Machinarium) |
 | ARB 프로그램인데 모든 draw가 화면 깊이 | 프로그램이 읽는 유닛을 몰라 남은 렌더 타깃을 보고 합성으로 판정, 또는 패스마다 viewport를 걸어 UI 묶음으로 판정 | 조각 프로그램의 `texture[n]`으로 유닛 판별(수정됨), `screen_batch = 0` |
 | 위빙 화면에 가로줄(티어링) | 게임이 수직동기화를 끔 | `swap_interval = 1` |
 | 게임 기능이 단축키와 같이 켜짐 | 게임이 Ctrl을 무시하고 F키를 봄 | `swallow = 1`(기본) |

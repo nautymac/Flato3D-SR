@@ -84,16 +84,22 @@ namespace Flato3D
             }
         }
 
+        // The main action in coral; disabled it turns grey, or it would still look clickable.
         public static void Primary(Button b)
         {
             b.Tag = "primary";
             b.FlatStyle = FlatStyle.Flat;
-            b.FlatAppearance.BorderColor = Coral;
-            b.FlatAppearance.MouseOverBackColor = CoralHover;
-            b.FlatAppearance.MouseDownBackColor = Coral;
-            b.BackColor = Coral;
-            b.ForeColor = Color.White;
             b.UseVisualStyleBackColor = false;
+            Action paint = () =>
+            {
+                b.BackColor = b.Enabled ? Coral : Raised;
+                b.ForeColor = b.Enabled ? Color.White : Dim;
+                b.FlatAppearance.BorderColor = b.Enabled ? Coral : Border;
+                b.FlatAppearance.MouseOverBackColor = b.Enabled ? CoralHover : Raised;
+                b.FlatAppearance.MouseDownBackColor = b.Enabled ? Coral : Raised;
+            };
+            paint();
+            b.EnabledChanged += (s, e) => paint();
         }
 
         // Details view lists: dark header cells and rows, the selection in teal, the last column filling the width.

@@ -255,6 +255,8 @@ namespace Flato3D
             routeBox.DropDownStyle = ComboBoxStyle.DropDownList;
             routeBox.Width = P(230);
             foreach (string r in Routes) routeBox.Items.Add(Route.Label(r));
+            // a route chosen by hand overrides "not possible" (e.g. a game that takes an OpenGL switch)
+            routeBox.SelectionChangeCommitted += (s, e) => { if (currentExe != null) installBtn.Enabled = true; };
             outputBox.DropDownStyle = ComboBoxStyle.DropDownList;
             outputBox.Width = P(230);
             outputBox.Items.AddRange(new object[] { L.T("SR 디스플레이 (Acer, Samsung)", "SR display (Acer, Samsung)"), L.T("좌우 SBS", "Side by side"), L.T("위아래", "Top and bottom") });
@@ -291,7 +293,12 @@ namespace Flato3D
             removeBtn.Click += (s, e) => DoUninstall();
             runBtn.Click += (s, e) => DoRun();
             folderBtn.Click += (s, e) => { if (currentExe != null) Process.Start("explorer.exe", "\"" + Path.GetDirectoryName(currentExe) + "\""); };
-            logBtn.Click += (s, e) => { string f = currentExe == null ? null : Path.Combine(Path.GetDirectoryName(currentExe), "OGL3D.log"); if (f != null && File.Exists(f)) Process.Start("notepad.exe", "\"" + f + "\""); };
+            logBtn.Click += (s, e) =>
+            {
+                string f = currentExe == null ? null : Path.Combine(Path.GetDirectoryName(currentExe), "OGL3D.log");
+                if (f != null && File.Exists(f)) Process.Start("notepad.exe", "\"" + f + "\"");
+                else logBox.Text = L.T("로그(OGL3D.log)가 아직 없습니다. 설치한 뒤 게임을 한 번 실행하면 생깁니다.", "No log (OGL3D.log) yet: it appears once the game has run with Flato3D installed.");
+            };
 
             logBox.Multiline = true;
             logBox.ReadOnly = true;
@@ -436,7 +443,7 @@ namespace Flato3D
 
         void EnableActions(bool on)
         {
-            foreach (Control c in new Control[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn, routeBox, outputBox, sepBox, upscaleBox }) c.Enabled = on;
+            foreach (Control c in new Control[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn, defenderBtn, routeBox, outputBox, sepBox, upscaleBox }) c.Enabled = on;
         }
 
         void ShowGame(Game g, string exe)
@@ -466,12 +473,17 @@ namespace Flato3D
             if (g.Profile == null && Json.Str(g.Candidate, "note") is string note && note.Length > 0) sb.AppendLine("• " + note);
             foreach (var n in Json.Arr(g.Profile, "remove")) sb.AppendLine(L.T("• 설치 때 옮겨 둠: ", "• moved aside on install: ") + n);
             if (Gpu.Known && !Gpu.Nvidia) sb.AppendLine("⚠ " + Gpu.Warning());
+            // set up by hand before the installer: no record to undo, so [Uninstall] waits for one
+            if (currentExe != null && Setup.ManualInstall(Path.GetDirectoryName(currentExe)))
+                sb.AppendLine(L.T("• 설치 기록이 없어 [제거]가 꺼져 있습니다. [설치]를 한 번 누르면 기록이 생기고(지금 설정은 유지), 그다음부터 [제거]를 쓸 수 있습니다.",
+                                  "• No install record, so [Uninstall] is off: press [Install] once to create it (the current settings are kept), then [Uninstall] works."));
             info.Text = sb.ToString();
             EnableActions(currentExe != null);
             reportBtn.Enabled = true;   // also when the exe was not found or the game cannot be done
-            // the loader is only installed on the WineD3D routes
-            defenderBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName)) &&
-                                  r != Route.OpenGL && r != Route.None;
+            // the loader is only installed on the WineD3D routes (also by hand, before the installer: no record)
+            defenderBtn.Enabled = currentExe != null && r != Route.OpenGL && r != Route.None &&
+                                  (File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName)) ||
+                                   File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), "version.dll")));
             installBtn.Enabled = currentExe != null && r != Route.None;
             removeBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName));
         }

@@ -12,6 +12,7 @@
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
+| Machinarium | OpenGL 고정 기능 · 직접 (`-ogl` 스위치) | order (텍스처 단위) | 동작, 사용자 확인 전 | opengl32.dll x64, `[Inject] add_args = -ogl` |
 
 ## 게임별 메모
 
@@ -60,4 +61,12 @@
 **Rocketbirds: Hardboiled Chicken**: PSSG 엔진이 NVIDIA Cg로 셰이더를 ARB 어셈블리 프로그램(arbvp1/arbfp1)으로 컴파일합니다. GLSL이 하나도 없어 처음에는 평면이었습니다(로그 `shaders injected 0`). 래퍼가 이제 ARB 정점 프로그램을 고쳐 눈마다 위치를 옮기고, ARB 조각 프로그램이 읽는 텍스처 유닛을 알아냅니다. Cg를 GLSL로 바꾸는 방법(`cg_glsl = 1`)은 화면이 하얘져서 쓰지 않습니다. `screen_batch = 0`이 필요합니다.
 
 - 측정: 1장 제목 화면은 앞의 나무 실루엣이 가깝고 정글과 포스터 벽이 뒤에 있습니다. 첫 게임 화면(하역장)은 −28~+44px, 중간값 +24px입니다.
+- 장면을 화면에 그린 뒤 복사해 블룸을 거쳐 다시 그리므로, 한 프레임에 화면을 두 번 지웁니다. HUD가 보이는 프레임에서는 화면이 임시 버퍼로 판정돼 장면이 한 층으로 뭉쳤습니다(최종 화면은 임시 버퍼에서 빼서 고침). 고친 뒤 하역장(분리값 25): 먼 숲 +70, 덤불 +56, 잎 +28, 상자 +16, 캐릭터 +8px.
 - 남은 일: draw 단위 깊이만 있습니다(ARB 프로그램에는 지오메트리 셰이더가 없어 한 draw 안의 스프라이트를 나눌 수 없음). 사용자 확인이 필요합니다. 세이브는 게임 폴더의 `Save\`입니다.
+
+**Machinarium**: 2020년판(64비트)은 기본이 Direct3D 12이고 `-ogl`로 시작해야 OpenGL로 그립니다. Steam이 이 스위치를 넘기지 않아 `[Inject] add_args = -ogl`로 래퍼가 명령줄에 붙입니다(게임이 읽기 전에 GetCommandLine을 바꿈). Steam 실행 선택 창에서는 첫 항목(Machinarium 플레이)을 고릅니다. 다른 항목(Play with DirectX 9 / 12)은 확인하지 않았습니다.
+
+- OpenGL은 셰이더 없는 고정 기능입니다. 3840×2160 버퍼 하나에 정사영 스프라이트를 그리고 창으로 복사합니다. 래퍼가 draw마다 투영 행렬을 옮겨 텍스처 묶음마다 층을 줍니다(첫 장면 18~23층).
+- 가려진 조각을 그릴 때 스텐실만 지우는데(glClear(GL_STENCIL_BUFFER_BIT)), 이것을 장면 시작으로 보면 2~3층으로 뭉쳤습니다. 색을 지울 때만 셉니다(수정됨).
+- 측정(첫 장면 고철 더미, 분리값 25): 먼 고철 더미 +70, 중간 +64, 소품 +10~+26, 앞 고철 −6~−20, 위쪽 인벤토리 막대 −16px. 4K로 그리므로 업스케일은 끕니다.
+- 남은 일: 첫 장면들만 덤프로 봤습니다. 플레이와 사용자 확인이 필요합니다. 세이브는 Steam 클라우드(`userdata\<계정>\40700\remote\Machinarium.dat`)입니다.

@@ -384,6 +384,56 @@
       }
     },
     {
+      "id": "machinarium",
+      "name": "Machinarium",
+      "steam_appid": 40700,
+      "folder": "Machinarium",
+      "exe": "Machinarium.exe",
+      "arch": "x64",
+      "engine": "Amanita Design's own engine (2020 release; Machinarium_old_32bit_DX9.exe is the old Flash version)",
+      "api": "Direct3D 12 by default; OpenGL with the -ogl switch",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3
+        },
+        "Display": {
+          "upscale": 0
+        },
+        "Inject": {
+          "add_args": "-ogl"
+        }
+      },
+      "status": "working",
+      "notes": [
+        "The exe imports d3d12.dll and opengl32.dll; it draws with Direct3D 12 unless started with -ogl. Steam does not pass it, so OGL3D appends it ([Inject] add_args = -ogl, GetCommandLine redirected before the game reads it).",
+        "With -ogl it draws fixed-function OpenGL (no shaders): orthographic sprites into one 3840x2160 framebuffer, copied to the window. The fixed-function path offsets the projection per draw; layers follow the drawing order (18-23 texture groups in the first scenes: far scrap heap, middle, props, foreground, the inventory bar in front).",
+        "It clears only the stencil buffer between masked pieces (glClear(GL_STENCIL_BUFFER_BIT)); those clears do not start a new picture, or the scene collapsed into 2-3 layers.",
+        "Renders at the native 4K: no upscale (PCGamingWiki's 'no 4K' is about the old Flash version).",
+        "Steam asks how to start it (Machinarium / Play with DirectX 9 / Play with DirectX 12): choose the first entry. The other two were not tried."
+      ],
+      "known_issues": [
+        "Checked with dumps in the first scenes only; not played through yet."
+      ],
+      "test": {
+        "proc": "Machinarium",
+        "steps": "wait:28,click:1920:1080,wait:6,click:1920:1080,wait:6,click:1920:1080,wait:10,click:1120:472,wait:18,ctrlkey:7B,wait:5",
+        "reaches": "clicks through the intro screens into the first scene (scrap heap), then Ctrl+F12 dump",
+        "notes": "Steam's launch chooser needs a click: for automated runs put a temporary steam_appid.txt (40700) next to the exe, start the exe itself, and delete the file afterwards. Saves: Steam Cloud, <Steam>\\userdata\\<account>\\40700\\remote\\Machinarium.dat (7 slots and the settings; the Amanita-Design.Machinarium folders in %APPDATA% / %LOCALAPPDATA% stay empty) - back it up before play tests. Set output = sbs for automated checks."
+      }
+    },
+    {
       "id": "rocketbirds-hardboiled-chicken",
       "name": "Rocketbirds: Hardboiled Chicken",
       "steam_appid": 215510,
