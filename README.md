@@ -1,6 +1,6 @@
 # Flato3D-SR
 
-**English** 쨌 [?쒓뎅??(README.ko.md)
+**English** · [한국어](README.ko.md)
 
 Flato3D gives flat 2D games, pixel art or hand-drawn, real stereo depth. A flat game sends no depth to the GPU, so Flato3D gives every layer and sprite its own depth from the way the game draws:
 
@@ -19,7 +19,7 @@ Status: early. Eight games work, see [data/GAMES.ko.md](data/GAMES.ko.md).
 | Door Kickers: Action Squad | Direct3D 9 | WineD3D | drawing order, layer cache |
 | FRAMED Collection | OpenGL 3.2 | direct | drawing order, repeated panels share a layer |
 | Astral Ascent | Direct3D 11 (Chowdren) | WineD3D | drawing order, scratch targets as one layer |
-| Intravenous 2 | OpenGL (L횜VE) | direct | drawing order |
+| Intravenous 2 | OpenGL (LÖVE) | direct | drawing order |
 | Guns, Gore and Cannoli 2 | Direct3D 11 (Unity) | WineD3D | drawing order, one layer per draw |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB programs) | direct | drawing order (per draw) |
 
