@@ -136,7 +136,7 @@ namespace Flato3D
     class MainForm : Form
     {
         readonly ListView games = new ListView(), cands = new ListView();
-        readonly CheckBox onlyKnown = new CheckBox(), upscaleBox = new CheckBox();
+        readonly CheckBox upscaleBox = new CheckBox();
         readonly ToolTip tips = new ToolTip { AutoPopDelay = 20000 };
         readonly TextBox exeBox = new TextBox(), logBox = new TextBox(), candFilter = new TextBox();
         readonly Label info = new Label();
@@ -219,15 +219,12 @@ namespace Flato3D
         void BuildGamesTab(Control t)
         {
             var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
-            onlyKnown.Text = L.T("Flato3D 대상만 보기 (프로필·후보)", "Only Flato3D games (profiles, candidates)");
-            onlyKnown.AutoSize = true;
-            onlyKnown.Checked = true;
-            onlyKnown.CheckedChanged += (s, e) => FillGames();
             var refresh = new Button { Text = L.T("새로 고침", "Refresh"), AutoSize = true };
             refresh.Click += (s, e) => Rescan();
             var browse = new Button { Text = L.T("exe 직접 고르기...", "Choose an exe..."), AutoSize = true };
             browse.Click += (s, e) => BrowseExe();
-            top.Controls.AddRange(new Control[] { onlyKnown, refresh, browse });
+            top.Controls.AddRange(new Control[] { refresh, browse, new Label { AutoSize = true, Padding = new Padding(P(10), P(6), 0, 0), ForeColor = Theme.Dim,
+                Text = L.T("Flato3D로 할 수 있는 평면 2D 게임만 나옵니다. 목록에 없는 게임은 exe를 직접 고르세요.", "Only flat 2D games Flato3D can do are listed; for others choose the exe.") } });
 
             games.View = View.Details;
             games.FullRowSelect = true;
@@ -390,19 +387,25 @@ namespace Flato3D
             games.Items.Clear();
             foreach (var g in all)
             {
-                string exe = Library.FindExe(g);
+                // only Flato3D's games: a profile, a flat 2D candidate it can do, or a Flato3D install here.
+                // Ordinary stereo games (real depth) are Geo Gaming Hub's; one-image / browser / D3D12-Vulkan
+                // games cannot be done this way. Any other exe: "Choose an exe".
+                string exe = Library.FindExe(g), dir = exe == null ? null : Path.GetDirectoryName(exe);
+                string inst = Setup.Status(dir);
+                bool flatoInstall = inst != "" && !Setup.PlainStereo(dir);
+                bool candidate = g.Candidate != null && Json.Str(g.Candidate, "kind") != "1" &&
+                                 !new[] { "oneimage", "browser", "unsupported" }.Contains(Json.Str(g.Candidate, "api"));
+                if (g.Profile == null && !candidate && !flatoInstall) continue;
                 Color? mine;
                 string st = StatusFor(g, exe, out mine);
-                string inst = Setup.Status(exe == null ? null : Path.GetDirectoryName(exe));
-                if (onlyKnown.Checked && st == "" && inst == "") continue;
                 var it = new ListViewItem(new[] { g.Title, g.Store, st, inst, g.Dir }) { Tag = g };
                 if (mine != null) it.ForeColor = mine.Value;
                 else if (g.Profile != null) it.ForeColor = Theme.Profile;
-                else if (g.Candidate != null && new[] { "oneimage", "browser", "unsupported" }.Contains(Json.Str(g.Candidate, "api"))) it.ForeColor = Theme.Muted;
                 games.Items.Add(it);
             }
             games.EndUpdate();
-            info.Text = L.T("게임을 고르세요. 초록 = 프로필이 있는 게임, 회색 = 이 방법으로는 어려운 게임.", "Choose a game. Green = has a profile, gray = hard this way.");
+            info.Text = L.T("게임을 고르세요. 청록 = 확인된 프로필이 있는 게임, 상태 열의 \"내 확인\" = 직접 보고한 결과.",
+                            "Choose a game. Teal = a tested profile; \"my check\" in the status column = your own report.");
         }
 
         void FillCandidates()

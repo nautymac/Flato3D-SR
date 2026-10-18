@@ -26,6 +26,15 @@ namespace Flato3D
         static readonly string[] Conflicts = { "opengl32.dll", "version.dll", "d3d8.dll", "d3d9.dll", "ddraw.dll", "d3d10.dll", "d3d10_1.dll",
                                                "d3d10core.dll", "d3d11.dll", "dxgi.dll", "nvapi64.dll", "nvapi.dll" };
 
+        // OGL3D for ordinary 3D games (no [Flat] section, not installed here): a Geo Gaming Hub install
+        public static bool PlainStereo(string exeDir)
+        {
+            if (exeDir == null || File.Exists(Path.Combine(exeDir, ManifestName))) return false;
+            string gl = Path.Combine(exeDir, "opengl32.dll"), ini = Path.Combine(exeDir, "OGL3D.ini");
+            return File.Exists(gl) && Pe.HasAscii(gl, "OGL3D") &&
+                   !(File.Exists(ini) && Regex.IsMatch(File.ReadAllText(ini), @"^\[Flat\]", RegexOptions.Multiline));
+        }
+
         public static string Status(string exeDir)
         {
             if (exeDir == null) return "";
