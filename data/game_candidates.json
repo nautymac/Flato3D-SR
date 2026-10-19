@@ -10947,14 +10947,12 @@
    "engine": [
     "LÖVE"
    ],
-   "api": "d3d9",
+   "api": "opengl",
    "phase": 3,
    "bits": "x64",
-   "note": "dgVoodoo로 D3D11 변환",
-   "d3d": [
-    "9.0"
-   ],
-   "opengl": "",
+   "note": "",
+   "d3d": [],
+   "opengl": "true",
    "vulkan": "",
    "perspectives": [
     "Top-down view"
@@ -10976,7 +10974,7 @@
     "Combat"
    ],
    "pcgw_page": "Intravenous 2: Mercenarism",
-   "status": "untested",
+   "status": "verified",
    "uhd": "true",
    "uhd_note": "",
    "upscale": "0"

@@ -10,6 +10,7 @@
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
 | Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 사용자 확인 완료 (NVIDIA) | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
+| Intravenous 2: Mercenarism | OpenGL (LÖVE) · 직접 | order (탑다운) | 사용자 확인 완료 (3D) | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
 | Machinarium | OpenGL 고정 기능 · 직접 (`-ogl` 스위치) | feet (발 위치, 고정 기능) | 사용자 확인 완료 | opengl32.dll x64, `[Inject] add_args = -ogl` |
@@ -54,6 +55,12 @@
 **Intravenous 2**: 설치기로 처음 설치한 게임입니다. 후보 목록의 기본값(탑다운, order 규칙)으로 설치했고, 사용자가 플레이로 확인했습니다. LÖVE 셰이더 중 밑줄로 시작하는 출력 이름 때문에 변환이 실패하던 문제를 래퍼에서 고쳤습니다.
 
 - 남은 일: 덤프로 층별 시차를 측정하지 않았습니다.
+
+**Intravenous 2: Mercenarism**: 후보 목록에 Direct3D 9로 올라 있어(PCGamingWiki) 설치기가 WineD3D 경로로 설치했지만, LÖVE라 OpenGL로 그리고 `opengl32.dll`만 쓰입니다. 프로필을 OpenGL 경로로 만들고 후보 목록도 고쳤습니다. 사용자가 SBS로 3D를 확인했습니다(10-19).
+
+- 메뉴와 일시정지 화면은 Windows 화살표 커서를 씁니다. SBS에서는 Windows가 실제 마우스 위치에 커서를 하나만 그려서 어느 눈의 그림에도 커서가 없었습니다. 래퍼가 게임이 고른 커서를 두 눈의 같은 위치(화면 깊이)에 그리고, 게임 창 위의 Windows 커서는 숨기도록 고쳤습니다(`[Overlay] cursor = 1`, 기본). 임무 중에는 게임이 조준점을 직접 그리고 투명 커서를 쓰므로 래퍼가 더 그리는 것은 없습니다.
+- 같은 수정으로 Door Kickers: Action Squad(WineD3D x86)와 Astral Ascent(WineD3D x64, 렌더 스레드가 창 스레드와 다름)의 메뉴 커서도 두 눈에 나오는 것을 화면 캡처로 확인했습니다.
+- 남은 일: 커서가 두 눈에 나오는 것을 사용자가 아직 확인하지 않았습니다. 덤프로 층별 시차를 측정하지 않았습니다.
 
 **Guns, Gore and Cannoli 2**: Unity 5.6(플레이어가 exe에 들어 있음). exe가 opengl32.dll을 가져와서 설치기가 처음에 OpenGL 경로를 골랐는데, Unity는 Direct3D 11로 그리기 때문에 평면이었습니다(`ggc2_Data\output_log.txt`의 `Direct3D 11.0`). 설치기가 이제 Unity를 먼저 알아보고 Unity 로그의 API로 경로를 정합니다. Huntdown과 같은 WineD3D 경로와 Unity 설정(`group = draw`, `order_curve = 0.5`)으로 다시 설치했고, 사용자가 플레이로 확인했습니다.
 

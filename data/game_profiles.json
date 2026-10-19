@@ -333,6 +333,49 @@
       }
     },
     {
+      "id": "intravenous-2-mercenarism",
+      "name": "Intravenous 2: Mercenarism",
+      "steam_appid": 2651330,
+      "folder": "Intravenous 2 Mercenarism",
+      "exe": "intravenous2_mercenarism.exe",
+      "arch": "x64",
+      "engine": "LÖVE (SDL2, fused exe)",
+      "api": "OpenGL (SDL2 loads opengl32 at run time)",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3
+        }
+      },
+      "status": "verified",
+      "verified_by_user": "2026-10-19 (3D, SBS)",
+      "notes": [
+        "The candidate list had it as Direct3D 9 (PCGamingWiki), so the installer first put in the WineD3D route; LÖVE draws with OpenGL and only opengl32.dll is used.",
+        "Menus and the pause screen use Windows' arrow cursor: in SBS it showed in neither eye until the wrapper drew the cursor into each eye ([Overlay] cursor, 2026-10-19). In missions the game draws its own crosshair and sets a transparent cursor."
+      ],
+      "known_issues": [
+        "Not measured with dumps yet; depth checked by the user in play.",
+        "Cursor in both eyes checked by screenshots, not yet by the user."
+      ],
+      "test": {
+        "proc": "intravenous2_mercenarism",
+        "steps": "wait:30,move:1000:900,wait:2,shot:menu,click:576:870,wait:15,key:20,wait:6,key:1B,wait:3,shot:pause",
+        "reaches": "main menu (arrow cursor), Continue -> loading -> mission, Esc pause menu (arrow cursor)",
+        "notes": "Continue loads the last save: back up %APPDATA%\\intravenous2_mercenarism first and restore it afterwards. Screenshots show the cursor the wrapper draws (Windows' own cursor is not captured); Windows ignores SetCursorPos for a cursor suppressed after touch input, so move the mouse with mouse_event."
+      }
+    },
+    {
       "id": "guns-gore-and-cannoli-2",
       "name": "Guns, Gore and Cannoli 2",
       "steam_appid": 525510,

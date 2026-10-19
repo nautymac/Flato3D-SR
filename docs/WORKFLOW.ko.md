@@ -162,6 +162,7 @@
 | `[Display] swap_interval` | 1 = 수직동기화 강제 | WineD3D 게임 기본 1 |
 | `[Display] upscale` | 1 = 게임은 DPI 비인식으로 낮은 해상도(4K 200%면 1920×1080)로 그리고, 래퍼가 기본 해상도 창에 확대해 표시. 해상도 변경은 막음 | 게임이 기본 해상도를 못 쓰거나 글씨가 너무 작을 때. 설치기의 **업스케일** |
 | `[Keys] swallow` | 래퍼 단축키를 게임에 전달하지 않음 | 기본 1. 문제 있으면 0 |
+| `[Overlay] cursor` | SBS·위아래 출력에서 게임이 고른 마우스 커서를 두 눈에 그리고, 게임 창 위의 Windows 커서는 숨김 | 기본 1. 커서가 이상하면 0(Windows 커서로 돌아감). 위빙·한 눈 출력에서는 원래 Windows 커서 |
 | `[Debug] trace_steps`, `flicker_probe`, `dump_frames`, `trace_frames` | 분석용 | 끝나면 끔 |
 
 ### 증상별 원인과 해결
@@ -192,6 +193,7 @@
 | ARB 프로그램인데 모든 draw가 화면 깊이 | 프로그램이 읽는 유닛을 몰라 남은 렌더 타깃을 보고 합성으로 판정, 또는 패스마다 viewport를 걸어 UI 묶음으로 판정 | 조각 프로그램의 `texture[n]`으로 유닛 판별(수정됨), `screen_batch = 0` |
 | 위빙 화면에 가로줄(티어링) | 게임이 수직동기화를 끔 | `swap_interval = 1` |
 | 게임 기능이 단축키와 같이 켜짐 | 게임이 Ctrl을 무시하고 F키를 봄 | `swallow = 1`(기본) |
+| SBS·위아래에서 마우스 커서가 안 보이거나 어느 눈의 그림과도 맞지 않음 | 게임이 Windows 커서를 씀: Windows는 실제 마우스 위치에 커서를 하나만 그림(반쪽 SBS에서 게임의 x는 화면의 x/2와 W/2 + x/2) | 래퍼가 게임이 고른 커서를 두 눈의 같은 위치(화면 깊이)에 그리고, 게임 창 위의 Windows 커서는 투명 커서로 바꿈(`[Overlay] cursor = 1`, 기본). 게임이 커서를 숨기거나 투명 커서를 쓰면 그리지 않음. 로그 `cursor: shape ...`. 화면 캡처에는 그린 커서만 찍힘(수정됨, Intravenous 2: Mercenarism, DK, Astral Ascent) |
 
 ### 코드를 고칠 때
 
