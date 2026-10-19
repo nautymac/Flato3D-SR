@@ -264,6 +264,7 @@
           "order_curve": 1
         },
         "Display": {
+          "upscale": 0,
           "swap_interval": 1
         }
       },
@@ -271,6 +272,7 @@
       "verified_by_user": "2026-10-18 (NVIDIA GPU; on an Intel GPU the sky differed between the eyes, report 2026-10-17)",
       "verified_by_user": null,
       "notes": [
+        "No upscale: the game makes itself DPI aware at run time (SDL) and has no resolution or fullscreen option, so it always renders at the desktop resolution (4K) and upscale changes nothing (checked 2026-10-19). Its own scale option makes the UI larger. The 1600x900 limit on PCGamingWiki does not hold.",
         "The exe binds d3d11.dll before any of our code runs; the loader points that import at w3d11.dll (the system d3d11 stays for the GPU driver).",
         "Every object is one quad with its own texture, drawn in layer order: drawing order gives the layers.",
         "Text is drawn glyph by glyph into a scratch target that is cleared and composited several times a frame: each use is one layer, so lines are flat.",

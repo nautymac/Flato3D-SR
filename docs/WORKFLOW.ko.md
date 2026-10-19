@@ -188,6 +188,7 @@
 | 배경의 일부가 직사각형으로 잘려 앞에 뜸 | 배경 그림 일부를 나중에 다시 그리는 가림막(walk-behind)이 그리는 순서대로 앞으로 나옴 | 고정 기능: 앞서 그린 그림과 같은 텍스처를 같은 위치 대응으로 다시 그리면 그 그림의 층(추적 기록 `(repeats an earlier picture)`). 그사이 그린 물체를 덮는 조각은 앞에 남김(수정됨, Machinarium). 셰이더 경로는 아직 없음 |
 | 조각이 만나는 곳에 가로줄·사각형(feet) | 그림을 여러 조각으로 나눠 그려서 좁은 조각마다 자기 아래 끝에 섬 | `plane_tall`(예: 0.12): 이 높이 이상인 조각은 폭과 상관없이 바닥 경사(Samorost 2). 고정 기능 게임은 조각을 자동으로 묶음 |
 | 장면을 앞으로 당기면(`depth_screen` 크게) 아래쪽 물체가 바닥보다 뒤로 꺼짐 | 물체는 `sprite_min`에서 막히는데 바닥은 더 가까워짐 | `sprite_min`이 `depth_screen`을 따라 움직임(수정됨) |
+| 업스케일을 켜도 게임이 4K로 그림(글씨가 그대로 작음) | 게임이 실행 중에 스스로 고해상도 인식을 켜고 해상도 옵션이 없음(Astral Ascent: SDL) | 업스케일 대신 게임의 배율(scale) 옵션을 씀. 프로필에 `upscale = 0` |
 | 업스케일을 켠 Direct3D(WineD3D) 게임이 "응답하지 않습니다"가 뜨고 클릭이 안 먹음 | 표시 창이 WineD3D 렌더링 스레드에 만들어져 메시지를 처리하는 곳이 없고, `HTTRANSPARENT`가 다른 스레드의 게임 창으로 마우스를 넘기지 못함 | 표시 창을 게임 창의 스레드에서 만듦(로그 `window made there`)(수정됨, Samorost 2) |
 | exe가 Direct3D 12/9를 쓰는데 OpenGL 모드가 따로 있음 | 실행 스위치(`-ogl` 등)를 Steam이 넘기지 않음 | `[Inject] add_args = -ogl`: 게임이 명령줄을 읽기 전에 붙임. 로그 `command line: "-ogl" appended` 확인(Machinarium) |
 | ARB 프로그램인데 모든 draw가 화면 깊이 | 프로그램이 읽는 유닛을 몰라 남은 렌더 타깃을 보고 합성으로 판정, 또는 패스마다 viewport를 걸어 UI 묶음으로 판정 | 조각 프로그램의 `texture[n]`으로 유닛 판별(수정됨), `screen_batch = 0` |
