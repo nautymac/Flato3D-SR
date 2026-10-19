@@ -218,15 +218,13 @@ namespace Flato3D
 
         void BuildGamesTab(Control t)
         {
-            var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
             var refresh = new Button { Text = L.T("새로 고침", "Refresh"), AutoSize = true };
             refresh.Click += (s, e) => Rescan();
-            var browse = new Button { Text = L.T("게임 추가 (exe 고르기)...", "Add a game (choose its exe)..."), AutoSize = true };
+            tips.SetToolTip(refresh, L.T("설치된 게임 목록을 다시 읽습니다.", "Scan the installed games again."));
+            var browse = new Button { Text = L.T("게임 추가...", "Add a game..."), AutoSize = true };
             browse.Click += (s, e) => BrowseExe();
-            tips.SetToolTip(browse, L.T("목록에 없는 게임의 exe를 고르면 32/64비트와 경로를 판별합니다. 설치하면 목록에 나오고, [상태 보고]로 결과를 알려 주면 프로필이 만들어집니다.",
-                                        "Choose the exe of a game the list does not show: 32/64-bit and the route are detected. Installed, it shows in the list; [Report status] turns it into a profile."));
-            top.Controls.AddRange(new Control[] { refresh, browse, new Label { AutoSize = true, Padding = new Padding(P(10), P(6), 0, 0), ForeColor = Theme.Dim,
-                Text = L.T("Flato3D로 할 수 있는 평면 2D 게임만 나옵니다. 목록에 없는 게임은 [게임 추가]로 exe를 고르세요.", "Only flat 2D games Flato3D can do are listed; add others with [Add a game].") } });
+            tips.SetToolTip(browse, L.T("목록에 없는 게임의 exe를 고르면 목록에 추가하고 32/64비트와 경로를 판별합니다. [설치]하고 [상태 보고]로 결과를 알려 주면 프로필이 만들어집니다.",
+                                        "Choose the exe of a game the list does not show: it is added to the list and its 32/64-bit and route are detected. [Install], then [Report status] turns it into a profile."));
 
             games.View = View.Details;
             games.FullRowSelect = true;
@@ -246,10 +244,11 @@ namespace Flato3D
 
             var row1 = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, WrapContents = false };
             exeBox.ReadOnly = true;
-            exeBox.Width = P(820);
+            exeBox.Width = P(640);
             var change = new Button { Text = L.T("exe 변경...", "Change exe..."), AutoSize = true };
             change.Click += (s, e) => ChangeExe();
-            row1.Controls.AddRange(new Control[] { new Label { Text = L.T("실행 파일:", "Executable:"), AutoSize = true, Padding = new Padding(0, P(6), 0, 0) }, exeBox, change });
+            row1.Controls.AddRange(new Control[] { new Label { Text = L.T("실행 파일:", "Executable:"), AutoSize = true, Padding = new Padding(0, P(6), 0, 0) }, exeBox, change,
+                                                   browse, refresh });
 
             var row2 = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoSize = true, WrapContents = false };
             routeBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -318,7 +317,6 @@ namespace Flato3D
 
             t.Controls.Add(games);
             t.Controls.Add(bottom);
-            t.Controls.Add(top);
             EnableActions(false);
         }
 
@@ -417,8 +415,10 @@ namespace Flato3D
                 games.Items.Add(it);
             }
             games.EndUpdate();
-            info.Text = L.T("게임을 고르세요. 청록 = 확인된 프로필이 있는 게임, 상태 열의 \"내 확인\" = 직접 보고한 결과.",
-                            "Choose a game. Teal = a tested profile; \"my check\" in the status column = your own report.");
+            info.Text = L.T("게임을 고르세요. 청록 = 확인된 프로필이 있는 게임, 상태 열의 \"내 확인\" = 직접 보고한 결과.\r\n" +
+                            "Flato3D로 할 수 있는 평면 2D 게임만 나옵니다. 목록에 없는 게임은 아래 [게임 추가]로 exe를 고르세요.",
+                            "Choose a game. Teal = a tested profile; \"my check\" in the status column = your own report.\r\n" +
+                            "Only flat 2D games Flato3D can do are listed; add others with [Add a game] below.");
         }
 
         void FillCandidates()
@@ -468,7 +468,8 @@ namespace Flato3D
             routeBox.SelectedIndex = ri < 0 ? 2 : ri;
             var sb = new StringBuilder();
             Color? mineColor;
-            sb.AppendLine(g.Title + "   [" + StatusFor(g, currentExe, out mineColor) + "]   " + Setup.Status(currentExe == null ? null : Path.GetDirectoryName(currentExe)));
+            string statusText = StatusFor(g, currentExe, out mineColor);
+            sb.AppendLine(g.Title + (statusText != "" ? "   [" + statusText + "]" : "") + "   " + Setup.Status(currentExe == null ? null : Path.GetDirectoryName(currentExe)));
             sb.AppendLine(L.T("판별: ", "Detected: ") + (r == Route.None ? L.T("불가", "not possible") : Route.Label(r)) + " — " + why + "   " + arch);
             sb.AppendLine(L.T("깊이: ", "Depth: ") + RuleLabel(rec) + " (" + rec.RuleWhy + ")   " +
                           L.T("출력: ", "Output: ") + outputBox.Items[outputBox.SelectedIndex] + " (" + rec.OutputWhy + ")");
@@ -557,9 +558,19 @@ namespace Flato3D
             var g = all.FirstOrDefault(x => file.StartsWith(x.Dir.TrimEnd('\\') + "\\", StringComparison.OrdinalIgnoreCase))
                     ?? new Game { Title = Path.GetFileName(dir), Store = "", Dir = dir };
             if (g.Profile == null && g.Candidate == null) Library.Match(g);
-            foreach (ListViewItem it in games.Items)
-                if (it.Tag == g) { it.Selected = true; it.EnsureVisible(); }
-            ShowGame(g, file);
+            // a game the list leaves out gets a row of its own, so the choice shows (and the old selection goes)
+            ListViewItem row = games.Items.Cast<ListViewItem>().FirstOrDefault(it => it.Tag == g);
+            if (row == null)
+            {
+                Color? mine;
+                row = new ListViewItem(new[] { g.Title, g.Store != "" ? g.Store : L.T("직접 추가", "added"), StatusFor(g, file, out mine), Setup.Status(dir), dir }) { Tag = g };
+                if (mine != null) row.ForeColor = mine.Value;
+                games.Items.Add(row);
+            }
+            games.SelectedItems.Clear();
+            row.Selected = true;
+            row.EnsureVisible();
+            ShowGame(g, file);   // after the selection's own ShowGame: this exe, not the one FindExe picks
         }
 
         void DoInstall()
@@ -765,6 +776,11 @@ namespace Flato3D
         public void SelectForScreenshot(string game)
         {
             Rescan();
+            if (game != null && game.EndsWith(".exe", StringComparison.OrdinalIgnoreCase) && File.Exists(game))
+            {
+                OpenExe(game);   // as [Add a game] with that exe
+                return;
+            }
             foreach (ListViewItem it in games.Items)
                 if (game != null && it.Text.IndexOf(game, StringComparison.OrdinalIgnoreCase) >= 0) { it.Selected = true; it.EnsureVisible(); break; }
         }
