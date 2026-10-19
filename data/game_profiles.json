@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-14",
+  "updated": "2026-10-20",
   "about": "Games Flato3D has been made to work with: what to install, the OGL3D.ini values that differ from the template, and the state of each. The installer will apply these as profiles. Candidates not yet worked on are in game_candidates.json. 'test' holds the steps for tools\\analysis\\gametest.ps1.",
   "games": [
     {
@@ -583,6 +583,111 @@
         "steps": "wait:20,click:1920:1080,wait:15,click:1920:1300,wait:20,ctrlkey:7B,wait:5",
         "reaches": "title -> first scene (the spaceship on the hill), then Ctrl+F12 dump",
         "notes": "Steam app 40720 (steam://rungameid/40720). Saves: %APPDATA%\\amanitadesign.samorost3\\Local Store (s2save.bin, init.dat) - back up before play tests. Set output = sbs for automated checks; OGL3D reloads OGL3D.ini while the game runs."
+      }
+    },
+    {
+      "id": "snufkin-melody-of-moominvalley",
+      "name": "Snufkin: Melody of Moominvalley",
+      "steam_appid": 1808680,
+      "folder": "Snufkin - Melody of Moominvalley",
+      "exe": "Snufkin.exe",
+      "arch": "x64",
+      "engine": "Unity (URP, IL2CPP), a 3D scene with a perspective camera",
+      "api": "Direct3D 11",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "convergence": "auto",
+          "auto_start": 60,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 0
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "By the 2026-10-18 decision (Flato3D does flat 2D only) a real 3D game belongs to Geo Gaming Hub (geo-11 on the game's own Direct3D 11); the user installed it with Flato3D, so this profile stays.",
+        "Not a flat 2D game: the scene is real 3D seen through a perspective camera. With flat depth on, auto convergence stays off and convergence stays at its start value 3 while the scene lies 60-85 units away, so everything sat at the far limit (+46..48 px of 48), as flat as a picture. Flat depth off: auto convergence settles at about 65; on the title the sky is at +39 px, the hills +10..31, Snufkin and the foreground -9..+3, the menu at the screen. In play the ground slopes from +11 px (top) to +1 px (bottom), trees in front at -8 px, speech bubbles at the screen.",
+        "The right eye lacked the landscape (log: 'fbo 14: right-eye copy incomplete (0x8cd7)'): WineD3D renders into multisample textures made with glTexStorage2DMultisample and attaches texture views of them; the wrapper made the right copy with mutable storage, which cannot have views. Fixed in the wrapper (2026-10-20): glTexStorage2DMultisample is tracked and the copy is immutable like the original."
+      ],
+      "known_issues": [
+        "Checked with automated dumps only (title and the first meadow); not yet played with SR weaving."
+      ],
+      "test": {
+        "proc": "Snufkin",
+        "steps": "wait:45,click:660:960,wait:30,ctrlkey:7B,wait:4",
+        "reaches": "title menu -> Continue -> the meadow (Snufkin with a speech bubble), then Ctrl+F12 dump",
+        "notes": "Continue loads the last save: back up %USERPROFILE%\\AppData\\LocalLow\\Hyper Games\\Snufkin - Melody of Moominvalley first (test-backups\\Snufkin) and restore it afterwards. Continue sits at (660,960) on a 3840x2160 screen with output = sbs."
+      }
+    },
+    {
+      "id": "blade-assault",
+      "name": "Blade Assault",
+      "steam_appid": 1367300,
+      "folder": "Blade Assault",
+      "exe": "BladeAssault.exe",
+      "arch": "x64",
+      "engine": "Unity (2D renderer with 2D lights, post-processing)",
+      "api": "Direct3D 11",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "screen_batch": 0,
+          "group": "draw",
+          "order_curve": 0.5
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Colours: Unity's post-processing renders its colour grading lookup table (a 1024x32 strip) every frame. The wrapper took it for a layer cache (a target drawn into the stereo scene), made it stereo and shifted it in the right eye, which turned the right eye bright red on the title. Fixed in the wrapper (2026-10-20): a strip (one side more than 4x the other) is never a layer cache.",
+        "Depth: Unity's 2D lights draw every lit sprite reading the screen's light texture (a stereo target), and such draws counted as composite passes, at the screen: the whole scene came out flat (both eyes identical). Fixed in the wrapper (2026-10-20): a draw that reads a stereo target and also draws an ordinary picture of its own (64 px or more, not a strip) is a lit sprite and gets its order depth; one that redraws a layer drawn before keeps that layer's depth; a primitive over the whole screen still stays at the screen (post-processing).",
+        "screen_batch = 0: WineD3D sets the viewport and scissor between the light passes, so the scene is drawn in batches 5 to 29 and the AGS rule (later batches are UI) kept it all at the screen.",
+        "Measured in the first corridor (opening dialogue open): the corridor at +12 px, parts in front of it at +6 px, the dialogue box in front of the scene."
+      ],
+      "known_issues": [
+        "Measured during the opening dialogue only; the depth in play is to be confirmed by the user.",
+        "Some starts take over a minute (the NEOWIZ logo stays up); automated runs wait 80 s."
+      ],
+      "test": {
+        "proc": "BladeAssault",
+        "steps": "wait:80,key:0D,wait:6,key:0D,wait:15,ctrlkey:7B,wait:4",
+        "reaches": "title -> Start -> the first corridor with the opening dialogue, then Ctrl+F12 dump",
+        "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\TeamSuneat\\BladeAssault (test-backups\\BladeAssault) - back up before play tests. Clicks do not select the title menu; Enter does."
       }
     }
   ]

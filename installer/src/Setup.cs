@@ -168,9 +168,12 @@ namespace Flato3D
                 if (Library.IsUnity(exe))
                 {
                     // Unity draws each parallax plane separately (often from one atlas): a layer per draw,
-                    // with more of the depth range for the far layers (Huntdown)
+                    // with more of the depth range for the far layers (Huntdown); its passes (2D lights) set
+                    // the viewport between draws, so the AGS rule "later batches are UI" would keep the whole
+                    // scene at the screen (Blade Assault)
                     text = IniSet(text, "Flat", "group", "draw");
                     text = IniSet(text, "Flat", "order_curve", "0.5");
+                    text = IniSet(text, "Flat", "screen_batch", "0");
                 }
                 foreach (var sec in Json.Obj(g.Profile, "ini") ?? new Dictionary<string, object>())
                     foreach (var kv in (Dictionary<string, object>)sec.Value)

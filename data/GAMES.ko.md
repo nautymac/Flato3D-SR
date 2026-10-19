@@ -15,6 +15,8 @@
 | Rocketbirds: Hardboiled Chicken | OpenGL (PSSG, Cg ARB 프로그램) · 직접 | order (draw 단위) | 동작, 사용자 확인 전 | opengl32.dll x86, `screen_batch = 0` |
 | Machinarium | OpenGL 고정 기능 · 직접 (`-ogl` 스위치) | feet (발 위치, 고정 기능) | 사용자 확인 완료 | opengl32.dll x64, `[Inject] add_args = -ogl` |
 | Samorost 2 | D3D11 (Adobe AIR) · WineD3D | feet, `plane_tall = 0.12` | 사용자 확인 완료 | 이름 바꾼 WineD3D x86, 로더, opengl32.dll x86, 업스케일 |
+| Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | 평면 깊이 끔 (실제 3D, 자동 Convergence) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, `[Flat] enable = 0` |
+| Blade Assault | D3D11 (Unity 2D 조명) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -95,3 +97,20 @@
 - 사용자가 `depth_screen 0.75`(장면을 앞으로)로 저장하자, 바닥이 `sprite_min`보다 가까워져 아래쪽 조각이 뒤로 물러나 가로줄이 생겼습니다. `sprite_min`이 이제 `depth_screen`을 따라 움직입니다(`depth_screen 0`이면 전과 같음).
 - 측정(덩굴 장면, 분리값 32.9, depth_screen 0.75): 위 +30에서 아래 -90px까지 단절 없는 경사.
 - 남은 일: 필터 버퍼로 그리는 일부 물체(덩굴 끝 씨앗 송이)가 줄기보다 앞(+2px, 줄기 +30~40px)에 뜹니다. 큰 물체는 바닥 경사를 따라 뒤로 기웁니다. 세이브는 `%APPDATA%\amanitadesign.samorost3\Local Store`입니다.
+
+**Snufkin: Melody of Moominvalley**: 평면 2D가 아니라 원근 카메라로 보는 실제 3D 장면입니다. 그래서 `[Flat] enable = 0`으로 평면 깊이를 끄고 자동 Convergence를 씁니다. 원칙(10-18 결정)대로라면 일반 입체 게임이라 Geo Gaming Hub(geo-11, D3D11 그대로) 대상입니다. 사용자가 Flato3D로 설치해서 프로필을 남겨 둡니다.
+
+- 평면 깊이가 켜져 있으면 자동 Convergence가 꺼져 시작값 3에 머뭅니다. 장면은 60~85 거리에 있어 모든 것이 먼 끝(+46~48px, 최대 48)에 붙어 한 장의 그림처럼 평평했습니다. 끄면 Convergence가 약 65에 자리 잡습니다.
+- 측정(타이틀): 하늘 +39px, 언덕 +10~31px, 스너프킨과 앞쪽 −9~+3px, 메뉴는 화면 위치. 게임 안(첫 초원): 땅이 위 +11px에서 아래 +1px로 기울고, 앞 나무 −8px, 말풍선은 화면 위치.
+- 오른쪽 눈에 풍경이 빠지던 문제(로그: `fbo 14: right-eye copy incomplete (0x8cd7)`): WineD3D가 멀티샘플 텍스처를 `glTexStorage2DMultisample`(고정 저장소)로 만들고 그 텍스처 뷰를 붙입니다. 래퍼가 오른쪽 사본을 고정이 아닌 저장소로 만들어서 뷰를 만들 수 없었습니다. 래퍼에서 고쳤습니다(10-20).
+- 남은 일: 자동 덤프로만 확인했습니다(타이틀, 첫 초원). 세이브는 `%USERPROFILE%\AppData\LocalLow\Hyper Games\Snufkin - Melody of Moominvalley`입니다.
+
+**Blade Assault**: Unity의 2D 조명과 후처리를 쓰는 픽셀 액션 게임입니다.
+
+- 색: 후처리가 매 프레임 색 보정 표(1024×32 띠)를 그립니다. 래퍼가 이것을 레이어 캐시로 보고 스테레오로 만들어 오른쪽 눈에서 옆으로 밀었고, 타이틀의 오른쪽 눈이 새빨갛게 나왔습니다. 띠 모양(한 변이 다른 변의 4배 초과) 버퍼는 레이어 캐시로 보지 않게 래퍼를 고쳤습니다.
+- 깊이: 2D 조명은 스프라이트마다 화면의 빛 텍스처(스테레오 버퍼)를 읽으며 다시 그립니다. 이런 draw를 합성 패스로 보고 화면 위치에 두어서, 장면 전체가 평평했습니다(두 눈이 똑같음). 스테레오 버퍼를 읽으면서 자기 그림(64px 이상의 일반 텍스처, 띠가 아님)도 그리는 draw는 조명 스프라이트로 보고 깊이를 줍니다. 앞서 그린 층을 다시 그리는 것이면 그 층의 깊이를 따릅니다. 화면 전체를 덮는 삼각형(후처리)은 여전히 화면 위치입니다.
+- `screen_batch = 0`: WineD3D가 조명 패스 사이마다 viewport와 scissor를 다시 걸어, 장면이 5~29번 묶음에 그려집니다. AGS 규칙(뒤 묶음은 UI)이 장면 전체를 화면 위치에 두었습니다. 설치기는 이제 Unity 게임에 기본으로 `screen_batch = 0`을 씁니다.
+- 측정(첫 복도, 시작 대화 중): 복도 +12px, 그 앞 구조물 +6px, 대화 상자는 장면보다 앞.
+- 남은 일: 시작 대화 중에만 측정했습니다. 플레이 중 깊이는 사용자 확인이 필요합니다. 가끔 시작이 1분 넘게 걸립니다(NEOWIZ 로고). 세이브는 `%USERPROFILE%\AppData\LocalLow\TeamSuneat\BladeAssault`입니다.
+
+**Blade Runner: Enhanced Edition** (프로필 없음): 원작(1997) 엔진이 장면을 CPU에서 한 장으로 합쳐 보내는 것으로 보입니다. 게임 중 한 프레임에 draw가 6번뿐이고, 1280×960 장면 버퍼에는 draw가 없습니다(사용자 실행 로그, 10-19). 층이 없어서 지금 방식으로는 입체가 되지 않습니다. 2D→3D 변환(AI 깊이 추정) 같은 다른 방식이 필요합니다. 메뉴는 주입한 마우스와 화살표 키를 받지 않아 자동 확인은 타이틀까지만 했습니다.

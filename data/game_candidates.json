@@ -8882,7 +8882,7 @@
    "api": "d3d11",
    "phase": 3,
    "bits": "x64",
-   "note": "-force-glcore로 OpenGL 시도 가능(게임마다 다름)",
+   "note": "Flato3D 프로필 blade-assault: WineD3D(D3D11), order 규칙, screen_batch 0. Unity 2D 조명(빛 텍스처를 읽는 스프라이트)과 색 보정 표(1024x32)를 래퍼가 처리(2026-10-20)",
    "d3d": [
     "11"
    ],
@@ -8907,7 +8907,7 @@
     "2D"
    ],
    "pcgw_page": "Blade Assault",
-   "status": "untested",
+   "status": "working",
    "uhd": "unknown",
    "uhd_note": "",
    "upscale": ""
@@ -19428,7 +19428,7 @@
    "api": "d3d11",
    "phase": 3,
    "bits": "x64",
-   "note": "-force-glcore로 OpenGL 시도 가능(게임마다 다름)",
+   "note": "Flato3D 프로필 snufkin-melody-of-moominvalley: 실제 3D 장면(원근 카메라)이라 [Flat] enable = 0, convergence auto. 오른쪽 눈 멀티샘플 사본 문제는 래퍼에서 수정(2026-10-20)",
    "d3d": [
     "11"
    ],
@@ -19453,7 +19453,7 @@
     "Indie"
    ],
    "pcgw_page": "Snufkin: Melody of Moominvalley",
-   "status": "untested",
+   "status": "working",
    "uhd": "true",
    "uhd_note": "",
    "upscale": "0"
