@@ -4,7 +4,7 @@ Built automatically. **Profile** is the state of the developer's setup for the g
 
 Report with the installer's **[Report status]** button or the [form](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml). A problem report that has been handled is closed and no longer counts; a game whose problem reports are all handled shows 🔧 handled.
 
-16 games · 7 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
+15 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
@@ -23,5 +23,4 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Shank](https://store.steampowered.com/app/6120) | - | ✅ Works (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 working | - | - | - | - | - |
 | [Technobabylon](https://store.steampowered.com/app/307580) | ✅ confirmed | - | - | - | - | - |
-| TestGame Flato3D | - | ✅ Works (2026-10-20) | ✅ 1 | - | End-to-end test of the installer GitHub filing - this issue is deleted right away | [#7](https://github.com/nautymac/Flato3D-SR/issues/7) |
 

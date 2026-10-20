@@ -223,22 +223,6 @@
    "note": "",
    "open_problems": [],
    "reports": []
-  },
-  {
-   "game": "TestGame Flato3D",
-   "steam": null,
-   "profile": null,
-   "profile_status": null,
-   "status": "works",
-   "works": 1,
-   "issues": 0,
-   "broken": 0,
-   "updated": "2026-10-20",
-   "note": "End-to-end test of the installer GitHub filing - this issue is deleted right away",
-   "open_problems": [],
-   "reports": [
-    7
-   ]
   }
  ]
 }
