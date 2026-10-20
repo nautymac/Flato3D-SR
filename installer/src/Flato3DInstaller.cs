@@ -120,8 +120,15 @@ namespace Flato3D
                     string summary;
                     var images = a.Select((x, i) => x == "--image" && i + 1 < a.Length ? a[i + 1] : null).Where(x => x != null).ToList();
                     string result = Arg(a, "--result") ?? "issues";
-                    log.AppendLine("report: " + Report.Create(game, exePath, result, Arg(a, "--symptom"), images, out summary));
+                    string dir = Report.Create(game, exePath, result, Arg(a, "--symptom"), images, out summary);
+                    log.AppendLine("report: " + dir);
                     if (exePath != null) Setup.RecordUserStatus(Path.GetDirectoryName(exePath), result, Arg(a, "--symptom"));
+                    if (a.Contains("--github"))
+                    {
+                        bool filed;
+                        string where = Report.FileOnGitHub(dir, game, result, Arg(a, "--symptom"), summary, out filed);
+                        log.AppendLine((filed ? "GitHub issue: " : "GitHub form opened, zip: ") + where);
+                    }
                 }
                 else if (a[0] == "--uninstall")
                     log.Append(Setup.Uninstall(Path.GetDirectoryName(exePath)));
@@ -368,8 +375,8 @@ namespace Flato3D
                 L.T("  다른 도구(geo-11, dgVoodoo, ReShade)의 DLL은 설치할 때 Flato3D_backup 폴더로 옮기고, 제거하면 되돌립니다.", "  Other tools' DLLs (geo-11, dgVoodoo, ReShade) go to Flato3D_backup on install and come back on uninstall."),
                 L.T("  업스케일: 게임이 기본 해상도(예: 4K)를 못 쓰거나 글씨가 너무 작으면 켜고, 게임은 1920×1080으로 둡니다.", "  Upscale: for games that cannot use the native resolution (e.g. 4K) or whose text is too small; set the game to 1920x1080."),
                 L.T("    게임은 그 해상도로 그리고, 화면에는 기본 해상도로 확대해 보여 줍니다. 해상도 변경은 막아 화면은 기본 해상도를 유지합니다.", "    The game renders at that size and is shown enlarged at the native resolution; display mode changes are blocked."),
-                L.T("  상태 보고: 결과(잘 됨 / 일부 문제 / 안 됨)를 고르고 메모와 스크린샷(파일 추가, Ctrl+V)을 넣습니다. 로그, 설정, 마지막 Ctrl+F12 덤프가 함께 한 폴더에 모이고, 결과는 게임 목록에 표시됩니다. 원하면 GitHub 이슈 페이지가 열립니다.",
-                    "  Report status: choose the result (works / some problems / does not work), add a note and screenshots (files, Ctrl+V); logs, settings and the last Ctrl+F12 dump go into one folder, the result shows in the game list, optionally a GitHub issue."),
+                L.T("  상태 보고: 결과(잘 됨 / 일부 문제 / 안 됨)를 고르고 메모와 스크린샷(파일 추가, Ctrl+V)을 넣습니다. 로그, 설정, 마지막 Ctrl+F12 덤프가 함께 한 폴더에 모이고, 결과는 게임 목록에 표시됩니다. GitHub에도 올리면 공개 상태 목록(STATUS.md)이 따라 바뀝니다.",
+                    "  Report status: choose the result (works / some problems / does not work), add a note and screenshots (files, Ctrl+V); logs, settings and the last Ctrl+F12 dump go into one folder, the result shows in the game list; posted on GitHub, it updates the public status list (STATUS.md)."),
                 "",
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
@@ -679,8 +686,10 @@ namespace Flato3D
                     "Run the game, press Ctrl+F12 at that scene, then report: that run's log and both eyes are included. Logs and settings are collected automatically.\r\nSaved in: ") +
                     folder + (pre ? L.T(" (OneDrive pre-release)", " (OneDrive pre-release)") : "") };
                 var box = new TextBox { Multiline = true, ScrollBars = ScrollBars.Vertical, Dock = DockStyle.Fill, AcceptsReturn = true };
-                var gh = new CheckBox { AutoSize = true, Checked = false, Text = L.T("GitHub에도 보고 (공개 페이지가 열리고, 만든 zip을 거기에 끌어다 놓음)", "Also report on GitHub (opens a public page; drag the zip there)") };
-                foreach (var rb in radios) rb.CheckedChanged += (s, e) => { if (((RadioButton)s).Checked) gh.Checked = !pre && (string)((RadioButton)s).Tag != "works"; };
+                // on GitHub every report updates the public status list (STATUS.md)
+                var gh = new CheckBox { AutoSize = true, Checked = true, Text = Report.GhReady()
+                    ? L.T("GitHub 상태 목록에도 올리기 (공개 이슈로 바로 올림, 스크린샷과 로그는 보고 폴더에만)", "Also post to the GitHub status list (filed as a public issue right away; screenshots and logs stay in the report folder)")
+                    : L.T("GitHub 상태 목록에도 올리기 (공개 페이지가 열리면 결과를 고르고 제출, zip과 스크린샷은 끌어다 놓음)", "Also post to the GitHub status list (a public page opens: pick the result and submit; drag the zip and screenshots in)") };
                 var buttons = new FlowLayoutPanel { FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Fill, AutoSize = true };
                 var ok = new Button { Text = L.T("저장", "Save"), DialogResult = DialogResult.OK, AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
                 var cancel = new Button { Text = L.T("취소", "Cancel"), DialogResult = DialogResult.Cancel, AutoSize = true, MinimumSize = new Size(P(90), P(28)) };
@@ -718,7 +727,13 @@ namespace Flato3D
                     if (gameDir != null) Setup.RecordUserStatus(gameDir, result, box.Text.Trim());
                     var msg = new StringBuilder(L.T("상태 보고를 저장했습니다 (", "Status report saved (") + Report.ResultLabel(result) + "): " + dir + "\r\n");
                     if (pre) msg.AppendLine(L.T("OneDrive pre-release 폴더입니다. 이 보고를 기준으로 상태를 반영하고 문제를 고칩니다.", "This is the OneDrive pre-release folder; status updates and fixes start from here."));
-                    if (gh.Checked) msg.AppendLine(L.T("GitHub 보고용 zip: ", "zip for the GitHub issue: ") + Report.OpenIssue(dir, current, result, summary));
+                    if (gh.Checked)
+                    {
+                        bool filed;
+                        string where = Report.FileOnGitHub(dir, current, result, box.Text, summary, out filed);
+                        msg.AppendLine(filed ? L.T("GitHub 이슈로 올림 (상태 목록이 몇 분 안에 바뀜): ", "Filed on GitHub (the status list follows within minutes): ") + where
+                                             : L.T("GitHub 보고 페이지를 열었습니다. 끌어다 놓을 zip: ", "Opened the GitHub report page. zip to drag in: ") + where);
+                    }
                     logBox.Text = msg.ToString();
                 }
                 catch (Exception e) { logBox.Text = L.T("상태 보고 저장 실패: ", "Report failed: ") + e.Message; }

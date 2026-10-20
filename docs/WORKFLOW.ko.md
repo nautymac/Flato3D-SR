@@ -241,24 +241,25 @@
 - **저장 위치**
   - 개발자 PC(OneDrive에 pre-release 폴더가 있으면): `D:\OneDrive\AI\ClaudeCode\Flato3D_github_release\reports\<날짜_시각>_<결과>_<게임>\`. 결과가 없는 예전 폴더는 문제 보고입니다.
   - 그 밖: `%LOCALAPPDATA%\Flato3D\reports\`
-  - "GitHub에도 보고"를 고르면 zip을 만들고 이슈 페이지를 엽니다. 문제 보고는 `bug` 라벨이 붙습니다.
+  - **GitHub 상태 목록:** "GitHub 상태 목록에도 올리기"(기본으로 켜짐)를 고르면 이슈(`report` 라벨, 문제 보고는 `bug`도)가 생깁니다. GitHub CLI(`gh`)가 로그인돼 있으면(개발자 PC) 설치기가 바로 올리고, 아니면 양식(`status_report.yml`)이 채워진 채 열리고 zip을 만듭니다. 스크린샷과 로그 파일은 보고 폴더에만 남습니다.
+  - 이슈가 열리거나 바뀌거나 닫힐 때마다 워크플로(`.github/workflows/status-list.yml`, `.github/scripts/status_list.py`)가 `STATUS.md`, `STATUS.ko.md`, `data/status.json`을 다시 만들어 커밋합니다. 프로필이 있는 게임은 보고가 없어도 목록에 나옵니다. 같은 사람의 최근 보고만 세고, 닫힌(completed) 문제 보고는 처리된 것으로 빠집니다. invalid/duplicate/spam/wontfix 라벨이나 "not planned"로 닫으면 목록에서 빠집니다. 프로필을 바꿔 푸시해도 다시 만듭니다.
 - **들어가는 것**
   - `report.txt`: 결과, 메모·증상, 게임·exe·경로·프로필·후보 정보, 자동 선택과 그 근거, `OGL3D.ini` 주요 값, 설치기·Windows·SR 런타임·GPU, 로더 상태, exe 옆 DLL/ini/log 목록, `OGL3D.log`의 이상한 줄·처음·끝
   - 파일: `OGL3D.log`(끝 8MB), `OGL3D.ini`, `Flato3D_install.json`, `Flato3D_loader_*.log`, 그날의 마지막 Ctrl+F12 덤프
   - 스크린샷 `screenshot_NN.*`: 사용자가 체크한 것. 파일 추가, Ctrl+V 붙여넣기(Win+Shift+S 캡처)로 넣습니다. 이 게임의 Steam 스크린샷과 Windows·Game Bar 캡처 중 최근 2시간 것은 체크하지 않은 채 목록에 미리 나옵니다.
   - 경로의 사용자 이름은 `<user>`로 가립니다.
-- **명령줄:** `Flato3DInstaller.exe --report "<exe>" --result works|issues|broken --symptom "<메모>" [--image <파일> ...]`
+- **명령줄:** `Flato3DInstaller.exe --report "<exe>" --result works|issues|broken --symptom "<메모>" [--image <파일> ...] [--github]`
 
 사용자가 "상태보고 반영해줘"나 "이상로그 수정해줘"라고 하면 다음 순서로 합니다.
 
-1. `reports\` 아래에서 `handled.txt`가 없는 폴더를 오래된 것부터 봅니다. 공개 보고는 `gh issue list -R nautymac/Flato3D-SR --state open`으로 봅니다.
+1. `reports\` 아래에서 `handled.txt`가 없는 폴더를 오래된 것부터 봅니다. 공개 보고는 `gh issue list -R nautymac/Flato3D-SR --label report --state open`으로 봅니다(내 보고도 같은 이슈로 올라가 있음).
    - **`works`(잘 됨):** 프로필의 `status`를 `verified`로, `verified_by_user`에 날짜와 출력을 적습니다. 그 설정(`OGL3D.ini` 주요 값)을 프로필 `ini`에 반영하고, `GAMES.ko.md`와 후보 목록의 `status`를 고칩니다. 프로필이 없는 게임이면 새로 만듭니다. 그다음 4~6으로 갑니다.
    - **`issues` / `broken`:** 2~6을 합니다.
 2. `report.txt`에서 증상, 경로, 설정, 로그의 이상한 줄을 읽고, 스크린샷을 봅니다. 덤프가 있으면 `eyes.py`, `dispmap.py`로 봅니다.
 3. 증상에 맞는 체크포인트로 돌아가 원인을 확인하고 고칩니다. CP1 첫 실행 문제, CP3/CP4 깊이 문제, 증상별 표를 참고합니다.
    - 재현이 필요하면 프로필의 `test` 절차로 자동 실행합니다. 사용자가 PC를 쓰는 중이면 기다립니다.
 4. 프로필, `GAMES.ko.md`, 증상별 표에 기록하고 커밋·푸시합니다. 그다음 `prerelease.ps1 -Wait`로 pre-release 패키지를 갱신합니다.
-5. 보고 폴더에 `handled.txt`를 남깁니다. 날짜, 원인, 수정, 커밋을 적습니다. GitHub 이슈는 같은 내용으로 답하고 닫습니다.
+5. 보고 폴더에 `handled.txt`를 남깁니다. 날짜, 원인, 수정, 커밋을 적습니다. GitHub 이슈에는 같은 내용으로 답하고 **completed로 닫습니다**(`gh issue close N --reason completed`). 그러면 상태 목록에서 그 문제가 처리됨으로 바뀝니다. `works` 보고는 열어 둡니다(플레이어 상태로 셈).
 6. 사용자에게 무엇을 고쳤는지, 다시 확인할 것이 무엇인지 알립니다.
 
 ---

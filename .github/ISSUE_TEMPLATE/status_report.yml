@@ -1,0 +1,44 @@
+name: Status report / 상태 보고
+description: How a game works with Flato3D-SR / 게임이 Flato3D-SR로 어떻게 되는지 알려 주세요
+title: "[Game] "
+labels: ["report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The installer's **[Report status]** button fills this in. The report goes into the [status list](https://github.com/nautymac/Flato3D-SR/blob/main/STATUS.md) within a minute or two; edit the issue and the list follows.
+
+        설치기의 **[상태 보고]** 버튼이 채워 줍니다. 1~2분 안에 [상태 목록](https://github.com/nautymac/Flato3D-SR/blob/main/STATUS.ko.md)에 들어가고, 이슈를 고치면 목록도 따라 바뀝니다.
+  - type: input
+    id: game
+    attributes:
+      label: Game / 게임
+      description: Steam name if possible / 가능하면 Steam에 표시되는 이름
+    validations:
+      required: true
+  - type: input
+    id: steam
+    attributes:
+      label: Steam app id / Steam 앱 번호
+      description: The number, or the store page address / 숫자 또는 상점 페이지 주소
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result / 결과
+      options:
+        - Works well / 잘 됨
+        - Some problems / 일부 문제
+        - Does not work / 안 됨
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / 메모
+      description: What you saw - the problem, or settings that worked / 본 것 - 문제, 또는 잘 맞은 설정
+  - type: textarea
+    id: report
+    attributes:
+      label: Report / 보고 내용
+      description: Filled in by the installer (route, settings, GPU, log lines). Attach the report zip and screenshots below. / 설치기가 채웁니다(경로, 설정, GPU, 로그). 보고 zip과 스크린샷은 아래에 끌어다 놓으세요.
+      render: text

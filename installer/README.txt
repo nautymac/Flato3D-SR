@@ -13,7 +13,9 @@ https://github.com/nautymac/Flato3D-SR
 5. [제거]는 설치한 파일을 지우고, 옮겨 두었던 다른 도구의 파일(geo-11, dgVoodoo, ReShade)과 레지스트리를 되돌립니다.
    설치 기록은 게임 exe 옆의 Flato3D_install.json에 남습니다.
 6. 게임을 해 본 뒤 [상태 보고]를 누르고 결과(잘 됨 / 일부 문제 / 안 됨)를 고릅니다. 결과는 게임 목록에 표시됩니다.
-   문제가 있으면 증상을 적습니다. 로그와 설정이 한 폴더에 모이고, 원하면 GitHub 보고 페이지가 열립니다.
+   문제가 있으면 증상을 적습니다. 로그와 설정이 한 폴더에 모입니다. GitHub에도 올리면(기본) 공개 상태 목록
+   (github.com/nautymac/Flato3D-SR/blob/main/STATUS.ko.md)이 자동으로 바뀝니다. GitHub CLI(gh)가 로그인돼 있으면 바로 올라가고,
+   아니면 보고 페이지가 열립니다(결과를 고르고 제출).
    그 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다.
    스크린샷은 [파일 추가]나 Ctrl+V(Win+Shift+S로 캡처한 것)로 넣고, 최근 캡처는 목록에서 체크합니다.
 알아 둘 것
@@ -40,8 +42,10 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
 5. [Uninstall] removes the installed files and puts back other tools' files it moved aside (geo-11, dgVoodoo,
    ReShade) and registry values. The record is Flato3D_install.json next to the game exe.
 6. After playing, press [Report status] and choose the result (works / some problems / does not work); the game list
-   shows it. Describe a problem if there is one: logs and settings are collected in one folder, and a GitHub issue page
-   can be opened. Press Ctrl+F12 in game at that scene first to include both eyes.
+   shows it. Describe a problem if there is one: logs and settings are collected in one folder. Posted on GitHub too
+   (the default), it updates the public status list (github.com/nautymac/Flato3D-SR/blob/main/STATUS.md): filed right
+   away when the GitHub CLI (gh) is signed in, otherwise the report page opens (pick the result and submit).
+   Press Ctrl+F12 in game at that scene first to include both eyes.
    Add screenshots with [Add files...] or Ctrl+V (a Win+Shift+S capture); recent captures are listed to tick.
 Good to know
 - Only NVIDIA GPUs are supported; on Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets

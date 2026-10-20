@@ -1,0 +1,89 @@
+# Rebuilds STATUS.md, STATUS.ko.md and data/status.json from the status report issues (label: report) and the game
+# profiles whenever a report is opened, edited, closed, labelled or deleted, or the profiles change.
+# A deleted issue always triggers a rebuild (its event payload may carry no labels).
+# Moderation: label an issue invalid / duplicate / spam / wontfix, or close it as "not planned", to drop it from the list.
+# A fixed problem: close its issue as completed - it stays in the counts but no longer under "open problems".
+#
+# Every list run rebuilds from all issues on the newest main, so when reports arrive in a burst GitHub may cancel the
+# waiting runs in between (only one waits per concurrency group); the last run still covers every report.
+# The thank-you comment is its own job outside that group, so it is never cancelled.
+name: Status list
+
+on:
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled, deleted]
+  push:
+    branches: [main]
+    paths: [data/game_profiles.json, .github/scripts/status_list.py]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  list:
+    if: >-
+      github.event_name != 'issues' ||
+      contains(github.event.issue.labels.*.name, 'report') ||
+      github.event.action == 'unlabeled' ||
+      github.event.action == 'deleted'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: status-list
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Build and commit the list
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          branch="${{ github.event.repository.default_branch }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            # always build on the newest branch head: the generated files are rebuilt, never merged
+            git fetch -q origin "$branch" && git reset -q --hard "origin/$branch"
+            python3 .github/scripts/status_list.py --out .
+            git add STATUS.md STATUS.ko.md data/status.json
+            if git diff --cached --quiet; then echo "list unchanged"; exit 0; fi
+            git commit -q -m "Update status list"
+            if git push -q origin "HEAD:$branch"; then echo "list updated"; exit 0; fi
+            echo "push rejected (branch moved), retrying"; sleep $((attempt * 3))
+          done
+          exit 1
+
+  thank:
+    if: github.event_name == 'issues' && github.event.action == 'opened' && contains(github.event.issue.labels.*.name, 'report') && github.event.issue.user.login != github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Check the report
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: python3 .github/scripts/status_list.py --check "$ISSUE_NUMBER"
+
+      - name: Thank the reporter
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          LISTED: ${{ steps.check.outputs.listed }}
+          WHAT: ${{ steps.check.outputs.what }}
+        run: |
+          base="https://github.com/$GITHUB_REPOSITORY/blob/${{ github.event.repository.default_branch }}"
+          if [ "$LISTED" = "true" ]; then
+            body="Thanks! It goes into the [status list]($base/STATUS.md) as **$WHAT** within a few minutes. If something is wrong, edit this issue and the list follows.
+
+          감사합니다! 몇 분 안에 [상태 목록]($base/STATUS.ko.md)에 들어갑니다. 틀린 내용이 있으면 이 이슈를 고치면 목록도 따라 바뀝니다."
+          else
+            body="Thanks! The game name or the result could not be read, so this is not in the [status list]($base/STATUS.md) yet. Please edit the issue: the game's name and a result (works / some problems / does not work).
+
+          감사합니다! 게임 이름이나 결과를 읽지 못해 아직 [상태 목록]($base/STATUS.ko.md)에 들어가지 않았습니다. 이슈를 고쳐 게임 이름과 결과(잘 됨 / 일부 문제 / 안 됨)를 적어 주세요."
+          fi
+          gh issue comment "$ISSUE_NUMBER" -R "$GITHUB_REPOSITORY" --body "$body"

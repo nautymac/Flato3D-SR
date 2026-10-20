@@ -2,7 +2,8 @@
 // state or look into its problem later, in one folder.
 // On the developer's PCs the folder goes into the OneDrive pre-release folder
 // (<OneDrive>\AI\ClaudeCode\Flato3D_github_release\reports), where problems are picked up and fixed;
-// elsewhere into %LOCALAPPDATA%\Flato3D\reports, and the report can also be filed as a GitHub issue.
+// elsewhere into %LOCALAPPDATA%\Flato3D\reports. The report is also filed as a GitHub issue (label "report"),
+// from which the public status list STATUS.md is rebuilt.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -163,21 +164,112 @@ namespace Flato3D
             return dir;
         }
 
-        // GitHub issue: the folder zipped next to it (attached by the user), the summary in the issue text.
-        public static string OpenIssue(string dir, Game g, string result, string summary)
+        // GitHub status list (STATUS.md, rebuilt by a workflow from the issues labelled "report"): with the GitHub CLI
+        // signed in, the issue is filed right away; otherwise the status report form opens filled in, and the folder is
+        // zipped next to it for the user to attach. Returns the issue address, or the zip.
+        public static string FileOnGitHub(string dir, Game g, string result, string note, string summary, out bool filed)
         {
+            string title = "[" + g.Title + "] " + ResultLabel(result);
+            string first = (note ?? "").Trim().Split('\n')[0].Trim();
+            if (result != "works" && first.Length > 0) title += ": " + (first.Length > 60 ? first.Substring(0, 60) + "…" : first);
+            string formResult = result == "works" ? "Works well / 잘 됨" : result == "issues" ? "Some problems / 일부 문제" : "Does not work / 안 됨";
+            int shots = Directory.GetFiles(dir, "screenshot_*").Length;
+            if (GhReady())
+            {
+                string report = summary.Length > 20000 ? summary.Substring(0, 20000) + "\n...(report.txt in the report folder)" : summary;
+                string body = "### Game / 게임\n\n" + g.Title + "\n\n### Steam app id / Steam 앱 번호\n\n" + (g.SteamAppId ?? "_No response_") +
+                              "\n\n### Result / 결과\n\n" + formResult + "\n\n### Notes / 메모\n\n" + (string.IsNullOrWhiteSpace(note) ? "_No response_" : note.Trim()) +
+                              "\n\n### Report / 보고 내용\n\n```text\n" + report.Replace("```", "'''") + "\n```\n" +
+                              (shots > 0 ? "\n" + shots + " screenshot(s) and the logs are in the report folder " + Path.GetFileName(dir) + ".\n" : "");
+                string file = Path.Combine(Path.GetTempPath(), "Flato3D_issue_" + Guid.NewGuid().ToString("N") + ".md");
+                File.WriteAllText(file, body, new UTF8Encoding(false));
+                try
+                {
+                    string output;
+                    int rc = Run(GhPath(), "issue create -R " + Repo + " --title " + Quote(title) + " --label report" + (result == "works" ? "" : " --label bug") +
+                                           " --body-file " + Quote(file), out output);
+                    var url = Regex.Match(output ?? "", @"https://github\.com/\S+/issues/\d+");
+                    if (rc == 0 && url.Success) { filed = true; return url.Value; }
+                }
+                finally { try { File.Delete(file); } catch { } }
+            }
+            filed = false;
             string zip = dir + ".zip";
             if (File.Exists(zip)) File.Delete(zip);
             ZipFile.CreateFromDirectory(dir, zip, CompressionLevel.Optimal, false);
-            string body = summary.Length > 5000 ? summary.Substring(0, 5000) + "\n...(report.txt in the zip)" : summary;
-            body = L.T("아래에 이 zip 파일을 끌어다 놓아 주세요: ", "Please drag this zip file in here: ") + Path.GetFileName(zip) +
-                   L.T("\n스크린샷(screenshot_*.png/jpg)도 함께 끌어다 놓으면 이슈에서 바로 보입니다.", "\nDrag the screenshots (screenshot_*.png/jpg) in too, so they show in the issue.") +
-                   "\n\n```\n" + body + "\n```";
-            string title = "[" + g.Title + "] " + ResultLabel(result) + (result == "works" ? "" : ": ");
-            string url = IssuesUrl + (result == "works" ? "?" : "?labels=bug&") + "title=" + Uri.EscapeDataString(title) + "&body=" + Uri.EscapeDataString(body);
-            Process.Start(url);
+            string text = summary.Length > 3000 ? summary.Substring(0, 3000) + "\n...(report.txt in the zip)" : summary;
+            string url2 = IssuesUrl + "?template=status_report.yml&labels=report" + (result == "works" ? "" : ",bug") + "&title=" + Uri.EscapeDataString(title) +
+                          "&game=" + Uri.EscapeDataString(g.Title) + "&steam=" + Uri.EscapeDataString(g.SteamAppId ?? "") +
+                          "&notes=" + Uri.EscapeDataString((note ?? "").Trim()) + "&report=" + Uri.EscapeDataString(text);
+            Process.Start(url2);
             Process.Start("explorer.exe", "/select,\"" + zip + "\"");
             return zip;
+        }
+
+        const string Repo = "nautymac/Flato3D-SR";
+        static bool? ghReady;
+
+        // the GitHub CLI is installed and signed in (the developer's PCs): reports are filed without a browser
+        public static bool GhReady()
+        {
+            if (ghReady == null)
+            {
+                string output;
+                ghReady = GhPath() != null && Run(GhPath(), "auth status", out output) == 0;
+            }
+            return ghReady.Value;
+        }
+
+        static string GhPath()
+        {
+            foreach (string d in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';')
+                                 .Concat(new[] { Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "GitHub CLI") }))
+            {
+                try
+                {
+                    string p = Path.Combine(d.Trim().Trim('"'), "gh.exe");
+                    if (d.Trim().Length > 0 && File.Exists(p)) return p;
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        // one command-line argument (Windows rules: backslashes count only before a quote)
+        static string Quote(string s)
+        {
+            var sb = new StringBuilder("\"");
+            int slashes = 0;
+            foreach (char ch in s ?? "")
+            {
+                if (ch == '\\') { slashes++; continue; }
+                sb.Append('\\', ch == '"' ? slashes * 2 + 1 : slashes);
+                sb.Append(ch);
+                slashes = 0;
+            }
+            sb.Append('\\', slashes * 2);
+            return sb.Append('"').ToString();
+        }
+
+        // runs a console program without a window; both outputs are read as they come (a full pipe would block it)
+        static int Run(string exe, string args, out string output)
+        {
+            var psi = new ProcessStartInfo(exe, args) { UseShellExecute = false, CreateNoWindow = true, RedirectStandardOutput = true, RedirectStandardError = true,
+                                                         RedirectStandardInput = true, StandardOutputEncoding = Encoding.UTF8, StandardErrorEncoding = Encoding.UTF8 };
+            var sb = new StringBuilder();
+            using (var p = new Process { StartInfo = psi })
+            {
+                p.OutputDataReceived += (s, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
+                p.ErrorDataReceived += (s, e) => { if (e.Data != null) lock (sb) sb.AppendLine(e.Data); };
+                p.Start();
+                p.StandardInput.Close();
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+                if (!p.WaitForExit(60000)) { try { p.Kill(); } catch { } output = sb.ToString(); return -1; }
+                p.WaitForExit();
+                output = sb.ToString();
+                return p.ExitCode;
+            }
         }
 
         static string ReadTail(string path)
