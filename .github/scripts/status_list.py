@@ -121,8 +121,10 @@ def parse(issue):
         return None
     report = f.get("report", "")
     gpu = re.search(r"^GPU:\s*(.+)$", report, re.M)
+    when = re.search(r"^time:\s*(\d{4}-\d{2}-\d{2})[ T](\d\d:\d\d:\d\d)", report, re.M)   # when the installer wrote the report
     return {
-        "number": issue["number"], "url": issue.get("html_url", ""), "created": issue.get("created_at", ""),
+        "number": issue["number"], "url": issue.get("html_url", ""),
+        "created": "%sT%sZ" % when.groups() if when else issue.get("created_at", ""),
         "author": ((issue.get("user") or {}).get("login") or "").lower(), "open": issue.get("state") == "open",
         "game": game, "steam": appid_of(f.get("steam"), report), "result": result,
         "notes": f.get("notes", ""), "gpu": gpu.group(1).strip() if gpu else "",
