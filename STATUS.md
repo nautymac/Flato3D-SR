@@ -8,7 +8,7 @@ Report with the installer's **[Report status]** button or the [form](https://git
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
-| [Astral Ascent](https://store.steampowered.com/app/1280930) | ✅ confirmed | 🔧 Handled (2026-10-20) | ⚠️ 1 | - | 벼경하늘이 서로 차이가 난다. | [#1](https://github.com/nautymac/Flato3D-SR/issues/1) |
+| [Astral Ascent](https://store.steampowered.com/app/1280930) | ✅ confirmed | 🔧 Handled (2026-10-17) | ⚠️ 1 | - | 벼경하늘이 서로 차이가 난다. | [#1](https://github.com/nautymac/Flato3D-SR/issues/1) |
 | [Blade Assault](https://store.steampowered.com/app/1367300) | 🔵 working | - | - | - | - | - |
 | [Blade Runner: Enhanced Edition](https://store.steampowered.com/app/1678420) | - | ❌ Does not work (2026-10-20) | ✅ 1 · ❌ 1 | [#6](https://github.com/nautymac/Flato3D-SR/issues/6) | - | [#5](https://github.com/nautymac/Flato3D-SR/issues/5) [#6](https://github.com/nautymac/Flato3D-SR/issues/6) |
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 working | - | - | - | - | - |
@@ -17,10 +17,10 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Huntdown](https://store.steampowered.com/app/598550) | 🔵 working | - | - | - | - | - |
 | [Intravenous 2](https://store.steampowered.com/app/2608270) | ✅ confirmed | - | - | - | - | - |
 | [Intravenous 2: Mercenarism](https://store.steampowered.com/app/2651330) | ✅ confirmed | - | - | - | - | - |
-| [Machinarium](https://store.steampowered.com/app/40700) | ✅ confirmed | ✅ Works (2026-10-20) | ✅ 1 · ⚠️ 1 | - | - | [#3](https://github.com/nautymac/Flato3D-SR/issues/3) [#4](https://github.com/nautymac/Flato3D-SR/issues/4) |
+| [Machinarium](https://store.steampowered.com/app/40700) | ✅ confirmed | ✅ Works (2026-10-18) | ✅ 1 · ⚠️ 1 | - | - | [#3](https://github.com/nautymac/Flato3D-SR/issues/3) [#4](https://github.com/nautymac/Flato3D-SR/issues/4) |
 | [Rocketbirds: Hardboiled Chicken](https://store.steampowered.com/app/215510) | 🔵 working | - | - | - | - | - |
 | [Samorost 2](https://store.steampowered.com/app/40720) | ✅ confirmed | - | - | - | - | - |
-| [Shank](https://store.steampowered.com/app/6120) | - | ✅ Works (2026-10-20) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
+| [Shank](https://store.steampowered.com/app/6120) | - | ✅ Works (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 working | - | - | - | - | - |
 | [Technobabylon](https://store.steampowered.com/app/307580) | ✅ confirmed | - | - | - | - | - |
 
