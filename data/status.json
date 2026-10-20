@@ -33,6 +33,25 @@
    "reports": []
   },
   {
+   "game": "Blade Runner: Enhanced Edition",
+   "steam": "1678420",
+   "profile": null,
+   "profile_status": null,
+   "status": "broken",
+   "works": 1,
+   "issues": 0,
+   "broken": 1,
+   "updated": "2026-10-20",
+   "note": "",
+   "open_problems": [
+    6
+   ],
+   "reports": [
+    5,
+    6
+   ]
+  },
+  {
    "game": "Door Kickers: Action Squad",
    "steam": "686200",
    "profile": "door-kickers-action-squad",
@@ -121,15 +140,16 @@
    "steam": "40700",
    "profile": "machinarium",
    "profile_status": "verified",
-   "status": "handled",
-   "works": 0,
+   "status": "works",
+   "works": 1,
    "issues": 1,
    "broken": 0,
    "updated": "2026-10-20",
-   "note": "오른쪽 하단에 사각형으로짤라 져보인다.",
+   "note": "",
    "open_problems": [],
    "reports": [
-    3
+    3,
+    4
    ]
   },
   {
