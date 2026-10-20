@@ -4,7 +4,7 @@
 
 보고는 설치기의 **[상태 보고]** 버튼이나 [양식](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml)으로 합니다. 처리한 문제 보고는 이슈를 닫고 상태에서 빠집니다. 문제 보고가 모두 처리된 게임은 🔧 처리됨으로 표시됩니다.
 
-게임 15개 · 보고 6건 · English: [STATUS.md](STATUS.md)
+게임 16개 · 보고 7건 · English: [STATUS.md](STATUS.md)
 
 | 게임 | 프로필 | 플레이어 상태 | 보고 | 열린 문제 | 최근 메모 | 이슈 |
 |---|---|---|---|---|---|---|
@@ -23,4 +23,5 @@
 | [Shank](https://store.steampowered.com/app/6120) | - | ✅ 잘 됨 (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 동작 | - | - | - | - | - |
 | [Technobabylon](https://store.steampowered.com/app/307580) | ✅ 확인됨 | - | - | - | - | - |
+| TestGame Flato3D | - | ✅ 잘 됨 (2026-10-20) | ✅ 1 | - | End-to-end test of the installer GitHub filing - this issue is deleted right away | [#7](https://github.com/nautymac/Flato3D-SR/issues/7) |
 
