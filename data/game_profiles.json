@@ -514,6 +514,7 @@
       "status": "working",
       "notes": [
         "Installed on the OpenGL route the game stayed flat: 'shaders injected 0' - the PSSG engine calls cgCreateProgram with arbvp1/arbfp1, so its draws run ARB assembly programs. The wrapper now rewrites ARB vertex programs (offset from program.env[255]) and reads the texture units of ARB fragment programs.",
+        "The window is created with 4x multisampling. GL refuses blits into a multisampled back buffer, so with output = sbs / tab / left / right the composed eyes never reached the screen: the game's own picture stayed, separation changes showed nothing (user report 2026-10-21; Ctrl+F12 dumps looked right because they read the eye buffers). Fixed in the wrapper: on a multisampled window the eyes are drawn in as textured quads (log: \"output drawn into the window\"). SR weaving was not affected. Checked on screen: menu +30..35 px, text -6 px at separation 25; +44..51 / -9 at 36.7.",
         "Forcing Cg to GLSL ([Inject] cg_glsl = 1) turned the screen white: the engine passes its own profile and assembly-only options (-profileopts MaxLocalParams=256). Keep cg_glsl = 0.",
         "screen_batch = 0: the game sets a viewport/scissor before every pass, so later batches are not UI.",
         "Measured (separation 17.9 set in game): chapter 1 title 'Sito in the Jungle' foreground tree silhouette near, jungle and poster wall behind; first gameplay (unloading area) -28..+44 px, median +24."

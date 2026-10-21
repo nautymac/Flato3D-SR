@@ -193,6 +193,7 @@
 | 오른쪽 눈만 색이 다름(새빨감 등) | 색 보정 표(Unity 후처리의 1024×32 띠)를 레이어 캐시로 보고 스테레오로 만들어 오른쪽 눈에서 밀어 버림(Blade Assault) | 래퍼에서 수정됨: 띠 모양(한 변이 다른 변의 4배 초과) 버퍼는 레이어 캐시가 아님 |
 | 두 눈이 똑같음(UI만 깊이가 있거나 전혀 없음), Unity 2D | ① 조명 스프라이트가 화면의 빛 텍스처(스테레오 버퍼)를 읽어 합성 패스로 판정됨 ② WineD3D가 조명 패스마다 viewport를 걸어 장면이 뒤 묶음(UI)으로 판정됨 | ① 래퍼에서 수정됨: 자기 그림(64px 이상, 띠 아님)도 그리면 조명 스프라이트로 보고 깊이를 줌(추적 기록 `lit sprite`, `lit redraw`), 화면 전체를 덮는 삼각형은 화면 위치 ② `screen_batch = 0`(설치기가 Unity에 기본 적용) |
 | 게임 중 draw가 몇 개뿐이고 장면 버퍼에 draw가 없음 | 엔진이 장면을 CPU에서 한 장으로 합쳐 올림(Blade Runner: Enhanced Edition) | 층이 없어 이 방식으로는 안 됨. AI 2D→3D 같은 다른 방식 필요 |
+| SBS/상하 출력인데 화면이 그대로 한 장이고 분리값을 바꿔도 변화 없음(덤프는 정상) | 게임 창이 멀티샘플(로그 `virtual back buffer off: ... multisampled`)이라 GL이 창으로 가는 블릿을 거부 | 래퍼에서 수정됨: 멀티샘플 창에는 두 눈을 그림으로 그려 넣음(로그 `output drawn into the window`). 확인은 덤프가 아니라 화면 캡처로 |
 | 업스케일을 켜도 게임이 4K로 그림(글씨가 그대로 작음) | 게임이 실행 중에 스스로 고해상도 인식을 켜고 해상도 옵션이 없음(Astral Ascent: SDL) | 업스케일 대신 게임의 배율(scale) 옵션을 씀. 프로필에 `upscale = 0` |
 | 업스케일을 켠 Direct3D(WineD3D) 게임이 "응답하지 않습니다"가 뜨고 클릭이 안 먹음 | 표시 창이 WineD3D 렌더링 스레드에 만들어져 메시지를 처리하는 곳이 없고, `HTTRANSPARENT`가 다른 스레드의 게임 창으로 마우스를 넘기지 못함 | 표시 창을 게임 창의 스레드에서 만듦(로그 `window made there`)(수정됨, Samorost 2) |
 | exe가 Direct3D 12/9를 쓰는데 OpenGL 모드가 따로 있음 | 실행 스위치(`-ogl` 등)를 Steam이 넘기지 않음 | `[Inject] add_args = -ogl`: 게임이 명령줄을 읽기 전에 붙임. 로그 `command line: "-ogl" appended` 확인(Machinarium) |
