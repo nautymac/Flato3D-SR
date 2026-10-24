@@ -21,6 +21,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Samorost 2 | D3D11 (Adobe AIR) · WineD3D | feet, `plane_tall = 0.12` | Confirmed by the user | renamed WineD3D x86, loader, opengl32.dll x86, upscale |
 | Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | flat depth off (real 3D, auto convergence) | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, `[Flat] enable = 0` |
 | Blade Assault | D3D11 (Unity 2D lights) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
+| The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works (hang fixed), not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 (wrapper from 10-24 on) |
 
 ## Notes per game
 
@@ -121,12 +122,12 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 
 **Blade Runner: Enhanced Edition** (no profile): The original (1997) engine seems to combine the scene into a single image on the CPU and send that. In game there are only 6 draws per frame, and the 1280×960 scene buffer gets no draws at all (user's run log, 10-19). With no layers, the current method cannot make it stereo. It needs a different approach, such as 2D→3D conversion (AI depth estimation). The menu does not take injected mouse or arrow-key input, so the automated check only went as far as the title.
 
-**The Messenger** (no profile, hang fixed 10-24): Unity 2017.4 x64, D3D11 through WineD3D. During play it stopped responding within tens of seconds to a few minutes.
+**The Messenger** (profile `the-messenger`, 10-24): Unity 2017.4 x64, D3D11 through WineD3D. It uses the installer's Unity defaults as they are (order, one layer per draw, `screen_batch = 0`).
 
-- It also hangs with the wrapper (opengl32.dll) removed (seen while the user played). It is not a wrapper problem.
-- `csmt=0`: crashes at start with an access violation in wined3d.dll (Unity uses D3D11 from several threads, as in Huntdown). WineD3D 10.0: stays on a black screen. WineD3D 11.0: the same hang as 11.19.
-- At the moment of the hang: Unity's graphics thread is in `Map` (d3d11 → `wined3d_device_context_emit_map`), holding the global lock `wined3d_cs` while it waits for the drawing thread. WineD3D's drawing thread is in `update_sub_resource` → `wined3d_context_gl_destroy_bo` → `wined3d_allocator_chunk_gl_unmap` → `glUnmapBuffer`, spinning on a lock inside the NVIDIA driver.
-- `-force-glcore` (OpenGL directly): this build has no OpenGL renderer and closes at once.
-- **Cause**: WineD3D's drawing thread waits for work in `NtWaitForAlertByThreadId`, and other threads wake it with `NtAlertThreadByThreadId`. An alert that arrives after a timed wait has already returned stays pending and wrongly wakes a Windows 11 24H2+ critical-section wait (which uses the same alerts). The wait block is then linked twice and points to itself, and ntdll loops in `RtlpWaitOnCriticalSection` forever. It happens without the wrapper and without SR too, and applies to every WineD3D game using CSMT (x86/x64).
-- **Fix**: the wrapper makes `wined3d.dll`'s `GetProcAddress` answer "not found" for the two functions, so WineD3D wakes the thread with an event (log `WineD3D: command thread woken by an event`). Verified: 11 hangs in 19 runs before; after the fix 10 `sbs` runs and 5 SR runs (120 s each) with no hang.
-- The diagnosis method and tools are in [tools/hang/README.md](../tools/hang/README.md). Saves: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger` (test-backups\TheMessenger).
+- **Hang fixed**: during play it stopped responding within tens of seconds to a few minutes (also without the wrapper and without SR). WineD3D wakes its drawing thread with thread alerts (`NtAlertThreadByThreadId`); a leftover alert wrongly wakes a Windows 11 24H2+ critical-section wait, and ntdll loops in `RtlpWaitOnCriticalSection` forever. The wrapper gives WineD3D no alert functions, so it wakes the thread with an event (log `WineD3D: command thread woken by an event`). Before: 11 hangs in 19 runs; after: 10 `sbs` runs and 5 SR runs (120 s each) with no hang. This applies to every WineD3D game using CSMT. The investigation is the case study in [tools/hang/README.md](../tools/hang/README.md).
+- CSMT must stay on (`csmt=0` crashes at start, as in Huntdown). `-force-glcore` does not work (no OpenGL renderer in this build).
+- Measured (separation 25, dumps 1920x1080 per eye)
+  - Title: stars, moon and mountains +68 px, logo +24 px, menu -10..-14 px, credits -20..-28 px
+  - First scene (Ninja Village, opening dialogue): sunset sky +52 px, middle trees and cliffs +38 px, top foliage +24 px, ledge +4..6 px, the ninja -6 px, dialogue box -26..-28 px
+- To do: the ninja stands about 10 px in front of the ledge under it. The depth in play is to be confirmed by the user.
+- Test input: Enter skips the intro (about 60 s) and "press any button"; the menu and the save slots take **Space** (Enter is ignored). On the save slot screen holding left Ctrl deletes the save, so never press Ctrl+F12 there. Saves: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger\SaveGame.txt` (test-backups\TheMessenger; JSON XORed with 0x81).

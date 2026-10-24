@@ -13507,14 +13507,18 @@
    "api": "d3d11",
    "phase": 3,
    "bits": "x64",
-   "note": "-force-glcore로 OpenGL 시도 가능(게임마다 다름)",
+   "note": "Flato3D 프로필 the-messenger: WineD3D(D3D11), order 규칙, draw마다 한 층. 멈춤(WineD3D 스레드 알림 + Windows 11 24H2 critical section)을 래퍼가 처리(2026-10-24). -force-glcore는 안 됨",
    "d3d": [
     "11"
    ],
    "opengl": "",
    "vulkan": "",
-   "perspectives": [],
-   "art": [],
+   "perspectives": [
+    "Side view"
+   ],
+   "art": [
+    "Pixel art"
+   ],
    "tags": [
     "Retro",
     "Platformer",
@@ -13528,7 +13532,7 @@
     "2D Platformer"
    ],
    "pcgw_page": "The Messenger",
-   "status": "untested",
+   "status": "working",
    "uhd": "true",
    "uhd_note": "",
    "upscale": "0"

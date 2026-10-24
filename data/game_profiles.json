@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-20",
+  "updated": "2026-10-24",
   "about": "Games Flato3D has been made to work with: what to install, the OGL3D.ini values that differ from the template, and the state of each. The installer will apply these as profiles. Candidates not yet worked on are in game_candidates.json. 'test' holds the steps for tools\\analysis\\gametest.ps1.",
   "games": [
     {
@@ -270,7 +270,6 @@
       },
       "status": "verified",
       "verified_by_user": "2026-10-18 (NVIDIA GPU; on an Intel GPU the sky differed between the eyes, report 2026-10-17)",
-      "verified_by_user": null,
       "notes": [
         "No upscale: the game makes itself DPI aware at run time (SDL) and has no resolution or fullscreen option, so it always renders at the desktop resolution (4K) and upscale changes nothing (checked 2026-10-19). Its own scale option makes the UI larger. The 1600x900 limit on PCGamingWiki does not hold.",
         "The exe binds d3d11.dll before any of our code runs; the loader points that import at w3d11.dll (the system d3d11 stays for the GPU driver).",
@@ -689,6 +688,60 @@
         "steps": "wait:80,key:0D,wait:6,key:0D,wait:15,ctrlkey:7B,wait:4",
         "reaches": "title -> Start -> the first corridor with the opening dialogue, then Ctrl+F12 dump",
         "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\TeamSuneat\\BladeAssault (test-backups\\BladeAssault) - back up before play tests. Clicks do not select the title menu; Enter does."
+      }
+    },
+    {
+      "id": "the-messenger",
+      "name": "The Messenger",
+      "steam_appid": 764790,
+      "folder": "The Messenger",
+      "exe": "TheMessenger.exe",
+      "arch": "x64",
+      "engine": "Unity 2017.4 (pixel side-scroller, parallax layers)",
+      "api": "Direct3D 11",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "screen_batch": 0,
+          "group": "draw",
+          "order_curve": 0.5
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Hang: the game stopped responding after seconds to minutes (also without the wrapper and without SR). WineD3D wakes its command stream thread with thread alerts (NtAlertThreadByThreadId); an alert left pending after a timed wait breaks the thread's next critical-section wait on Windows 11 24H2+, and ntdll loops in RtlpWaitOnCriticalSection forever. Fixed in the wrapper (2026-10-24): WineD3D's GetProcAddress gets no thread-alert functions, so it wakes the thread with an event. Before: 11 hangs in 19 runs; after: 10 sbs and 5 SR runs of 120 s with no hang. Details in tools/hang/README.md.",
+        "CSMT must stay on: csmt=0 crashes at start (Unity uses D3D11 from several threads, as in Huntdown). -force-glcore does not work (no OpenGL renderer in this build).",
+        "Measured with the installer's Unity defaults (order, one layer per draw), separation 25, dumps 1920x1080 per eye: title - stars, moon and mountains +68 px, logo +24 px, menu -10..-14 px, credits -20..-28 px; first scene (Ninja Village, opening dialogue) - sunset sky +52 px, middle trees and cliffs +38 px, top foliage +24 px, ledge +4..6 px, the ninja -6 px, dialogue box -26..-28 px."
+      ],
+      "known_issues": [
+        "Measured on the title and the opening dialogue only; the depth in play is to be confirmed by the user.",
+        "The ninja stands about 10 px in front of the ledge under it (-6 px against +4 px)."
+      ],
+      "test": {
+        "proc": "TheMessenger",
+        "steps": "wait:30,key:0D,wait:4,key:0D,wait:4,key:0D,wait:4,key:0D,wait:5,key:20,wait:5,key:20,wait:25,ctrlkey:7B,wait:4",
+        "reaches": "intro story and \"press any button\" skipped with Enter -> menu Start (Space) -> save slot 1 (Space) -> Ninja Village with the opening dialogue, then Ctrl+F12 dump",
+        "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\Sabotage Studio\\The Messenger\\SaveGame.txt (test-backups\\TheMessenger) - back up before play tests. The menu and the save slots ignore Enter; Space selects. On the save slot screen holding left Ctrl deletes the save: never press Ctrl+F12 there. The intro story runs about 60 s. For hang tests: tools\\hang\\hang_loop.ps1 -AppId 764790 -Proc TheMessenger."
       }
     }
   ]

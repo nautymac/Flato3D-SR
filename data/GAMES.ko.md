@@ -19,6 +19,7 @@
 | Samorost 2 | D3D11 (Adobe AIR) · WineD3D | feet, `plane_tall = 0.12` | 사용자 확인 완료 | 이름 바꾼 WineD3D x86, 로더, opengl32.dll x86, 업스케일 |
 | Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | 평면 깊이 끔 (실제 3D, 자동 Convergence) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, `[Flat] enable = 0` |
 | Blade Assault | D3D11 (Unity 2D 조명) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
+| The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(멈춤 해결), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 (10-24 이후 래퍼) |
 
 ## 게임별 메모
 
@@ -119,12 +120,12 @@
 
 **Blade Runner: Enhanced Edition** (프로필 없음): 원작(1997) 엔진이 장면을 CPU에서 한 장으로 합쳐 보내는 것으로 보입니다. 게임 중 한 프레임에 draw가 6번뿐이고, 1280×960 장면 버퍼에는 draw가 없습니다(사용자 실행 로그, 10-19). 층이 없어서 지금 방식으로는 입체가 되지 않습니다. 2D→3D 변환(AI 깊이 추정) 같은 다른 방식이 필요합니다. 메뉴는 주입한 마우스와 화살표 키를 받지 않아 자동 확인은 타이틀까지만 했습니다.
 
-**The Messenger** (프로필 없음, 멈춤 해결 10-24): Unity 2017.4 x64, D3D11을 WineD3D로. 플레이 중 수십 초~몇 분 안에 "응답 없음"으로 멈췄습니다.
+**The Messenger** (프로필 `the-messenger`, 10-24): Unity 2017.4 x64, D3D11을 WineD3D로. 설치기의 Unity 기본값(order, draw마다 한 층, `screen_batch = 0`) 그대로입니다.
 
-- 래퍼(opengl32.dll)를 빼도 멈춥니다(사용자 플레이 중 확인). 래퍼 문제가 아닙니다.
-- `csmt=0`: 시작하자마자 wined3d.dll 접근 위반으로 죽습니다(Unity의 여러 스레드 D3D11 사용, Huntdown과 같음). WineD3D 10.0: 검은 화면에서 진행하지 않습니다. WineD3D 11.0: 11.19와 같은 멈춤입니다.
-- 멈춘 순간: Unity 그래픽 스레드는 `Map`(d3d11 → `wined3d_device_context_emit_map`)에서 전역 잠금 `wined3d_cs`를 잡은 채 그리기 스레드를 기다립니다. WineD3D 그리기 스레드는 `update_sub_resource` → `wined3d_context_gl_destroy_bo` → `wined3d_allocator_chunk_gl_unmap` → `glUnmapBuffer`에서 NVIDIA 드라이버 안의 잠금을 기다리며 회전합니다.
-- `-force-glcore`(OpenGL로 직접): 이 빌드에는 OpenGL 렌더러가 없어 바로 꺼집니다.
-- **원인**: WineD3D 그리기 스레드는 `NtWaitForAlertByThreadId`로 일을 기다리고, 다른 스레드가 `NtAlertThreadByThreadId`로 깨웁니다. 시간 제한으로 이미 깨어난 뒤 온 알림이 남아 있다가, Windows 11 24H2+의 critical section 대기(같은 알림 방식)를 엉뚱하게 깨웁니다. 그러면 대기 블록이 목록에 두 번 걸려 자기 자신을 가리키고, ntdll이 `RtlpWaitOnCriticalSection`에서 영원히 돕니다. 래퍼 없이도, SR 없이도 생깁니다. CSMT를 쓰는 모든 WineD3D 게임(x86/x64)에 해당합니다.
-- **해결**: 래퍼가 `wined3d.dll`의 `GetProcAddress`에 두 함수를 "없음"으로 답해, WineD3D가 이벤트로 깨우게 합니다(로그 `WineD3D: command thread woken by an event`). 확인: 고치기 전 19회 중 11회 멈춤 → 고친 뒤 `sbs` 10회, SR 5회(각 120초) 모두 멈춤 없음.
-- 진단 방법과 도구는 [tools/hang/README.ko.md](../tools/hang/README.ko.md)에 있습니다. 세이브: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger`(test-backups\TheMessenger).
+- **멈춤 해결**: 플레이 중 수십 초~몇 분 안에 "응답 없음"으로 멈췄습니다(래퍼 없이도, SR 없이도). WineD3D가 그리기 스레드를 스레드 알림(`NtAlertThreadByThreadId`)으로 깨우는데, 남은 알림이 Windows 11 24H2+의 critical section 대기를 엉뚱하게 깨워 ntdll이 `RtlpWaitOnCriticalSection`에서 영원히 돕니다. 래퍼가 WineD3D에 알림 함수를 주지 않아 이벤트로 깨우게 했습니다(로그 `WineD3D: command thread woken by an event`). 고치기 전 19회 중 11회 멈춤 → 고친 뒤 `sbs` 10회, SR 5회(각 120초) 멈춤 없음. CSMT를 쓰는 모든 WineD3D 게임에 해당합니다. 조사 과정은 [tools/hang/README.ko.md](../tools/hang/README.ko.md)의 사례에 있습니다.
+- CSMT는 켜 둬야 합니다(`csmt=0`은 시작하자마자 죽음, Huntdown과 같음). `-force-glcore`는 안 됩니다(이 빌드에 OpenGL 렌더러 없음).
+- 측정(separation 25, 덤프는 한 눈 1920x1080)
+  - 타이틀: 별·달·산 +68 px, 로고 +24 px, 메뉴 -10~-14 px, 아래 글자 -20~-28 px
+  - 첫 장면(닌자 마을, 첫 대화): 노을 하늘 +52 px, 가운데 나무·절벽 +38 px, 위쪽 나뭇잎 +24 px, 발판 +4~6 px, 닌자 -6 px, 대화창 -26~-28 px
+- 남은 일: 닌자가 발밑 발판보다 약 10 px 앞에 섭니다. 플레이 중 깊이는 사용자 확인이 필요합니다.
+- 테스트 조작: 인트로(약 60초)와 "버튼을 누르시오"는 Enter로 넘기고, 메뉴와 세이브 칸은 **Space**로 고릅니다(Enter는 무시). 세이브 칸 화면에서 왼쪽 Ctrl을 누르고 있으면 세이브가 지워지니 거기서는 Ctrl+F12를 누르지 않습니다. 세이브: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger\SaveGame.txt`(test-backups\TheMessenger, 0x81로 XOR한 JSON).
