@@ -20,7 +20,7 @@
 | Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | 평면 깊이 끔 (실제 3D, 자동 Convergence) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, `[Flat] enable = 0` |
 | Blade Assault | D3D11 (Unity 2D 조명) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(멈춤 해결), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 (10-24 이후 래퍼) |
-| Braid, Anniversary Edition | D3D11 (자체 엔진) · WineD3D | order (템플릿 기본값) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더 + 중계 `winmm.dll`, opengl32.dll x64 |
+| Braid, Anniversary Edition | D3D11 (자체 엔진) · WineD3D | order (템플릿 기본값) | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더 + 중계 `winmm.dll`, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -137,5 +137,5 @@
 - 측정(separation 25, 덤프는 한 눈 1920x1080)
   - 타이틀: 먼 건물 +60~68 px, 가운데 건물 +46~48 px, 다리 +42 px, Braid 로고 +8~16 px, 팀 -22 px
   - 집 안 허브: 방 뒷벽·가구 +32 px, 사다리 +38 px, 문 +8 px, 집 바깥 틀 +2~6 px, 팀 약 0 px, "월드" 글자 -26 px
-- 남은 일: 각 월드 안의 깊이는 사용자 확인이 필요합니다.
+- 사용자 확인 완료(10-25, 플레이).
 - 테스트 조작: 타이틀에서 Enter는 아무 일도 하지 않습니다. 오른쪽 화살표를 누르고 있으면 팀이 걸어가 게임이 시작됩니다. 세이브: `%APPDATA%\Braid, Anniversary Edition`(test-backups\Braid Anniversary Edition).

@@ -22,7 +22,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | flat depth off (real 3D, auto convergence) | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, `[Flat] enable = 0` |
 | Blade Assault | D3D11 (Unity 2D lights) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works (hang fixed), not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 (wrapper from 10-24 on) |
-| Braid, Anniversary Edition | D3D11 (in-house engine) · WineD3D | order (template default) | Works, not yet confirmed by the user | renamed WineD3D x64, loader + shim `winmm.dll`, opengl32.dll x64 |
+| Braid, Anniversary Edition | D3D11 (in-house engine) · WineD3D | order (template default) | Confirmed by the user | renamed WineD3D x64, loader + shim `winmm.dll`, opengl32.dll x64 |
 
 ## Notes per game
 
@@ -139,5 +139,5 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 - Measured (separation 25, dumps 1920x1080 per eye)
   - Title: far buildings +60..68 px, middle buildings +46..48 px, bridge +42 px, the Braid logo +8..16 px, Tim -22 px
   - House hub: room walls and furniture +32 px, ladder +38 px, door +8 px, house outline +2..6 px, Tim about 0 px, the world sign -26 px
-- To do: the depth inside the worlds is to be confirmed by the user.
+- Confirmed by the user (10-25, play).
 - Test input: Enter does nothing on the title; holding the right arrow walks Tim into the game. Saves: `%APPDATA%\Braid, Anniversary Edition` (test-backups\Braid Anniversary Edition).

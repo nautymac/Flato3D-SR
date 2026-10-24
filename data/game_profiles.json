@@ -779,14 +779,13 @@
           "swap_interval": 1
         }
       },
-      "status": "working",
+      "status": "verified",
+      "verified_by_user": "2026-10-25 (play)",
       "notes": [
         "Loader shim: neither the exe nor a DLL it imports imports version.dll, so the Flato3D loader never loaded and the game ran flat on the system Direct3D 11 (no logs at all). The installer now adds winmm.dll, a shim that forwards every export to the system winmm.dll by absolute path and imports the loader (loader/shim, 2026-10-25). With it the exe's static d3d11/dxgi imports go to WineD3D.",
         "Measured with the template rule (order, groups by texture), separation 25, dumps 1920x1080 per eye: title - far buildings +60..68 px, middle buildings +46..48 px, bridge +42 px, the Braid logo +8..16 px, Tim -22 px; the house hub - room walls and furniture +32 px, ladder +38 px, door +8 px, house outline +2..6 px, Tim about 0 px, the world sign -26 px."
       ],
-      "known_issues": [
-        "Only the title and the house hub were measured; the depth inside the worlds is to be confirmed by the user."
-      ],
+      "known_issues": [],
       "test": {
         "proc": "braid64_d3d11_final",
         "steps": "wait:35,ctrlkey:7B,wait:4,hold:27:6,wait:3,hold:27:8,wait:6,ctrlkey:7B,wait:4",
