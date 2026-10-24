@@ -126,5 +126,5 @@
 - 멈춘 순간: Unity 그래픽 스레드는 `Map`(d3d11 → `wined3d_device_context_emit_map`)에서 전역 잠금 `wined3d_cs`를 잡은 채 그리기 스레드를 기다립니다. WineD3D 그리기 스레드는 `update_sub_resource` → `wined3d_context_gl_destroy_bo` → `wined3d_allocator_chunk_gl_unmap` → `glUnmapBuffer`에서 NVIDIA 드라이버 안의 잠금을 기다리며 회전합니다.
 - `-force-glcore`(OpenGL로 직접): 이 빌드에는 OpenGL 렌더러가 없어 바로 꺼집니다.
 - **원인**: WineD3D 그리기 스레드는 `NtWaitForAlertByThreadId`로 일을 기다리고, 다른 스레드가 `NtAlertThreadByThreadId`로 깨웁니다. 시간 제한으로 이미 깨어난 뒤 온 알림이 남아 있다가, Windows 11 24H2+의 critical section 대기(같은 알림 방식)를 엉뚱하게 깨웁니다. 그러면 대기 블록이 목록에 두 번 걸려 자기 자신을 가리키고, ntdll이 `RtlpWaitOnCriticalSection`에서 영원히 돕니다. 래퍼 없이도, SR 없이도 생깁니다. CSMT를 쓰는 모든 WineD3D 게임(x86/x64)에 해당합니다.
-- **해결**: 래퍼가 `wined3d.dll`의 `GetProcAddress`에 두 함수를 "없음"으로 답해, WineD3D가 이벤트로 깨우게 합니다(로그 `WineD3D: command thread woken by an event`).
+- **해결**: 래퍼가 `wined3d.dll`의 `GetProcAddress`에 두 함수를 "없음"으로 답해, WineD3D가 이벤트로 깨우게 합니다(로그 `WineD3D: command thread woken by an event`). 확인: 고치기 전 19회 중 11회 멈춤 → 고친 뒤 `sbs` 10회, SR 5회(각 120초) 모두 멈춤 없음.
 - 진단 방법과 도구는 [tools/hang/README.ko.md](../tools/hang/README.ko.md)에 있습니다. 세이브: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger`(test-backups\TheMessenger).

@@ -128,7 +128,7 @@ python tools\hang\stackmap.py <폴더>\A1\stacks.txt --gamedir "<게임 폴더>"
 ## 6. 마무리 확인 목록
 
 - 게임 폴더에 바꿔 넣은 DLL을 원래 것으로 되돌렸는가(백업 폴더 확인).
-- `OGL3D.ini`의 `output`을 사용자 값(보통 `auto`)으로 되돌렸는가.
+- `OGL3D.ini`를 백업 파일로 되돌렸는가(값만 고쳐 쓰면 BOM 같은 차이가 남으니 파일째 복사).
 - 레지스트리 `csmt` 등 실험 값을 지웠는가.
 - 세이브를 백업에서 되돌렸는가.
 - 결과를 `data/GAMES.ko.md`와 이 문서의 사례에 적었는가.
@@ -153,7 +153,7 @@ python tools\hang\stackmap.py <폴더>\A1\stacks.txt --gamedir "<게임 폴더>"
   - SR 런타임의 `TerminateThread`: 한 회차가 SR 초기화 직후 멈춰서 의심했지만, SR을 뺀 `sbs` 출력에서도 같은 모양으로 멈췄습니다.
   - Mono 가비지 컬렉터의 일시 정지: `suspended.py`에 정지된 스레드가 없었고, 일시 정지/재개 스트레스 테스트(수백만 번)에서도 재현되지 않았습니다.
   - 일반적인 잠금 경쟁: 스트레스 테스트에서 재현되지 않았습니다. 같은 프로세스의 특별한 코드(여기서는 WineD3D의 알림)를 찾아야 합니다.
-- **해결(래퍼, 10-24)**: `wined3d.dll`의 `GetProcAddress` 가져오기를 바꿔 `NtAlertThreadByThreadId`/`NtWaitForAlertByThreadId`를 "없음"으로 답합니다. WineD3D는 그러면 이벤트로 그리기 스레드를 깨웁니다(남은 신호는 한 번 더 도는 것으로 끝). 로그: `WineD3D: command thread woken by an event`. CSMT를 쓰는 모든 WineD3D 게임(x86/x64)에 적용됩니다.
+- **해결(래퍼, 10-24)**: `wined3d.dll`의 `GetProcAddress` 가져오기를 바꿔 `NtAlertThreadByThreadId`/`NtWaitForAlertByThreadId`를 "없음"으로 답합니다. WineD3D는 그러면 이벤트로 그리기 스레드를 깨웁니다(남은 신호는 한 번 더 도는 것으로 끝). 로그: `WineD3D: command thread woken by an event`. CSMT를 쓰는 모든 WineD3D 게임(x86/x64)에 적용됩니다. 확인: 고치기 전 19회 중 11회 멈춤 → 고친 뒤 `sbs` 10회, SR 5회 모두 멈춤 없음(`hang_loop.ps1`, 각 120초).
 - 진행 상황과 결론은 [data/GAMES.ko.md](../../data/GAMES.ko.md)의 The Messenger 항목에 적습니다.
 
 ## 파일

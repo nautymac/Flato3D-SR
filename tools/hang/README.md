@@ -143,7 +143,8 @@ Change one thing, then run the same number of times again (`-N 5` or more). Alwa
 ## 6. Before finishing
 
 - DLLs swapped into the game folder are back to the originals (check the backup folder).
-- `output` in `OGL3D.ini` is back to the user's value (usually `auto`).
+- `OGL3D.ini` is restored from the backup file (copy the whole file: rewriting a value can leave differences such as
+  a lost BOM).
 - Experimental values such as the registry `csmt` are removed.
 - The saves are restored from the backup.
 - The result is written in `data/GAMES.md` and in the case study here.
@@ -190,7 +191,8 @@ Change one thing, then run the same number of times again (`-N 5` or more). Alwa
 - **Fix (wrapper, 10-24)**: `wined3d.dll`'s import of `GetProcAddress` answers "not found" for
   `NtAlertThreadByThreadId` / `NtWaitForAlertByThreadId`. WineD3D then wakes its drawing thread with an event (a
   leftover signal only costs one extra pass). Log: `WineD3D: command thread woken by an event`. Applies to every
-  WineD3D game using CSMT (x86/x64).
+  WineD3D game using CSMT (x86/x64). Verified: 11 hangs in 19 runs before; after the fix 10 `sbs` runs and 5 SR
+  runs with no hang (`hang_loop.ps1`, 120 s each).
 - Progress and the conclusion go into the The Messenger entry of [data/GAMES.md](../../data/GAMES.md).
 
 ## Files
