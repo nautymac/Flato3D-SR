@@ -36,7 +36,7 @@
 | `peexp.py` | DLL 오프셋을 가장 가까운 export 이름으로 변환(스택 분석) |
 | `gstime\` | 셰이더 컴파일·링크 시간 측정(드라이버 캐시를 우회) |
 
-멈춤 분석에는 `tools\stackdump`를 씁니다. 32비트 게임은 x86 빌드로 실행합니다.
+멈춤 분석에는 `tools\stackdump`를 씁니다. 32비트 게임은 x86 빌드로 실행합니다. 재현부터 잠금 주인 찾기까지의 순서와 도구는 [tools/hang/README.ko.md](../hang/README.ko.md)에 있습니다.
 
 ## 알아 둘 것
 

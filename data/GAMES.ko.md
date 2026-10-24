@@ -118,3 +118,13 @@
 - 남은 일: 시작 대화 중에만 측정했습니다. 플레이 중 깊이는 사용자 확인이 필요합니다. 가끔 시작이 1분 넘게 걸립니다(NEOWIZ 로고). 세이브는 `%USERPROFILE%\AppData\LocalLow\TeamSuneat\BladeAssault`입니다.
 
 **Blade Runner: Enhanced Edition** (프로필 없음): 원작(1997) 엔진이 장면을 CPU에서 한 장으로 합쳐 보내는 것으로 보입니다. 게임 중 한 프레임에 draw가 6번뿐이고, 1280×960 장면 버퍼에는 draw가 없습니다(사용자 실행 로그, 10-19). 층이 없어서 지금 방식으로는 입체가 되지 않습니다. 2D→3D 변환(AI 깊이 추정) 같은 다른 방식이 필요합니다. 메뉴는 주입한 마우스와 화살표 키를 받지 않아 자동 확인은 타이틀까지만 했습니다.
+
+**The Messenger** (프로필 없음, 멈춤 해결 10-24): Unity 2017.4 x64, D3D11을 WineD3D로. 플레이 중 수십 초~몇 분 안에 "응답 없음"으로 멈췄습니다.
+
+- 래퍼(opengl32.dll)를 빼도 멈춥니다(사용자 플레이 중 확인). 래퍼 문제가 아닙니다.
+- `csmt=0`: 시작하자마자 wined3d.dll 접근 위반으로 죽습니다(Unity의 여러 스레드 D3D11 사용, Huntdown과 같음). WineD3D 10.0: 검은 화면에서 진행하지 않습니다. WineD3D 11.0: 11.19와 같은 멈춤입니다.
+- 멈춘 순간: Unity 그래픽 스레드는 `Map`(d3d11 → `wined3d_device_context_emit_map`)에서 전역 잠금 `wined3d_cs`를 잡은 채 그리기 스레드를 기다립니다. WineD3D 그리기 스레드는 `update_sub_resource` → `wined3d_context_gl_destroy_bo` → `wined3d_allocator_chunk_gl_unmap` → `glUnmapBuffer`에서 NVIDIA 드라이버 안의 잠금을 기다리며 회전합니다.
+- `-force-glcore`(OpenGL로 직접): 이 빌드에는 OpenGL 렌더러가 없어 바로 꺼집니다.
+- **원인**: WineD3D 그리기 스레드는 `NtWaitForAlertByThreadId`로 일을 기다리고, 다른 스레드가 `NtAlertThreadByThreadId`로 깨웁니다. 시간 제한으로 이미 깨어난 뒤 온 알림이 남아 있다가, Windows 11 24H2+의 critical section 대기(같은 알림 방식)를 엉뚱하게 깨웁니다. 그러면 대기 블록이 목록에 두 번 걸려 자기 자신을 가리키고, ntdll이 `RtlpWaitOnCriticalSection`에서 영원히 돕니다. 래퍼 없이도, SR 없이도 생깁니다. CSMT를 쓰는 모든 WineD3D 게임(x86/x64)에 해당합니다.
+- **해결**: 래퍼가 `wined3d.dll`의 `GetProcAddress`에 두 함수를 "없음"으로 답해, WineD3D가 이벤트로 깨우게 합니다(로그 `WineD3D: command thread woken by an event`).
+- 진단 방법과 도구는 [tools/hang/README.ko.md](../tools/hang/README.ko.md)에 있습니다. 세이브: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger`(test-backups\TheMessenger).

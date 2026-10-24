@@ -95,6 +95,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
    | Hangs right at start (WineD3D) | Deadlock between CSMT and NVIDIA's present path | `HKCU\Software\Wine\AppDefaults\<exe>\Direct3D` `csmt=0` (DK) |
    | With CSMT off, it crashes with a resource error from another thread | Unity and others need CSMT | Do not set the csmt key (Huntdown) |
    | A D3D11 game hangs | The NVIDIA driver grabs WineD3D's `d3d11.dll` | Use the renamed set (`w3d11.dll`) (the installer does this) |
+   | "Not responding" during play (after tens of seconds to minutes, different every run) | A lock cycle between threads. First find out whether it is the wrapper, WineD3D or the driver | Reproduce it with `tools\hang\` and record the stacks and lock owners while it is hung ([tools/hang/README.md](../tools/hang/README.md)). Narrow it down by removing the wrapper, changing `csmt` and changing the WineD3D version. Known cause: looping forever inside `RtlpWaitOnCriticalSection` = WineD3D's thread alerts break Windows 11 24H2+ lock waits; the wrapper handles it (10-24, log `WineD3D: command thread woken by an event`) (The Messenger) |
    | The system D3D is used as is | Steam's overlay loaded it first, or the exe imports it statically | The loader handles this. Check it in the loader log |
    | The picture is upside down | WineD3D's glClipControl | Handled in the wrapper. If it shows up again, check GlStateGuard |
    | Only the right eye is black or wrong | A texture view or copy was not tracked | Check for the `R` mark in `samples` in the draw trace |
@@ -296,5 +297,6 @@ When the user says "상태보고 반영해줘" (apply the status reports) or "�
 | Memory string search, export names | `tools\analysis\memstr.py`, `peexp.py` |
 | Shader compile time | `tools\analysis\gstime\` |
 | Hang analysis (stacks of all threads) | `tools\stackdump\` |
+| Hang reproduction, lock owners, naming stack frames | `tools\hang\` ([README](../tools/hang/README.md)) |
 | WineD3D renaming | `tools\wined3d_rename.py` |
 | Rebuilding the candidate list | `tools\library_survey\` (manual research results in `api_research.json`) |

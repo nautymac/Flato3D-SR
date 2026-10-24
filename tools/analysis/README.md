@@ -36,7 +36,7 @@ These tools are used when working on a new game, or when checking for regression
 | `peexp.py` | Turns a DLL offset into the nearest export name (stack analysis) |
 | `gstime\` | Measures shader compile and link times (bypassing the driver cache) |
 
-For hangs, use `tools\stackdump`. Run the x86 build for 32-bit games.
+For hangs, use `tools\stackdump`. Run the x86 build for 32-bit games. The steps from reproducing a hang to finding the lock owner, and the tools for them, are in [tools/hang/README.md](../hang/README.md).
 
 ## Good to know
 

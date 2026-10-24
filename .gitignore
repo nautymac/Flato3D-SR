@@ -5,6 +5,7 @@ bin/
 b32/
 b64/
 tools/analysis/gstime/b/
+tools/hang/sym/
 *.map
 
 # WineD3D builds: downloaded, not kept in git (see third_party/wined3d-11.19/SOURCE.txt)

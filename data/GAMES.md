@@ -120,3 +120,13 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 - To do: measured during the opening dialogue only. The depth in play needs to be confirmed by the user. Sometimes starting takes more than 1 minute (NEOWIZ logo). Saves are in `%USERPROFILE%\AppData\LocalLow\TeamSuneat\BladeAssault`.
 
 **Blade Runner: Enhanced Edition** (no profile): The original (1997) engine seems to combine the scene into a single image on the CPU and send that. In game there are only 6 draws per frame, and the 1280×960 scene buffer gets no draws at all (user's run log, 10-19). With no layers, the current method cannot make it stereo. It needs a different approach, such as 2D→3D conversion (AI depth estimation). The menu does not take injected mouse or arrow-key input, so the automated check only went as far as the title.
+
+**The Messenger** (no profile, hang fixed 10-24): Unity 2017.4 x64, D3D11 through WineD3D. During play it stopped responding within tens of seconds to a few minutes.
+
+- It also hangs with the wrapper (opengl32.dll) removed (seen while the user played). It is not a wrapper problem.
+- `csmt=0`: crashes at start with an access violation in wined3d.dll (Unity uses D3D11 from several threads, as in Huntdown). WineD3D 10.0: stays on a black screen. WineD3D 11.0: the same hang as 11.19.
+- At the moment of the hang: Unity's graphics thread is in `Map` (d3d11 → `wined3d_device_context_emit_map`), holding the global lock `wined3d_cs` while it waits for the drawing thread. WineD3D's drawing thread is in `update_sub_resource` → `wined3d_context_gl_destroy_bo` → `wined3d_allocator_chunk_gl_unmap` → `glUnmapBuffer`, spinning on a lock inside the NVIDIA driver.
+- `-force-glcore` (OpenGL directly): this build has no OpenGL renderer and closes at once.
+- **Cause**: WineD3D's drawing thread waits for work in `NtWaitForAlertByThreadId`, and other threads wake it with `NtAlertThreadByThreadId`. An alert that arrives after a timed wait has already returned stays pending and wrongly wakes a Windows 11 24H2+ critical-section wait (which uses the same alerts). The wait block is then linked twice and points to itself, and ntdll loops in `RtlpWaitOnCriticalSection` forever. It happens without the wrapper and without SR too, and applies to every WineD3D game using CSMT (x86/x64).
+- **Fix**: the wrapper makes `wined3d.dll`'s `GetProcAddress` answer "not found" for the two functions, so WineD3D wakes the thread with an event (log `WineD3D: command thread woken by an event`).
+- The diagnosis method and tools are in [tools/hang/README.md](../tools/hang/README.md). Saves: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger` (test-backups\TheMessenger).
