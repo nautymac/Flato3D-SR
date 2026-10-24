@@ -101,6 +101,8 @@ namespace Flato3D
                     log.AppendLine("game: " + game.Title + " | " + Library.StatusText(game) + " | profile " + (Json.Str(game.Profile, "id") ?? "-"));
                     log.AppendLine("exe: " + exePath + " | " + Pe.Arch(exePath) + " | imports " + string.Join(",", Pe.Imports(exePath).Where(n => n.StartsWith("d3d") || n.StartsWith("dxgi") || n.StartsWith("opengl") || n.StartsWith("vulkan") || n.StartsWith("ddraw"))));
                     log.AppendLine("route: " + route + " (" + why2 + ") | status: " + Setup.Status(Path.GetDirectoryName(exePath)));
+                    string shim = Setup.ShimFor(Path.GetDirectoryName(exePath), Pe.Imports(exePath));
+                    log.AppendLine("loader start: " + (shim == null ? "a version.dll import" : shim == "" ? "none (no version.dll import, no shim fits)" : "shim " + shim));
                     var rec = Recommend.For(game, exePath);
                     log.AppendLine("auto: depth " + (rec.Flat ? rec.Rule : "plain stereo") + " (" + rec.RuleWhy + ") | output " + rec.Output + " (" + rec.OutputWhy +
                                    ") | upscale " + (rec.Upscale ? 1 : 0) + " (" + rec.UpscaleWhy + ") | separation " + rec.Separation.ToString(CultureInfo.InvariantCulture));

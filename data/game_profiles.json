@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-24",
+  "updated": "2026-10-25",
   "about": "Games Flato3D has been made to work with: what to install, the OGL3D.ini values that differ from the template, and the state of each. The installer will apply these as profiles. Candidates not yet worked on are in game_candidates.json. 'test' holds the steps for tools\\analysis\\gametest.ps1.",
   "games": [
     {
@@ -742,6 +742,56 @@
         "steps": "wait:30,key:0D,wait:4,key:0D,wait:4,key:0D,wait:4,key:0D,wait:5,key:20,wait:5,key:20,wait:25,ctrlkey:7B,wait:4",
         "reaches": "intro story and \"press any button\" skipped with Enter -> menu Start (Space) -> save slot 1 (Space) -> Ninja Village with the opening dialogue, then Ctrl+F12 dump",
         "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\Sabotage Studio\\The Messenger\\SaveGame.txt (test-backups\\TheMessenger) - back up before play tests. The menu and the save slots ignore Enter; Space selects. On the save slot screen holding left Ctrl deletes the save: never press Ctrl+F12 there. The intro story runs about 60 s. For hang tests: tools\\hang\\hang_loop.ps1 -AppId 764790 -Proc TheMessenger."
+      }
+    },
+    {
+      "id": "braid-anniversary-edition",
+      "name": "Braid, Anniversary Edition",
+      "steam_appid": 499180,
+      "folder": "Braid Anniversary Edition",
+      "exe": "braid64_d3d11_final.exe",
+      "arch": "x64",
+      "engine": "Thekla in-house engine (painted parallax layers)",
+      "api": "Direct3D 11 (feature level 11.1)",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "loader/x64/shim/winmm.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Loader shim: neither the exe nor a DLL it imports imports version.dll, so the Flato3D loader never loaded and the game ran flat on the system Direct3D 11 (no logs at all). The installer now adds winmm.dll, a shim that forwards every export to the system winmm.dll by absolute path and imports the loader (loader/shim, 2026-10-25). With it the exe's static d3d11/dxgi imports go to WineD3D.",
+        "Measured with the template rule (order, groups by texture), separation 25, dumps 1920x1080 per eye: title - far buildings +60..68 px, middle buildings +46..48 px, bridge +42 px, the Braid logo +8..16 px, Tim -22 px; the house hub - room walls and furniture +32 px, ladder +38 px, door +8 px, house outline +2..6 px, Tim about 0 px, the world sign -26 px."
+      ],
+      "known_issues": [
+        "Only the title and the house hub were measured; the depth inside the worlds is to be confirmed by the user."
+      ],
+      "test": {
+        "proc": "braid64_d3d11_final",
+        "steps": "wait:35,ctrlkey:7B,wait:4,hold:27:6,wait:3,hold:27:8,wait:6,ctrlkey:7B,wait:4",
+        "reaches": "title (bridge) -> walk right (the title is playable) -> the house hub, with Ctrl+F12 dumps on the title and in the house",
+        "notes": "Enter does nothing on the title; holding the right arrow walks Tim into the game. Saves: %APPDATA%\\Braid, Anniversary Edition (test-backups\\Braid Anniversary Edition)."
       }
     }
   ]

@@ -104,6 +104,36 @@ namespace Flato3D
             return f;
         }
 
+        // Loader shims we build (loader\bin\<arch>\shim\<name>), in order of preference.
+        static readonly string[] ShimNames = { "winmm.dll" };
+
+        // The loader (version.dll) only runs if something imports it while the game starts: the exe, or a DLL
+        // from the game folder that the exe imports (SDL2.dll, UnityPlayer.dll). Otherwise a shim named after a
+        // DLL the exe imports loads it (Braid, Anniversary Edition). Without a fitting shim, a DLL deeper in the
+        // game folder may still import it (Samorost 2: Adobe AIR\...\Adobe AIR.dll). null: no shim needed;
+        // "": none fits and nothing imports the loader.
+        public static string ShimFor(string dir, HashSet<string> imports)
+        {
+            if (imports.Contains("version.dll")) return null;
+            foreach (string n in imports)
+            {
+                string f = Path.Combine(dir, n);
+                if (!ShimNames.Contains(n) && File.Exists(f) && Pe.Imports(f).Contains("version.dll")) return null;
+            }
+            foreach (string n in ShimNames)
+                if (imports.Contains(n)) return n;
+            try
+            {
+                foreach (string f in Directory.EnumerateFiles(dir, "*.dll", SearchOption.AllDirectories).Take(400))
+                {
+                    string n = Path.GetFileName(f).ToLowerInvariant();
+                    if (n != "version.dll" && !ShimNames.Contains(n) && Pe.Imports(f).Contains("version.dll")) return null;
+                }
+            }
+            catch { }
+            return "";
+        }
+
         // A file this runtime put there (any build of it): replaced without a backup.
         static bool Ours(string file, string payloadSrc)
         {
@@ -112,6 +142,7 @@ namespace Flato3D
             string n = Path.GetFileName(file).ToLowerInvariant();
             if (n == "opengl32.dll") return Pe.HasAscii(file, "OGL3D");
             if (n == "version.dll") return Pe.HasAscii(file, "Flato3D loader");
+            if (ShimNames.Contains(n)) return Pe.HasAscii(file, "Flato3D loader shim");
             if (n.StartsWith("w") || n == "wined3d.dll" || n == "d3d9.dll" || n == "d3d8.dll" || n == "ddraw.dll") return Pe.HasAscii(file, "wined3d");
             return false;
         }
@@ -128,6 +159,25 @@ namespace Flato3D
             var backups = new List<object>(Json.Arr(man, "backups"));
             var regs = new List<object>(Json.Arr(man, "registry"));
             var files = Files(route, arch, imports);
+            if (route != Route.OpenGL)
+            {
+                string shim = ShimFor(dir, imports);
+                if (shim == "")
+                    log.AppendLine(L.T("경고: 이 게임은 version.dll을 가져오지 않고 맞는 중계 DLL도 없어, 로더가 로드되지 않을 수 있습니다.",
+                                       "Warning: this game imports no version.dll and no loader shim fits, so the loader may not load."));
+                else if (shim != null)
+                {
+                    string f = Path.Combine(dir, shim), src = Payload.Shim(arch, shim);
+                    bool listed = added.Any(a => string.Equals((string)a, shim, StringComparison.OrdinalIgnoreCase));
+                    if (File.Exists(f) && !listed && !Ours(f, src))
+                        log.AppendLine(L.T("경고: 다른 도구의 " + shim + "가 있어 그대로 둡니다. 로더가 로드되지 않을 수 있습니다.",
+                                           "Warning: another tool's " + shim + " is there and stays; the loader may not load."));
+                    else if (src == null)
+                        throw new Exception(L.T("설치 파일이 없습니다: ", "missing payload file: ") + "loader\\" + arch + "\\shim\\" + shim);
+                    else
+                        files.Add(new KeyValuePair<string, string>(src, shim));
+                }
+            }
 
             // other tools' graphics DLLs go aside first
             string bdir = Path.Combine(dir, BackupDir);

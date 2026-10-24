@@ -1,5 +1,5 @@
 # Builds the Flato3D-SR release package dist\Flato3D-SR-<version>.zip from the current builds:
-#   installer\bin\Flato3DInstaller.exe, ogl3d\bin\{x86,x64}\opengl32.dll, loader\bin\{x86,x64}\version.dll,
+#   installer\bin\Flato3DInstaller.exe, ogl3d\bin\{x86,x64}\opengl32.dll, loader\bin\{x86,x64}\version.dll and shim\winmm.dll,
 #   third_party\wined3d-11.19, data\game_profiles.json, data\game_candidates.json.
 # Run installer\src\build.cmd, ogl3d\build.ps1 and loader\build.ps1 first.
 param([string]$Version = '0.1.0')
@@ -26,6 +26,7 @@ Put 'ogl3d\LICENSE' 'ogl3d\LICENSE'
 foreach ($a in 'x86', 'x64') {
     Put "ogl3d\bin\$a\opengl32.dll" "ogl3d\$a\opengl32.dll"
     Put "loader\bin\$a\version.dll" "loader\$a\version.dll"
+    Put "loader\bin\$a\shim\winmm.dll" "loader\$a\shim\winmm.dll"
     foreach ($f in 'wined3d.dll', 'd3d9.dll', 'd3d8.dll', 'ddraw.dll') { Put "third_party\wined3d-11.19\$a\$f" "wined3d\$a\$f" }
     foreach ($f in 'wined3d.dll', 'w3d11.dll', 'wxgi.dll', 'w3d10core.dll', 'd3d10.dll', 'd3d10_1.dll') { Put "third_party\wined3d-11.19\$a-renamed\$f" "wined3d\$a-renamed\$f" }
 }

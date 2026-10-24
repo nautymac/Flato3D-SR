@@ -95,6 +95,7 @@
    | D3D11 게임이 멈춤 | NVIDIA 드라이버가 WineD3D의 `d3d11.dll`을 잡음 | 이름 바꾼 세트(`w3d11.dll`) 사용 (설치기가 처리) |
    | 플레이 중 "응답 없음"(수십 초~몇 분, 회차마다 다름) | 스레드 사이 잠금 순환. 래퍼, WineD3D, 드라이버 중 어디인지부터 가림 | `tools\hang\`로 재현하고 멈춘 순간의 스택·잠금 주인을 기록([tools/hang/README.ko.md](../tools/hang/README.ko.md)). 래퍼를 빼고, `csmt`를 바꾸고, WineD3D 버전을 바꿔 범위를 좁힘. 알려진 원인: `RtlpWaitOnCriticalSection` 안에서 영원히 돎 = WineD3D의 스레드 알림이 Windows 11 24H2+ 잠금 대기를 깨뜨림 → 래퍼가 처리(10-24, 로그 `WineD3D: command thread woken by an event`) (The Messenger) |
    | 시스템 D3D가 그대로 쓰임 | Steam 오버레이가 먼저 로드, 또는 exe가 정적으로 가져옴 | 로더가 처리. 로더 로그에서 확인 |
+   | 평면 그대로이고 `Flato3D_loader_*.log`도 `OGL3D.log`도 없음 | 실행 파일과 그것이 가져오는 DLL이 `version.dll`을 가져오지 않아 로더가 불리지 않음 | 설치기가 중계 DLL(`loader/shim`, 지금은 `winmm.dll`)을 함께 넣음. `Flato3DInstaller.exe --detect <exe>`의 `loader start` 줄로 확인. 맞는 이름이 없으면 `SHIM_NAME`으로 새 중계 DLL을 빌드 (Braid AE) |
    | 화면이 위아래로 뒤집힘 | WineD3D의 glClipControl | 래퍼에서 처리됨. 다시 보이면 GlStateGuard 확인 |
    | 오른눈만 검거나 이상함 | 텍스처 뷰·복사 추적 누락 | draw 기록의 `samples`에서 `R` 표시 확인 |
 

@@ -94,6 +94,8 @@ namespace Flato3D
         }
         public static string OpenGl32(string arch) { return First(@"ogl3d\bin\" + arch + @"\opengl32.dll", @"ogl3d\" + arch + @"\opengl32.dll"); }
         public static string Loader(string arch) { return First(@"loader\bin\" + arch + @"\version.dll", @"loader\" + arch + @"\version.dll"); }
+        // loader shim <name> (forwards to the system DLL, imports the loader); null when not built
+        public static string Shim(string arch, string name) { return First(@"loader\bin\" + arch + @"\shim\" + name, @"loader\" + arch + @"\shim\" + name); }
         public static string IniTemplate() { return First(@"ogl3d\OGL3D.ini"); }
         public static string WineD3D(string arch, bool renamed)
         {

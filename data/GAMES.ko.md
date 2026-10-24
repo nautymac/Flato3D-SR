@@ -20,6 +20,7 @@
 | Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | 평면 깊이 끔 (실제 3D, 자동 Convergence) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, `[Flat] enable = 0` |
 | Blade Assault | D3D11 (Unity 2D 조명) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(멈춤 해결), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 (10-24 이후 래퍼) |
+| Braid, Anniversary Edition | D3D11 (자체 엔진) · WineD3D | order (템플릿 기본값) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더 + 중계 `winmm.dll`, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -129,3 +130,12 @@
   - 첫 장면(닌자 마을, 첫 대화): 노을 하늘 +52 px, 가운데 나무·절벽 +38 px, 위쪽 나뭇잎 +24 px, 발판 +4~6 px, 닌자 -6 px, 대화창 -26~-28 px
 - 남은 일: 닌자가 발밑 발판보다 약 10 px 앞에 섭니다. 플레이 중 깊이는 사용자 확인이 필요합니다.
 - 테스트 조작: 인트로(약 60초)와 "버튼을 누르시오"는 Enter로 넘기고, 메뉴와 세이브 칸은 **Space**로 고릅니다(Enter는 무시). 세이브 칸 화면에서 왼쪽 Ctrl을 누르고 있으면 세이브가 지워지니 거기서는 Ctrl+F12를 누르지 않습니다. 세이브: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger\SaveGame.txt`(test-backups\TheMessenger, 0x81로 XOR한 JSON).
+
+**Braid, Anniversary Edition** (프로필 `braid-anniversary-edition`, 10-25): 자체 엔진, D3D11(기능 수준 11.1) x64. 그림으로 그린 시차 층입니다.
+
+- **로더 중계 DLL**: 실행 파일과 그것이 가져오는 DLL 어디에도 `version.dll` 가져오기가 없어서 Flato3D 로더가 한 번도 로드되지 않았습니다. 게임은 시스템 Direct3D 11로 평면 그대로 돌았고 로그도 없었습니다. 이제 설치기가 중계 DLL `winmm.dll`을 함께 넣습니다(`loader/shim`). 이 DLL은 모든 함수를 시스템 winmm.dll로 넘기고 로더를 불러옵니다. 그러면 실행 파일의 d3d11/dxgi 정적 가져오기가 WineD3D로 갑니다.
+- 측정(separation 25, 덤프는 한 눈 1920x1080)
+  - 타이틀: 먼 건물 +60~68 px, 가운데 건물 +46~48 px, 다리 +42 px, Braid 로고 +8~16 px, 팀 -22 px
+  - 집 안 허브: 방 뒷벽·가구 +32 px, 사다리 +38 px, 문 +8 px, 집 바깥 틀 +2~6 px, 팀 약 0 px, "월드" 글자 -26 px
+- 남은 일: 각 월드 안의 깊이는 사용자 확인이 필요합니다.
+- 테스트 조작: 타이틀에서 Enter는 아무 일도 하지 않습니다. 오른쪽 화살표를 누르고 있으면 팀이 걸어가 게임이 시작됩니다. 세이브: `%APPDATA%\Braid, Anniversary Edition`(test-backups\Braid Anniversary Edition).

@@ -22,6 +22,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Snufkin: Melody of Moominvalley | D3D11 (Unity URP) · WineD3D | flat depth off (real 3D, auto convergence) | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, `[Flat] enable = 0` |
 | Blade Assault | D3D11 (Unity 2D lights) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works (hang fixed), not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 (wrapper from 10-24 on) |
+| Braid, Anniversary Edition | D3D11 (in-house engine) · WineD3D | order (template default) | Works, not yet confirmed by the user | renamed WineD3D x64, loader + shim `winmm.dll`, opengl32.dll x64 |
 
 ## Notes per game
 
@@ -131,3 +132,12 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
   - First scene (Ninja Village, opening dialogue): sunset sky +52 px, middle trees and cliffs +38 px, top foliage +24 px, ledge +4..6 px, the ninja -6 px, dialogue box -26..-28 px
 - To do: the ninja stands about 10 px in front of the ledge under it. The depth in play is to be confirmed by the user.
 - Test input: Enter skips the intro (about 60 s) and "press any button"; the menu and the save slots take **Space** (Enter is ignored). On the save slot screen holding left Ctrl deletes the save, so never press Ctrl+F12 there. Saves: `%USERPROFILE%\AppData\LocalLow\Sabotage Studio\The Messenger\SaveGame.txt` (test-backups\TheMessenger; JSON XORed with 0x81).
+
+**Braid, Anniversary Edition** (profile `braid-anniversary-edition`, 10-25): in-house engine, D3D11 (feature level 11.1) x64, painted parallax layers.
+
+- **Loader shim**: neither the exe nor any DLL it imports imports `version.dll`, so the Flato3D loader never loaded. The game ran flat on the system Direct3D 11 and left no logs. The installer now adds a shim `winmm.dll` (`loader/shim`) that forwards every export to the system winmm.dll and loads the loader. With it the exe's static d3d11/dxgi imports go to WineD3D.
+- Measured (separation 25, dumps 1920x1080 per eye)
+  - Title: far buildings +60..68 px, middle buildings +46..48 px, bridge +42 px, the Braid logo +8..16 px, Tim -22 px
+  - House hub: room walls and furniture +32 px, ladder +38 px, door +8 px, house outline +2..6 px, Tim about 0 px, the world sign -26 px
+- To do: the depth inside the worlds is to be confirmed by the user.
+- Test input: Enter does nothing on the title; holding the right arrow walks Tim into the game. Saves: `%APPDATA%\Braid, Anniversary Edition` (test-backups\Braid Anniversary Edition).
