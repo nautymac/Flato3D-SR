@@ -223,6 +223,20 @@
    "note": "",
    "open_problems": [],
    "reports": []
+  },
+  {
+   "game": "The Messenger",
+   "steam": "764790",
+   "profile": "the-messenger",
+   "profile_status": "working",
+   "status": null,
+   "works": 0,
+   "issues": 0,
+   "broken": 0,
+   "updated": "",
+   "note": "",
+   "open_problems": [],
+   "reports": []
   }
  ]
 }
