@@ -1,5 +1,7 @@
 # Flato3D 3D 변환 작업 절차
 
+[English](WORKFLOW.md) · **한국어**
+
 새 게임을 Flato3D로 입체로 만들 때 따르는 순서입니다. Technobabylon, Door Kickers: Action Squad, Huntdown, FRAMED, Astral Ascent를 작업하며 겪은 문제와 해결을 체크포인트별로 정리했습니다. 원칙은 세 가지입니다.
 
 - **눈으로 보기 전에 숫자로 확인합니다.** 덤프, draw 기록, 시차 지도로 원인을 찾은 뒤 고칩니다.
@@ -228,7 +230,7 @@
    - 필드: `id`, `name`, `steam_appid`, `folder`, `exe`, `arch`, `engine`, `api`, `route`, `install`, `remove`, `registry`, `ini`, `status`(working / verified), `verified_by_user`, `notes`, `known_issues`, `test`
    - `ini`에는 템플릿과 다른 값만 적습니다.
    - `test.steps`에는 gametest 단계를 적습니다.
-2. **`data/GAMES.ko.md`에 표 한 줄과 메모를 추가합니다.**
+2. **`data/GAMES.ko.md`와 영어판 `data/GAMES.md`에 표 한 줄과 메모를 추가합니다(두 목록은 손으로 맞춥니다).**
 3. **커밋 순서**
    1. `ogl3d/`에서 커밋 → `git push origin flato3d`
    2. Flato3D 저장소에서 바뀐 서브모듈과 자료를 커밋 → `git push`
@@ -254,12 +256,12 @@
 사용자가 "상태보고 반영해줘"나 "이상로그 수정해줘"라고 하면 다음 순서로 합니다.
 
 1. `reports\` 아래에서 `handled.txt`가 없는 폴더를 오래된 것부터 봅니다. 공개 보고는 `gh issue list -R nautymac/Flato3D-SR --label report --state open`으로 봅니다(내 보고도 같은 이슈로 올라가 있음).
-   - **`works`(잘 됨):** 프로필의 `status`를 `verified`로, `verified_by_user`에 날짜와 출력을 적습니다. 그 설정(`OGL3D.ini` 주요 값)을 프로필 `ini`에 반영하고, `GAMES.ko.md`와 후보 목록의 `status`를 고칩니다. 프로필이 없는 게임이면 새로 만듭니다. 그다음 4~6으로 갑니다.
+   - **`works`(잘 됨):** 프로필의 `status`를 `verified`로, `verified_by_user`에 날짜와 출력을 적습니다. 그 설정(`OGL3D.ini` 주요 값)을 프로필 `ini`에 반영하고, `GAMES.ko.md`·`GAMES.md`와 후보 목록의 `status`를 고칩니다. 프로필이 없는 게임이면 새로 만듭니다. 그다음 4~6으로 갑니다.
    - **`issues` / `broken`:** 2~6을 합니다.
 2. `report.txt`에서 증상, 경로, 설정, 로그의 이상한 줄을 읽고, 스크린샷을 봅니다. 덤프가 있으면 `eyes.py`, `dispmap.py`로 봅니다.
 3. 증상에 맞는 체크포인트로 돌아가 원인을 확인하고 고칩니다. CP1 첫 실행 문제, CP3/CP4 깊이 문제, 증상별 표를 참고합니다.
    - 재현이 필요하면 프로필의 `test` 절차로 자동 실행합니다. 사용자가 PC를 쓰는 중이면 기다립니다.
-4. 프로필, `GAMES.ko.md`, 증상별 표에 기록하고 커밋·푸시합니다. 그다음 `prerelease.ps1 -Wait`로 pre-release 패키지를 갱신합니다.
+4. 프로필, `GAMES.ko.md`·`GAMES.md`, 증상별 표에 기록하고 커밋·푸시합니다. 그다음 `prerelease.ps1 -Wait`로 pre-release 패키지를 갱신합니다.
 5. 보고 폴더에 `handled.txt`를 남깁니다. 날짜, 원인, 수정, 커밋을 적습니다. GitHub 이슈에는 같은 내용으로 답하고 **completed로 닫습니다**(`gh issue close N --reason completed`). 그러면 상태 목록에서 그 문제가 처리됨으로 바뀝니다. `works` 보고도 처리하면 닫습니다(닫혀도 플레이어 상태로 셈).
 6. 사용자에게 무엇을 고쳤는지, 다시 확인할 것이 무엇인지 알립니다.
 

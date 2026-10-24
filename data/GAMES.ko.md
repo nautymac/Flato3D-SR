@@ -1,5 +1,7 @@
 # Flato3D 작업된 게임
 
+[English](GAMES.md) · **한국어**
+
 설치기가 쓰는 프로필 원본은 `game_profiles.json`입니다. 아직 작업하지 않은 후보 544개는 `game_candidates.json`에 있습니다.
 
 | 게임 | API · 경로 | 깊이 규칙 | 상태 | 필요한 것 |

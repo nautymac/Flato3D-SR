@@ -10,7 +10,7 @@ Flato3D gives flat 2D games, pixel art or hand-drawn, real stereo depth. A flat 
 
 The picture is woven for lenticular SR panels (Acer SpatialLabs, Leia SR displays) through the installed SR runtime. The SR output can be turned off: side-by-side and top-and-bottom work with any other 3D display.
 
-Status: early. Eleven games work, see [data/GAMES.ko.md](data/GAMES.ko.md). Players' reports and each game's state: [STATUS.md](STATUS.md) (updated automatically from the installer's status reports).
+Status: early. Eleven games work, see [data/GAMES.md](data/GAMES.md). Players' reports and each game's state: [STATUS.md](STATUS.md) (updated automatically from the installer's status reports).
 
 | Game | API | Route | Depth rule |
 | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ Status: early. Eleven games work, see [data/GAMES.ko.md](data/GAMES.ko.md). Play
 
 ## Workflow
 
-The step-by-step procedure for converting a new game (checkpoints, measurements, symptoms and fixes, how to record results) is in [docs/WORKFLOW.ko.md](docs/WORKFLOW.ko.md) (Korean).
+The step-by-step procedure for converting a new game (checkpoints, measurements, symptoms and fixes, how to record results) is in [docs/WORKFLOW.md](docs/WORKFLOW.md).
 
 ## Layout
 

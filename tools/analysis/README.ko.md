@@ -1,5 +1,7 @@
 # Flato3D 분석 도구
 
+[English](README.md) · **한국어**
+
 전체 작업 순서는 [docs/WORKFLOW.ko.md](../../docs/WORKFLOW.ko.md)에 있습니다.
 
 새 게임을 작업하거나 수정 후 회귀를 확인할 때 쓰는 도구입니다. Python 스크립트는 Pillow와 numpy가 필요합니다.
