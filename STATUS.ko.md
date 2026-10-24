@@ -11,7 +11,7 @@
 | [Astral Ascent](https://store.steampowered.com/app/1280930) | ✅ 확인됨 | 🔧 처리됨 (2026-10-17) | ⚠️ 1 | - | 벼경하늘이 서로 차이가 난다. | [#1](https://github.com/nautymac/Flato3D-SR/issues/1) |
 | [Blade Assault](https://store.steampowered.com/app/1367300) | 🔵 동작 | - | - | - | - | - |
 | [Blade Runner: Enhanced Edition](https://store.steampowered.com/app/1678420) | - | ❌ 안 됨 (2026-10-20) | ✅ 1 · ❌ 1 | [#6](https://github.com/nautymac/Flato3D-SR/issues/6) | - | [#5](https://github.com/nautymac/Flato3D-SR/issues/5) [#6](https://github.com/nautymac/Flato3D-SR/issues/6) |
-| [Braid, Anniversary Edition](https://store.steampowered.com/app/499180) | 🔵 동작 | - | - | - | - | - |
+| [Braid, Anniversary Edition](https://store.steampowered.com/app/499180) | ✅ 확인됨 | - | - | - | - | - |
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 동작 | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ 확인됨 | - | - | - | - | - |
 | [Guns, Gore and Cannoli 2](https://store.steampowered.com/app/525510) | ✅ 확인됨 | - | - | - | - | - |
