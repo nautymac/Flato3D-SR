@@ -4,7 +4,7 @@ Built automatically. **Profile** is the state of the developer's setup for the g
 
 Report with the installer's **[Report status]** button or the [form](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml). A problem report that has been handled is closed and no longer counts; a game whose problem reports are all handled shows 🔧 handled.
 
-17 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
+18 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
@@ -15,6 +15,7 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 working | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ confirmed | - | - | - | - | - |
 | [Guns, Gore and Cannoli 2](https://store.steampowered.com/app/525510) | ✅ confirmed | - | - | - | - | - |
+| [Home](https://store.steampowered.com/app/215670) | 🔵 working | - | - | - | - | - |
 | [Huntdown](https://store.steampowered.com/app/598550) | 🔵 working | - | - | - | - | - |
 | [Intravenous 2](https://store.steampowered.com/app/2608270) | ✅ confirmed | - | - | - | - | - |
 | [Intravenous 2: Mercenarism](https://store.steampowered.com/app/2651330) | ✅ confirmed | - | - | - | - | - |

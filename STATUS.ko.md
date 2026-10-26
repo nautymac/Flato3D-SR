@@ -4,7 +4,7 @@
 
 보고는 설치기의 **[상태 보고]** 버튼이나 [양식](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml)으로 합니다. 처리한 문제 보고는 이슈를 닫고 상태에서 빠집니다. 문제 보고가 모두 처리된 게임은 🔧 처리됨으로 표시됩니다.
 
-게임 17개 · 보고 6건 · English: [STATUS.md](STATUS.md)
+게임 18개 · 보고 6건 · English: [STATUS.md](STATUS.md)
 
 | 게임 | 프로필 | 플레이어 상태 | 보고 | 열린 문제 | 최근 메모 | 이슈 |
 |---|---|---|---|---|---|---|
@@ -15,6 +15,7 @@
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 동작 | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ 확인됨 | - | - | - | - | - |
 | [Guns, Gore and Cannoli 2](https://store.steampowered.com/app/525510) | ✅ 확인됨 | - | - | - | - | - |
+| [Home](https://store.steampowered.com/app/215670) | 🔵 동작 | - | - | - | - | - |
 | [Huntdown](https://store.steampowered.com/app/598550) | 🔵 동작 | - | - | - | - | - |
 | [Intravenous 2](https://store.steampowered.com/app/2608270) | ✅ 확인됨 | - | - | - | - | - |
 | [Intravenous 2: Mercenarism](https://store.steampowered.com/app/2651330) | ✅ 확인됨 | - | - | - | - | - |
