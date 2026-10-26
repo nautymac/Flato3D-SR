@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "about": "Games Flato3D has been made to work with: what to install, the OGL3D.ini values that differ from the template, and the state of each. The installer will apply these as profiles. Candidates not yet worked on are in game_candidates.json. 'test' holds the steps for tools\\analysis\\gametest.ps1.",
   "games": [
     {
@@ -791,6 +791,61 @@
         "steps": "wait:35,ctrlkey:7B,wait:4,hold:27:6,wait:3,hold:27:8,wait:6,ctrlkey:7B,wait:4",
         "reaches": "title (bridge) -> walk right (the title is playable) -> the house hub, with Ctrl+F12 dumps on the title and in the house",
         "notes": "Enter does nothing on the title; holding the right arrow walks Tim into the game. Saves: %APPDATA%\\Braid, Anniversary Edition (test-backups\\Braid Anniversary Edition)."
+      }
+    },
+    {
+      "id": "home",
+      "name": "Home",
+      "steam_appid": 215670,
+      "folder": "Home",
+      "exe": "home-win-eng.exe",
+      "arch": "x64",
+      "engine": "GameMaker Studio 2 runner (2026 update v1.7.1; side-view pixel horror adventure)",
+      "api": "Direct3D 11",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "feet",
+          "depth_screen": 0.3,
+          "plane_tall": 1
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "The candidate list had it as GameMaker: Studio 1, Direct3D 9, x86 (the 2017 build). The current Steam build (v1.7.1, 2026) is the GameMaker Studio 2 runner, x64, Direct3D 11 (data.win GEN8 version 2). The exe imports d3d11.dll statically; the loader points that import at w3d11.dll. The installer took the WineD3D Direct3D 11 route from its own detection.",
+        "The game runs at 30 fps by design (game speed 30 in data.win): 'frame 600' every 20 s in OGL3D.log is normal.",
+        "Each room is one draw of tall pieces (wallpaper strips, wainscot, side walls) that reach below the bottom of the screen. Under the feet rule each narrow piece stood at its own bottom edge, below the screen, so the whole room came out at -14 px, in front of the character (-10 px) who stands in front of it. plane_tall = 1 (half the screen height) makes those pieces follow the floor slope. The character (about 0.7 of the screen height) and the windows still stand at their bottom edge; door frames are about at the threshold.",
+        "The order rule was tried too: the wall is flat (+38 px) and the character at +10 px, but a dialogue card draws all its glyphs in one draw, and the order rule spreads one draw over its depth slot, so a line of text would slant by about 8 px. Kept feet.",
+        "Measured with feet + plane_tall 1 (separation 25, dumps 1920x1080 per eye): title - logo +10 px, buttons -2..-6 px, version text -12 px. First room - wall +16 (top) .. 0 px (chair rail), windows +2 px (on the sill, flush with the wall there), wainscot -4..-8 px, the character -10 px, the flashlight vignette (a full-screen darkness overlay) +34 (top) .. +4 px (bottom). Second room - wall +26 .. 0 px, potted plant, door frame and character -10 px. No blocks differ between the eyes; the flicker probe found nothing while walking."
+      ],
+      "known_issues": [
+        "Dialogue cards are wider than plane_size, so they lean back with the floor slope (+26 top .. -6 bottom px); their text lines sit on the card's surface (+20, +12 px).",
+        "Pieces taller than half the screen lean back instead of standing upright. A character drawn that tall would lean too (not seen).",
+        "The flashlight vignette is one sloping plane: where it darkens the bottom of the scene it is a little behind what it covers (+4 px over -6..-10 px)."
+      ],
+      "test": {
+        "proc": "home-win-eng",
+        "steps": "wait:25,ctrlkey:7B,wait:4,key:20,wait:4,key:20,wait:4,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:4,ctrlkey:7B,wait:4",
+        "reaches": "title (Start Game is selected) -> Space x11 through the opening cards -> the first room, with Ctrl+F12 dumps on the title and in the first room",
+        "notes": "Checked from a fresh start (no progress save). Controls: arrows move (up looks up), Space continues cards and interacts; the door on the left of the first room leads to the second room. Saves: %LOCALAPPDATA%\\Home___A_Unique_Horror_Adventure\\homesave (test-backups\\Home); the opening wrote no progress save."
       }
     }
   ]

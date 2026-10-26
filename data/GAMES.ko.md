@@ -21,6 +21,7 @@
 | Blade Assault | D3D11 (Unity 2D 조명) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(멈춤 해결), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 (10-24 이후 래퍼) |
 | Braid, Anniversary Edition | D3D11 (자체 엔진) · WineD3D | order (템플릿 기본값) | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더 + 중계 `winmm.dll`, opengl32.dll x64 |
+| Home | D3D11 (GameMaker Studio 2) · WineD3D | feet, `plane_tall = 1` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -139,3 +140,17 @@
   - 집 안 허브: 방 뒷벽·가구 +32 px, 사다리 +38 px, 문 +8 px, 집 바깥 틀 +2~6 px, 팀 약 0 px, "월드" 글자 -26 px
 - 사용자 확인 완료(10-25, 플레이).
 - 테스트 조작: 타이틀에서 Enter는 아무 일도 하지 않습니다. 오른쪽 화살표를 누르고 있으면 팀이 걸어가 게임이 시작됩니다. 세이브: `%APPDATA%\Braid, Anniversary Edition`(test-backups\Braid Anniversary Edition).
+
+**Home** (프로필 `home`, 10-26): GameMaker Studio 2 x64, D3D11을 WineD3D로. 옆에서 보는 픽셀 공포 어드벤처입니다. 사용자가 설치기로 설치한 뒤(feet 규칙, 후보 목록 기본값) 검증했습니다.
+
+- 후보 목록에는 GameMaker: Studio 1, Direct3D 9, x86(2017년 빌드)로 올라 있었습니다. 지금 Steam 빌드(v1.7.1, 2026)는 GameMaker Studio 2 x64, Direct3D 11입니다(data.win GEN8 버전 2). exe가 d3d11.dll을 정적으로 가져와 로더가 w3d11.dll로 돌립니다. 설치기는 자기 판별로 WineD3D D3D11 경로를 골랐습니다. 후보 목록을 고쳤습니다.
+- 게임 자체가 30fps입니다(data.win 게임 속도 30). `OGL3D.log`의 `frame 600`이 20초마다 찍히는 것은 정상입니다.
+- **방이 주인공 앞으로 나오던 문제**: 방 하나를 화면 아래 끝 너머까지 닿는 세로 조각(벽지 띠, 벽판, 옆벽)들로 한 draw에 그립니다. feet 규칙에서 좁은 조각은 자기 아래 끝(화면 밖 아래)에 서서 무엇보다 가까워졌습니다. 방 전체가 −14px로, 그 앞에 선 주인공(−10px)보다 앞에 나왔습니다. `plane_tall = 1`(화면 높이 절반)로 이런 조각이 바닥 경사를 따르게 했습니다. 주인공(화면 높이의 약 0.7)과 창문은 그대로 자기 아래 끝에 섭니다. 문틀은 거의 기준선 높이입니다.
+- order 규칙도 시험했습니다. 벽은 평평하게(+38px), 주인공은 +10px로 나옵니다. 하지만 대화 카드가 글자 전체를 한 draw로 그리고, order 규칙은 한 draw를 층 간격 안에서 펼치므로 글자 한 줄이 약 8px 기울게 됩니다. feet를 유지했습니다.
+- 측정(feet + `plane_tall = 1`, separation 25, 덤프는 한 눈 1920x1080)
+  - 타이틀: 로고 +10 px, 버튼 −2~−6 px, 버전 글자 −12 px
+  - 첫 방: 벽 +16(위)~0 px(벽판 위 몰딩), 창문 +2 px(창턱에 서서 그 높이의 벽과 맞음), 벽판 −4~−8 px, 주인공 −10 px, 손전등 어둠(화면 전체 덮개) +34(위)~+4 px(아래)
+  - 둘째 방: 벽 +26~0 px, 화분·문틀·주인공 −10 px
+  - 두 눈이 어긋나는 블록 0, 걷는 동안 깜빡임 감지 없음
+- 남은 일: 대화 카드는 `plane_size`보다 넓어 바닥 경사를 따라 뒤로 기웁니다(위 +26 ~ 아래 −6 px, 글자 줄은 카드 면 위 +20, +12 px). 화면 높이 절반보다 큰 조각은 똑바로 서지 않고 기웁니다. 손전등 어둠은 한 장의 경사면이라 화면 아래쪽에서는 자기가 덮는 것보다 조금 뒤(+4 px, 덮이는 것 −6~−10 px)입니다. 첫 두 방만 확인했고 사용자 확인이 필요합니다.
+- 테스트 조작: 화살표로 이동(위는 위 보기), Space로 카드 넘기기와 상호작용. 첫 방 왼쪽 문이 둘째 방으로 이어집니다. 세이브: `%LOCALAPPDATA%\Home___A_Unique_Horror_Adventure\homesave`(test-backups\Home). 시작 부분은 진행 저장을 남기지 않았습니다.

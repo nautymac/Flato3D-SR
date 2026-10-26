@@ -10634,17 +10634,23 @@
    "genre": "adventure",
    "depth_rule": "feet_y",
    "engine": [
-    "GameMaker (rewritten on GameMaker: Studio 1.x in 2013)"
+    "GameMaker Studio 2 (2026 update v1.7.1)"
    ],
-   "api": "d3d9",
+   "api": "d3d11",
    "phase": 3,
-   "bits": "x86",
-   "note": "Wikipedia and the developer's Steam FAQ say it was made in Game Maker, with a 'complete engine rewrite' in v1.4.3 (2013); the last Steam build is from 2017, which fits the GMS1 Windows runner (Direct3D 9). (medium)",
-   "d3d": [],
+   "bits": "x64",
+   "note": "Flato3D 프로필 home: WineD3D(D3D11), feet 규칙 + plane_tall 1. 지금 Steam 빌드(v1.7.1, 2026)는 GameMaker Studio 2 x64, D3D11(예전 조사는 2017년 GMS1/D3D9 기준). 게임 속도 30fps",
+   "d3d": [
+    "11"
+   ],
    "opengl": "",
    "vulkan": "",
-   "perspectives": [],
-   "art": [],
+   "perspectives": [
+    "Side view"
+   ],
+   "art": [
+    "Pixel art"
+   ],
    "tags": [
     "Indie",
     "Adventure",
@@ -10658,11 +10664,11 @@
     "Singleplayer"
    ],
    "pcgw_page": "Home",
-   "status": "untested",
-   "api_confidence": "medium",
-   "uhd": "unknown",
+   "status": "working",
+   "api_confidence": "high",
+   "uhd": "true",
    "uhd_note": "",
-   "upscale": ""
+   "upscale": "0"
   },
   {
    "title": "Honey, I Joined a Cult",

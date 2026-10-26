@@ -57,6 +57,7 @@
    | 인물이 이미 합쳐진 그림(동영상 칸 등) 안의 검은 실루엣 | `silhouette = <프로그램 해시>`, 셰이더의 좌표·텍스처 이름 | FRAMED |
    | Unity (exe가 opengl32를 가져와도 기본은 D3D11) | 경로는 `<exe>_Data\output_log.txt`나 `Player.log`의 `Version:` 줄로 판별, `group = draw`, `order_curve = 0.5` | Huntdown, GGC2 |
    | NVIDIA Cg로 ARB 어셈블리 프로그램을 쓰는 엔진 (PSSG 등, exe 옆 `cg.dll`/`cgGL.dll`) | 래퍼가 ARB 정점 프로그램을 자동으로 고침. 대개 `screen_batch = 0` | Rocketbirds |
+   | GameMaker Studio 2 (옆에서 본 방을 화면 아래 밖까지 닿는 세로 조각으로 그림) | `rule = feet`, `plane_tall = 1` | Home |
    | 2.5D·3D(원근이 있는 장면) | Flato3D 대상 아님: Geo Gaming Hub에서 일반 입체로 설치 | Broken Age |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
@@ -191,6 +192,7 @@
 | 장면이 2~3층으로 뭉치고 `layout events` 줄에 `scratch targets: fbNxK` | 한 프레임에 같은 버퍼를 여러 번 지워 임시 버퍼로 판정됨 | 색까지 지울 때만 셈(스텐실만 지우는 마스크는 제외, Machinarium), 최종 화면(root)은 임시 버퍼로 보지 않음(Rocketbirds는 HUD가 보이는 프레임에서 뭉쳤음) (수정됨) |
 | 배경의 일부가 직사각형으로 잘려 앞에 뜸 | 배경 그림 일부를 나중에 다시 그리는 가림막(walk-behind)이 그리는 순서대로 앞으로 나옴 | 고정 기능: 앞서 그린 그림과 같은 텍스처를 같은 위치 대응으로 다시 그리면 그 그림의 층(추적 기록 `(repeats an earlier picture)`). 그사이 그린 물체를 덮는 조각은 앞에 남김(수정됨, Machinarium). 셰이더 경로는 아직 없음 |
 | 조각이 만나는 곳에 가로줄·사각형(feet) | 그림을 여러 조각으로 나눠 그려서 좁은 조각마다 자기 아래 끝에 섬 | `plane_tall`(예: 0.12): 이 높이 이상인 조각은 폭과 상관없이 바닥 경사(Samorost 2). 고정 기능 게임은 조각을 자동으로 묶음 |
+| 방·배경 전체가 그 앞에 선 캐릭터보다 앞에 나옴(feet, 배경이 화면 아래 끝 깊이보다 가까움) | 배경을 화면 아래 끝 너머까지 닿는 세로 조각으로 그려서, 좁은 조각이 화면 밖 아래의 자기 아래 끝에 섬(`sprite_min`은 `depth_screen`만큼 더 가까이 허용) | `plane_tall`을 캐릭터 키보다 크게 둠(Home: 1 = 화면 높이 절반, 캐릭터 약 0.7). 너무 작으면 캐릭터도 뒤로 기움 |
 | 장면을 앞으로 당기면(`depth_screen` 크게) 아래쪽 물체가 바닥보다 뒤로 꺼짐 | 물체는 `sprite_min`에서 막히는데 바닥은 더 가까워짐 | `sprite_min`이 `depth_screen`을 따라 움직임(수정됨) |
 | 한쪽 눈에 장면 일부가 빠지고 로그에 `right-eye copy incomplete (0x8cd7)` | 오른쪽 눈 버퍼 사본에 붙일 텍스처를 만들지 못함. WineD3D가 멀티샘플 텍스처를 고정 저장소로 만들고 그 텍스처 뷰를 붙이는데, 사본이 고정 저장소가 아니면 뷰를 못 만듦(Snufkin) | 래퍼에서 수정됨(`glTexStorage2DMultisample` 추적, 뷰의 원본은 고정 저장소로 복제). 다른 원인이면 `fbo N` 번호로 추적 기록의 부착물 확인 |
 | 장면 전체가 먼 끝(최대 분리값 근처)에 한 장으로 붙음 | 평면 2D가 아니라 원근 카메라의 실제 3D 게임. 평면 깊이가 켜져 있으면 자동 Convergence가 꺼져 시작값(3)에 머묾 | `[Flat] enable = 0`(자동 Convergence가 장면 거리에 맞춤, Snufkin은 약 65) |

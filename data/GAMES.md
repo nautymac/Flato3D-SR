@@ -23,6 +23,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Blade Assault | D3D11 (Unity 2D lights) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, one layer per draw, `screen_batch = 0` | Works (hang fixed), not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 (wrapper from 10-24 on) |
 | Braid, Anniversary Edition | D3D11 (in-house engine) · WineD3D | order (template default) | Confirmed by the user | renamed WineD3D x64, loader + shim `winmm.dll`, opengl32.dll x64 |
+| Home | D3D11 (GameMaker Studio 2) · WineD3D | feet, `plane_tall = 1` | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 
 ## Notes per game
 
@@ -141,3 +142,17 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
   - House hub: room walls and furniture +32 px, ladder +38 px, door +8 px, house outline +2..6 px, Tim about 0 px, the world sign -26 px
 - Confirmed by the user (10-25, play).
 - Test input: Enter does nothing on the title; holding the right arrow walks Tim into the game. Saves: `%APPDATA%\Braid, Anniversary Edition` (test-backups\Braid Anniversary Edition).
+
+**Home** (profile `home`, 10-26): GameMaker Studio 2 x64, D3D11 through WineD3D. A side-view pixel horror adventure. The user installed it with the installer (feet rule, the candidate list's default), then it was checked.
+
+- The candidate list had it as GameMaker: Studio 1, Direct3D 9, x86 (the 2017 build). The current Steam build (v1.7.1, 2026) is GameMaker Studio 2 x64, Direct3D 11 (data.win GEN8 version 2). The exe imports d3d11.dll statically and the loader points it at w3d11.dll. The installer chose the WineD3D D3D11 route from its own detection. The candidate list is corrected.
+- The game itself runs at 30 fps (game speed 30 in data.win). `frame 600` every 20 s in `OGL3D.log` is normal.
+- **The room came out in front of the character**: a room is one draw of tall pieces (wallpaper strips, wainscot, side walls) that reach below the bottom of the screen. Under the feet rule a narrow piece stands at its own bottom edge, below the screen, which made it nearer than anything else. The whole room came out at -14 px, in front of the character (-10 px) who stands in front of it. `plane_tall = 1` (half the screen height) makes those pieces follow the floor slope. The character (about 0.7 of the screen height) and the windows still stand at their bottom edge. Door frames are about at the threshold.
+- The order rule was tried too. The wall comes out flat (+38 px) and the character at +10 px. But a dialogue card draws all its glyphs in one draw, and the order rule spreads one draw over its depth slot, so a line of text would slant by about 8 px. Kept feet.
+- Measured (feet + `plane_tall = 1`, separation 25, dumps 1920x1080 per eye)
+  - Title: logo +10 px, buttons -2..-6 px, version text -12 px
+  - First room: wall +16 (top) .. 0 px (chair rail), windows +2 px (standing on the sill, flush with the wall at that height), wainscot -4..-8 px, the character -10 px, the flashlight darkness (a full-screen overlay) +34 (top) .. +4 px (bottom)
+  - Second room: wall +26 .. 0 px, potted plant, door frame and character -10 px
+  - No blocks differ between the eyes; the flicker probe found nothing while walking
+- Still open: dialogue cards are wider than `plane_size`, so they lean back with the floor slope (+26 top .. -6 bottom px; the text lines sit on the card's surface at +20 and +12 px). Pieces taller than half the screen lean back instead of standing upright. The flashlight darkness is one sloping plane, so near the bottom of the screen it is a little behind what it covers (+4 px over -6..-10 px). Only the first two rooms were checked; it needs the user's check.
+- Test input: arrows move (up looks up), Space continues cards and interacts. The door on the left of the first room leads to the second room. Saves: `%LOCALAPPDATA%\Home___A_Unique_Horror_Adventure\homesave` (test-backups\Home). The opening left no progress save.
