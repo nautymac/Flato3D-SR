@@ -19,6 +19,34 @@
    ]
   },
   {
+   "game": "Axiom Verge",
+   "steam": "332200",
+   "profile": "axiom-verge",
+   "profile_status": "working",
+   "status": null,
+   "works": 0,
+   "issues": 0,
+   "broken": 0,
+   "updated": "",
+   "note": "",
+   "open_problems": [],
+   "reports": []
+  },
+  {
+   "game": "Axiom Verge 2",
+   "steam": "946030",
+   "profile": "axiom-verge-2",
+   "profile_status": "working",
+   "status": null,
+   "works": 0,
+   "issues": 0,
+   "broken": 0,
+   "updated": "",
+   "note": "",
+   "open_problems": [],
+   "reports": []
+  },
+  {
    "game": "Blade Assault",
    "steam": "1367300",
    "profile": "blade-assault",
