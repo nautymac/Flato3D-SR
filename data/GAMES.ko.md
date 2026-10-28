@@ -22,6 +22,8 @@
 | The Messenger | D3D11 (Unity 2017.4) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(멈춤 해결), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 (10-24 이후 래퍼) |
 | Braid, Anniversary Edition | D3D11 (자체 엔진) · WineD3D | order (템플릿 기본값) | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더 + 중계 `winmm.dll`, opengl32.dll x64 |
 | Home | D3D11 (GameMaker Studio 2) · WineD3D | feet, `plane_tall = 1` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
+| Axiom Verge | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `order_curve = 0.4`, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
+| Axiom Verge 2 | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
 
 ## 게임별 메모
 
@@ -154,3 +156,22 @@
   - 두 눈이 어긋나는 블록 0, 걷는 동안 깜빡임 감지 없음
 - 남은 일: 대화 카드는 `plane_size`보다 넓어 바닥 경사를 따라 뒤로 기웁니다(위 +26 ~ 아래 −6 px, 글자 줄은 카드 면 위 +20, +12 px). 화면 높이 절반보다 큰 조각은 똑바로 서지 않고 기웁니다. 손전등 어둠은 한 장의 경사면이라 화면 아래쪽에서는 자기가 덮는 것보다 조금 뒤(+4 px, 덮이는 것 −6~−10 px)입니다. 첫 두 방만 확인했고 사용자 확인이 필요합니다.
 - 테스트 조작: 화살표로 이동(위는 위 보기), Space로 카드 넘기기와 상호작용. 첫 방 왼쪽 문이 둘째 방으로 이어집니다. 세이브: `%LOCALAPPDATA%\Home___A_Unique_Horror_Adventure\homesave`(test-backups\Home). 시작 부분은 진행 저장을 남기지 않았습니다.
+
+**Axiom Verge, Axiom Verge 2** (프로필 `axiom-verge`, `axiom-verge-2`, 10-28): FNA(XNA를 다시 구현한 .NET 엔진) 32비트. AV2 폴더에 `x64`가 있지만 exe가 32비트 전용(`32BITREQUIRED`)이라 `x86` 라이브러리를 씁니다. 사용자가 설치기로 설치했는데 처음에는 둘 다 래퍼가 전혀 로드되지 않았습니다.
+
+- **OpenGL 전환**: FNA3D는 Windows에서 Direct3D 11을 고릅니다. Steam 실행 옵션에 `/gldevice:OpenGL`(FNA 자체 스위치, AV1은 `-opengl`도 됨)을 넣어야 래퍼가 걸립니다. 환경 변수 `FNA3D_FORCE_DRIVER=OpenGL`도 되지만, Steam 밖에서 실행하면 게임이 Steam을 통해 다시 시작하면서(`SteamAPI_RestartAppIfNecessary`) 변수가 빠집니다. 래퍼의 `add_args`는 쓸 수 없습니다. opengl32.dll은 FNA3D가 드라이버를 고른 뒤에야 로드되기 때문입니다. 시험할 때만 exe 옆에 `steam_appid.txt`를 두면 Steam 재시작을 막을 수 있습니다.
+- **로더는 안 걸림**: .NET 런타임이 System32의 `version.dll`을 먼저 올려 두어서, SDL2.dll이 가져와도 Flato3D 로더가 로드되지 않습니다. FNA는 OpenGL로 직접 그리므로 opengl32.dll만 있으면 됩니다. AV1은 D3D9 경로로 설치돼 `version.dll`, `wined3d.dll`, `d3d9.dll`이 함께 들어갔지만 쓰이지 않습니다.
+- **검은 화면 (래퍼 수정)**: FNA 셰이더는 MojoShader가 만든 GLSL이고, 출력을 매크로(`#define vs_oT0 gl_TexCoord[0]`)로 옛 내장 변수에 씁니다. 평면 깊이용 지오메트리 셰이더는 전처리 줄 밖에서만 내장 변수를 찾아 하나도 넘기지 않았고, 화면이 검었습니다(입체를 꺼도). 이제 셰이더가 쓰는 매크로의 본문도 셉니다.
+- **장면 전체가 평면 / 한 층 (래퍼 수정)**: FNA는 모든 렌더 타깃을 FBO 하나로 그리고 색 부착물만 바꿉니다. 래퍼가 타깃을 FBO 번호로 구분해서, 타깃마다 다시 거는 viewport가 새 scissor 묶음이 되었습니다(`screen_batch = 1`이 장면 전체를 화면 깊이로: 시차 0). 합성 순서 계산은 모든 타깃을 한 임시 버퍼로 보았습니다(장면이 한 층으로 뭉침). 이제 묶음과 합성 순서가 FBO와 색 부착물을 함께 타깃으로 셉니다.
+- **draw 기록 (래퍼 수정)**: FNA3D가 쓰는 `glDrawRangeElementsBaseVertex`(그리고 `glDrawElementsInstancedBaseVertex`)는 draw 기록과 삼각형 수가 남지 않았습니다(`prims 0`). 이제 남깁니다.
+- AV1은 480x270으로 그려 늘리므로 깊이가 4 px 단위(한 눈 1920폭에서 게임 픽셀 1칸)입니다. HUD와 대화창은 자기 타깃에 8x8 텍스처마다 한 층으로 그려져, 균등 곡선에서는 세계 층 8개가 먼 1/5(+24~28 px)에 뭉쳤습니다. `order_curve = 0.4`로 폈습니다. AV2는 432x240이고 배경이 시차 층 14개라 기본값으로 됩니다.
+- 래퍼가 게임을 DPI 인식으로 만들자 AV1이 4K 화면에서 1920x1080 창으로 떴습니다. 업스케일(`upscale = 1`)로 화면을 채웁니다(표시 창 3840x2160). AV2는 설치기 기본값이 업스케일이었습니다.
+- 측정(separation 25, 한 눈 1920폭 기준)
+  - AV1 타이틀(`order_curve = 1`): 먼 타일 +32 px, 앞 타일 +24 px, 로고 +8 px, 메뉴 −8 px
+  - AV1 첫 방(`order_curve = 0.4`): Trace +16 px, 그 뒤에 그려지는 지형 벽 +8 px, 대화창·초상화 0 px
+  - AV2 남극 헬기장: 하늘·먼 산 +26 px, 가운데 산 +18 px, 헬기·비계 +8~10 px, 주인공과 앞 얼음 0 px, HUD −4~−8 px
+  - 둘 다 60fps, 두 눈이 어긋나는 블록 2~4개
+- **걸을 때 타일이 울렁임 (사용자 보고, SR 패널, 10-28)**: 걸으며 4프레임마다 덤프해 원인 두 가지를 찾았습니다. ① 게임이 432x240 / 480x270으로 그리는데, 눈마다 옮기는 양이 픽셀의 소수라서 소수 위치로 스크롤되는 스프라이트를 두 눈이 다르게 반올림했습니다. 시차 배경 층의 시차가 스크롤 중에 두 값(+16, +20~24 px) 사이를 오갔습니다. 새 키 `snap_pixels = 1`로 타깃의 정수 픽셀만큼 옮깁니다(그룹 안 펼침도 끔). ② 물체가 화면에 들어오고 나가며 층 수가 30↔31로 바뀌고, 그때마다 모든 층 깊이가 따라 미끄러졌습니다(0.517↔0.533). 이제 층 수는 최근 최댓값을 유지하고, 둘보다 많이 줄 때만 바로 따릅니다(래퍼, 모든 order 게임). 고친 뒤 걷는 동안 층 깊이가 그대로였습니다.
+- SR 위빙 확인(10-28, 출력 auto, 업스케일): 32비트 SR 런타임의 DX11 위버가 뜨고 60fps, SR 로그에 눈 추적 끊김 없음.
+- 남은 일: Steam 실행 옵션은 사용자가 직접 넣어야 합니다. 지형이 주인공보다 조금 앞에 섭니다(order 규칙의 횡스크롤 공통). AV1의 HUD 조각과 대화창 타일은 층이 나뉘어 깊이가 조금씩 다릅니다. 사용자 확인이 필요합니다.
+- 테스트 조작: AV1 메뉴는 Enter, 컷신 건너뛰기 창은 왼쪽 화살표로 Yes를 고르고 Space. AV2는 플레이 중 Enter가 일시정지 메뉴, Esc로 닫음. 화살표는 확장 키 플래그가 있어야 SDL 게임이 받습니다(gametest가 10-28부터 보냄). 세이브: Steam 클라우드 `userdata\<계정>\332200`, `946030`(test-backups\AxiomVerge, AxiomVerge2).

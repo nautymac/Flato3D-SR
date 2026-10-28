@@ -200,7 +200,7 @@ def route(pc, title):
         if any(v in (10, 11) for v in d3d):
             note = [est] if est else []
             if 'unity' in eng: note.append('-force-glcore로 OpenGL 시도 가능(게임마다 다름)')
-            if 'fna' in eng: return 'opengl_alt', 'OpenGL로 전환 가능: 환경 변수 FNA3D_FORCE_DRIVER=OpenGL'
+            if 'fna' in eng: return 'opengl_alt', 'OpenGL로 전환 가능: Steam 실행 옵션 /gldevice:OpenGL (환경 변수 FNA3D_FORCE_DRIVER=OpenGL은 Steam 재실행 때 빠짐)'
             return 'd3d11', '; '.join(note)
         if any(v == 9 for v in d3d) or low:
             return 'd3d9', '; '.join(x for x in ('dgVoodoo로 D3D11 변환', est) if x)
@@ -225,7 +225,7 @@ ENGINE_API = [
 GL_SWITCH = [
     ('adventure game studio', 'winsetup.exe / acsetup.cfg에서 driver=OGL'),
     ('unity', '실행 옵션 -force-glcore (또는 -force-opengl)'),
-    ('fna', '환경 변수 FNA3D_FORCE_DRIVER=OpenGL'),
+    ('fna', 'Steam 실행 옵션 /gldevice:OpenGL'),
     ('heaps', '게임 설정 확인'),
 ]
 

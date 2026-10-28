@@ -683,7 +683,7 @@
    "api": "opengl_alt",
    "phase": 1,
    "bits": "x86",
-   "note": "OpenGL로 전환 가능: 환경 변수 FNA3D_FORCE_DRIVER=OpenGL",
+   "note": "Flato3D 프로필 axiom-verge: OpenGL 경로(opengl32.dll만), order 규칙, 업스케일. Steam 실행 옵션 /gldevice:OpenGL 필요. MojoShader 셰이더의 매크로 내장 출력과 FBO 하나로 모든 타깃을 그리는 FNA를 래퍼가 처리(2026-10-28)",
    "d3d": [
     "11"
    ],
@@ -709,7 +709,7 @@
     "Retro"
    ],
    "pcgw_page": "Axiom Verge",
-   "status": "untested",
+   "status": "working",
    "uhd": "false",
    "uhd_note": "",
    "upscale": "1"
@@ -730,7 +730,7 @@
    "api": "opengl_alt",
    "phase": 1,
    "bits": "x86",
-   "note": "OpenGL로 전환 가능: 환경 변수 FNA3D_FORCE_DRIVER=OpenGL",
+   "note": "Flato3D 프로필 axiom-verge-2: OpenGL 경로(opengl32.dll만), order 규칙, 업스케일. Steam 실행 옵션 /gldevice:OpenGL 필요. MojoShader 셰이더의 매크로 내장 출력과 FBO 하나로 모든 타깃을 그리는 FNA를 래퍼가 처리(2026-10-28)",
    "d3d": [
     "11"
    ],
@@ -756,7 +756,7 @@
     "2D"
    ],
    "pcgw_page": "Axiom Verge 2",
-   "status": "untested",
+   "status": "working",
    "uhd": "false",
    "uhd_note": "",
    "upscale": "1"
@@ -1011,7 +1011,7 @@
    "api": "opengl_alt",
    "phase": 1,
    "bits": "x86",
-   "note": "OpenGL로 전환 가능: 환경 변수 FNA3D_FORCE_DRIVER=OpenGL",
+   "note": "OpenGL로 전환 가능: Steam 실행 옵션 /gldevice:OpenGL (환경 변수 FNA3D_FORCE_DRIVER=OpenGL은 Steam 재실행 때 빠짐)",
    "d3d": [
     "9.0c",
     "11"
@@ -4018,7 +4018,7 @@
    "api": "opengl_alt",
    "phase": 1,
    "bits": "x86",
-   "note": "OpenGL로 전환 가능: 환경 변수 FNA3D_FORCE_DRIVER=OpenGL",
+   "note": "OpenGL로 전환 가능: Steam 실행 옵션 /gldevice:OpenGL (환경 변수 FNA3D_FORCE_DRIVER=OpenGL은 Steam 재실행 때 빠짐)",
    "d3d": [
     "9.0c"
    ],

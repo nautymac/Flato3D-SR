@@ -53,6 +53,9 @@ function Front {
     [GT.U]::keybd_event(0x12, 0, 2, [IntPtr]::Zero)
     [GT.U]::SetForegroundWindow($h) | Out-Null
 }
+# arrows, Home/End, PgUp/PgDn, Insert/Delete need the extended-key flag: games that read scan codes
+# (SDL: FNA, Chowdren) otherwise get the numeric keypad keys
+function KeyFlags([byte]$vk) { if (($vk -ge 0x21 -and $vk -le 0x28) -or $vk -eq 0x2D -or $vk -eq 0x2E) { 1 } else { 0 } }
 function Shot([string]$name) {
     $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
     $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
@@ -74,20 +77,20 @@ foreach ($s in $Steps.Split(',')) {
         'move' { Front; [GT.U]::SetCursorPos([int]$a[1], [int]$a[2]) | Out-Null }
         'ctrlkey' { Front; $vk = [Convert]::ToByte($a[1], 16); $sc = [byte][GT.U]::MapVirtualKey($vk, 0); $cs = [byte][GT.U]::MapVirtualKey(0x11, 0)
                     [GT.U]::keybd_event(0x11, $cs, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds 60
-                    [GT.U]::keybd_event($vk, $sc, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds 150
-                    [GT.U]::keybd_event($vk, $sc, 2, [IntPtr]::Zero); Start-Sleep -Milliseconds 60
+                    [GT.U]::keybd_event($vk, $sc, (KeyFlags $vk), [IntPtr]::Zero); Start-Sleep -Milliseconds 150
+                    [GT.U]::keybd_event($vk, $sc, 2 + (KeyFlags $vk), [IntPtr]::Zero); Start-Sleep -Milliseconds 60
                     [GT.U]::keybd_event(0x11, $cs, 2, [IntPtr]::Zero); "ctrl+key $($a[1])" }
         'rmove' { Front; $dx = [int]$a[1]; $dy = [int]$a[2]; $n = [Math]::Max(1, [int]([Math]::Max([Math]::Abs($dx), [Math]::Abs($dy)) / 40))
                   for ($k = 0; $k -lt $n; $k++) { [GT.U]::mouse_event(1, [int]($dx / $n), [int]($dy / $n), 0, [IntPtr]::Zero); Start-Sleep -Milliseconds 15 }
                   "rmove $dx,$dy" }
         'lclick' { Front; [GT.U]::mouse_event(2, 0, 0, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds 100; [GT.U]::mouse_event(4, 0, 0, 0, [IntPtr]::Zero); "lclick" }
         'key' { Front; $vk = [Convert]::ToByte($a[1], 16); $sc = [byte][GT.U]::MapVirtualKey($vk, 0)
-                [GT.U]::keybd_event($vk, $sc, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds 120
-                [GT.U]::keybd_event($vk, $sc, 2, [IntPtr]::Zero); "key $($a[1])" }
+                [GT.U]::keybd_event($vk, $sc, (KeyFlags $vk), [IntPtr]::Zero); Start-Sleep -Milliseconds 120
+                [GT.U]::keybd_event($vk, $sc, 2 + (KeyFlags $vk), [IntPtr]::Zero); "key $($a[1])" }
         # hold:<vk hex>:<seconds> keeps a key down (movement)
         'hold' { Front; $vk = [Convert]::ToByte($a[1], 16); $sc = [byte][GT.U]::MapVirtualKey($vk, 0)
-                [GT.U]::keybd_event($vk, $sc, 0, [IntPtr]::Zero); Start-Sleep -Milliseconds ([int]([double]$a[2] * 1000))
-                [GT.U]::keybd_event($vk, $sc, 2, [IntPtr]::Zero); "hold $($a[1]) $($a[2])s" }
+                [GT.U]::keybd_event($vk, $sc, (KeyFlags $vk), [IntPtr]::Zero); Start-Sleep -Milliseconds ([int]([double]$a[2] * 1000))
+                [GT.U]::keybd_event($vk, $sc, 2 + (KeyFlags $vk), [IntPtr]::Zero); "hold $($a[1]) $($a[2])s" }
     }
 }
 $p.Refresh()

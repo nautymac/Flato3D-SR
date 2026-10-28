@@ -38,7 +38,7 @@
    | 그래픽 API | 경로 | 넣는 파일 |
    | --- | --- | --- |
    | OpenGL | 직접 | `opengl32.dll`, `OGL3D.ini` |
-   | OpenGL 선택 가능 (AGS `driver=OGL`, Unity `-force-glcore`, 실행 옵션) | 게임을 OpenGL로 바꾼 뒤 직접 | 위와 같음 + 게임 설정 변경 |
+   | OpenGL 선택 가능 (AGS `driver=OGL`, Unity `-force-glcore`, FNA `/gldevice:OpenGL`, 실행 옵션) | 게임을 OpenGL로 바꾼 뒤 직접 | 위와 같음 + 게임 설정 변경 |
    | Direct3D 8/9, DirectDraw | WineD3D (일반) | 위 + `version.dll`(로더), `wined3d.dll`, `d3d9.dll`(필요하면 `d3d8.dll`, `ddraw.dll`) |
    | Direct3D 10/11 | WineD3D (이름 바꾼 세트) | 위 + `w3d11.dll`, `wxgi.dll`, `w3d10core.dll`, `wined3d.dll`(D3D10 게임은 `d3d10*.dll`도) |
    | Direct3D 12, Vulkan | 불가 (별도 프로젝트) | — |
@@ -58,6 +58,7 @@
    | Unity (exe가 opengl32를 가져와도 기본은 D3D11) | 경로는 `<exe>_Data\output_log.txt`나 `Player.log`의 `Version:` 줄로 판별, `group = draw`, `order_curve = 0.5` | Huntdown, GGC2 |
    | NVIDIA Cg로 ARB 어셈블리 프로그램을 쓰는 엔진 (PSSG 등, exe 옆 `cg.dll`/`cgGL.dll`) | 래퍼가 ARB 정점 프로그램을 자동으로 고침. 대개 `screen_batch = 0` | Rocketbirds |
    | GameMaker Studio 2 (옆에서 본 방을 화면 아래 밖까지 닿는 세로 조각으로 그림) | `rule = feet`, `plane_tall = 1` | Home |
+   | FNA (XNA 재구현, .NET: `FNA.dll`, `FNA3D.dll`) | Steam 실행 옵션 `/gldevice:OpenGL`(프로필 `launch_options`, 설치기가 넣음)로 OpenGL 경로(opengl32.dll만, 로더는 .NET에서 로드 안 됨). 횡스크롤은 `rule = order` | Axiom Verge 1·2 |
    | 2.5D·3D(원근이 있는 장면) | Flato3D 대상 아님: Geo Gaming Hub에서 일반 입체로 설치 | Broken Age |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
@@ -78,6 +79,7 @@
    ```
    - 실행 중인 게임을 이어서 조작할 때는 `-Attach`를 씁니다.
    - 키를 누르고 있어야 하면 `hold:<vk>:<초>`, 클릭은 `click:x:y`(화면 픽셀), 상대 이동은 `rmove`를 씁니다.
+   - 화살표, Home/End, PgUp/PgDn, Insert/Delete는 확장 키 플래그와 함께 보냅니다. SDL 게임(FNA, Chowdren)은 스캔 코드를 읽어서, 플래그가 없으면 숫자 패드 키로 받습니다.
 3. **로그 확인 (`OGL3D.log`)**
    - `loaded into`: 래퍼가 로드됨
    - `context ...`: OpenGL 컨텍스트 생성
@@ -156,6 +158,7 @@
 | `[Flat] depth_top` | 깊이 범위 | 보통 1 |
 | `[Flat] group` | texture(같은 텍스처 연속 draw = 한 층) / draw(draw 하나 = 한 층) | Unity처럼 레이어마다 draw가 따로면 draw |
 | `[Flat] order_curve` | 1 = 균등, 1보다 작으면 앞쪽(먼) 층에 깊이를 더 줌 | 층이 많아 배경 층들이 붙어 보일 때 0.5 |
+| `[Flat] snap_pixels` | 1 = 눈마다 옮기는 양을 렌더 타깃의 정수 픽셀로 반올림(그룹 안 펼침도 끔) | 저해상도 버퍼에 그려 늘리는 픽셀 게임에서 스크롤할 때 층이 한 픽셀씩 앞뒤로 울렁일 때 (Axiom Verge) |
 | `[Flat] cache_scale` | 저해상도 캐시 안의 이동량 비율(0 = scissor 기준 자동) | 캐시 영역이 화면에 대응하는 비율을 아는 경우(DK 0.406) |
 | `[Flat] screen_batch` | 몇 번째 scissor 묶음부터 화면 깊이(UI)로 볼지, 0 = 끔 | AGS는 1, draw마다 scissor를 거는 게임은 0 |
 | `[Flat] plane_size`, `plane_height`, `sprite_min` | feet 규칙의 평면·스프라이트 판정 | feet 규칙 게임 |
@@ -193,6 +196,10 @@
 | 배경의 일부가 직사각형으로 잘려 앞에 뜸 | 배경 그림 일부를 나중에 다시 그리는 가림막(walk-behind)이 그리는 순서대로 앞으로 나옴 | 고정 기능: 앞서 그린 그림과 같은 텍스처를 같은 위치 대응으로 다시 그리면 그 그림의 층(추적 기록 `(repeats an earlier picture)`). 그사이 그린 물체를 덮는 조각은 앞에 남김(수정됨, Machinarium). 셰이더 경로는 아직 없음 |
 | 조각이 만나는 곳에 가로줄·사각형(feet) | 그림을 여러 조각으로 나눠 그려서 좁은 조각마다 자기 아래 끝에 섬 | `plane_tall`(예: 0.12): 이 높이 이상인 조각은 폭과 상관없이 바닥 경사(Samorost 2). 고정 기능 게임은 조각을 자동으로 묶음 |
 | 방·배경 전체가 그 앞에 선 캐릭터보다 앞에 나옴(feet, 배경이 화면 아래 끝 깊이보다 가까움) | 배경을 화면 아래 끝 너머까지 닿는 세로 조각으로 그려서, 좁은 조각이 화면 밖 아래의 자기 아래 끝에 섬(`sprite_min`은 `depth_screen`만큼 더 가까이 허용) | `plane_tall`을 캐릭터 키보다 크게 둠(Home: 1 = 화면 높이 절반, 캐릭터 약 0.7). 너무 작으면 캐릭터도 뒤로 기움 |
+| 걷거나 스크롤할 때 타일·배경 층이 울렁임(정지하면 멀쩡함) | ① 저해상도 버퍼에서 눈마다 소수 픽셀만큼 옮겨, 소수 위치로 스크롤되는 스프라이트를 두 눈이 다르게 반올림 ② 물체가 들어오고 나가며 층 수가 바뀌어 모든 층 깊이가 따라 미끄러짐 | ① `snap_pixels = 1` ② 래퍼에서 수정됨: 층 수는 최근 최댓값 유지(둘보다 많이 줄면 바로). 걸으면서 `trace_frames`를 몇 프레임 간격으로 걸어 `order group ... depth`가 변하는지 봄 (Axiom Verge 2) |
+| FNA 게임인데 `OGL3D.log`가 생기지 않음 | FNA3D가 Windows에서 Direct3D 11을 고름 | Steam 실행 옵션 `/gldevice:OpenGL`. 환경 변수 `FNA3D_FORCE_DRIVER=OpenGL`은 Steam 재시작(`SteamAPI_RestartAppIfNecessary`) 때 빠짐. 시험만 할 때는 exe 옆 `steam_appid.txt` (Axiom Verge) |
+| 래퍼를 넣자 화면이 검음(입체를 꺼도), 래퍼 없이 OpenGL은 정상 | 지오메트리 셰이더가 정점 셰이더의 출력을 넘기지 않음: MojoShader(FNA)는 `#define vs_oT0 gl_TexCoord[0]`처럼 매크로로 옛 내장 변수에 씀 | 래퍼에서 수정됨: 셰이더가 쓰는 매크로의 본문도 셈. 로그의 생성 셰이더에 `gl_TexCoord[0] = gl_in[...]`이 있는지 확인 (Axiom Verge) |
+| 장면 전체가 시차 0이거나 한 층으로 뭉침, 추적 기록의 draw가 모두 같은 `fb` 번호 | 엔진이 FBO 하나에 렌더 타깃마다 부착물만 바꿔 그림(FNA): 타깃마다 거는 viewport가 새 묶음(UI)이 되고, 합성 순서가 모든 타깃을 한 임시 버퍼로 봄 | 래퍼에서 수정됨: 묶음과 합성 순서가 FBO + 색 부착물을 타깃으로 셈. 부착물이 바뀐 FBO는 레이아웃 줄에 큰 번호(`fb1073741825` 등)로 나옴 (Axiom Verge) |
 | 장면을 앞으로 당기면(`depth_screen` 크게) 아래쪽 물체가 바닥보다 뒤로 꺼짐 | 물체는 `sprite_min`에서 막히는데 바닥은 더 가까워짐 | `sprite_min`이 `depth_screen`을 따라 움직임(수정됨) |
 | 한쪽 눈에 장면 일부가 빠지고 로그에 `right-eye copy incomplete (0x8cd7)` | 오른쪽 눈 버퍼 사본에 붙일 텍스처를 만들지 못함. WineD3D가 멀티샘플 텍스처를 고정 저장소로 만들고 그 텍스처 뷰를 붙이는데, 사본이 고정 저장소가 아니면 뷰를 못 만듦(Snufkin) | 래퍼에서 수정됨(`glTexStorage2DMultisample` 추적, 뷰의 원본은 고정 저장소로 복제). 다른 원인이면 `fbo N` 번호로 추적 기록의 부착물 확인 |
 | 장면 전체가 먼 끝(최대 분리값 근처)에 한 장으로 붙음 | 평면 2D가 아니라 원근 카메라의 실제 3D 게임. 평면 깊이가 켜져 있으면 자동 Convergence가 꺼져 시작값(3)에 머묾 | `[Flat] enable = 0`(자동 Convergence가 장면 거리에 맞춤, Snufkin은 약 65) |
@@ -231,7 +238,7 @@
 ## CP7 기록·배포
 
 1. **`data/game_profiles.json`에 프로필을 추가합니다.**
-   - 필드: `id`, `name`, `steam_appid`, `folder`, `exe`, `arch`, `engine`, `api`, `route`, `install`, `remove`, `registry`, `ini`, `status`(working / verified), `verified_by_user`, `notes`, `known_issues`, `test`
+   - 필드: `id`, `name`, `steam_appid`, `folder`, `exe`, `arch`, `engine`, `api`, `route`, `install`, `remove`, `registry`, `launch_options`(설치기가 Steam 실행 옵션에 넣음, Steam을 끈 상태에서), `ini`, `status`(working / verified), `verified_by_user`, `notes`, `known_issues`, `test`
    - `ini`에는 템플릿과 다른 값만 적습니다.
    - `test.steps`에는 gametest 단계를 적습니다.
 2. **`data/GAMES.ko.md`와 영어판 `data/GAMES.md`에 표 한 줄과 메모를 추가합니다(두 목록은 손으로 맞춥니다).**

@@ -40,7 +40,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
    | Graphics API | Route | Files to add |
    | --- | --- | --- |
    | OpenGL | direct | `opengl32.dll`, `OGL3D.ini` |
-   | OpenGL selectable (AGS `driver=OGL`, Unity `-force-glcore`, launch option) | switch the game to OpenGL, then direct | same as above + change the game's setting |
+   | OpenGL selectable (AGS `driver=OGL`, Unity `-force-glcore`, FNA `/gldevice:OpenGL`, launch option) | switch the game to OpenGL, then direct | same as above + change the game's setting |
    | Direct3D 8/9, DirectDraw | WineD3D (regular) | above + `version.dll` (loader), `wined3d.dll`, `d3d9.dll` (if needed `d3d8.dll`, `ddraw.dll`) |
    | Direct3D 10/11 | WineD3D (renamed set) | above + `w3d11.dll`, `wxgi.dll`, `w3d10core.dll`, `wined3d.dll` (D3D10 games also `d3d10*.dll`) |
    | Direct3D 12, Vulkan | not possible (separate project) | — |
@@ -60,6 +60,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
    | Unity (D3D11 by default even when the exe imports opengl32) | Identify the route from the `Version:` line of `<exe>_Data\output_log.txt` or `Player.log`; `group = draw`, `order_curve = 0.5` | Huntdown, GGC2 |
    | Engines that use ARB assembly programs through NVIDIA Cg (PSSG etc., `cg.dll`/`cgGL.dll` next to the exe) | The wrapper rewrites ARB vertex programs automatically. Usually `screen_batch = 0` | Rocketbirds |
    | GameMaker Studio 2 (side-view rooms drawn as tall pieces that reach below the screen) | `rule = feet`, `plane_tall = 1` | Home |
+   | FNA (XNA reimplementation, .NET: `FNA.dll`, `FNA3D.dll`) | Steam launch option `/gldevice:OpenGL` (profile `launch_options`, set by the installer) for the OpenGL route (opengl32.dll only; the loader does not load in .NET). Side-scrollers: `rule = order` | Axiom Verge 1 and 2 |
    | 2.5D and 3D (scenes with perspective) | Not a Flato3D target: install as ordinary stereo in Geo Gaming Hub | Broken Age |
 
 5. **Check existing installs:** See whether the game folder has geo-11 (`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave (`dxgi.dll`), dgVoodoo (`D3D9.dll`), ReShade or OGL3D 1.0 (`opengl32.dll`). The installer moves them to `Flato3D_backup`, but note down that this was an install the user had been using.
@@ -80,6 +81,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
    ```
    - To keep controlling a game that is already running, use `-Attach`.
    - To hold a key down, use `hold:<vk>:<seconds>`; to click, `click:x:y` (screen pixels); for relative movement, `rmove`.
+   - Arrows, Home/End, PgUp/PgDn and Insert/Delete go with the extended-key flag. SDL games (FNA, Chowdren) read scan codes and take them as numeric keypad keys without it.
 3. **Check the log (`OGL3D.log`)**
    - `loaded into`: the wrapper is loaded
    - `context ...`: an OpenGL context was created
@@ -158,6 +160,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
 | `[Flat] depth_top` | Depth range | Usually 1 |
 | `[Flat] group` | texture (consecutive draws with the same texture = one layer) / draw (one draw = one layer) | draw, when each layer has its own draw, as in Unity |
 | `[Flat] order_curve` | 1 = even; below 1 gives more depth to the earlier (far) layers | 0.5 when there are many layers and the background layers look stuck together |
+| `[Flat] snap_pixels` | 1 = round each eye's shift to whole pixels of the render target (also drops the spread within a group) | Pixel games that draw into a low-resolution buffer and scale it up, when layers sway a pixel back and forth while scrolling (Axiom Verge) |
 | `[Flat] cache_scale` | Shift ratio inside the low-resolution cache (0 = automatic, from the scissor) | When you know the ratio at which the cache area maps to the screen (DK 0.406) |
 | `[Flat] screen_batch` | From which scissor batch on draws count as screen depth (UI); 0 = off | 1 for AGS, 0 for games that set a scissor for every draw |
 | `[Flat] plane_size`, `plane_height`, `sprite_min` | How the feet rule tells floor planes and sprites apart | Games with the feet rule |
@@ -195,6 +198,10 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
 | Part of the background is cut out as a rectangle and floats forward | A walk-behind, which draws part of the background picture again later, comes forward in drawing order | Fixed function: when the same texture as an earlier picture is drawn again with the same position mapping, it gets that picture's layer (trace `(repeats an earlier picture)`). Pieces that cover objects drawn in between stay in front (fixed, Machinarium). Not done yet for the shader path |
 | Horizontal lines or rectangles where pieces meet (feet) | The picture is drawn in several pieces, so each narrow piece stands at its own bottom edge | `plane_tall` (e.g. 0.12): pieces at least this tall are on the floor slope, whatever their width (Samorost 2). Fixed-function games group the pieces automatically |
 | The whole room or background comes out in front of the character standing in front of it (feet; the background is nearer than the bottom of the screen) | The background is drawn as tall pieces that reach below the bottom of the screen, so a narrow piece stands at its own bottom edge, off screen below (`sprite_min` allows `depth_screen` more) | `plane_tall` above the character's height (Home: 1 = half the screen height, the character is about 0.7). Too small and characters lean back too |
+| Tiles and background layers sway while walking or scrolling (fine when still) | (1) In a low-resolution buffer each eye shifts by a fraction of a pixel, so the eyes round a sprite at a fractional scroll position differently (2) objects coming and going change the layer count, and every layer's depth glides after it | (1) `snap_pixels = 1` (2) fixed in the wrapper: the layer count stays at its recent peak (follows at once when it drops by more than two). Check with `trace_frames` every few frames while walking: does `order group ... depth` change? (Axiom Verge 2) |
+| An FNA game leaves no `OGL3D.log` | FNA3D picks Direct3D 11 on Windows | Steam launch option `/gldevice:OpenGL`. The environment variable `FNA3D_FORCE_DRIVER=OpenGL` is lost when the game restarts through Steam (`SteamAPI_RestartAppIfNecessary`); for a test only, `steam_appid.txt` next to the exe (Axiom Verge) |
+| Black screen with the wrapper (with stereo off too), plain OpenGL is fine | The geometry shader passes none of the vertex shader's outputs on: MojoShader (FNA) writes the legacy built-ins through macros such as `#define vs_oT0 gl_TexCoord[0]` | Fixed in the wrapper: the bodies of the macros a shader uses count. Check the generated shader in the log for `gl_TexCoord[0] = gl_in[...]` (Axiom Verge) |
+| The whole scene at disparity 0 or in one layer, and every draw in the trace has the same `fb` number | The engine renders through one framebuffer object and swaps its attachment per render target (FNA): the viewport set per target starts a new (UI) batch, and the composition order takes all targets for one scratch target | Fixed in the wrapper: batches and the composition order count framebuffer + colour attachment as the target. A framebuffer whose attachment changed shows up with a large number in the layout lines (`fb1073741825` etc.) (Axiom Verge) |
 | When the scene is pulled forward (larger `depth_screen`), objects near the bottom sink behind the floor | Objects stop at `sprite_min` while the floor keeps getting nearer | `sprite_min` follows `depth_screen` (fixed) |
 | Part of the scene is missing in one eye and the log says `right-eye copy incomplete (0x8cd7)` | The texture to attach to the right-eye copy of the buffer could not be made. WineD3D creates multisample textures with immutable storage and attaches texture views of them; if the copy does not have immutable storage, the view cannot be made (Snufkin) | Fixed in the wrapper (`glTexStorage2DMultisample` is tracked, and the source of a view is copied with immutable storage). If the cause is different, check the attachments in the trace by the `fbo N` number |
 | The whole scene sticks as one sheet at the far end (near the maximum separation) | Not flat 2D but a real 3D game with a perspective camera. With flat depth on, automatic Convergence is off and stays at its start value (3) | `[Flat] enable = 0` (automatic Convergence fits the scene distance; about 65 for Snufkin) |
@@ -233,7 +240,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
 ## CP7 Record and release
 
 1. **Add a profile to `data/game_profiles.json`.**
-   - Fields: `id`, `name`, `steam_appid`, `folder`, `exe`, `arch`, `engine`, `api`, `route`, `install`, `remove`, `registry`, `ini`, `status` (working / verified), `verified_by_user`, `notes`, `known_issues`, `test`
+   - Fields: `id`, `name`, `steam_appid`, `folder`, `exe`, `arch`, `engine`, `api`, `route`, `install`, `remove`, `registry`, `launch_options` (the installer puts them into Steam's launch options, with Steam closed), `ini`, `status` (working / verified), `verified_by_user`, `notes`, `known_issues`, `test`
    - In `ini`, write only the values that differ from the template.
    - In `test.steps`, write the gametest steps.
 2. **Add a table row and a note to both `data/GAMES.ko.md` and `data/GAMES.md` (the two lists are kept in sync by hand).**

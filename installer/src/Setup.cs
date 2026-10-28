@@ -269,6 +269,23 @@ namespace Flato3D
                     log.AppendLine(L.T("그래픽 설정: 이 게임은 NVIDIA GPU(고성능)로 실행", "graphics setting: this game runs on the NVIDIA GPU (high performance)"));
                 }
             if (Gpu.Known && !Gpu.Nvidia) log.AppendLine(Gpu.Warning());
+
+            // launch options the game needs (FNA: /gldevice:OpenGL), set in Steam as in the game's Properties
+            string launch = Json.Str(g.Profile, "launch_options"), appId = g.SteamAppId ?? Json.Str(g.Profile, "steam_appid");
+            if (launch != null && appId != null)
+            {
+                if (SteamLaunch.SteamRunning())
+                    log.AppendLine(L.T("경고: Steam이 켜져 있어 실행 옵션 " + launch + "을 넣지 못했습니다. Steam을 완전히 끄고 다시 [설치]를 누르세요. 이 옵션이 없으면 3D가 되지 않습니다.",
+                                       "Warning: Steam is running, so the launch option " + launch + " was not set. Exit Steam completely and press [Install] again. Without it there is no 3D."));
+                else if (SteamLaunch.Apply(appId, launch, true).Count > 0)
+                {
+                    man["launch_options"] = new Dictionary<string, object> { { "appid", appId }, { "options", launch } };
+                    log.AppendLine(L.T("Steam 실행 옵션: ", "Steam launch option: ") + launch);
+                }
+                else
+                    log.AppendLine(L.T("경고: Steam 설정(localconfig.vdf)을 찾지 못했습니다. 게임 속성의 실행 옵션에 " + launch + "을 직접 넣으세요.",
+                                       "Warning: Steam's settings (localconfig.vdf) were not found. Put " + launch + " into the game's launch options yourself."));
+            }
             if (route != Route.OpenGL)
             {
                 log.AppendLine(Defender.Notice());
@@ -322,6 +339,19 @@ namespace Flato3D
                     else k.SetValue(name, Convert.ToInt32(old, CultureInfo.InvariantCulture), RegistryValueKind.DWord);
                 }
                 log.AppendLine(L.T("레지스트리 되돌림: ", "registry restored: ") + key + " " + name);
+            }
+            var lo = Json.Obj(man, "launch_options");
+            if (lo != null)
+            {
+                string launch = Json.Str(lo, "options");
+                if (SteamLaunch.SteamRunning())
+                    log.AppendLine(L.T("Steam이 켜져 있어 실행 옵션 " + launch + "을 빼지 못했습니다. 게임 속성에서 직접 지우세요.",
+                                       "Steam is running, so the launch option " + launch + " stays. Remove it in the game's Properties."));
+                else
+                {
+                    SteamLaunch.Apply(Json.Str(lo, "appid"), launch, false);
+                    log.AppendLine(L.T("Steam 실행 옵션 뺌: ", "Steam launch option removed: ") + launch);
+                }
             }
             File.Delete(Path.Combine(exeDir, ManifestName));
             log.AppendLine(L.T("제거 완료", "uninstalled"));
@@ -408,6 +438,131 @@ namespace Flato3D
                 if (rx.IsMatch(lines[i])) { lines[i] = key + " = " + value; return string.Join(nl, lines); }
             lines.Insert(start + 1, key + " = " + value);
             return string.Join(nl, lines);
+        }
+    }
+
+    // Steam launch options from a profile ("launch_options": FNA games choose OpenGL only with /gldevice:OpenGL,
+    // read before any DLL of ours could step in). Written into every Steam account's localconfig.vdf, where
+    // the game's Properties > Launch options keep them; options the user had stay. Steam rewrites that file
+    // from memory when it exits, so it must be closed while the file is changed.
+    static class SteamLaunch
+    {
+        public static bool SteamRunning() { return System.Diagnostics.Process.GetProcessesByName("steam").Length > 0; }
+
+        public static List<string> Configs()
+        {
+            var list = new List<string>();
+            string steam = Library.SteamPath(), ud = steam == null ? null : Path.Combine(steam, "userdata");
+            if (ud == null || !Directory.Exists(ud)) return list;
+            foreach (string d in Directory.GetDirectories(ud))
+            {
+                string f = Path.Combine(d, "config", "localconfig.vdf");
+                if (File.Exists(f)) list.Add(f);
+            }
+            return list;
+        }
+
+        struct Tok { public int Start, End; public char Kind; public string Text; }   // Kind: 's' string, '{', '}'
+
+        static List<Tok> Lex(string t)
+        {
+            var toks = new List<Tok>();
+            for (int i = 0; i < t.Length; ++i)
+            {
+                char c = t[i];
+                if (c == '{' || c == '}') toks.Add(new Tok { Start = i, End = i + 1, Kind = c });
+                else if (c == '/' && i + 1 < t.Length && t[i + 1] == '/') { while (i < t.Length && t[i] != '\n') ++i; }
+                else if (c == '"')
+                {
+                    var sb = new StringBuilder();
+                    int j = i + 1;
+                    for (; j < t.Length && t[j] != '"'; ++j)
+                    {
+                        if (t[j] == '\\' && j + 1 < t.Length) ++j;
+                        sb.Append(t[j]);
+                    }
+                    toks.Add(new Tok { Start = i, End = j + 1, Kind = 's', Text = sb.ToString() });
+                    i = j;
+                }
+            }
+            return toks;
+        }
+
+        static string Quote(string s) { return "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\""; }
+
+        // options with ours added (add) or taken out again, as space-separated words
+        static string Merge(string old, string ours, bool add)
+        {
+            var words = (old ?? "").Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (string w in ours.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                words.RemoveAll(x => string.Equals(x, w, StringComparison.OrdinalIgnoreCase));
+                if (add) words.Add(w);
+            }
+            return string.Join(" ", words);
+        }
+
+        // Changes one localconfig.vdf: the game's LaunchOptions with ours added or removed. Returns the old value
+        // ("" when there was none), or null when the file has no Software/Valve/Steam/apps block.
+        static string Edit(string file, string appId, string ours, bool add)
+        {
+            string t = File.ReadAllText(file);
+            string nl = t.Contains("\r\n") ? "\r\n" : "\n";
+            var toks = Lex(t);
+            var path = new List<string>();
+            string[] apps = { "userlocalconfigstore", "software", "valve", "steam", "apps" };
+            int appsClose = -1, appOpen = -1, appClose = -1, valueTok = -1;
+            for (int k = 0; k < toks.Count; ++k)
+            {
+                Tok tk = toks[k];
+                if (tk.Kind == '}')
+                {
+                    if (path.Count == 6 && appOpen >= 0 && appClose < 0) appClose = k;
+                    if (path.Count == 5 && path.Select(p => p.ToLowerInvariant()).SequenceEqual(apps) && appsClose < 0) appsClose = k;
+                    if (path.Count > 0) path.RemoveAt(path.Count - 1);
+                    continue;
+                }
+                if (tk.Kind != 's' || k + 1 >= toks.Count) continue;
+                if (toks[k + 1].Kind == '{')
+                {
+                    path.Add(tk.Text);
+                    if (path.Count == 6 && tk.Text == appId && path.Take(5).Select(p => p.ToLowerInvariant()).SequenceEqual(apps)) appOpen = k + 1;
+                    ++k;
+                }
+                else if (toks[k + 1].Kind == 's')
+                {
+                    if (appOpen >= 0 && appClose < 0 && path.Count == 6 && tk.Text.Equals("LaunchOptions", StringComparison.OrdinalIgnoreCase)) valueTok = k + 1;
+                    ++k;
+                }
+            }
+            if (appsClose < 0) return null;
+            string old = valueTok >= 0 ? toks[valueTok].Text : "", now = Merge(old, ours, add);
+            if (now == old) return old;
+            string tabs6 = new string('\t', 6), tabs5 = new string('\t', 5);
+            if (valueTok >= 0)
+                t = t.Substring(0, toks[valueTok].Start) + Quote(now) + t.Substring(toks[valueTok].End);
+            else if (appClose >= 0)   // the game's block, without launch options yet: before its closing brace
+            {
+                int at = t.LastIndexOf('\n', toks[appClose].Start) + 1;
+                t = t.Substring(0, at) + tabs6 + "\"LaunchOptions\"\t\t" + Quote(now) + nl + t.Substring(at);
+            }
+            else   // no block for the game yet: one at the end of apps
+            {
+                int at = t.LastIndexOf('\n', toks[appsClose].Start) + 1;
+                t = t.Substring(0, at) + tabs5 + Quote(appId) + nl + tabs5 + "{" + nl + tabs6 + "\"LaunchOptions\"\t\t" + Quote(now) + nl + tabs5 + "}" + nl + t.Substring(at);
+            }
+            if (!File.Exists(file + ".flato3d.bak")) File.Copy(file, file + ".flato3d.bak");   // as it was before Flato3D first changed it
+            File.WriteAllText(file, t, new UTF8Encoding(false));
+            return old;
+        }
+
+        // Adds (add) or removes the options in every account's localconfig.vdf; returns the files changed
+        public static List<string> Apply(string appId, string ours, bool add)
+        {
+            var done = new List<string>();
+            foreach (string f in Configs())
+                if (Edit(f, appId, ours, add) != null) done.Add(f);
+            return done;
         }
     }
 }

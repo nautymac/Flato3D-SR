@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-26",
+  "updated": "2026-10-28",
   "about": "Games Flato3D has been made to work with: what to install, the OGL3D.ini values that differ from the template, and the state of each. The installer will apply these as profiles. Candidates not yet worked on are in game_candidates.json. 'test' holds the steps for tools\\analysis\\gametest.ps1.",
   "games": [
     {
@@ -846,6 +846,114 @@
         "steps": "wait:25,ctrlkey:7B,wait:4,key:20,wait:4,key:20,wait:4,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:3,key:20,wait:4,ctrlkey:7B,wait:4",
         "reaches": "title (Start Game is selected) -> Space x11 through the opening cards -> the first room, with Ctrl+F12 dumps on the title and in the first room",
         "notes": "Checked from a fresh start (no progress save). Controls: arrows move (up looks up), Space continues cards and interacts; the door on the left of the first room leads to the second room. Saves: %LOCALAPPDATA%\\Home___A_Unique_Horror_Adventure\\homesave (test-backups\\Home); the opening wrote no progress save."
+      }
+    },
+    {
+      "id": "axiom-verge",
+      "name": "Axiom Verge",
+      "steam_appid": 332200,
+      "folder": "Axiom Verge",
+      "exe": "AxiomVerge.exe",
+      "arch": "x86",
+      "engine": "FNA 22.07 (.NET Framework 4, 32-bit) with FNA3D",
+      "api": "OpenGL through FNA3D (its Windows default is Direct3D 11)",
+      "route": "opengl",
+      "launch_options": "/gldevice:OpenGL",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "order_curve": 0.4,
+          "snap_pixels": 1
+        },
+        "Display": {
+          "upscale": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "FNA3D picks Direct3D 11 on Windows, and the wrapper never loads: set the Steam launch option /gldevice:OpenGL (FNA's own switch; Axiom Verge also takes -opengl). The environment variable FNA3D_FORCE_DRIVER=OpenGL works too, but Steam restarts the game through itself (SteamAPI_RestartAppIfNecessary) and drops it. OGL3D's add_args cannot help: opengl32.dll is only loaded after FNA3D has chosen its driver.",
+        "The Flato3D loader (version.dll) never loads in these .NET games: the runtime has System32's version.dll mapped before SDL2.dll imports it. FNA draws with OpenGL itself, so only opengl32.dll is needed.",
+        "Black screen until the wrapper fix of 2026-10-28: FNA's shaders come from MojoShader and write gl_FrontColor and gl_TexCoord[n] through macros (#define vs_oT0 gl_TexCoord[0]); the flat-depth geometry shader looked for built-ins only outside preprocessor lines and passed none of them on. The bodies of the macros a shader uses now count.",
+        "FNA renders every render target through one framebuffer object and swaps its colour attachment. The wrapper told targets apart by framebuffer number: viewport changes between targets started new scissor batches (screen_batch 1 put the whole scene at the screen: disparity 0), and the composition order took all targets for one scratch target (the scene collapsed into one layer). Batches and the composition order now count a framebuffer with its colour attachment as the target (2026-10-28).",
+        "The game draws at 480x270 and scales up: depth comes in steps of 4 px (one game pixel on a 1920-wide eye). The HUD and the dialogue box are drawn into a target of their own, one layer per 8x8 texture, so with the even order curve the 8 world layers bunched into the far fifth (+24..28 px); order_curve 0.4 spreads them.",
+        "upscale = 1: the wrapper makes the game DPI aware, and it then opened a 1920x1080 window on the 4K desktop; with upscale it fills the screen (presentation window 3840x2160).",
+        "Measured (separation 25, px on a 1920-wide eye): title (order_curve 1) - far tiles +32, near tiles +24, logo +8, menu -8. First room (order_curve 0.4) - Trace +16, the terrain walls drawn after him +8, dialogue box and portrait 0. 60 fps.",
+        "Tiles swayed while the camera scrolled (user report on the SR panel, 10-28). Two causes, measured with dumps every 4 frames while walking: (1) the game draws at 432x240 / 480x270, and a per-eye shift of a fraction of a pixel let each eye round a sprite at a fractional scroll position differently, so a parallax layer's disparity flipped between two values (+16 and +20..24 px) as it scrolled; snap_pixels = 1 shifts by whole pixels of the target (and drops the spread over a group's slot). (2) Objects scrolling into view changed the layer count (30 <-> 31), and every layer's depth glided after it (0.517 <-> 0.533); the wrapper now keeps the count at its recent peak unless it drops by more than two. After both, the layers kept their depth the whole walk.",
+        "SR weaving checked 10-28 (output auto, upscale): the 32-bit SR runtime's DX11 weaver starts, 60 fps, no eye-tracking losses in the SR log."
+      ],
+      "known_issues": [
+        "Steam must be closed while installing: the installer writes the launch option /gldevice:OpenGL into Steam's localconfig.vdf (Steam overwrites that file when it exits). Without the option the game runs flat on Direct3D 11.",
+        "Terrain drawn after the player stands a little in front of him (+8 against +16 px), as in other side-scrollers under the order rule.",
+        "HUD pieces and dialogue-box tiles are separate layers in their own target, so they step a little in depth."
+      ],
+      "test": {
+        "proc": "AxiomVerge",
+        "steps": "wait:20,ctrlkey:7B,wait:3,key:0D,wait:3,key:0D,wait:6,key:0D,wait:1,key:25,wait:1,key:20,wait:8,key:20,wait:2,key:20,wait:2,key:20,wait:2,key:20,wait:3,ctrlkey:7B,wait:3",
+        "reaches": "title -> Start -> slot 1 (Load) -> the opening cutscene, skipped (Enter, Left to Yes, Space) -> the first room after the opening lines, with Ctrl+F12 dumps on the title and in the room",
+        "notes": "Needs the Steam launch option /gldevice:OpenGL. Outside Steam (gametest -Exe ... -ExeArgs /gldevice:OpenGL) put steam_appid.txt (332200) next to the exe for the test only, or the game restarts through Steam. Menus take Enter, the skip-cutscene prompt takes Space; arrows need the extended-key flag (gametest sends it since 2026-10-28). Saves: Steam Cloud userdata\\<account>\\332200\\remote (test-backups\\AxiomVerge)."
+      }
+    },
+    {
+      "id": "axiom-verge-2",
+      "name": "Axiom Verge 2",
+      "steam_appid": 946030,
+      "folder": "Axiom Verge 2",
+      "exe": "AxiomVerge2.exe",
+      "arch": "x86",
+      "engine": "FNA 21.08 (.NET Framework 4.5, 32-bit: the exe is 32BITREQUIRED, so the x86 folder is used) with FNA3D",
+      "api": "OpenGL through FNA3D (its Windows default is Direct3D 11)",
+      "route": "opengl",
+      "launch_options": "/gldevice:OpenGL",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "snap_pixels": 1
+        },
+        "Display": {
+          "upscale": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "FNA3D picks Direct3D 11 on Windows, and the wrapper never loads: set the Steam launch option /gldevice:OpenGL (FNA's own switch; Axiom Verge also takes -opengl). The environment variable FNA3D_FORCE_DRIVER=OpenGL works too, but Steam restarts the game through itself (SteamAPI_RestartAppIfNecessary) and drops it. OGL3D's add_args cannot help: opengl32.dll is only loaded after FNA3D has chosen its driver.",
+        "The Flato3D loader (version.dll) never loads in these .NET games: the runtime has System32's version.dll mapped before SDL2.dll imports it. FNA draws with OpenGL itself, so only opengl32.dll is needed.",
+        "Same wrapper fixes as Axiom Verge (macro built-ins in MojoShader shaders, one framebuffer object for all targets).",
+        "The game draws at 432x240; the background is 14 parallax layers drawn one after another, so the order rule gives them their depths without tuning.",
+        "Measured (separation 25, px on a 1920-wide eye), Antarctica (the helicopter pad): sky and far mountains +26, middle mountains +18, helicopter and scaffold +8..10, Indra and the ice in front 0, HUD -4..-8. 60 fps.",
+        "Tiles swayed while the camera scrolled (user report on the SR panel, 10-28). Two causes, measured with dumps every 4 frames while walking: (1) the game draws at 432x240 / 480x270, and a per-eye shift of a fraction of a pixel let each eye round a sprite at a fractional scroll position differently, so a parallax layer's disparity flipped between two values (+16 and +20..24 px) as it scrolled; snap_pixels = 1 shifts by whole pixels of the target (and drops the spread over a group's slot). (2) Objects scrolling into view changed the layer count (30 <-> 31), and every layer's depth glided after it (0.517 <-> 0.533); the wrapper now keeps the count at its recent peak unless it drops by more than two. After both, the layers kept their depth the whole walk.",
+        "SR weaving checked 10-28 (output auto, upscale): the 32-bit SR runtime's DX11 weaver starts, 60 fps, no eye-tracking losses in the SR log."
+      ],
+      "known_issues": [
+        "Steam must be closed while installing: the installer writes the launch option /gldevice:OpenGL into Steam's localconfig.vdf (Steam overwrites that file when it exits). Without the option the game runs flat on Direct3D 11.",
+        "About 25 s after start the screen is black (also without the wrapper) until the title shows."
+      ],
+      "test": {
+        "proc": "AxiomVerge2",
+        "steps": "wait:15,key:0D,wait:4,key:20,wait:4,key:20,wait:6,ctrlkey:7B,wait:4,hold:27:3,wait:1,ctrlkey:7B,wait:4",
+        "reaches": "title -> Start -> slot 1 (continue) -> Antarctica, with Ctrl+F12 dumps standing and after walking right",
+        "notes": "Needs the Steam launch option /gldevice:OpenGL (outside Steam: steam_appid.txt with 946030 for the test only). Enter opens the pause menu in play, Escape closes it. Saves: Steam Cloud userdata\\<account>\\946030\\remote (test-backups\\AxiomVerge2)."
       }
     }
   ]
