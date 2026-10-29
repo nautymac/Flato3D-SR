@@ -1,4 +1,5 @@
-# Builds the Flato3D-SR release package dist\Flato3D-SR-<version>.zip from the current builds:
+# Builds the Flato3D-SR release package dist\Flato3D-SR-<version>.zip (folder dist\Flato3D-SR, the same name
+# for every version; only the zip carries the version) from the current builds:
 #   installer\bin\Flato3DInstaller.exe, ogl3d\bin\{x86,x64}\opengl32.dll, loader\bin\{x86,x64}\version.dll and shim\winmm.dll,
 #   third_party\wined3d-11.19, data\game_profiles.json, data\game_candidates.json.
 # Run installer\src\build.cmd, ogl3d\build.ps1 and loader\build.ps1 first.
@@ -11,7 +12,7 @@ $appVersion = [regex]::Match($info, 'Version = "([^"]+)"').Groups[1].Value
 $appDate = [regex]::Match($info, 'Date = "([^"]+)"').Groups[1].Value
 if (-not $Version) { $Version = $appVersion }
 if ($Version -ne $appVersion) { throw "version $Version is not the installer's AppInfo.Version $appVersion" }
-$name = "Flato3D-SR-$Version"
+$name = "Flato3D-SR"   # the folder, inside the zip too: unpacking a new version replaces the old one in place
 $stage = Join-Path $root "dist\$name"
 if (Test-Path $stage) { Remove-Item -Recurse -Force $stage }
 function Put([string]$src, [string]$dst) {
@@ -44,7 +45,7 @@ Put 'third_party\wined3d-11.19\SOURCE.txt' 'wined3d\SOURCE.txt'
 Put 'third_party\wined3d-11.19\x86\WINED3D README.txt' 'wined3d\WINED3D README.txt'
 Put 'third_party\licenses\LGPL-2.1.txt' 'wined3d\LGPL-2.1.txt'
 
-$zip = Join-Path $root "dist\$name.zip"
+$zip = Join-Path $root "dist\$name-$Version.zip"
 if (Test-Path $zip) { Remove-Item $zip }
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 $z = [System.IO.Compression.ZipFile]::Open($zip, 'Create')
