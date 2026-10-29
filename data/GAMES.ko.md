@@ -24,8 +24,8 @@
 | Home | D3D11 (GameMaker Studio 2) · WineD3D | feet, `plane_tall = 1` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 | Axiom Verge | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `order_curve = 0.4`, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
 | Axiom Verge 2 | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
-| Blasphemous | D3D11 (Unity 2017) · WineD3D | order, draw마다 한 층, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | 동작(AMD에서 시험), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
-| Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, draw마다 한 층, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | 동작(AMD에서 시험), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
+| Blasphemous | D3D11 (Unity 2017) · WineD3D | order, draw마다 한 층, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
+| Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, draw마다 한 층, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -187,7 +187,8 @@
   - 타이틀: 로고 +24 px, "아무 버튼이나 누르세요" −20~−28 px, 저작권 글자 +20에서 +6 px까지(draw 하나가 글자들에 펼쳐짐)
   - 플레이(침묵의 비탄 형제단의 기도대 방과 그 서쪽 방): 창 빛 +60 px, 벽·기둥 +30~+40 px, 잔해 +10~+30 px, 주인공 +4~+20 px, HUD 초상 −20 px, 오른쪽 HUD −10 px
 - **바닥 위에 뜬 주인공(고침)**: 처음엔 주인공이 성당 바닥보다 약 25 px 앞에 섰습니다. 바닥과 주인공 사이에 그리는 작은 스프라이트가 한 칸씩 깊이를 차지했기 때문입니다. `order_weight = 0.02`(층마다 덮는 면적만큼만 앞으로)로 성당 바닥 +20 px, 주인공 +10 px(640x360 한 픽셀 차이), 벽 +30~+40 px, 창 빛 +60 px, HUD 0~−10 px가 됐습니다. 타이틀은 로고 +4 px, 글자 −8~−28 px입니다.
-- 남은 일: 슬롯 선택 메뉴가 +44 px로 화면 뒤에 놓입니다. 메뉴 뒤에 화면 전체를 덮는 그림 두 장이 깊이 범위를 대부분 차지합니다. 플레이 깊이는 사용자 확인이 필요합니다.
+- 남은 일: 슬롯 선택 메뉴가 +44 px로 화면 뒤에 놓입니다. 메뉴 뒤에 화면 전체를 덮는 그림 두 장이 깊이 범위를 대부분 차지합니다.
+- **사용자 확인 완료**(10-29): 잘 됩니다.
 - 테스트 조작: 타이틀에서 Enter를 세 번 누르면 1번 슬롯으로 이어집니다(두 번째 뒤가 슬롯 선택 화면). 이동은 화살표가 아니라 A / D입니다. 걸어 다니기만 해도 `savegame_0.save`가 바뀌니 시험 뒤 되돌립니다. 세이브: `%USERPROFILE%\AppData\LocalLow\TheGameKitchen\Blasphemous\Savegames\<Steam ID>\`(test-backups\Blasphemous).
 
 **Blasphemous 2** (프로필 `blasphemous-2`, 10-29): Unity 2021 x64(IL2CPP), D3D11을 WineD3D로. Unity 기본값에 `order_weight = 0.02`, `order_curve = 1`을 더했습니다.
@@ -199,5 +200,5 @@
   - 타이틀: 로고 −12 px, "아무 버튼이나 누르세요" −26~−28 px, 저작권 글자 −18~−22 px(타이틀 전체가 화면 앞)
   - 플레이(세이브한 기도대와 좌우 방): 먼 바위 기둥·석상 +24~+36 px, 바닥·발판 +24~+36 px, 기도대·천사상 +12 px, 주인공 0 px, 앞쪽 안개 −24~−30 px, HUD −16~−18 px, 눈물 수치 −10~−14 px
 - **바닥 위에 뜬 주인공(고침)**: 처음엔 바닥이 +24~+36 px, 주인공이 0 px로 바닥보다 24~36 px 앞에 떴습니다. 바닥(draw 18)과 주인공(draw 28) 사이에 기도대·천사상·빛 같은 작은 스프라이트 9개를 그리고, 그것들이 한 칸씩 깊이를 차지했습니다. `order_weight = 0.02`로 차이가 12 px(640x360 한 픽셀)로 줄었습니다. 기도대 방은 바닥 +12, 주인공 0, 먼 바위 +24~+36 px, 어두운 방은 바닥 0, 주인공 −12 px, 핏빛 비는 발판 +24, 주인공 +12, 덩굴 +60 px입니다. 타이틀과 메뉴는 0~−28 px입니다.
-- 남은 일: 플레이 깊이는 사용자 확인이 필요합니다.
+- **사용자 확인 완료**(10-29): 잘 됩니다.
 - 테스트 조작: 타이틀에서 Enter(아무 버튼) → Enter(순례) → Enter(1번 슬롯 이어하기). 이동은 A / D, W는 상호작용. 위 절차로는 세이브가 바뀌지 않았지만 그래도 백업합니다. 세이브: `%USERPROFILE%\AppData\LocalLow\The Game Kitchen\Blasphemous 2\SteamUser_<Steam ID>\`(Steam 클라우드, test-backups\Blasphemous 2). Steam으로 처음 실행할 때 게임이 뜨기까지 2분쯤 걸렸습니다.

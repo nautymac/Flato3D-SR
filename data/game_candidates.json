@@ -8954,7 +8954,7 @@
     "Action"
    ],
    "pcgw_page": "Blasphemous",
-   "status": "working",
+   "status": "verified",
    "uhd": "true",
    "uhd_note": "Pixel-perfect",
    "upscale": "0"
@@ -9001,7 +9001,7 @@
     "Hack and Slash"
    ],
    "pcgw_page": "Blasphemous 2",
-   "status": "working",
+   "status": "verified",
    "uhd": "false",
    "uhd_note": "Native 640x360.",
    "upscale": "1"

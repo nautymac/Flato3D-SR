@@ -26,8 +26,8 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Home | D3D11 (GameMaker Studio 2) · WineD3D | feet, `plane_tall = 1` | Works, not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 | Axiom Verge | OpenGL (FNA, Steam launch option `/gldevice:OpenGL`) · direct | order, `order_curve = 0.4`, `snap_pixels = 1` | Works, not yet confirmed by the user | opengl32.dll x86, upscale, launch option |
 | Axiom Verge 2 | OpenGL (FNA, Steam launch option `/gldevice:OpenGL`) · direct | order, `snap_pixels = 1` | Works, not yet confirmed by the user | opengl32.dll x86, upscale, launch option |
-| Blasphemous | D3D11 (Unity 2017) · WineD3D | order, one layer per draw, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | Works (tested on AMD), not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
-| Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, one layer per draw, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | Works (tested on AMD), not yet confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
+| Blasphemous | D3D11 (Unity 2017) · WineD3D | order, one layer per draw, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
+| Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, one layer per draw, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 
 ## Notes per game
 
@@ -189,7 +189,8 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
   - Title: logo +24 px, "press any button" -20..-28 px, copyright lines from +20 down to +6 px (one draw spread over its glyphs)
   - Play (Brotherhood of the Silent Sorrow: the prie-dieu room and the room west of it): window light +60 px, walls and pillars +30..+40 px, rubble +10..+30 px, the Penitent One +4..+20 px, HUD portrait -20 px, HUD on the right -10 px
 - **The Penitent One floating over the floor (fixed)**: at first he stood about 25 px in front of the cathedral floor, because each small sprite drawn between the floor and him took a whole step in depth. With `order_weight = 0.02` (each layer steps forward by the part of the screen it covers): cathedral floor +20 px, the Penitent One +10 px (one 640x360 pixel apart), walls +30..+40 px, window light +60 px, HUD 0..-10 px. Title: logo +4 px, its text -8..-28 px.
-- Still open: the save slot menu stands +44 px behind the screen; two pictures over the whole screen drawn after the menu take most of the depth range. The depth in play needs the user's check.
+- Still open: the save slot menu stands +44 px behind the screen; two pictures over the whole screen drawn after the menu take most of the depth range.
+- **Confirmed by the user** (10-29): works well.
 - Test input: Enter three times on the title continues slot 1 (the save slot menu comes after the second). Movement is A / D, not the arrows. Just walking around changes `savegame_0.save`, so restore it after a test. Saves: `%USERPROFILE%\AppData\LocalLow\TheGameKitchen\Blasphemous\Savegames\<Steam ID>\` (test-backups\Blasphemous).
 
 **Blasphemous 2** (profile `blasphemous-2`, 10-29): Unity 2021 x64 (IL2CPP), D3D11 through WineD3D. The Unity defaults plus `order_weight = 0.02` and `order_curve = 1`.
@@ -201,5 +202,5 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
   - Title: logo -12 px, "press any button" -26..-28 px, copyright lines -18..-22 px (the whole title stands in front of the screen)
   - Play (the prie-dieu of the save and the rooms on both sides): far rock pillars and statues +24..+36 px, floor and platforms +24..+36 px, the prie-dieu and cherubs +12 px, the Penitent One 0 px, fog in the foreground -24..-30 px, HUD -16..-18 px, tears counter -10..-14 px
 - **The Penitent One floating over the floor (fixed)**: at first the floor got +24..+36 px and he 0 px, 24..36 px in front of it. Between the floor (draw 18) and him (draw 28) Unity draws nine small sprites (the prie-dieu, cherubs, lights), and each took a whole step in depth. With `order_weight = 0.02` the gap is 12 px (one 640x360 pixel): prie-dieu room floor +12, him 0, far rocks +24..+36 px; dark room floor 0, him -12 px; blood rain platform +24, him +12, vines +60 px. Title and menus 0..-28 px.
-- Still open: the depth in play needs the user's check.
+- **Confirmed by the user** (10-29): works well.
 - Test input: on the title Enter (any button) -> Enter (Pilgrimage) -> Enter (continue slot 1). Movement is A / D, W interacts. The steps above left the saves unchanged, but back them up anyway. Saves: `%USERPROFILE%\AppData\LocalLow\The Game Kitchen\Blasphemous 2\SteamUser_<Steam ID>\` (Steam Cloud, test-backups\Blasphemous 2). The first launch through Steam took about 2 minutes before the game started.
