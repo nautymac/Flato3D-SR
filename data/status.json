@@ -80,6 +80,20 @@
    ]
   },
   {
+   "game": "Blasphemous",
+   "steam": "774361",
+   "profile": "blasphemous",
+   "profile_status": "working",
+   "status": null,
+   "works": 0,
+   "issues": 0,
+   "broken": 0,
+   "updated": "",
+   "note": "",
+   "open_problems": [],
+   "reports": []
+  },
+  {
    "game": "Braid, Anniversary Edition",
    "steam": "499180",
    "profile": "braid-anniversary-edition",
