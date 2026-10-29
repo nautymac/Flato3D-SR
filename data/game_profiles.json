@@ -987,7 +987,8 @@
           "depth_screen": 0.3,
           "screen_batch": 0,
           "group": "draw",
-          "order_curve": 0.5
+          "order_curve": 1,
+          "order_weight": 0.02
         },
         "Display": {
           "swap_interval": 1
@@ -998,16 +999,17 @@
         "Tested 2026-10-29 on the MiniPC: AMD Radeon RX 7600M XT (GL 4.6, driver 26.6.1), not NVIDIA. Installer defaults for Unity, output sbs. Runs at 60 fps; about 4 minutes on the title and in play with no hang (WineD3D woken by an event).",
         "The game's own Resolution mode PIXEL_PERFECT draws a 3072x1728 picture inside the 3840x2160 window, so each eye has black bars at the sides.",
         "Frame structure (Ctrl+F12 trace): the world is drawn at 640x360 into two targets - the background with the floor and platforms (then a lighting / post pass), and a second one with the Penitent One and the foreground - both are scaled to 3072x1728, then the HUD. Depth steps are coarse (one 640x360 pixel).",
-        "Measured with separation 25, dumps 1920x1080 per eye: title - logo +24 px, 'press any button' -20..-28 px, copyright lines +20 down to +6 px (one draw spread over its glyphs). Play (Brotherhood of the Silent Sorrow: the prie-dieu room and the room west of it): window light +60 px, walls and pillars +30..+40 px, rubble +10..+30 px, the Penitent One +4..+20 px, HUD portrait -20 px, HUD on the right -10 px."
+        "Measured with separation 25, dumps 1920x1080 per eye: title - logo +24 px, 'press any button' -20..-28 px, copyright lines +20 down to +6 px (one draw spread over its glyphs). Play (Brotherhood of the Silent Sorrow: the prie-dieu room and the room west of it): window light +60 px, walls and pillars +30..+40 px, rubble +10..+30 px, the Penitent One +4..+20 px, HUD portrait -20 px, HUD on the right -10 px.",
+        "order_weight 0.02 with order_curve 1 (2026-10-29): with one step per layer the Penitent One stood about 25 px in front of the cathedral floor. With layers stepping forward by the part of the screen they cover: cathedral floor +20 px, the Penitent One +10 px (one 640x360 pixel), walls +30..+40 px, window light +60 px, HUD 0..-10 px; title logo +4 px, its text -8..-28 px."
       ],
       "known_issues": [
-        "In the cathedral the floor and the platforms get the depth of the walls behind them (+30 px), because they are drawn into the background target; the Penitent One, drawn in the foreground target, stands about 25 px in front of the floor.",
+        "The save slot menu stands +44 px behind the screen: two pictures over the whole screen drawn after the menu take most of the depth range.",
         "Not tested with SR output or on NVIDIA; the depth in play is to be confirmed by the user."
       ],
       "test": {
         "proc": "Blasphemous",
-        "steps": "wait:35,key:0D,wait:5,key:0D,wait:10,ctrlkey:7B,wait:4,hold:44:6,wait:3,ctrlkey:7B,wait:4,hold:41:14,wait:3,ctrlkey:7B,wait:4",
-        "reaches": "title -> Enter (press any button) -> Enter (continues the last save) -> play; dumps at the save point, after walking right (D) and after walking left (A)",
+        "steps": "wait:40,key:0D,wait:8,key:0D,wait:8,key:0D,wait:15,ctrlkey:7B,wait:4,hold:44:6,wait:3,ctrlkey:7B,wait:4,hold:41:14,wait:3,ctrlkey:7B,wait:4",
+        "reaches": "title -> Enter -> Enter (save slot menu) -> Enter (slot 1) -> play; dumps at the save point, after walking right (D) and after walking left (A)",
         "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\TheGameKitchen\\Blasphemous\\Savegames\\<steam id>\\ (test-backups\\Blasphemous) - walking around changes savegame_0.save, so restore it after play tests. Movement is A / D (keybinding_settings_keyboard.xml), not the arrow keys."
       }
     },
@@ -1042,7 +1044,8 @@
           "depth_screen": 0.3,
           "screen_batch": 0,
           "group": "draw",
-          "order_curve": 0.5
+          "order_curve": 1,
+          "order_weight": 0.02
         },
         "Display": {
           "swap_interval": 1
@@ -1053,10 +1056,10 @@
         "Tested 2026-10-29 on the MiniPC: AMD Radeon RX 7600M XT, not NVIDIA. Installer defaults for Unity, output sbs, game version 3.0.0. Runs at 60 fps; about 5 minutes on the title, the menus and in play with no hang; 82 shaders injected, none failed.",
         "Unlike Blasphemous it fills the whole 3840x2160 window (no black bars).",
         "Frame structure (Ctrl+F12 trace): the world is drawn into several 640x360 targets that are combined and scaled up, then the HUD. Each target counts its own drawing order. Depth steps are coarse (12 px at separation 25).",
-        "Measured with separation 25, dumps 1920x1080 per eye: title - logo -12 px, 'press any button' -26..-28 px, copyright lines -18..-22 px (the whole title stands in front of the screen). Play (the prie-dieu of the save and the rooms on both sides): far rock pillars and statues +24..+36 px, floor and platforms +24..+36 px, the prie-dieu and cherubs +12 px, the Penitent One 0 px, fog in the foreground -24..-30 px, HUD -16..-18 px, tears counter -10..-14 px."
+        "Measured with separation 25, dumps 1920x1080 per eye: title - logo -12 px, 'press any button' -26..-28 px, copyright lines -18..-22 px (the whole title stands in front of the screen). Play (the prie-dieu of the save and the rooms on both sides): far rock pillars and statues +24..+36 px, floor and platforms +24..+36 px, the prie-dieu and cherubs +12 px, the Penitent One 0 px, fog in the foreground -24..-30 px, HUD -16..-18 px, tears counter -10..-14 px.",
+        "order_weight 0.02 with order_curve 1 (2026-10-29): between the floor (draw 18) and the Penitent One (draw 28) Unity draws nine small sprites (the prie-dieu, cherubs, lights); with one step each he stood 24..36 px in front of the floor. Now the gap is 12 px (one 640x360 pixel): prie-dieu room floor +12, the Penitent One 0, far rocks +24..+36; dark room floor 0, him -12; blood rain platform +24, him +12, vines +60. Title and menus 0..-28 px."
       ],
       "known_issues": [
-        "The Penitent One stands at the screen (0 px) while the floor he stands on gets +24..+36 px, the depth of the far background - he floats about 24..36 px in front of the floor (the same kind of problem as Blasphemous).",
         "Not tested with SR output or on NVIDIA; the depth in play is to be confirmed by the user."
       ],
       "test": {
