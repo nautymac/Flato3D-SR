@@ -251,7 +251,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
    - Write commit messages in English, saying what was changed and why.
 4. **Release:** `installer\src\build.cmd` → `package.ps1` → `dist\Flato3D-SR-<version>.zip` (the GitHub release only after the user confirms).
    - **Version:** the version and its date live in one place, `AppInfo` in `installer\src\Library.cs`. The installer's window title, status reports, `Flato3D_install.json` in the game folder (`flato3d`), the package folder and zip names and the first line of the README use it.
-   - **Every GitHub release gets a new version** (`v0.2.0`, `v0.3.0` ...). Never replace the zip or move the tag of a release that is out: nobody could tell which build they have. Raise `AppInfo.Version` and `Date` and rebuild the installer before the release.
+   - **Every GitHub release gets a new version** (`v0.2.0`, `v0.3.0` ...). Never replace the zip or move the tag of a release that is out: nobody could tell which build they have. Once the new release is out, delete the previous one with its tag (`gh release delete v<previous> --cleanup-tag`): only the latest version is kept. Raise `AppInfo.Version` and `Date` and rebuild the installer before the release.
 
 ## Handling status reports ("상태보고 반영해줘", "이상로그 수정해줘")
 
