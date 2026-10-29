@@ -21,7 +21,7 @@ namespace Flato3D
     // package after it. Every GitHub release gets a new version (raise both before packaging it).
     static class AppInfo
     {
-        public const string Version = "0.2.0";
+        public const string Version = "0.2.1";
         public const string Date = "2026-10-29";
     }
 
