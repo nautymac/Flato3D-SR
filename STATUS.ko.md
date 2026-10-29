@@ -13,8 +13,8 @@
 | [Axiom Verge 2](https://store.steampowered.com/app/946030) | 🔵 동작 | - | - | - | - | - |
 | [Blade Assault](https://store.steampowered.com/app/1367300) | 🔵 동작 | - | - | - | - | - |
 | [Blade Runner: Enhanced Edition](https://store.steampowered.com/app/1678420) | - | ❌ 안 됨 (2026-10-20) | ✅ 1 · ❌ 1 | [#6](https://github.com/nautymac/Flato3D-SR/issues/6) | - | [#5](https://github.com/nautymac/Flato3D-SR/issues/5) [#6](https://github.com/nautymac/Flato3D-SR/issues/6) |
-| [Blasphemous](https://store.steampowered.com/app/774361) | 🔵 동작 | - | - | - | - | - |
-| [Blasphemous 2](https://store.steampowered.com/app/2114740) | 🔵 동작 | - | - | - | - | - |
+| [Blasphemous](https://store.steampowered.com/app/774361) | ✅ 확인됨 | - | - | - | - | - |
+| [Blasphemous 2](https://store.steampowered.com/app/2114740) | ✅ 확인됨 | - | - | - | - | - |
 | [Braid, Anniversary Edition](https://store.steampowered.com/app/499180) | ✅ 확인됨 | - | - | - | - | - |
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 동작 | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ 확인됨 | - | - | - | - | - |

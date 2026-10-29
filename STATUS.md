@@ -13,8 +13,8 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Axiom Verge 2](https://store.steampowered.com/app/946030) | 🔵 working | - | - | - | - | - |
 | [Blade Assault](https://store.steampowered.com/app/1367300) | 🔵 working | - | - | - | - | - |
 | [Blade Runner: Enhanced Edition](https://store.steampowered.com/app/1678420) | - | ❌ Does not work (2026-10-20) | ✅ 1 · ❌ 1 | [#6](https://github.com/nautymac/Flato3D-SR/issues/6) | - | [#5](https://github.com/nautymac/Flato3D-SR/issues/5) [#6](https://github.com/nautymac/Flato3D-SR/issues/6) |
-| [Blasphemous](https://store.steampowered.com/app/774361) | 🔵 working | - | - | - | - | - |
-| [Blasphemous 2](https://store.steampowered.com/app/2114740) | 🔵 working | - | - | - | - | - |
+| [Blasphemous](https://store.steampowered.com/app/774361) | ✅ confirmed | - | - | - | - | - |
+| [Blasphemous 2](https://store.steampowered.com/app/2114740) | ✅ confirmed | - | - | - | - | - |
 | [Braid, Anniversary Edition](https://store.steampowered.com/app/499180) | ✅ confirmed | - | - | - | - | - |
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 working | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ confirmed | - | - | - | - | - |
