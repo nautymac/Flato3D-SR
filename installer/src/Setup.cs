@@ -295,6 +295,7 @@ namespace Flato3D
             }
 
             man["version"] = 1;
+            man["flato3d"] = AppInfo.Version;   // the release that installed it
             man["date"] = DateTime.Now.ToString("s");
             man["game"] = g.Title;
             man["exe"] = Path.GetFileName(exe);

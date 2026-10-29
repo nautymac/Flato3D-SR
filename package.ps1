@@ -2,9 +2,15 @@
 #   installer\bin\Flato3DInstaller.exe, ogl3d\bin\{x86,x64}\opengl32.dll, loader\bin\{x86,x64}\version.dll and shim\winmm.dll,
 #   third_party\wined3d-11.19, data\game_profiles.json, data\game_candidates.json.
 # Run installer\src\build.cmd, ogl3d\build.ps1 and loader\build.ps1 first.
-param([string]$Version = '0.1.0')
+# The version (and its date, written into README.txt) is the installer's AppInfo (installer\src\Library.cs).
+param([string]$Version = '')
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
+$info = Get-Content -Raw -Encoding UTF8 (Join-Path $root 'installer\src\Library.cs')
+$appVersion = [regex]::Match($info, 'Version = "([^"]+)"').Groups[1].Value
+$appDate = [regex]::Match($info, 'Date = "([^"]+)"').Groups[1].Value
+if (-not $Version) { $Version = $appVersion }
+if ($Version -ne $appVersion) { throw "version $Version is not the installer's AppInfo.Version $appVersion" }
 $name = "Flato3D-SR-$Version"
 $stage = Join-Path $root "dist\$name"
 if (Test-Path $stage) { Remove-Item -Recurse -Force $stage }
@@ -17,6 +23,10 @@ function Put([string]$src, [string]$dst) {
 }
 Put 'installer\bin\Flato3DInstaller.exe' 'Flato3DInstaller.exe'
 Put 'installer\README.txt' 'README.txt'
+$readme = Join-Path $stage 'README.txt'   # first line: the version
+$text = [IO.File]::ReadAllText($readme, (New-Object Text.UTF8Encoding $false))
+$text = ([regex]'^Flato3D-SR - ').Replace($text, "Flato3D-SR $Version ($appDate) - ", 1)
+[IO.File]::WriteAllText($readme, $text, (New-Object Text.UTF8Encoding $false))
 Put 'installer\THIRD_PARTY.txt' 'THIRD_PARTY.txt'
 Put 'LICENSE' 'LICENSE'
 Put 'data\game_profiles.json' 'data\game_profiles.json'

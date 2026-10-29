@@ -162,7 +162,7 @@ namespace Flato3D
 
         public MainForm()
         {
-            Text = "Flato3D-SR " + L.T("설치기", "installer");
+            Text = "Flato3D-SR " + AppInfo.Version + " " + L.T("설치기", "installer") + " (" + AppInfo.Date + ")";
             using (var gfx = CreateGraphics()) scale = gfx.DpiX / 96f;
             Font = new Font("Segoe UI", 9f);
             AutoScaleMode = AutoScaleMode.None;

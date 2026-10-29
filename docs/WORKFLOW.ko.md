@@ -248,6 +248,8 @@
    2. Flato3D 저장소에서 바뀐 서브모듈과 자료를 커밋 → `git push`
    - 커밋 메시지는 영어로 쓰고, 무엇을 왜 바꿨는지 적습니다.
 4. **배포:** `installer\src\build.cmd` → `package.ps1` → `dist\Flato3D-SR-<버전>.zip` (GitHub 릴리스는 사용자 확인 뒤).
+   - **버전:** 버전과 날짜는 `installer\src\Library.cs`의 `AppInfo` 한 곳에 둡니다. 설치기 창 제목, 상태 보고, 게임 폴더의 `Flato3D_install.json`(`flato3d`), 패키지 폴더·zip 이름, README 첫 줄이 이 값을 씁니다.
+   - **GitHub 릴리스마다 새 버전**(`v0.2.0`, `v0.3.0` …)으로 냅니다. 이미 낸 릴리스의 zip이나 태그는 바꾸지 않습니다. 언제 것인지 알 수 없게 되기 때문입니다. 릴리스 전에 `AppInfo.Version`·`Date`를 올리고 설치기를 다시 빌드합니다.
 
 ## 상태 보고 처리 ("상태보고 반영해줘", "이상로그 수정해줘")
 

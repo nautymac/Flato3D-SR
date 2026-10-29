@@ -117,7 +117,7 @@ namespace Flato3D
                                    "Flat/group", "Flat/screen_batch", "Flat/cache_scale", "Flat/silhouette", "Display/upscale", "Display/swap_interval" };
                 s.AppendLine("OGL3D.ini: " + string.Join(", ", keys.Select(k => { var p = k.Split('/'); return k + "=" + (Setup.IniGet(t, p[0], p[1]) ?? "-"); })));
             }
-            s.AppendLine("installer: " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) +
+            s.AppendLine("installer: " + AppInfo.Version + " (" + AppInfo.Date + "), built " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) +
                          " (" + AppDomain.CurrentDomain.BaseDirectory + ")");
             s.AppendLine("windows: " + WindowsVersion());
             s.AppendLine("SR runtime: " + (Recommend.SrRuntime() ? "yes" : "no"));

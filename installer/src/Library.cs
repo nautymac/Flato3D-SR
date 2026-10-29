@@ -17,6 +17,14 @@ namespace Flato3D
         public static string T(string ko, string en) { return Ko ? ko : en; }
     }
 
+    // The release this installer belongs to: in its title, status reports and install records; package.ps1 names the
+    // package after it. Every GitHub release gets a new version (raise both before packaging it).
+    static class AppInfo
+    {
+        public const string Version = "0.2.0";
+        public const string Date = "2026-10-29";
+    }
+
     class Game
     {
         public string Title, Store, Dir, SteamAppId, HeroicApp, HeroicExe;
