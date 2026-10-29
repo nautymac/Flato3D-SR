@@ -24,6 +24,7 @@
 | Home | D3D11 (GameMaker Studio 2) · WineD3D | feet, `plane_tall = 1` | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 | Axiom Verge | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `order_curve = 0.4`, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
 | Axiom Verge 2 | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
+| Blasphemous | D3D11 (Unity 2017) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(AMD에서 시험), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -175,3 +176,14 @@
 - SR 위빙 확인(10-28, 출력 auto, 업스케일): 32비트 SR 런타임의 DX11 위버가 뜨고 60fps, SR 로그에 눈 추적 끊김 없음.
 - 남은 일: Steam 실행 옵션은 사용자가 직접 넣어야 합니다. 지형이 주인공보다 조금 앞에 섭니다(order 규칙의 횡스크롤 공통). AV1의 HUD 조각과 대화창 타일은 층이 나뉘어 깊이가 조금씩 다릅니다. 사용자 확인이 필요합니다.
 - 테스트 조작: AV1 메뉴는 Enter, 컷신 건너뛰기 창은 왼쪽 화살표로 Yes를 고르고 Space. AV2는 플레이 중 Enter가 일시정지 메뉴, Esc로 닫음. 화살표는 확장 키 플래그가 있어야 SDL 게임이 받습니다(gametest가 10-28부터 보냄). 세이브: Steam 클라우드 `userdata\<계정>\332200`, `946030`(test-backups\AxiomVerge, AxiomVerge2).
+
+**Blasphemous** (프로필 `blasphemous`, 10-29): Unity 2017 x64, D3D11을 WineD3D로. 설치기의 Unity 기본값 그대로입니다.
+
+- **AMD에서 처음 시험**: MiniPC(AMD Radeon RX 7600M XT, GL 4.6)에서 `sbs` 출력으로 돌렸습니다. 60fps, 타이틀과 플레이 약 4분 동안 멈춤 없음. NVIDIA와 SR 출력은 아직 시험하지 않았습니다.
+- 게임 설정의 해상도 방식 `PIXEL_PERFECT`는 3840x2160 창 안에 3072x1728로 그려서 눈마다 좌우에 검은 띠가 생깁니다.
+- 화면 구조(Ctrl+F12 기록): 월드를 640x360 버퍼 두 장에 그립니다. 하나는 배경과 바닥·발판(그 뒤 조명 패스), 다른 하나는 주인공과 전경입니다. 둘 다 3072x1728로 늘린 뒤 HUD를 그립니다. 깊이 단계는 640x360 픽셀 단위라 거칩니다.
+- 측정(separation 25, 덤프는 한 눈 1920x1080)
+  - 타이틀: 로고 +24 px, "아무 버튼이나 누르세요" −20~−28 px, 저작권 글자 +20에서 +6 px까지(draw 하나가 글자들에 펼쳐짐)
+  - 플레이(침묵의 비탄 형제단의 기도대 방과 그 서쪽 방): 창 빛 +60 px, 벽·기둥 +30~+40 px, 잔해 +10~+30 px, 주인공 +4~+20 px, HUD 초상 −20 px, 오른쪽 HUD −10 px
+- 남은 일: 성당에서 바닥과 발판이 배경 버퍼에 그려져 뒤쪽 벽과 같은 깊이(+30 px)를 받고, 전경 버퍼의 주인공은 바닥보다 약 25 px 앞에 섭니다. 사용자 확인이 필요합니다.
+- 테스트 조작: 타이틀에서 Enter 두 번이면 마지막 세이브로 이어집니다. 이동은 화살표가 아니라 A / D입니다. 걸어 다니기만 해도 `savegame_0.save`가 바뀌니 시험 뒤 되돌립니다. 세이브: `%USERPROFILE%\AppData\LocalLow\TheGameKitchen\Blasphemous\Savegames\<Steam ID>\`(test-backups\Blasphemous).
