@@ -194,6 +194,7 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 - Test input: Enter three times on the title continues slot 1 (the save slot menu comes after the second). Movement is A / D, not the arrows. Just walking around changes `savegame_0.save`, so restore it after a test. Saves: `%USERPROFILE%\AppData\LocalLow\TheGameKitchen\Blasphemous\Savegames\<Steam ID>\` (test-backups\Blasphemous).
 
 **Blasphemous 2** (profile `blasphemous-2`, 10-29): Unity 2021 x64 (IL2CPP), D3D11 through WineD3D. The Unity defaults plus `order_weight = 0.02` and `order_curve = 1`.
+- **Pink right eye in the video cutscenes (user report, Helios3D, NVIDIA, 10-29)**: the cutscene video is converted from Y, U and V planes the game uploads from the CPU every frame (1920x1080 and 960x540, window-shaped, so they had right-eye copies). The copies were not kept up to date, and Y near 0 with U and V high came out pink. `trace_steps`, which now saves both eyes, showed the first pass reading the planes as the first to differ. A texture the game uploads from the CPU is now a picture: no right-eye copy, and the framebuffers it is attached to stay mono (wrapper). The video is flat (one picture, +68 px), subtitles -24 px.
 
 - **Tested on AMD**: the MiniPC (AMD Radeon RX 7600M XT) with `sbs` output, game version 3.0.0. 60 fps, about 5 minutes on the title, the menus and in play with no hang, 82 shaders injected and none failed. NVIDIA and SR output are not tested yet.
 - Unlike the first game it fills the whole 3840x2160 window (no black bars).

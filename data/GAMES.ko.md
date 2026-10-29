@@ -192,6 +192,7 @@
 - 테스트 조작: 타이틀에서 Enter를 세 번 누르면 1번 슬롯으로 이어집니다(두 번째 뒤가 슬롯 선택 화면). 이동은 화살표가 아니라 A / D입니다. 걸어 다니기만 해도 `savegame_0.save`가 바뀌니 시험 뒤 되돌립니다. 세이브: `%USERPROFILE%\AppData\LocalLow\TheGameKitchen\Blasphemous\Savegames\<Steam ID>\`(test-backups\Blasphemous).
 
 **Blasphemous 2** (프로필 `blasphemous-2`, 10-29): Unity 2021 x64(IL2CPP), D3D11을 WineD3D로. Unity 기본값에 `order_weight = 0.02`, `order_curve = 1`을 더했습니다.
+- **동영상 컷신에서 오른쪽 눈이 분홍 (사용자 보고, Helios3D·NVIDIA, 10-29)**: 컷신 동영상은 게임이 CPU에서 매 프레임 올리는 Y·U·V 평면(1920x1080, 960x540, 화면 비율이라 오른쪽 사본이 생김)을 RGB로 바꿔 그립니다. 사본이 갱신되지 않아 Y≈0에 U·V만 높은 값이 되어 분홍이었습니다. 양눈을 함께 남기는 `trace_steps`로 평면을 처음 읽는 패스에서 두 눈이 갈리는 것을 찾았습니다. 이제 CPU에서 올리는 텍스처는 그림으로 보고 오른쪽 사본을 두지 않으며, 그것이 붙은 프레임버퍼는 모노입니다(래퍼). 동영상은 평면(한 장, +68 px), 자막 −24 px.
 
 - **AMD에서 시험**: MiniPC(AMD Radeon RX 7600M XT)에서 `sbs` 출력, 게임 버전 3.0.0. 60fps, 타이틀·메뉴·플레이 약 5분 동안 멈춤 없음, 셰이더 82개 주입에 실패 0. NVIDIA와 SR 출력은 아직 시험하지 않았습니다.
 - 1편과 달리 3840x2160 창을 꽉 채웁니다(검은 띠 없음).

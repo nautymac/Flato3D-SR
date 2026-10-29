@@ -111,7 +111,7 @@
 3. **결과 파일**
    - `OGL3D_frameNNNNN.bmp`: 두 눈 이미지(반 해상도 SBS)
    - `OGL3D.log`의 `T` 줄: draw별 기록
-   - `OGL3D_stepNNNNN_DDD.bmp`: draw 하나가 끝날 때마다의 렌더 타깃
+   - `OGL3D_stepNNNNN_DDD.bmp`: draw 하나가 끝날 때마다의 렌더 타깃(스테레오 타깃은 왼쪽|오른쪽 눈을 나란히: 한쪽 눈만 틀어질 때 처음 갈리는 draw를 찾음)
 4. **draw 기록 읽는 법**
    - `T 1234.17 b0 DrawElements... prog=3/hash(gs) fb=2S(t13) tex=43(1024x1024)`
      - `fb=2S`: 스테레오 버퍼 2번에 그림. `S`가 없으면 모노입니다.
@@ -205,6 +205,7 @@
 | 한쪽 눈에 장면 일부가 빠지고 로그에 `right-eye copy incomplete (0x8cd7)` | 오른쪽 눈 버퍼 사본에 붙일 텍스처를 만들지 못함. WineD3D가 멀티샘플 텍스처를 고정 저장소로 만들고 그 텍스처 뷰를 붙이는데, 사본이 고정 저장소가 아니면 뷰를 못 만듦(Snufkin) | 래퍼에서 수정됨(`glTexStorage2DMultisample` 추적, 뷰의 원본은 고정 저장소로 복제). 다른 원인이면 `fbo N` 번호로 추적 기록의 부착물 확인 |
 | 장면 전체가 먼 끝(최대 분리값 근처)에 한 장으로 붙음 | 평면 2D가 아니라 원근 카메라의 실제 3D 게임. 평면 깊이가 켜져 있으면 자동 Convergence가 꺼져 시작값(3)에 머묾 | `[Flat] enable = 0`(자동 Convergence가 장면 거리에 맞춤, Snufkin은 약 65) |
 | 오른쪽 눈만 색이 다름(새빨감 등) | 색 보정 표(Unity 후처리의 1024×32 띠)를 레이어 캐시로 보고 스테레오로 만들어 오른쪽 눈에서 밀어 버림(Blade Assault) | 래퍼에서 수정됨: 띠 모양(한 변이 다른 변의 4배 초과) 버퍼는 레이어 캐시가 아님 |
+| 동영상 컷신에서 오른쪽 눈만 분홍·이상한 색 | 게임이 CPU에서 매 프레임 올리는 동영상 평면(Y·U·V)이 화면 비율이라 오른쪽 사본이 생겼는데 갱신되지 않음 | 래퍼에서 수정됨: CPU에서 올리는 텍스처는 그림(오른쪽 사본 없음, 붙은 프레임버퍼는 모노). 로그 `uploaded from the CPU: a picture`. 동영상은 평면 (Blasphemous 2) |
 | 두 눈이 똑같음(UI만 깊이가 있거나 전혀 없음), Unity 2D | ① 조명 스프라이트가 화면의 빛 텍스처(스테레오 버퍼)를 읽어 합성 패스로 판정됨 ② WineD3D가 조명 패스마다 viewport를 걸어 장면이 뒤 묶음(UI)으로 판정됨 | ① 래퍼에서 수정됨: 자기 그림(64px 이상, 띠 아님)도 그리면 조명 스프라이트로 보고 깊이를 줌(추적 기록 `lit sprite`, `lit redraw`), 화면 전체를 덮는 삼각형은 화면 위치 ② `screen_batch = 0`(설치기가 Unity에 기본 적용) |
 | 게임 중 draw가 몇 개뿐이고 장면 버퍼에 draw가 없음 | 엔진이 장면을 CPU에서 한 장으로 합쳐 올림(Blade Runner: Enhanced Edition) | 층이 없어 이 방식으로는 안 됨. AI 2D→3D 같은 다른 방식 필요 |
 | SBS/상하 출력인데 화면이 그대로 한 장이고 분리값을 바꿔도 변화 없음(덤프는 정상) | 게임 창이 멀티샘플(로그 `virtual back buffer off: ... multisampled`)이라 GL이 창으로 가는 블릿을 거부 | 래퍼에서 수정됨: 멀티샘플 창에는 두 눈을 그림으로 그려 넣음(로그 `output drawn into the window`). 확인은 덤프가 아니라 화면 캡처로 |
