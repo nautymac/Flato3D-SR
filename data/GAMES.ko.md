@@ -25,6 +25,7 @@
 | Axiom Verge | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `order_curve = 0.4`, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
 | Axiom Verge 2 | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
 | Blasphemous | D3D11 (Unity 2017) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(AMD에서 시험), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
+| Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, draw마다 한 층, `screen_batch = 0` | 동작(AMD에서 시험), 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -187,3 +188,14 @@
   - 플레이(침묵의 비탄 형제단의 기도대 방과 그 서쪽 방): 창 빛 +60 px, 벽·기둥 +30~+40 px, 잔해 +10~+30 px, 주인공 +4~+20 px, HUD 초상 −20 px, 오른쪽 HUD −10 px
 - 남은 일: 성당에서 바닥과 발판이 배경 버퍼에 그려져 뒤쪽 벽과 같은 깊이(+30 px)를 받고, 전경 버퍼의 주인공은 바닥보다 약 25 px 앞에 섭니다. 사용자 확인이 필요합니다.
 - 테스트 조작: 타이틀에서 Enter 두 번이면 마지막 세이브로 이어집니다. 이동은 화살표가 아니라 A / D입니다. 걸어 다니기만 해도 `savegame_0.save`가 바뀌니 시험 뒤 되돌립니다. 세이브: `%USERPROFILE%\AppData\LocalLow\TheGameKitchen\Blasphemous\Savegames\<Steam ID>\`(test-backups\Blasphemous).
+
+**Blasphemous 2** (프로필 `blasphemous-2`, 10-29): Unity 2021 x64(IL2CPP), D3D11을 WineD3D로. 설치기의 Unity 기본값 그대로입니다.
+
+- **AMD에서 시험**: MiniPC(AMD Radeon RX 7600M XT)에서 `sbs` 출력, 게임 버전 3.0.0. 60fps, 타이틀·메뉴·플레이 약 5분 동안 멈춤 없음, 셰이더 82개 주입에 실패 0. NVIDIA와 SR 출력은 아직 시험하지 않았습니다.
+- 1편과 달리 3840x2160 창을 꽉 채웁니다(검은 띠 없음).
+- 화면 구조(Ctrl+F12 기록): 월드를 640x360 버퍼 여러 장에 나눠 그린 뒤 합쳐서 늘리고, 그 위에 HUD를 그립니다. 그리는 순서는 버퍼마다 따로 셉니다. 깊이 단계는 12 px로 거칩니다(separation 25).
+- 측정(separation 25, 덤프는 한 눈 1920x1080)
+  - 타이틀: 로고 −12 px, "아무 버튼이나 누르세요" −26~−28 px, 저작권 글자 −18~−22 px(타이틀 전체가 화면 앞)
+  - 플레이(세이브한 기도대와 좌우 방): 먼 바위 기둥·석상 +24~+36 px, 바닥·발판 +24~+36 px, 기도대·천사상 +12 px, 주인공 0 px, 앞쪽 안개 −24~−30 px, HUD −16~−18 px, 눈물 수치 −10~−14 px
+- 남은 일: 주인공은 화면 깊이(0 px)인데 딛고 선 바닥이 먼 배경과 같은 +24~+36 px를 받아, 바닥보다 24~36 px 앞에 떠 보입니다(1편과 같은 종류). 사용자 확인이 필요합니다.
+- 테스트 조작: 타이틀에서 Enter(아무 버튼) → Enter(순례) → Enter(1번 슬롯 이어하기). 이동은 A / D, W는 상호작용. 위 절차로는 세이브가 바뀌지 않았지만 그래도 백업합니다. 세이브: `%USERPROFILE%\AppData\LocalLow\The Game Kitchen\Blasphemous 2\SteamUser_<Steam ID>\`(Steam 클라우드, test-backups\Blasphemous 2). Steam으로 처음 실행할 때 게임이 뜨기까지 2분쯤 걸렸습니다.

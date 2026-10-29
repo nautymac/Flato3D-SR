@@ -1010,6 +1010,61 @@
         "reaches": "title -> Enter (press any button) -> Enter (continues the last save) -> play; dumps at the save point, after walking right (D) and after walking left (A)",
         "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\TheGameKitchen\\Blasphemous\\Savegames\\<steam id>\\ (test-backups\\Blasphemous) - walking around changes savegame_0.save, so restore it after play tests. Movement is A / D (keybinding_settings_keyboard.xml), not the arrow keys."
       }
+    },
+    {
+      "id": "blasphemous-2",
+      "name": "Blasphemous 2",
+      "steam_appid": 2114740,
+      "folder": "Blasphemous 2",
+      "exe": "Blasphemous 2.exe",
+      "arch": "x64",
+      "engine": "Unity 2021, IL2CPP (pixel side-scroller; the world is drawn into several 640x360 targets and scaled up)",
+      "api": "Direct3D 11",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "screen_batch": 0,
+          "group": "draw",
+          "order_curve": 0.5
+        },
+        "Display": {
+          "swap_interval": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Tested 2026-10-29 on the MiniPC: AMD Radeon RX 7600M XT, not NVIDIA. Installer defaults for Unity, output sbs, game version 3.0.0. Runs at 60 fps; about 5 minutes on the title, the menus and in play with no hang; 82 shaders injected, none failed.",
+        "Unlike Blasphemous it fills the whole 3840x2160 window (no black bars).",
+        "Frame structure (Ctrl+F12 trace): the world is drawn into several 640x360 targets that are combined and scaled up, then the HUD. Each target counts its own drawing order. Depth steps are coarse (12 px at separation 25).",
+        "Measured with separation 25, dumps 1920x1080 per eye: title - logo -12 px, 'press any button' -26..-28 px, copyright lines -18..-22 px (the whole title stands in front of the screen). Play (the prie-dieu of the save and the rooms on both sides): far rock pillars and statues +24..+36 px, floor and platforms +24..+36 px, the prie-dieu and cherubs +12 px, the Penitent One 0 px, fog in the foreground -24..-30 px, HUD -16..-18 px, tears counter -10..-14 px."
+      ],
+      "known_issues": [
+        "The Penitent One stands at the screen (0 px) while the floor he stands on gets +24..+36 px, the depth of the far background - he floats about 24..36 px in front of the floor (the same kind of problem as Blasphemous).",
+        "Not tested with SR output or on NVIDIA; the depth in play is to be confirmed by the user."
+      ],
+      "test": {
+        "proc": "Blasphemous 2",
+        "steps": "wait:40,key:0D,wait:6,key:0D,wait:5,key:0D,wait:25,ctrlkey:7B,wait:5,hold:44:4,wait:3,ctrlkey:7B,wait:5,hold:41:9,wait:3,ctrlkey:7B,wait:5",
+        "reaches": "title -> Enter (press any button) -> Enter (Pilgrimage) -> Enter (continues slot 1) -> play; dumps at the save point, after walking right (D, next room) and after walking left (A)",
+        "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\The Game Kitchen\\Blasphemous 2\\SteamUser_<steam id>\\ (test-backups\\Blasphemous 2), Steam Cloud. The test above left them unchanged, but back them up anyway. Movement is A / D (W interacts). The first launch through Steam took about 2 minutes before the game started."
+      }
     }
   ]
 }
