@@ -4,7 +4,7 @@
 
 보고는 설치기의 **[상태 보고]** 버튼이나 [양식](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml)으로 합니다. 처리한 문제 보고는 이슈를 닫고 상태에서 빠집니다. 문제 보고가 모두 처리된 게임은 🔧 처리됨으로 표시됩니다.
 
-게임 22개 · 보고 6건 · English: [STATUS.md](STATUS.md)
+게임 26개 · 보고 6건 · English: [STATUS.md](STATUS.md)
 
 | 게임 | 프로필 | 플레이어 상태 | 보고 | 열린 문제 | 최근 메모 | 이슈 |
 |---|---|---|---|---|---|---|
@@ -24,10 +24,14 @@
 | [Intravenous 2](https://store.steampowered.com/app/2608270) | ✅ 확인됨 | - | - | - | - | - |
 | [Intravenous 2: Mercenarism](https://store.steampowered.com/app/2651330) | ✅ 확인됨 | - | - | - | - | - |
 | [Machinarium](https://store.steampowered.com/app/40700) | ✅ 확인됨 | ✅ 잘 됨 (2026-10-18) | ✅ 1 · ⚠️ 1 | - | - | [#3](https://github.com/nautymac/Flato3D-SR/issues/3) [#4](https://github.com/nautymac/Flato3D-SR/issues/4) |
+| [Mark of the Ninja](https://store.steampowered.com/app/214560) | ✅ 확인됨 | - | - | - | - | - |
 | [Rocketbirds: Hardboiled Chicken](https://store.steampowered.com/app/215510) | 🔵 동작 | - | - | - | - | - |
 | [Samorost 2](https://store.steampowered.com/app/40720) | ✅ 확인됨 | - | - | - | - | - |
 | [Shank](https://store.steampowered.com/app/6120) | - | ✅ 잘 됨 (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 동작 | - | - | - | - | - |
+| [SteamWorld Dig](https://store.steampowered.com/app/252410) | 🔵 동작 | - | - | - | - | - |
+| [SteamWorld Dig 2](https://store.steampowered.com/app/571310) | 🔵 동작 | - | - | - | - | - |
+| [SteamWorld Heist](https://store.steampowered.com/app/322190) | 🔵 동작 | - | - | - | - | - |
 | [Technobabylon](https://store.steampowered.com/app/307580) | ✅ 확인됨 | - | - | - | - | - |
 | [The Messenger](https://store.steampowered.com/app/764790) | 🔵 동작 | - | - | - | - | - |
 

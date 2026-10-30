@@ -4,7 +4,7 @@ Built automatically. **Profile** is the state of the developer's setup for the g
 
 Report with the installer's **[Report status]** button or the [form](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml). A problem report that has been handled is closed and no longer counts; a game whose problem reports are all handled shows 🔧 handled.
 
-22 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
+26 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
@@ -24,10 +24,14 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Intravenous 2](https://store.steampowered.com/app/2608270) | ✅ confirmed | - | - | - | - | - |
 | [Intravenous 2: Mercenarism](https://store.steampowered.com/app/2651330) | ✅ confirmed | - | - | - | - | - |
 | [Machinarium](https://store.steampowered.com/app/40700) | ✅ confirmed | ✅ Works (2026-10-18) | ✅ 1 · ⚠️ 1 | - | - | [#3](https://github.com/nautymac/Flato3D-SR/issues/3) [#4](https://github.com/nautymac/Flato3D-SR/issues/4) |
+| [Mark of the Ninja](https://store.steampowered.com/app/214560) | ✅ confirmed | - | - | - | - | - |
 | [Rocketbirds: Hardboiled Chicken](https://store.steampowered.com/app/215510) | 🔵 working | - | - | - | - | - |
 | [Samorost 2](https://store.steampowered.com/app/40720) | ✅ confirmed | - | - | - | - | - |
 | [Shank](https://store.steampowered.com/app/6120) | - | ✅ Works (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 working | - | - | - | - | - |
+| [SteamWorld Dig](https://store.steampowered.com/app/252410) | 🔵 working | - | - | - | - | - |
+| [SteamWorld Dig 2](https://store.steampowered.com/app/571310) | 🔵 working | - | - | - | - | - |
+| [SteamWorld Heist](https://store.steampowered.com/app/322190) | 🔵 working | - | - | - | - | - |
 | [Technobabylon](https://store.steampowered.com/app/307580) | ✅ confirmed | - | - | - | - | - |
 | [The Messenger](https://store.steampowered.com/app/764790) | 🔵 working | - | - | - | - | - |
 
