@@ -60,6 +60,7 @@
    | GameMaker Studio 2 (옆에서 본 방을 화면 아래 밖까지 닿는 세로 조각으로 그림) | `rule = feet`, `plane_tall = 1` | Home |
    | FNA (XNA 재구현, .NET: `FNA.dll`, `FNA3D.dll`) | Steam 실행 옵션 `/gldevice:OpenGL`(프로필 `launch_options`, 설치기가 넣음)로 OpenGL 경로(opengl32.dll만, 로더는 .NET에서 로드 안 됨). 횡스크롤은 `rule = order` | Axiom Verge 1·2 |
    | 2.5D·3D(원근이 있는 장면) | Flato3D 대상 아님: Geo Gaming Hub에서 일반 입체로 설치 | Broken Age |
+   | SteamWorld (SDL2·OpenGL 자체 엔진, exe 옆 `Bundle`) | 직접. Dig는 `rule = order`. Dig 2·Heist는 2D처럼 보여도 원근 카메라라 `[Flat] enable = 0`, 자동 Convergence | SteamWorld Dig, Dig 2, Heist |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
 6. **세이브 백업:** 플레이를 진행해야 하면 세이브 폴더를 `test-backups\<게임>\`에 먼저 복사합니다. 세이브 위치는 PCGamingWiki나 Steam Cloud 경로로 찾습니다.
@@ -204,6 +205,7 @@
 | 장면을 앞으로 당기면(`depth_screen` 크게) 아래쪽 물체가 바닥보다 뒤로 꺼짐 | 물체는 `sprite_min`에서 막히는데 바닥은 더 가까워짐 | `sprite_min`이 `depth_screen`을 따라 움직임(수정됨) |
 | 한쪽 눈에 장면 일부가 빠지고 로그에 `right-eye copy incomplete (0x8cd7)` | 오른쪽 눈 버퍼 사본에 붙일 텍스처를 만들지 못함. WineD3D가 멀티샘플 텍스처를 고정 저장소로 만들고 그 텍스처 뷰를 붙이는데, 사본이 고정 저장소가 아니면 뷰를 못 만듦(Snufkin) | 래퍼에서 수정됨(`glTexStorage2DMultisample` 추적, 뷰의 원본은 고정 저장소로 복제). 다른 원인이면 `fbo N` 번호로 추적 기록의 부착물 확인 |
 | 장면 전체가 먼 끝(최대 분리값 근처)에 한 장으로 붙음 | 평면 2D가 아니라 원근 카메라의 실제 3D 게임. 평면 깊이가 켜져 있으면 자동 Convergence가 꺼져 시작값(3)에 머묾 | `[Flat] enable = 0`(자동 Convergence가 장면 거리에 맞춤, Snufkin은 약 65) |
+| 평면 깊이를 끈 게임에서 깊이가 1초에 몇 번씩 출렁임, 로그에 `auto convergence:` 줄이 수백 개(적은 블록의 작은 근거리 값) | 장면이 거의 한 평면이라 수렴값이 맞으면 오프셋 0에서 일치해 2D로 빠지고, 남은 가장자리 블록이 틀린 근거리를 냄 | 래퍼에서 수정됨: 화면 평면의 블록이 나머지의 2배를 넘으면 수렴값을 둠 (SteamWorld Heist) |
 | 오른쪽 눈만 색이 다름(새빨감 등) | 색 보정 표(Unity 후처리의 1024×32 띠)를 레이어 캐시로 보고 스테레오로 만들어 오른쪽 눈에서 밀어 버림(Blade Assault) | 래퍼에서 수정됨: 띠 모양(한 변이 다른 변의 4배 초과) 버퍼는 레이어 캐시가 아님 |
 | 동영상 컷신에서 오른쪽 눈만 분홍·이상한 색 | 게임이 CPU에서 매 프레임 올리는 동영상 평면(Y·U·V)이 화면 비율이라 오른쪽 사본이 생겼는데 갱신되지 않음 | 래퍼에서 수정됨: CPU에서 올리는 텍스처는 그림(오른쪽 사본 없음, 붙은 프레임버퍼는 모노). 로그 `uploaded from the CPU: a picture`. 동영상은 평면 (Blasphemous 2) |
 | 두 눈이 똑같음(UI만 깊이가 있거나 전혀 없음), Unity 2D | ① 조명 스프라이트가 화면의 빛 텍스처(스테레오 버퍼)를 읽어 합성 패스로 판정됨 ② WineD3D가 조명 패스마다 viewport를 걸어 장면이 뒤 묶음(UI)으로 판정됨 | ① 래퍼에서 수정됨: 자기 그림(64px 이상, 띠 아님)도 그리면 조명 스프라이트로 보고 깊이를 줌(추적 기록 `lit sprite`, `lit redraw`), 화면 전체를 덮는 삼각형은 화면 위치 ② `screen_batch = 0`(설치기가 Unity에 기본 적용) |

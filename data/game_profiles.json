@@ -1068,6 +1068,158 @@
         "reaches": "title -> Enter (press any button) -> Enter (Pilgrimage) -> Enter (continues slot 1) -> play; dumps at the save point, after walking right (D, next room) and after walking left (A)",
         "notes": "Saves: %USERPROFILE%\\AppData\\LocalLow\\The Game Kitchen\\Blasphemous 2\\SteamUser_<steam id>\\ (test-backups\\Blasphemous 2), Steam Cloud. The test above left them unchanged, but back them up anyway. Movement is A / D (W interacts). The first launch through Steam took about 2 minutes before the game started."
       }
+    },
+    {
+      "id": "steamworld-dig",
+      "name": "SteamWorld Dig",
+      "steam_appid": 252410,
+      "folder": "SteamWorld Dig",
+      "exe": "SteamWorldDig.exe",
+      "arch": "x86",
+      "engine": "Image & Form own engine (SDL2, OpenGL), flat 2D",
+      "api": "OpenGL",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Flat 2D with drawing order (10-30): the scene is drawn into a 3840x2160 target, a 1024x512 target joins it as a layer cache. In the mine: terrain +32 to +34, Rusty +20, dialogue, portraits and HUD 0 to +12; title menu -24 to +32. 60 fps. 41-42 groups while walking, depth moves less than one slot (0.024), so no sway; snap_pixels is not needed (full-resolution target)."
+      ],
+      "known_issues": [],
+      "test": {
+        "proc": "SteamWorldDig",
+        "steps": "wait:25,key:0D,wait:3,key:0D,wait:3,key:0D,wait:30,key:0D,wait:3,key:0D,wait:8,ctrlkey:7B,wait:4",
+        "reaches": "title -> Start -> Slot A -> intro -> first dialogue in the mine, then a dump. A new slot only.",
+        "notes": "Saves are Steam Cloud files (userdata/<id>/252410 holds only remotecache.vdf here). Enter goes through dialogue, arrow keys walk."
+      }
+    },
+    {
+      "id": "steamworld-dig-2",
+      "name": "SteamWorld Dig 2",
+      "steam_appid": 571310,
+      "folder": "SteamWorld Dig 2",
+      "exe": "Dig2.exe",
+      "arch": "x86",
+      "engine": "Image & Form own engine (SDL2, OpenGL), 2D sprites placed in depth under a perspective camera",
+      "api": "OpenGL",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "convergence": "auto",
+          "auto_start": 950,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 0
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Not flat 2D (10-30): the view matrix has the camera at z = -935 and the layers sit at different z. With flat depth on, the whole scene stuck at +96 as one sheet. With [Flat] enable = 0 and auto convergence the game's own depth shows: ground -4, sign and car +6, desert +38, sky +64, UI 0. Convergence settles at about 950-990, 60 fps."
+      ],
+      "known_issues": [],
+      "test": {
+        "proc": "Dig2",
+        "steps": "wait:22,key:0D,wait:3,key:0D,wait:14,key:20,wait:2,key:20,wait:2,key:20,wait:2,key:20,wait:2,key:20,wait:2,key:20,wait:2,key:20,wait:2,hold:27:6,wait:1,ctrlkey:7B,wait:3",
+        "reaches": "title -> Start Game -> Game 1 -> poster -> the desert east of the start, then a dump. Space goes on, arrow keys walk.",
+        "notes": "A slot with 0 minutes of progress restarts the intro. Saves are Steam Cloud files."
+      }
+    },
+    {
+      "id": "steamworld-heist",
+      "name": "SteamWorld Heist",
+      "steam_appid": 322190,
+      "folder": "SteamWorld Heist",
+      "exe": "Heist.exe",
+      "arch": "x86",
+      "engine": "Image & Form own engine (SDL2, OpenGL), 2D sprites placed in depth under a perspective camera",
+      "api": "OpenGL",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "convergence": "auto",
+          "auto_start": 2100,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 0
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Not flat 2D (10-30), like Dig 2: flat depth gave +96 as one sheet. With [Flat] enable = 0: Piper and the ship floor 0, walls +2 to +6, space +26, HUD 0. The ship is nearly one plane, so the depth inside it is small (the game's own layout).",
+        "Auto convergence swung between about 2100 and 400 several times a second in the first mission: at the right convergence the ship matched at offset 0 and counted as 2D, and the 15 stray edge blocks left gave a near depth of 312. Fixed in the wrapper (10-30): with most of the picture on the screen plane the convergence stays. Stable at 2115 for 27 s after that."
+      ],
+      "known_issues": [],
+      "test": {
+        "proc": "Heist",
+        "steps": "wait:30,key:1B,wait:13,key:0D,wait:4,key:0D,wait:8,key:20,wait:4,key:20,wait:4,key:20,wait:12,ctrlkey:7B,wait:3",
+        "reaches": "intro skipped with Esc -> Start -> Profile 1 -> first room of the first mission, then a dump.",
+        "notes": "Check the highlighted menu entry before pressing Enter: an extra key can leave it on Quit. A new game asks for the difficulty and plays the full intro. Saves are Steam Cloud files."
+      }
+    },
+    {
+      "id": "mark-of-the-ninja",
+      "name": "Mark of the Ninja",
+      "steam_appid": 214560,
+      "folder": "mark_of_the_ninja",
+      "exe": "bin/game.exe",
+      "arch": "x86",
+      "engine": "Klei own engine",
+      "api": "Direct3D 9",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x86/d3d9.dll",
+        "wined3d-11.19/x86/wined3d.dll",
+        "loader/x86/version.dll",
+        "loader/x86/shim/winmm.dll",
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3
+        }
+      },
+      "status": "verified",
+      "verified_by_user": "2026-10-30 (SR display)",
+      "notes": [
+        "Installed with the installer defaults by the user and confirmed on the SR display (10-30). The log shows 60 fps, about 360 stereo draws a frame, no shader failures, and the loader redirecting d3d9.dll to WineD3D. Depth was not measured with dumps."
+      ],
+      "known_issues": []
     }
   ]
 }

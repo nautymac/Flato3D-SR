@@ -26,6 +26,10 @@
 | Axiom Verge 2 | OpenGL (FNA, Steam 실행 옵션 `/gldevice:OpenGL`) · 직접 | order, `snap_pixels = 1` | 동작, 사용자 확인 전 | opengl32.dll x86, 업스케일, 실행 옵션 |
 | Blasphemous | D3D11 (Unity 2017) · WineD3D | order, draw마다 한 층, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 | Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, draw마다 한 층, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
+| SteamWorld Dig | OpenGL (SDL2, 자체 엔진) · 직접 | order | 동작, 사용자 확인 전 | opengl32.dll x86 |
+| SteamWorld Dig 2 | OpenGL (SDL2, 자체 엔진) · 직접 | 평면 깊이 끔 (원근 카메라, 자동 Convergence) | 동작, 사용자 확인 전 | opengl32.dll x86, `[Flat] enable = 0` |
+| SteamWorld Heist | OpenGL (SDL2, 자체 엔진) · 직접 | 평면 깊이 끔 (원근 카메라, 자동 Convergence) | 동작, 사용자 확인 전 | opengl32.dll x86, `[Flat] enable = 0` |
+| Mark of the Ninja | D3D9 (Klei 자체 엔진) · WineD3D | order | 사용자 확인 완료 | WineD3D x86, 로더, 중계 winmm.dll, opengl32.dll x86 (`bin`) |
 
 ## 게임별 메모
 
@@ -193,6 +197,16 @@
 
 **Blasphemous 2** (프로필 `blasphemous-2`, 10-29): Unity 2021 x64(IL2CPP), D3D11을 WineD3D로. Unity 기본값에 `order_weight = 0.02`, `order_curve = 1`을 더했습니다.
 - **동영상 컷신에서 오른쪽 눈이 분홍 (사용자 보고, Helios3D·NVIDIA, 10-29)**: 컷신 동영상은 게임이 CPU에서 매 프레임 올리는 Y·U·V 평면(1920x1080, 960x540, 화면 비율이라 오른쪽 사본이 생김)을 RGB로 바꿔 그립니다. 사본이 갱신되지 않아 Y≈0에 U·V만 높은 값이 되어 분홍이었습니다. 양눈을 함께 남기는 `trace_steps`로 평면을 처음 읽는 패스에서 두 눈이 갈리는 것을 찾았습니다. 이제 CPU에서 올리는 텍스처는 그림으로 보고 오른쪽 사본을 두지 않으며, 그것이 붙은 프레임버퍼는 모노입니다(래퍼). 동영상은 평면(한 장, +68 px), 자막 −24 px.
+
+**SteamWorld Dig** (프로필 `steamworld-dig`, 10-30): 평면 2D, 그리는 순서(order). 광산에서 지형 +32~34, 주인공 +20, 대화창·초상화·HUD 0~+12, 60fps. 걷는 동안 층 42개, 깊이 변화는 한 칸(0.024) 이내라 울렁임이 없습니다.
+
+**SteamWorld Dig 2** (프로필 `steamworld-dig-2`, 10-30): 평면 2D처럼 보이지만 스프라이트를 서로 다른 z에 놓고 원근 카메라(z −935)로 봅니다. 평면 깊이를 켜면 장면 전체가 +96 한 장에 붙어서 `[Flat] enable = 0`과 자동 Convergence를 씁니다. 땅 −4, 간판·차 +6, 사막 +38, 하늘 +64, UI 0, 60fps. Convergence는 약 950~990입니다.
+
+**SteamWorld Heist** (프로필 `steamworld-heist`, 10-30): Dig 2와 같은 구조라 평면 깊이를 끕니다. 주인공·바닥 0, 벽 +2~6, 우주 +26, HUD 0. 우주선이 거의 한 평면이라 안쪽 깊이는 작습니다(게임 자체의 배치).
+- **자동 Convergence 출렁임 (10-30):** 첫 임무에서 Convergence가 약 2100과 400 사이를 1초에 여러 번 오갔습니다. 수렴값이 맞으면 우주선이 오프셋 0에서 일치해 2D로 빠지고, 남은 가장자리 15개 블록이 근거리 312를 냈습니다. 화면 대부분이 화면 평면에 있으면 수렴값을 두도록 래퍼를 고쳤습니다. 수정 뒤 2115에서 27초 안정.
+- 세 게임의 세이브는 Steam Cloud 파일입니다(`userdata\<id>\<앱>`에는 `remotecache.vdf`만 있음).
+
+**Mark of the Ninja** (프로필 `mark-of-the-ninja`, 10-30): 사용자가 설치기 기본값으로 설치하고 SR 디스플레이에서 잘 되는 것을 확인했습니다. 로그 기준 60fps, 프레임당 draw 약 360개, 셰이더 실패 0입니다. 덤프로 깊이를 재지는 않았습니다.
 
 - **AMD에서 시험**: MiniPC(AMD Radeon RX 7600M XT)에서 `sbs` 출력, 게임 버전 3.0.0. 60fps, 타이틀·메뉴·플레이 약 5분 동안 멈춤 없음, 셰이더 82개 주입에 실패 0. NVIDIA와 SR 출력은 아직 시험하지 않았습니다.
 - 1편과 달리 3840x2160 창을 꽉 채웁니다(검은 띠 없음).

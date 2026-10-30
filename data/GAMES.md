@@ -28,6 +28,10 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Axiom Verge 2 | OpenGL (FNA, Steam launch option `/gldevice:OpenGL`) · direct | order, `snap_pixels = 1` | Works, not yet confirmed by the user | opengl32.dll x86, upscale, launch option |
 | Blasphemous | D3D11 (Unity 2017) · WineD3D | order, one layer per draw, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
 | Blasphemous 2 | D3D11 (Unity 2021) · WineD3D | order, one layer per draw, `screen_batch = 0`, `order_weight = 0.02`, `order_curve = 1` | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64 |
+| SteamWorld Dig | OpenGL (SDL2, own engine) · direct | order | Working, not yet checked by the user | opengl32.dll x86 |
+| SteamWorld Dig 2 | OpenGL (SDL2, own engine) · direct | flat depth off (perspective camera, auto convergence) | Working, not yet checked by the user | opengl32.dll x86, `[Flat] enable = 0` |
+| SteamWorld Heist | OpenGL (SDL2, own engine) · direct | flat depth off (perspective camera, auto convergence) | Working, not yet checked by the user | opengl32.dll x86, `[Flat] enable = 0` |
+| Mark of the Ninja | D3D9 (Klei own engine) · WineD3D | order | Confirmed by the user | WineD3D x86, loader, shim winmm.dll, opengl32.dll x86 (`bin`) |
 
 ## Notes per game
 
@@ -195,6 +199,16 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 
 **Blasphemous 2** (profile `blasphemous-2`, 10-29): Unity 2021 x64 (IL2CPP), D3D11 through WineD3D. The Unity defaults plus `order_weight = 0.02` and `order_curve = 1`.
 - **Pink right eye in the video cutscenes (user report, Helios3D, NVIDIA, 10-29)**: the cutscene video is converted from Y, U and V planes the game uploads from the CPU every frame (1920x1080 and 960x540, window-shaped, so they had right-eye copies). The copies were not kept up to date, and Y near 0 with U and V high came out pink. `trace_steps`, which now saves both eyes, showed the first pass reading the planes as the first to differ. A texture the game uploads from the CPU is now a picture: no right-eye copy, and the framebuffers it is attached to stay mono (wrapper). The video is flat (one picture, +68 px), subtitles -24 px.
+
+**SteamWorld Dig** (profile `steamworld-dig`, 10-30): flat 2D, drawing order. In the mine: terrain +32 to +34, Rusty +20, dialogue, portraits and HUD 0 to +12, 60 fps. 42 layers while walking, depth moves less than one slot (0.024), so no sway.
+
+**SteamWorld Dig 2** (profile `steamworld-dig-2`, 10-30): it looks flat, but the sprites sit at different z under a perspective camera (z -935). With flat depth on, the whole scene sticks at +96 as one sheet, so it uses `[Flat] enable = 0` and auto convergence. Ground -4, sign and car +6, desert +38, sky +64, UI 0, 60 fps. Convergence is about 950-990.
+
+**SteamWorld Heist** (profile `steamworld-heist`, 10-30): built like Dig 2, flat depth off. Piper and the floor 0, walls +2 to +6, space +26, HUD 0. The ship is nearly one plane, so the depth inside it is small (the game's own layout).
+- **Auto convergence swinging (10-30):** in the first mission the convergence went between about 2100 and 400 several times a second. At the right convergence the ship matched at offset 0 and counted as 2D, and the 15 stray edge blocks left gave a near depth of 312. The wrapper now leaves the convergence alone when most of the picture is on the screen plane. Stable at 2115 for 27 s after the fix.
+- Saves of all three are Steam Cloud files (`userdata\<id>\<app>` holds only `remotecache.vdf`).
+
+**Mark of the Ninja** (profile `mark-of-the-ninja`, 10-30): the user installed it with the installer defaults and confirmed it on the SR display. The log shows 60 fps, about 360 draws a frame and no shader failures. Depth was not measured with dumps.
 
 - **Tested on AMD**: the MiniPC (AMD Radeon RX 7600M XT) with `sbs` output, game version 3.0.0. 60 fps, about 5 minutes on the title, the menus and in play with no hang, 82 shaders injected and none failed. NVIDIA and SR output are not tested yet.
 - Unlike the first game it fills the whole 3840x2160 window (no black bars).
