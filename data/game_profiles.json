@@ -1254,7 +1254,7 @@
         "Two exes (11-02): deadcells.exe is Direct3D 11 and Steam starts it by default; deadcells_gl.exe is OpenGL 3.2 core, Steam's second launch entry \"Dead Cells (OpenGL - Legacy)\". Started on its own, deadcells_gl.exe asks Steam to restart the game, and Steam starts deadcells.exe instead, so the wrapper never loads. Through the OpenGL entry (tested here with a steam_appid.txt, removed again) the wrapper loads, the SR weaver starts, 1293 shaders get the flat-depth geometry shader with no failures, and the title shows 78 stereo draws a frame. Depth not measured with dumps yet."
       ],
       "known_issues": [
-        "Start it with Steam [Play] > \"Dead Cells (OpenGL - Legacy)\". The default entry (deadcells.exe, Direct3D 11) has no 3D."
+        "In Steam, set the game's Properties > General > Launch options > Selected launch option to \"Dead Cells (OpenGL - Legacy)\" (or pick it at [Play]). The default entry (deadcells.exe, Direct3D 11) has no 3D."
       ]
     }
   ]
