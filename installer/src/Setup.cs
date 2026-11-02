@@ -237,6 +237,26 @@ namespace Flato3D
                 }
                 added.Add("OGL3D.ini");
             }
+            else
+            {
+                // a kept OGL3D.ini still gets what the profile changed since it was installed (a game moved to
+                // another depth method); values the user tunes in game and saves with Ctrl+F7 stay, unless the
+                // profile itself changed them. No record of the profile (installed before 0.2.2): those stay.
+                var before = Json.Obj(man, "profile_ini");
+                foreach (var sec in Json.Obj(g.Profile, "ini") ?? new Dictionary<string, object>())
+                    foreach (var kv in (Dictionary<string, object>)sec.Value)
+                    {
+                        string v = Convert.ToString(kv.Value, CultureInfo.InvariantCulture), k = sec.Key + "." + kv.Key;
+                        bool tuned = k == "Stereo.separation" || k == "Stereo.convergence" || k == "Flat.depth_screen";
+                        var oldSec = Json.Obj(before, sec.Key);
+                        object old = oldSec != null && oldSec.ContainsKey(kv.Key) ? oldSec[kv.Key] : null;
+                        if (k == "Stereo.output") continue;   // follows the choice below
+                        if (before == null ? tuned : old != null && Convert.ToString(old, CultureInfo.InvariantCulture) == v) continue;
+                        text = IniSet(text, sec.Key, kv.Key, v);
+                        log.AppendLine(L.T("프로필 변경 반영: ", "profile change applied: ") + "[" + sec.Key + "] " + kv.Key + " = " + v);
+                    }
+            }
+            if (Json.Obj(g.Profile, "ini") != null) man["profile_ini"] = Json.Obj(g.Profile, "ini");
             text = IniSet(text, "Stereo", "output", o.Output);
             text = IniSet(text, "Display", "upscale", o.Upscale ? "1" : "0");
             File.WriteAllText(ini, text, new UTF8Encoding(true));
