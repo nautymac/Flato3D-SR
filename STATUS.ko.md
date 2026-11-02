@@ -28,7 +28,7 @@
 | [Mark of the Ninja](https://store.steampowered.com/app/214560) | ✅ 확인됨 | - | - | - | - | - |
 | [Rocketbirds: Hardboiled Chicken](https://store.steampowered.com/app/215510) | 🔵 동작 | - | - | - | - | - |
 | [Samorost 2](https://store.steampowered.com/app/40720) | ✅ 확인됨 | - | - | - | - | - |
-| [Shank](https://store.steampowered.com/app/6120) | - | ✅ 잘 됨 (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
+| [Shank](https://store.steampowered.com/app/6120) | ✅ 확인됨 | ✅ 잘 됨 (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 동작 | - | - | - | - | - |
 | [SteamWorld Dig](https://store.steampowered.com/app/252410) | 🔵 동작 | - | - | - | - | - |
 | [SteamWorld Dig 2](https://store.steampowered.com/app/571310) | 🔵 동작 | - | - | - | - | - |

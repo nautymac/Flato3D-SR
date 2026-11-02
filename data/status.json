@@ -295,8 +295,8 @@
   {
    "game": "Shank",
    "steam": "6120",
-   "profile": null,
-   "profile_status": null,
+   "profile": "shank",
+   "profile_status": "verified",
    "status": "works",
    "works": 1,
    "issues": 0,

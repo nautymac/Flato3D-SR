@@ -28,7 +28,7 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Mark of the Ninja](https://store.steampowered.com/app/214560) | ✅ confirmed | - | - | - | - | - |
 | [Rocketbirds: Hardboiled Chicken](https://store.steampowered.com/app/215510) | 🔵 working | - | - | - | - | - |
 | [Samorost 2](https://store.steampowered.com/app/40720) | ✅ confirmed | - | - | - | - | - |
-| [Shank](https://store.steampowered.com/app/6120) | - | ✅ Works (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
+| [Shank](https://store.steampowered.com/app/6120) | ✅ confirmed | ✅ Works (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
 | [Snufkin: Melody of Moominvalley](https://store.steampowered.com/app/1808680) | 🔵 working | - | - | - | - | - |
 | [SteamWorld Dig](https://store.steampowered.com/app/252410) | 🔵 working | - | - | - | - | - |
 | [SteamWorld Dig 2](https://store.steampowered.com/app/571310) | 🔵 working | - | - | - | - | - |
