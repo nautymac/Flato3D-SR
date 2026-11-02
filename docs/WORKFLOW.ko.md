@@ -61,6 +61,7 @@
    | FNA (XNA 재구현, .NET: `FNA.dll`, `FNA3D.dll`) | Steam 실행 옵션 `/gldevice:OpenGL`(프로필 `launch_options`, 설치기가 넣음)로 OpenGL 경로(opengl32.dll만, 로더는 .NET에서 로드 안 됨). 횡스크롤은 `rule = order` | Axiom Verge 1·2 |
    | 2.5D·3D(원근이 있는 장면) | Flato3D 대상 아님: Geo Gaming Hub에서 일반 입체로 설치 | Broken Age |
    | SteamWorld (SDL2·OpenGL 자체 엔진, exe 옆 `Bundle`) | 직접. Dig는 `rule = order`. Dig 2·Heist는 2D처럼 보여도 원근 카메라라 `[Flat] enable = 0`, 자동 Convergence | SteamWorld Dig, Dig 2, Heist |
+   | Heaps (HashLink, `libhl.dll`, `*.hdll`) | OpenGL exe가 따로 있으면(Dead Cells `deadcells_gl.exe`) 그쪽. 층이 클립 z라 `[Flat] enable = 0`, `ortho_depth` | Dead Cells |
 
 5. **기존 설치 확인:** 게임 폴더에 geo-11(`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave(`dxgi.dll`), dgVoodoo(`D3D9.dll`), ReShade, OGL3D 1.0(`opengl32.dll`)이 있는지 봅니다. 설치기가 `Flato3D_backup`으로 옮기지만, 사용자가 쓰던 설치라는 것을 기록해 둡니다.
 6. **세이브 백업:** 플레이를 진행해야 하면 세이브 폴더를 `test-backups\<게임>\`에 먼저 복사합니다. 세이브 위치는 PCGamingWiki나 Steam Cloud 경로로 찾습니다.
@@ -152,6 +153,7 @@
 | 설정 | 의미 | 언제 바꾸나 |
 | --- | --- | --- |
 | `[Stereo] separation` | 분리값(%) | 깊이 전체가 약하거나 강할 때. 평면 게임은 25 전후 |
+| `[Stereo] ortho_depth`, `ortho_convergence` | w = 1인 정점을 클립 z로 옮김(배율, 화면 위치에 놓이는 z). `[Flat] enable = 0`과 함께 | 깊이 테스트로 앞에서부터 그려 층이 z에 있는 게임: order 규칙에서 앞 물체가 뒤로 감 (Dead Cells 0.6, 0) |
 | `[Stereo] output` | auto(SR 디스플레이) / sbs / tab. 설치기에서는 "SR 디스플레이 (Acer, Samsung)", "좌우 SBS", "위아래" | 원격 확인은 sbs. SR 디스플레이가 아니면 sbs/tab을 직접 고름 |
 | `[Flat] enable` | 평면 깊이 사용 | Flato3D에서는 항상 1(일반 입체 게임은 Geo Gaming Hub) |
 | `[Flat] rule` | feet(발 위치) / order(그리는 순서) | CP0 표 참고 |
@@ -182,6 +184,7 @@
 | 화면 전체가 평면(시차 0) | 깊이 셰이더가 안 붙음, 또는 모든 draw가 UI/합성으로 판정 | 기록에서 `(gs)`와 `order group` 줄 확인. scissor 게임이면 `screen_batch = 0` |
 | 화면 전체가 한 덩어리로 같은 시차 | 장면을 저해상도 모노 캐시에 그린 뒤 한 번에 붙임 | 레이어 캐시 승격(자동). `fbo N ... layer cache` 로그 확인 |
 | UI만 깊이가 있고 게임 화면은 평면 | 버퍼마다 scissor를 다시 걸어 UI 묶음으로 오판 | 같은 버퍼에서만 묶음 증가(수정됨) |
+| 앞쪽 지형이 뒤쪽 벽보다 멀게 보임(order 규칙) | 깊이 테스트로 앞에서부터 그려 그리는 순서가 깊이와 반대. 층은 클립 z에 있음 | `[Flat] enable = 0`, `[Stereo] ortho_depth` (Dead Cells) |
 | 배경이 앞쪽 물체보다 앞에 나옴 | 그리는 순서와 화면에서의 합성 순서가 다름 | 합성 순서 계산(`layout`) 확인. 0개면 합성 경로(뷰, blit, 복사) 추적 문제 |
 | 여러 배경 레이어가 한 깊이 | 같은 아틀라스 레이어를 한 층으로 묶음 | `group = draw`, `order_curve = 0.5` |
 | 일반 스프라이트가 깊이 없음 | 다른 유닛에 남은 렌더 타깃 때문에 합성으로 오판, 또는 업로드용 버퍼가 캐시로 승격 | 셰이더가 읽는 유닛만 봄, 그 프레임에 그려진 버퍼만 승격(수정됨). `samples`의 `R` 확인 |

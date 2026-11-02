@@ -1241,20 +1241,23 @@
       "ini": {
         "Stereo": {
           "separation": 25,
-          "output": "auto"
+          "output": "auto",
+          "convergence": 1,
+          "ortho_depth": 0.6,
+          "ortho_convergence": 0
         },
         "Flat": {
-          "enable": 1,
-          "rule": "order",
-          "depth_screen": 0.3
+          "enable": 0
         }
       },
       "status": "working",
       "notes": [
-        "Two exes (11-02): deadcells.exe is Direct3D 11 and Steam starts it by default; deadcells_gl.exe is OpenGL 3.2 core, Steam's second launch entry \"Dead Cells (OpenGL - Legacy)\". Started on its own, deadcells_gl.exe asks Steam to restart the game, and Steam starts deadcells.exe instead, so the wrapper never loads. Through the OpenGL entry (tested here with a steam_appid.txt, removed again) the wrapper loads, the SR weaver starts, 1293 shaders get the flat-depth geometry shader with no failures, and the title shows 78 stereo draws a frame. Depth not measured with dumps yet."
+        "Two exes (11-02): deadcells.exe is Direct3D 11 and Steam starts it by default; deadcells_gl.exe is OpenGL 3.2 core, Steam's second launch entry \"Dead Cells (OpenGL - Legacy)\". Started on its own, deadcells_gl.exe asks Steam to restart the game, and Steam starts deadcells.exe instead, so the wrapper never loads. Through the OpenGL entry (tested here with a steam_appid.txt, removed again) the wrapper loads, the SR weaver starts, 1293 shaders get the flat-depth geometry shader with no failures, and the title shows 78 stereo draws a frame. Depth not measured with dumps yet.",
+        "Depth from clip z (11-02): the user found the first setting (flat depth, order) uncomfortable. Measured: the scene is drawn at 642x363 and scaled up, so order depth came in steps of 6 screen px (0/6/12/18), and the order was wrong: the terrain in front stood at +18, behind the back wall at +6. The level tiles are drawn front to back with a depth test (the first draw already holds terrain and walls), so drawing order says nothing about depth; the layers are in clip z with w = 1. With [Flat] enable = 0 and [Stereo] ortho_depth 0.6 (ortho_convergence 0, separation 25): terrain +2, Beheaded +12 to +14, back wall +54 to +62, HUD 0, no 6 px steps (the shift is applied before rasterizing). Auto convergence has nothing to work on (every vertex has w = 1) and ran to its limit, so convergence is fixed at 1."
       ],
       "known_issues": [
-        "In Steam, set the game's Properties > General > Launch options > Selected launch option to \"Dead Cells (OpenGL - Legacy)\" (or pick it at [Play]). The default entry (deadcells.exe, Direct3D 11) has no 3D."
+        "In Steam, set the game's Properties > General > Launch options > Selected launch option to \"Dead Cells (OpenGL - Legacy)\" (or pick it at [Play]). The default entry (deadcells.exe, Direct3D 11) has no 3D.",
+        "The Beheaded stands about 12 px behind the terrain he walks on (the game puts the terrain layer in front in z). Distant backgrounds and other biomes not measured."
       ]
     }
   ]

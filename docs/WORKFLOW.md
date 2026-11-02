@@ -63,6 +63,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
    | FNA (XNA reimplementation, .NET: `FNA.dll`, `FNA3D.dll`) | Steam launch option `/gldevice:OpenGL` (profile `launch_options`, set by the installer) for the OpenGL route (opengl32.dll only; the loader does not load in .NET). Side-scrollers: `rule = order` | Axiom Verge 1 and 2 |
    | 2.5D and 3D (scenes with perspective) | Not a Flato3D target: install as ordinary stereo in Geo Gaming Hub | Broken Age |
    | SteamWorld (own SDL2 and OpenGL engine, `Bundle` next to the exe) | Direct. Dig: `rule = order`. Dig 2 and Heist look 2D but have a perspective camera: `[Flat] enable = 0`, auto convergence | SteamWorld Dig, Dig 2, Heist |
+   | Heaps (HashLink, `libhl.dll`, `*.hdll`) | The separate OpenGL exe if there is one (Dead Cells `deadcells_gl.exe`). Layers in clip z: `[Flat] enable = 0`, `ortho_depth` | Dead Cells |
 
 5. **Check existing installs:** See whether the game folder has geo-11 (`d3d11.dll`, `nvapi64.dll`, `d3dx.ini`), SRWeave (`dxgi.dll`), dgVoodoo (`D3D9.dll`), ReShade or OGL3D 1.0 (`opengl32.dll`). The installer moves them to `Flato3D_backup`, but note down that this was an install the user had been using.
 6. **Back up saves:** If you need to progress in the game, first copy the save folder to `test-backups\<game>\`. Find the save location from PCGamingWiki or the Steam Cloud path.
@@ -154,6 +155,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
 | Setting | Meaning | When to change it |
 | --- | --- | --- |
 | `[Stereo] separation` | Separation (%) | When the depth is too weak or too strong overall. About 25 for flat games |
+| `[Stereo] ortho_depth`, `ortho_convergence` | Shift w = 1 vertices by clip z (scale, z placed at the screen). With `[Flat] enable = 0` | Games that draw front to back with a depth test, layers in z: under the order rule things in front go to the back (Dead Cells 0.6, 0) |
 | `[Stereo] output` | auto (SR display) / sbs / tab. In the installer: "SR display (Acer, Samsung)", "Side by side", "Top and bottom" | sbs for remote checks. Without an SR display, pick sbs/tab yourself |
 | `[Flat] enable` | Use flat depth | Always 1 in Flato3D (ordinary stereo games go to Geo Gaming Hub) |
 | `[Flat] rule` | feet (where the sprite stands) / order (drawing order) | See the CP0 table |
@@ -184,6 +186,7 @@ This is the order to follow when you make a new game stereo with Flato3D. It sor
 | The whole picture is flat (disparity 0) | The depth shader is not attached, or every draw is classified as UI/composite | Check `(gs)` and the `order group` lines in the trace. For a scissor game, `screen_batch = 0` |
 | The whole picture has one disparity, as one block | The scene is drawn into a low-resolution mono cache, then pasted in one go | Promotion to a layer cache (automatic). Check the `fbo N ... layer cache` log line |
 | Only the UI has depth, the game picture is flat | The scissor is set again for each buffer, so the draws are wrongly taken as a UI batch | The batch count goes up only within the same buffer (fixed) |
+| The terrain in front looks farther than the back wall (order rule) | Drawn front to back with a depth test, so drawing order is the reverse of depth; the layers are in clip z | `[Flat] enable = 0`, `[Stereo] ortho_depth` (Dead Cells) |
 | The background comes out in front of nearer objects | The drawing order differs from the composite order on screen | Check the composite order (`layout`). If it is 0, the problem is in tracking the composite path (views, blits, copies) |
 | Several background layers at one depth | Layers from the same atlas are grouped into one layer | `group = draw`, `order_curve = 0.5` |
 | Ordinary sprites have no depth | A render target left on another unit makes the draw look like a composite, or an upload buffer gets promoted to a cache | Only the units the shader reads are considered, and only buffers drawn in that frame are promoted (fixed). Check `R` in `samples` |
