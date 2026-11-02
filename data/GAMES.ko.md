@@ -30,6 +30,7 @@
 | SteamWorld Dig 2 | OpenGL (SDL2, 자체 엔진) · 직접 | 평면 깊이 끔 (원근 카메라, 자동 Convergence) | 동작, 사용자 확인 전 | opengl32.dll x86, `[Flat] enable = 0` |
 | SteamWorld Heist | OpenGL (SDL2, 자체 엔진) · 직접 | 평면 깊이 끔 (원근 카메라, 자동 Convergence) | 동작, 사용자 확인 전 | opengl32.dll x86, `[Flat] enable = 0` |
 | Mark of the Ninja | D3D9 (Klei 자체 엔진) · WineD3D | order | 사용자 확인 완료 | WineD3D x86, 로더, 중계 winmm.dll, opengl32.dll x86 (`bin`) |
+| Dead Cells | OpenGL 3.2 (Heaps) · 직접 | order | 동작, 사용자 확인 전 | opengl32.dll x86, Steam [플레이]에서 "Dead Cells (OpenGL - Legacy)" 선택 |
 
 ## 게임별 메모
 
@@ -208,6 +209,8 @@
 - 세 게임의 세이브는 Steam Cloud 파일입니다(`userdata\<id>\<앱>`에는 `remotecache.vdf`만 있음).
 
 **Mark of the Ninja** (프로필 `mark-of-the-ninja`, 10-30): 사용자가 설치기 기본값으로 설치하고 SR 디스플레이에서 잘 되는 것을 확인했습니다. 로그 기준 60fps, 프레임당 draw 약 360개, 셰이더 실패 0입니다. 덤프로 깊이를 재지는 않았습니다.
+
+**Dead Cells** (프로필 `dead-cells`, 11-02): exe가 둘입니다. Steam 기본 실행은 `deadcells.exe`(D3D11)라 3D가 되지 않고, 두 번째 실행 항목 "Dead Cells (OpenGL - Legacy)"가 `deadcells_gl.exe`(OpenGL 3.2 core)입니다. `deadcells_gl.exe`를 직접 실행해도 Steam이 다시 띄우면서 기본 exe로 바뀝니다. OpenGL 쪽으로 실행하면 래퍼가 로드되고 SR 위버가 켜지며, 셰이더 1293개에 실패 0, 타이틀에서 프레임당 stereo draw 78개입니다. 덤프로 깊이를 재지는 않았습니다.
 
 - **AMD에서 시험**: MiniPC(AMD Radeon RX 7600M XT)에서 `sbs` 출력, 게임 버전 3.0.0. 60fps, 타이틀·메뉴·플레이 약 5분 동안 멈춤 없음, 셰이더 82개 주입에 실패 0. NVIDIA와 SR 출력은 아직 시험하지 않았습니다.
 - 1편과 달리 3840x2160 창을 꽉 채웁니다(검은 띠 없음).
