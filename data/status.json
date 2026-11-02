@@ -122,6 +122,20 @@
    "reports": []
   },
   {
+   "game": "Dead Cells",
+   "steam": "588650",
+   "profile": "dead-cells",
+   "profile_status": "working",
+   "status": null,
+   "works": 0,
+   "issues": 0,
+   "broken": 0,
+   "updated": "",
+   "note": "",
+   "open_problems": [],
+   "reports": []
+  },
+  {
    "game": "Door Kickers: Action Squad",
    "steam": "686200",
    "profile": "door-kickers-action-squad",

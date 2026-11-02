@@ -4,7 +4,7 @@ Built automatically. **Profile** is the state of the developer's setup for the g
 
 Report with the installer's **[Report status]** button or the [form](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml). A problem report that has been handled is closed and no longer counts; a game whose problem reports are all handled shows 🔧 handled.
 
-26 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
+27 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
@@ -16,6 +16,7 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Blasphemous](https://store.steampowered.com/app/774361) | ✅ confirmed | - | - | - | - | - |
 | [Blasphemous 2](https://store.steampowered.com/app/2114740) | ✅ confirmed | - | - | - | - | - |
 | [Braid, Anniversary Edition](https://store.steampowered.com/app/499180) | ✅ confirmed | - | - | - | - | - |
+| [Dead Cells](https://store.steampowered.com/app/588650) | 🔵 working | - | - | - | - | - |
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 working | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ confirmed | - | - | - | - | - |
 | [Guns, Gore and Cannoli 2](https://store.steampowered.com/app/525510) | ✅ confirmed | - | - | - | - | - |
