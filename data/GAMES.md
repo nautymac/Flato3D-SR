@@ -32,6 +32,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | SteamWorld Dig 2 | OpenGL (SDL2, own engine) · direct | flat depth off (perspective camera, auto convergence) | Working, not yet checked by the user | opengl32.dll x86, `[Flat] enable = 0` |
 | SteamWorld Heist | OpenGL (SDL2, own engine) · direct | flat depth off (perspective camera, auto convergence) | Working, not yet checked by the user | opengl32.dll x86, `[Flat] enable = 0` |
 | Mark of the Ninja | D3D9 (Klei own engine) · WineD3D | order | Confirmed by the user | WineD3D x86, loader, shim winmm.dll, opengl32.dll x86 (`bin`) |
+| Shank | D3D9 (Klei own engine) · WineD3D | order | Confirmed by the user | WineD3D x86, loader, opengl32.dll x86 (`bin`) |
 | Dead Cells | OpenGL 3.2 (Heaps) · direct | flat depth off, clip z (`ortho_depth`) | Working, not yet checked by the user | opengl32.dll x86, Steam Properties > Launch options > Selected launch option: "Dead Cells (OpenGL - Legacy)" |
 
 ## Notes per game
@@ -211,6 +212,8 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 - Saves of all three are Steam Cloud files (`userdata\<id>\<app>` holds only `remotecache.vdf`).
 
 **Mark of the Ninja** (profile `mark-of-the-ninja`, 10-30): the user installed it with the installer defaults and confirmed it on the SR display. The log shows 60 fps, about 360 draws a frame and no shader failures. Depth was not measured with dumps.
+
+**Shank** (profile `shank`, 11-03): installed on 10-18 without a profile (candidate defaults, drawing order) and confirmed by the user on the SR display. The values the user saved in game (separation 4.47, depth_screen 1.0) are the profile's. The log shows 80 to 260 stereo draws a frame, 17 shaders and no failures. The wrapper in the game folder is from 10-24, older than the current one; depth was not measured with dumps.
 
 **Dead Cells** (profile `dead-cells`, 11-02): two exes. Steam starts `deadcells.exe` (D3D11) by default, which has no 3D; the second launch entry "Dead Cells (OpenGL - Legacy)" is `deadcells_gl.exe` (OpenGL 3.2 core). Choosing it under Properties > Launch options > Selected launch option keeps it (Steam stores it as `DefaultLaunchOption` in `localconfig.vdf`). Starting `deadcells_gl.exe` directly does not help: Steam restarts the game with the default exe. Through the OpenGL entry the wrapper loads and the SR weaver starts; 1293 shaders, no failures, 78 stereo draws a frame on the title. Depth was not measured with dumps.
 

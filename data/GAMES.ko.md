@@ -30,6 +30,7 @@
 | SteamWorld Dig 2 | OpenGL (SDL2, 자체 엔진) · 직접 | 평면 깊이 끔 (원근 카메라, 자동 Convergence) | 동작, 사용자 확인 전 | opengl32.dll x86, `[Flat] enable = 0` |
 | SteamWorld Heist | OpenGL (SDL2, 자체 엔진) · 직접 | 평면 깊이 끔 (원근 카메라, 자동 Convergence) | 동작, 사용자 확인 전 | opengl32.dll x86, `[Flat] enable = 0` |
 | Mark of the Ninja | D3D9 (Klei 자체 엔진) · WineD3D | order | 사용자 확인 완료 | WineD3D x86, 로더, 중계 winmm.dll, opengl32.dll x86 (`bin`) |
+| Shank | D3D9 (Klei 자체 엔진) · WineD3D | order | 사용자 확인 완료 | WineD3D x86, 로더, opengl32.dll x86 (`bin`) |
 | Dead Cells | OpenGL 3.2 (Heaps) · 직접 | 평면 깊이 끔, 클립 z (`ortho_depth`) | 동작, 사용자 확인 전 | opengl32.dll x86, Steam 게임 속성 > 실행 옵션 > 선택한 실행 옵션을 "Dead Cells (OpenGL - Legacy)"로 |
 
 ## 게임별 메모
@@ -209,6 +210,8 @@
 - 세 게임의 세이브는 Steam Cloud 파일입니다(`userdata\<id>\<앱>`에는 `remotecache.vdf`만 있음).
 
 **Mark of the Ninja** (프로필 `mark-of-the-ninja`, 10-30): 사용자가 설치기 기본값으로 설치하고 SR 디스플레이에서 잘 되는 것을 확인했습니다. 로그 기준 60fps, 프레임당 draw 약 360개, 셰이더 실패 0입니다. 덤프로 깊이를 재지는 않았습니다.
+
+**Shank** (프로필 `shank`, 11-03): 10-18에 프로필 없이(후보 기본값, 그리는 순서) 설치한 상태로 사용자가 SR 디스플레이에서 잘 되는 것을 확인했습니다. 사용자가 게임에서 저장한 값(분리 4.47, depth_screen 1.0)을 프로필 값으로 씁니다. 로그 기준 프레임당 stereo draw 80~260개, 셰이더 17개 실패 0입니다. 게임 폴더의 래퍼는 10-24 것으로 지금 래퍼보다 오래됐고, 덤프로 깊이를 재지는 않았습니다.
 
 **Dead Cells** (프로필 `dead-cells`, 11-02): exe가 둘입니다. Steam 기본 실행은 `deadcells.exe`(D3D11)라 3D가 되지 않고, 두 번째 실행 항목 "Dead Cells (OpenGL - Legacy)"가 `deadcells_gl.exe`(OpenGL 3.2 core)입니다. 게임 속성 > 실행 옵션 > 선택한 실행 옵션에서 고르면 계속 그쪽으로 실행됩니다(Steam이 `localconfig.vdf`의 `DefaultLaunchOption`에 저장). `deadcells_gl.exe`를 직접 실행해도 Steam이 다시 띄우면서 기본 exe로 바뀝니다. OpenGL 쪽으로 실행하면 래퍼가 로드되고 SR 위버가 켜지며, 셰이더 1293개에 실패 0, 타이틀에서 프레임당 stereo draw 78개입니다. 덤프로 깊이를 재지는 않았습니다.
 

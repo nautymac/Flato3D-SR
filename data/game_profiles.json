@@ -1259,6 +1259,44 @@
         "In Steam, set the game's Properties > General > Launch options > Selected launch option to \"Dead Cells (OpenGL - Legacy)\" (or pick it at [Play]). The default entry (deadcells.exe, Direct3D 11) has no 3D.",
         "The Beheaded stands about 12 px behind the terrain he walks on (the game puts the terrain layer in front in z). Distant backgrounds and other biomes not measured."
       ]
+    },
+    {
+      "id": "shank",
+      "name": "Shank",
+      "steam_appid": 6120,
+      "folder": "Shank",
+      "exe": "bin/Shank.exe",
+      "arch": "x86",
+      "engine": "Klei own engine",
+      "api": "Direct3D 9",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x86/d3d9.dll",
+        "wined3d-11.19/x86/wined3d.dll",
+        "loader/x86/version.dll",
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 4.5,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 1.0
+        }
+      },
+      "status": "verified",
+      "verified_by_user": "2026-11-03 (SR display)",
+      "notes": [
+        "Installed on 10-18 (before the profile existed: candidate defaults, drawing order) and confirmed on the SR display by the user (11-03). The user's values are kept as the profile: separation 4.47, depth_screen 1.0 (saved in game). Log: 80 to 260 stereo draws a frame, 17 shaders, no failures, SR weaver on. The wrapper in the game folder is from 10-24, older than the current one; depth was not measured with dumps."
+      ],
+      "known_issues": [
+        "Confirmed with the wrapper of 10-24; the current wrapper not yet tried on it."
+      ]
     }
   ]
 }
