@@ -144,7 +144,7 @@ namespace Flato3D
 
     class MainForm : Form
     {
-        readonly ListView games = new ListView(), cands = new ListView();
+        readonly ListView games = new ListView(), cands = new ListView(), verified = new ListView();
         readonly CheckBox upscaleBox = new CheckBox();
         readonly ToolTip tips = new ToolTip { AutoPopDelay = 20000 };
         readonly TextBox exeBox = new TextBox(), logBox = new TextBox(), candFilter = new TextBox();
@@ -176,11 +176,13 @@ namespace Flato3D
             var t1 = new Panel { Dock = DockStyle.Fill };
             var t2 = new Panel { Dock = DockStyle.Fill };
             var t3 = new Panel { Dock = DockStyle.Fill };
+            var tv = new Panel { Dock = DockStyle.Fill };
             var pages = new Panel { Dock = DockStyle.Fill, Padding = new Padding(P(6)) };
-            pages.Controls.AddRange(new Control[] { t1, t2, t3 });
+            pages.Controls.AddRange(new Control[] { t1, tv, t2, t3 });
             Controls.Add(pages);
-            Controls.Add(BuildHeader(new[] { L.T("게임", "Games"), L.T("후보 목록", "Candidate list"), L.T("도움말", "Help") }, new Control[] { t1, t2, t3 }));
+            Controls.Add(BuildHeader(new[] { L.T("게임", "Games"), L.T("검증 목록", "Tested games"), L.T("후보 목록", "Candidate list"), L.T("도움말", "Help") }, new Control[] { t1, tv, t2, t3 }));
             BuildGamesTab(t1);
+            BuildVerifiedTab(tv);
             BuildCandidatesTab(t2);
             BuildHelpTab(t3);
             Theme.Primary(installBtn);
@@ -329,6 +331,54 @@ namespace Flato3D
             EnableActions(false);
         }
 
+        // The games with a profile: tested here, installed with the profile's settings. Whether this PC has them
+        // is filled in after each scan.
+        void BuildVerifiedTab(Control t)
+        {
+            var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
+            top.Controls.Add(new Label { Text = L.T("시험을 마치고 프로필이 있는 게임입니다. 확인됨 = SR 디스플레이에서 직접 확인, 동작 = 측정으로 확인. 설치하면 프로필 설정이 들어갑니다.",
+                                                    "Games tested here, with a profile. Verified = checked on an SR display, works = checked by measurement. Installing applies the profile's settings."),
+                                         AutoSize = true, Padding = new Padding(0, P(4), 0, 0) });
+            verified.View = View.Details;
+            verified.FullRowSelect = true;
+            verified.Dock = DockStyle.Fill;
+            verified.Columns.Add(L.T("게임", "Game"), P(300));
+            verified.Columns.Add(L.T("상태", "Status"), P(80));
+            verified.Columns.Add(L.T("경로", "Route"), P(170));
+            verified.Columns.Add(L.T("깊이 방식", "Depth"), P(150));
+            verified.Columns.Add(L.T("이 PC", "This PC"), P(70));
+            verified.Columns.Add(L.T("메모", "Note"), P(560));
+            t.Controls.Add(verified);
+            t.Controls.Add(top);
+            FillVerified();
+        }
+
+        void FillVerified()
+        {
+            verified.BeginUpdate();
+            verified.Items.Clear();
+            foreach (var p in Payload.Profiles.OrderBy(p => Json.Str(p, "status") == "verified" ? 0 : 1).ThenBy(p => Json.Str(p, "name")))
+            {
+                bool ok = Json.Str(p, "status") == "verified";
+                string api = Json.Str(p, "api") ?? "";
+                string route = Json.Str(p, "route") == "opengl" ? Route.Label(Route.OpenGL) :
+                               api.Contains("Direct3D 9") || api.Contains("Direct3D 8") ? Route.Label(Route.D3D9) : Route.Label(Route.D3D11);
+                var flat = Json.Obj(Json.Obj(p, "ini"), "Flat");
+                var stereo = Json.Obj(Json.Obj(p, "ini"), "Stereo");
+                string od = Json.Str(stereo, "ortho_depth");
+                string depth = Json.Str(flat, "enable") == "0"
+                    ? (od != null && od != "0" ? L.T("게임의 z 층", "the game's z layers") : L.T("게임의 원근 카메라", "the game's perspective"))
+                    : Json.Str(flat, "rule") == "feet" ? L.T("발 위치", "feet") : L.T("그리는 순서", "drawing order");
+                bool here = all.Any(g => g.Profile == p);
+                string note = Json.Arr(p, "known_issues").Select(x => x as string).FirstOrDefault(x => !string.IsNullOrEmpty(x)) ?? "";
+                var it = new ListViewItem(new[] { Json.Str(p, "name") ?? Json.Str(p, "id"), ok ? L.T("확인됨", "verified") : L.T("동작", "works"), route, depth,
+                                                  here ? L.T("있음", "yes") : "", note }) { Tag = p };
+                it.ForeColor = ok ? Theme.Profile : Theme.Text;
+                verified.Items.Add(it);
+            }
+            verified.EndUpdate();
+        }
+
         void BuildCandidatesTab(Control t)
         {
             var top = new FlowLayoutPanel { Dock = DockStyle.Top, AutoSize = true, WrapContents = false, Padding = new Padding(P(6), P(6), P(6), P(2)) };
@@ -399,6 +449,7 @@ namespace Flato3D
             all = Library.Scan();
             Cursor = Cursors.Default;
             FillGames();
+            FillVerified();
         }
 
         void FillGames()

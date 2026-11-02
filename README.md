@@ -77,7 +77,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
   - Choose the game in the installer and press **Defender exclusion** to exclude that game's `version.dll` only (Windows asks for permission). If it was already quarantined, press **Install** again.
   - **Uninstall** offers to remove the exclusion. With another antivirus, exclude the same file there.
 
-The **Candidate list** tab shows the 420 flat 2D candidates Flato3D can do, with their route (the game list and the survey page show only these as well).
+The **Tested games** tab lists the games tested here, with a profile: their status (verified: checked on an SR display, works: checked by measurement), route, depth method and whether this PC has them. The **Candidate list** tab shows the 420 flat 2D candidates Flato3D can do, with their route (the game list and the survey page show only these as well).
 
 Hotkeys:
 
