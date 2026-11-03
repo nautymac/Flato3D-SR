@@ -7,6 +7,7 @@
 | 게임 | API · 경로 | 깊이 규칙 | 상태 | 필요한 것 |
 | --- | --- | --- | --- | --- |
 | Technobabylon | OpenGL (AGS) · 직접 | feet (발 위치) | 사용자 확인 완료 | opengl32.dll x86 |
+| Resonance | OpenGL (AGS) · 직접 | feet (발 위치) | 동작 (측정) | opengl32.dll x86, acsetup.cfg `render_at_screenres=1` |
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
@@ -36,6 +37,10 @@
 ## 게임별 메모
 
 **Technobabylon**: AGS의 `acsetup.cfg`에서 드라이버를 OGL로 둡니다. 캐릭터는 발 높이의 깊이에 서고 방은 화면 위쪽으로 갈수록 멀어집니다. GUI는 화면 위치에 남습니다.
+
+**Resonance** (프로필 `resonance`, 11-03): Technobabylon과 같은 AGS 3.6.1.35입니다. 게임 해상도가 320x240(4:3)이라, 기본값(`render_at_screenres=0`)에서는 방 전체가 320x240 버퍼에 그려진 뒤 확대됩니다. 이 버퍼는 창 비율이 아니어서 단일 시점으로 남았습니다(시차 0). `aspect_tolerance = 0.35`로 입체가 되지만 깊이가 320x240 픽셀 단위(18px 계단)로 움직입니다. 설치기가 `acsetup.cfg`에 `render_at_screenres=1`을 넣으면 스프라이트를 화면 해상도로 그려 방이 부드럽게 기웁니다. 첫 방(침실) 측정: 천장 +62, 벽 +30~+50, 바닥 +8~+24, 캐릭터는 발 위치 바닥과 같은 +14입니다(한 눈 3840px 기준).
+
+AGS 게임: 프로필이 없어도 `acsetup.cfg`가 있으면 설치기가 `driver=OGL`과 `render_at_screenres=1`을 넣고, 제거할 때 원래 값으로 되돌립니다.
 
 **Huntdown**: WineD3D의 CSMT는 켜 둬야 합니다. 설정은 다음과 같습니다.
 

@@ -9,6 +9,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Game | API · route | Depth rule | Status | Needs |
 | --- | --- | --- | --- | --- |
 | Technobabylon | OpenGL (AGS) · direct | feet (foot position) | Confirmed by the user | opengl32.dll x86 |
+| Resonance | OpenGL (AGS) · direct | feet (foot position) | Works (measured) | opengl32.dll x86, acsetup.cfg `render_at_screenres=1` |
 | Huntdown | D3D11 (Unity) · WineD3D | order (drawing order) | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, forced vsync |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + layer cache | Works, confirmed by the user | WineD3D x86, loader, opengl32.dll x86, csmt=0 registry key |
 | FRAMED Collection | OpenGL 3.2 · direct | order (repeated panels share a layer) + silhouette | Confirmed by the user | opengl32.dll x86 (bin folder) |
@@ -38,6 +39,10 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 ## Notes per game
 
 **Technobabylon**: In AGS's `acsetup.cfg`, set the driver to OGL. Characters stand at the depth of their feet, and the room moves farther away towards the top of the screen. The GUI stays at the screen plane.
+
+**Resonance** (profile `resonance`, 11-03): the same AGS 3.6.1.35 as Technobabylon. The game is 320x240 (4:3); by default (`render_at_screenres=0`) the whole room is drawn into a 320x240 target and scaled up. That target is not the window's aspect, so it stayed mono (disparity 0). `aspect_tolerance = 0.35` makes it stereo, but depth then moves in 320x240 pixels (18 px steps). The installer sets `render_at_screenres=1` in `acsetup.cfg`, so sprites are drawn at the screen resolution and the room slopes smoothly. Measured in the first room (bedroom): ceiling +62, walls +30..+50, floor +8..+24, the character +14 like the floor at his feet (3840 px per eye).
+
+AGS games: with or without a profile, when `acsetup.cfg` is there the installer sets `driver=OGL` and `render_at_screenres=1`, and puts the old values back on uninstall.
 
 **Huntdown**: WineD3D's CSMT must stay on. The settings are:
 

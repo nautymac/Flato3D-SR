@@ -263,6 +263,21 @@ namespace Flato3D
             log.AppendLine((keep ? L.T("OGL3D.ini 유지 (출력, 업스케일만 변경): ", "kept OGL3D.ini (output, upscale changed): ") : L.T("OGL3D.ini 작성: ", "wrote OGL3D.ini: ")) +
                            "output = " + o.Output + ", upscale = " + (o.Upscale ? "1" : "0"));
 
+            // the game's own settings file (AGS: acsetup.cfg driver=OGL, render_at_screenres=1); the old values
+            // are kept in the manifest, so uninstalling puts them back
+            var cfgs = new List<object>(Json.Arr(man, "game_config"));
+            foreach (var c in GameConfig(g, dir))
+            {
+                string f = Path.Combine(dir, Json.Str(c, "file")), sec = Json.Str(c, "section"), key = Json.Str(c, "key"), val = Json.Str(c, "value");
+                if (!File.Exists(f)) continue;
+                string t = File.ReadAllText(f, Encoding.UTF8), old = IniGet(t, sec, key);
+                if (old == val) continue;
+                if (!cfgs.Any(x => Json.Str((Dictionary<string, object>)x, "file") == Json.Str(c, "file") && Json.Str((Dictionary<string, object>)x, "section") == sec && Json.Str((Dictionary<string, object>)x, "key") == key))
+                    cfgs.Add(new Dictionary<string, object> { { "file", Json.Str(c, "file") }, { "section", sec }, { "key", key }, { "old", old } });
+                File.WriteAllText(f, CfgSet(t, sec, key, val), new UTF8Encoding(false));
+                log.AppendLine(L.T("게임 설정: ", "game setting: ") + Json.Str(c, "file") + " [" + sec + "] " + key + " = " + val);
+            }
+
             foreach (var r in Json.Arr(g.Profile, "registry"))
             {
                 var e = (Dictionary<string, object>)r;
@@ -324,6 +339,7 @@ namespace Flato3D
             man["added"] = added;
             man["backups"] = backups;
             man["registry"] = regs;
+            man["game_config"] = cfgs;
             File.WriteAllText(Path.Combine(dir, ManifestName), Json.Dump(man), new UTF8Encoding(false));
             log.AppendLine(L.T("설치 완료: ", "installed: ") + Route.Label(route) + ", " + arch);
             return log.ToString();
@@ -360,6 +376,14 @@ namespace Flato3D
                     else k.SetValue(name, Convert.ToInt32(old, CultureInfo.InvariantCulture), RegistryValueKind.DWord);
                 }
                 log.AppendLine(L.T("레지스트리 되돌림: ", "registry restored: ") + key + " " + name);
+            }
+            foreach (var c in Json.Arr(man, "game_config"))
+            {
+                var e = (Dictionary<string, object>)c;
+                string f = Path.Combine(exeDir, Json.Str(e, "file")), old = Json.Str(e, "old");
+                if (old == null || !File.Exists(f)) continue;   // a key the game did not have stays (the game ignores the default)
+                File.WriteAllText(f, CfgSet(File.ReadAllText(f, Encoding.UTF8), Json.Str(e, "section"), Json.Str(e, "key"), old), new UTF8Encoding(false));
+                log.AppendLine(L.T("게임 설정 되돌림: ", "game setting restored: ") + Json.Str(e, "file") + " [" + Json.Str(e, "section") + "] " + Json.Str(e, "key") + " = " + old);
             }
             var lo = Json.Obj(man, "launch_options");
             if (lo != null)
@@ -419,6 +443,26 @@ namespace Flato3D
         }
 
         // feet for adventure games (sprites stand where their bottom edge is), drawing order otherwise
+        // Settings for the game's own files: the profile's "game_config", else for an AGS game (acsetup.cfg next
+        // to the exe) the OpenGL driver, without which the wrapper never loads, and drawing at the screen
+        // resolution, so the depth moves in screen pixels instead of the game's (Resonance: 320x240 steps of 18 px).
+        static List<Dictionary<string, object>> GameConfig(Game g, string dir)
+        {
+            var list = Json.Arr(g.Profile, "game_config").OfType<Dictionary<string, object>>().ToList();
+            if (list.Count > 0 || !File.Exists(Path.Combine(dir, "acsetup.cfg"))) return list;
+            foreach (var kv in new[] { new[] { "driver", "OGL" }, new[] { "render_at_screenres", "1" } })
+                list.Add(new Dictionary<string, object> { { "file", "acsetup.cfg" }, { "section", "graphics" }, { "key", kv[0] }, { "value", kv[1] } });
+            return list;
+        }
+
+        // IniSet for a game's own file: an existing line keeps its spacing ("key=value" in acsetup.cfg).
+        static string CfgSet(string text, string section, string key, string value)
+        {
+            var m = Regex.Match(text, @"(?ims)^\[" + Regex.Escape(section) + @"\][^\[]*?^(\s*" + Regex.Escape(key) + @"\s*=[ \t]*)[^\r\n]*");
+            return m.Success ? text.Substring(0, m.Groups[1].Index + m.Groups[1].Length) + value + text.Substring(m.Index + m.Length)
+                             : IniSet(text, section, key, value);
+        }
+
         static string DefaultRule(Game g)
         {
             return Json.Str(g.Candidate, "depth_rule") == "feet_y" ? "feet" : "order";

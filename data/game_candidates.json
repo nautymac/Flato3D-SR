@@ -2354,7 +2354,7 @@
     "Story Rich"
    ],
    "pcgw_page": "Resonance",
-   "status": "untested",
+   "status": "working",
    "uhd": "false",
    "uhd_note": "4K resolution can be set, but will be pillarboxed (Stretch, preserving aspect ratio setting) or stretched (Fill whole screen setting).",
    "upscale": "0"

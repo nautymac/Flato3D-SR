@@ -1297,6 +1297,70 @@
       "known_issues": [
         "Confirmed with the wrapper of 10-24; the current wrapper not yet tried on it."
       ]
+    },
+    {
+      "id": "resonance",
+      "name": "Resonance",
+      "steam_appid": 212050,
+      "folder": "Resonance",
+      "exe": "Resonance.exe",
+      "arch": "x86",
+      "engine": "AGS 3.6.1 (SDL2)",
+      "api": "OpenGL (acsetup.cfg driver = OGL)",
+      "route": "opengl",
+      "install": [
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "game_config": [
+        {
+          "file": "acsetup.cfg",
+          "section": "graphics",
+          "key": "driver",
+          "value": "OGL"
+        },
+        {
+          "file": "acsetup.cfg",
+          "section": "graphics",
+          "key": "render_at_screenres",
+          "value": "1"
+        }
+      ],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "feet",
+          "depth_top": 1,
+          "depth_screen": 0,
+          "plane_size": 1.8,
+          "plane_height": 1.8,
+          "sprite_min": -0.25,
+          "screen_batch": 1
+        },
+        "Targets": {
+          "aspect_tolerance": 0.35
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Same engine build as Technobabylon (AGS 3.6.1.35, SDL2); acsetup.cfg already had driver=OGL.",
+        "The game is 320x240 (4:3). With render_at_screenres=0 (the game's default) AGS draws the whole room into a 320x240 target and scales it up: that target is not the window's aspect, so it stayed mono (disparity 0). aspect_tolerance 0.35 makes it stereo, but depth then moves in whole 320x240 pixels (18 px steps at 3840 per eye: ceiling 54, wall 36, floor 18).",
+        "render_at_screenres=1 (set by the installer) draws sprites at the screen resolution straight into the back buffer: the room slopes smoothly. Measured in the first room (bedroom): ceiling +62, walls +30..+50, floor +8..+24, the character +14 like the floor at his feet, the bin at the bottom +8 (3840 px per eye).",
+        "The title menu's background is four pictures: the top two stand at their bottom edge (+36), the bottom two near the screen."
+      ],
+      "known_issues": [
+        "Measured in the first room only; not yet confirmed on the SR display."
+      ],
+      "test": {
+        "proc": "Resonance",
+        "reaches": "logos and the news intro: Esc, Esc, click, Esc, Esc; menu ~15 s after launch",
+        "notes": "AGS ignores SetCursorPos: from the menu cursor (screen centre) rmove 672,464 is New Game. New Game, Esc twice reaches the bedroom. Back up Saved Games\\Resonance (test-backups\\Resonance)."
+      }
     }
   ]
 }
