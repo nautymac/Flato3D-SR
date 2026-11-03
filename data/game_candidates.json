@@ -18800,7 +18800,7 @@
    "steam_appid": 7210,
    "developer": "Pendulo Studios",
    "class": "2D",
-   "kind": 3,
+   "kind": 4,
    "pixel": false,
    "style": "illustrated",
    "genre": "adventure",
@@ -18809,7 +18809,7 @@
    "api": "d3d9",
    "phase": 3,
    "bits": "x86",
-   "note": "dgVoodoo로 D3D11 변환",
+   "note": "CPU에서 장면을 한 장으로 합쳐 DirectDraw로 보냄(11-03 측정: 프레임마다 draw 0~1번·blit만, 시차 0) — 층이 없어 Flato3D 불가, AI 2D→3D(SRCapture3D) 대상",
    "d3d": [],
    "opengl": "",
    "vulkan": "",
@@ -18832,7 +18832,7 @@
     "Classic"
    ],
    "pcgw_page": "Runaway: A Road Adventure",
-   "status": "untested",
+   "status": "checked",
    "uhd": "false",
    "uhd_note": "",
    "upscale": "1"
@@ -18851,7 +18851,7 @@
    "api": "d3d9",
    "phase": 3,
    "bits": "x86",
-   "note": "dgVoodoo로 D3D11 변환",
+   "note": "11-03: D3D9 → WineD3D, feet 규칙으로 입체(배경 +66~−18). 1280x720 그림을 1:1로 그려 업스케일 창이 4K 전체를 덮지 못함(남은 일)",
    "d3d": [
     "9"
    ],
@@ -18876,7 +18876,7 @@
     "Retro"
    ],
    "pcgw_page": "Runaway: A Twist of Fate",
-   "status": "untested",
+   "status": "working",
    "uhd": "false",
    "uhd_note": "",
    "upscale": "1"
@@ -18886,7 +18886,7 @@
    "steam_appid": 7220,
    "developer": "Pendulo Studios",
    "class": "2D",
-   "kind": 3,
+   "kind": 4,
    "pixel": false,
    "style": "illustrated",
    "genre": "adventure",
@@ -18895,7 +18895,7 @@
    "api": "d3d9",
    "phase": 3,
    "bits": "x86",
-   "note": "dgVoodoo로 D3D11 변환",
+   "note": "CPU에서 장면을 한 장으로 합쳐 DirectDraw로 보냄(11-03 측정: 프레임마다 draw 0~1번·blit만, 시차 0) — 층이 없어 Flato3D 불가, AI 2D→3D(SRCapture3D) 대상. Video Card Setup(RUNAWAY2.INI) 필요",
    "d3d": [],
    "opengl": "",
    "vulkan": "",
@@ -18918,7 +18918,7 @@
     "Retro"
    ],
    "pcgw_page": "Runaway 2: The Dream of the Turtle",
-   "status": "untested",
+   "status": "checked",
    "uhd": "false",
    "uhd_note": "",
    "upscale": "1"

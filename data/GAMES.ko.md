@@ -137,6 +137,13 @@ AGS 게임: 프로필이 없어도 `acsetup.cfg`가 있으면 설치기가 `driv
 
 **Blade Runner: Enhanced Edition** (프로필 없음): 원작(1997) 엔진이 장면을 CPU에서 한 장으로 합쳐 보내는 것으로 보입니다. 게임 중 한 프레임에 draw가 6번뿐이고, 1280×960 장면 버퍼에는 draw가 없습니다(사용자 실행 로그, 10-19). 층이 없어서 지금 방식으로는 입체가 되지 않습니다. 2D→3D 변환(AI 깊이 추정) 같은 다른 방식이 필요합니다. 메뉴는 주입한 마우스와 화살표 키를 받지 않아 자동 확인은 타이틀까지만 했습니다.
 
+**Runaway 시리즈** (프로필 없음, 11-03): Pendulo Studios의 세 편을 시험했습니다.
+
+- *A Road Adventure*, *The Dream of the Turtle*: DirectDraw 게임입니다. 장면을 CPU에서 한 장으로 합쳐 보내서, 프레임마다 blit만 하거나 904×840 사각형 하나를 그립니다(시차 0). Blade Runner처럼 층이 없어 Flato3D로는 입체가 되지 않습니다. AI 2D→3D(SRCapture3D) 대상입니다.
+- 두 게임은 처음 실행 전에 Video Card Setup이 그래픽 어댑터를 `C:\Windows\RUNAWAY.INI` / `RUNAWAY2.INI`에 적어야 합니다. 없으면 "The screen adapter … was not set up"으로 멈춥니다. 설정 프로그램은 이름 때문에 Windows가 관리자 권한을 요구하지만, `__COMPAT_LAYER=RunAsInvoker`로 실행하면 권한 없이 VirtualStore에 저장되고 게임도 그 값을 읽습니다.
+- 이 exe들의 가져오기 이름 목록에는 이름 대신 묶인 주소가 들어 있습니다. 로더(`version.dll`)와 래퍼의 가져오기 패치가 이것을 이름으로 읽다가 죽어서, 둘 다 주소로 맞추게 고쳤습니다.
+- *A Twist of Fate*(2009): D3D9 → WineD3D, feet 규칙으로 입체가 됩니다(묘지, 배경 +66~−18px). 그림을 1280×720으로 1:1로 그려서, 업스케일 창이 200% 배율에서 2560×1440만 덮습니다. 막힌 전체화면 모드에서 창을 모니터 크기로 키우는 래퍼 수정이 남았습니다. 프로필은 그 뒤에 씁니다.
+
 **The Messenger** (프로필 `the-messenger`, 10-24): Unity 2017.4 x64, D3D11을 WineD3D로. 설치기의 Unity 기본값(order, draw마다 한 층, `screen_batch = 0`) 그대로입니다.
 
 - **멈춤 해결**: 플레이 중 수십 초~몇 분 안에 "응답 없음"으로 멈췄습니다(래퍼 없이도, SR 없이도). WineD3D가 그리기 스레드를 스레드 알림(`NtAlertThreadByThreadId`)으로 깨우는데, 남은 알림이 Windows 11 24H2+의 critical section 대기를 엉뚱하게 깨워 ntdll이 `RtlpWaitOnCriticalSection`에서 영원히 돕니다. 래퍼가 WineD3D에 알림 함수를 주지 않아 이벤트로 깨우게 했습니다(로그 `WineD3D: command thread woken by an event`). 고치기 전 19회 중 11회 멈춤 → 고친 뒤 `sbs` 10회, SR 5회(각 120초) 멈춤 없음. CSMT를 쓰는 모든 WineD3D 게임에 해당합니다. 조사 과정은 [tools/hang/README.ko.md](../tools/hang/README.ko.md)의 사례에 있습니다.

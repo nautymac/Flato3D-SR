@@ -219,6 +219,15 @@ const Hook kHooks[] = {
 
 int PatchStaticImports(BYTE* base, const IMAGE_IMPORT_DESCRIPTOR* imp);
 
+// A name thunk that points into the image. Some linkers and packers leave the name list pointing at the
+// bound addresses (OriginalFirstThunk == FirstThunk): those hold function addresses, not names
+// (Runaway: The Dream of the Turtle crashed reading one as a name).
+bool NamedThunk(BYTE* base, const IMAGE_THUNK_DATA* t)
+{
+    auto nt = (IMAGE_NT_HEADERS*)(base + ((IMAGE_DOS_HEADER*)base)->e_lfanew);
+    return !IMAGE_SNAP_BY_ORDINAL(t->u1.Ordinal) && t->u1.AddressOfData < nt->OptionalHeader.SizeOfImage;
+}
+
 bool IsLoaderImport(const char* dll)
 {
     return _stricmp(dll, "kernel32.dll") == 0 || _stricmp(dll, "kernelbase.dll") == 0 ||
@@ -240,7 +249,7 @@ int PatchImports(HMODULE m)
         auto names = (IMAGE_THUNK_DATA*)(base + imp->OriginalFirstThunk);
         auto slots = (IMAGE_THUNK_DATA*)(base + imp->FirstThunk);
         for (; names->u1.AddressOfData; ++names, ++slots) {
-            if (IMAGE_SNAP_BY_ORDINAL(names->u1.Ordinal)) continue;
+            if (!NamedThunk(base, names)) continue;
             auto byName = (IMAGE_IMPORT_BY_NAME*)(base + names->u1.AddressOfData);
             for (const Hook& h : kHooks) {
                 if (strcmp((const char*)byName->Name, h.name) != 0 || slots->u1.Function == (ULONG_PTR)h.fn) continue;
@@ -329,7 +338,7 @@ int PatchStaticImports(BYTE* base, const IMAGE_IMPORT_DESCRIPTOR* imp)
     auto names = (IMAGE_THUNK_DATA*)(base + imp->OriginalFirstThunk);
     auto slots = (IMAGE_THUNK_DATA*)(base + imp->FirstThunk);
     for (; names->u1.AddressOfData; ++names, ++slots) {
-        if (IMAGE_SNAP_BY_ORDINAL(names->u1.Ordinal)) continue;
+        if (!NamedThunk(base, names)) continue;
         const char* fn = (const char*)((IMAGE_IMPORT_BY_NAME*)(base + names->u1.AddressOfData))->Name;
         const Entry* e = nullptr;
         for (const Entry& x : kStaticEntries)

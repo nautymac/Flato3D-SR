@@ -202,7 +202,7 @@ namespace Flato3D
 
         // The game's main executable: the profile's, the Heroic record's, an Unreal shipping exe, else
         // the exe whose name matches the game best (the largest one among equals).
-        static readonly string[] NotGame = { "unins", "crash", "setup", "launcher", "redist", "vcredist", "dxsetup", "dotnet", "update", "helper", "report", "unitycrashhandler", "ue4prereq", "easyanticheat", "cefsharp", "nw.exe" };
+        static readonly string[] NotGame = { "unins", "crash", "setup", "config", "launcher", "redist", "vcredist", "dxsetup", "dotnet", "update", "helper", "report", "unitycrashhandler", "ue4prereq", "easyanticheat", "cefsharp", "nw.exe" };
 
         public static string FindExe(Game g)
         {
