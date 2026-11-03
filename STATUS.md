@@ -4,7 +4,7 @@ Built automatically. **Profile** is the state of the developer's setup for the g
 
 Report with the installer's **[Report status]** button or the [form](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml). A problem report that has been handled is closed and no longer counts; a game whose problem reports are all handled shows 🔧 handled.
 
-27 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
+28 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
@@ -26,6 +26,7 @@ Report with the installer's **[Report status]** button or the [form](https://git
 | [Intravenous 2: Mercenarism](https://store.steampowered.com/app/2651330) | ✅ confirmed | - | - | - | - | - |
 | [Machinarium](https://store.steampowered.com/app/40700) | ✅ confirmed | ✅ Works (2026-10-18) | ✅ 1 · ⚠️ 1 | - | - | [#3](https://github.com/nautymac/Flato3D-SR/issues/3) [#4](https://github.com/nautymac/Flato3D-SR/issues/4) |
 | [Mark of the Ninja](https://store.steampowered.com/app/214560) | ✅ confirmed | - | - | - | - | - |
+| [Resonance](https://store.steampowered.com/app/212050) | 🔵 working | - | - | - | - | - |
 | [Rocketbirds: Hardboiled Chicken](https://store.steampowered.com/app/215510) | 🔵 working | - | - | - | - | - |
 | [Samorost 2](https://store.steampowered.com/app/40720) | ✅ confirmed | - | - | - | - | - |
 | [Shank](https://store.steampowered.com/app/6120) | ✅ confirmed | ✅ Works (2026-10-18) | ✅ 1 | - | - | [#2](https://github.com/nautymac/Flato3D-SR/issues/2) |
