@@ -4,7 +4,7 @@
 
 보고는 설치기의 **[상태 보고]** 버튼이나 [양식](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml)으로 합니다. 처리한 문제 보고는 이슈를 닫고 상태에서 빠집니다. 문제 보고가 모두 처리된 게임은 🔧 처리됨으로 표시됩니다.
 
-게임 28개 · 보고 6건 · English: [STATUS.md](STATUS.md)
+게임 29개 · 보고 6건 · English: [STATUS.md](STATUS.md)
 
 | 게임 | 프로필 | 플레이어 상태 | 보고 | 열린 문제 | 최근 메모 | 이슈 |
 |---|---|---|---|---|---|---|
@@ -16,6 +16,7 @@
 | [Blasphemous](https://store.steampowered.com/app/774361) | ✅ 확인됨 | - | - | - | - | - |
 | [Blasphemous 2](https://store.steampowered.com/app/2114740) | ✅ 확인됨 | - | - | - | - | - |
 | [Braid, Anniversary Edition](https://store.steampowered.com/app/499180) | ✅ 확인됨 | - | - | - | - | - |
+| [Broforce](https://store.steampowered.com/app/274190) | 🔵 동작 | - | - | - | - | - |
 | [Dead Cells](https://store.steampowered.com/app/588650) | 🔵 동작 | - | - | - | - | - |
 | [Door Kickers: Action Squad](https://store.steampowered.com/app/686200) | 🔵 동작 | - | - | - | - | - |
 | [FRAMED Collection (FRAMED, FRAMED 2)](https://store.steampowered.com/app/322450) | ✅ 확인됨 | - | - | - | - | - |
