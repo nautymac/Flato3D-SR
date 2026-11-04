@@ -745,6 +745,53 @@
       }
     },
     {
+      "id": "broforce",
+      "name": "Broforce",
+      "steam_appid": 274190,
+      "folder": "Broforce",
+      "exe": "Broforce_beta.exe",
+      "arch": "x64",
+      "engine": "Unity 2017.4 (pixel side-scroller, 3D world map)",
+      "api": "Direct3D 11",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x64-renamed/w3d11.dll",
+        "wined3d-11.19/x64-renamed/wxgi.dll",
+        "wined3d-11.19/x64-renamed/w3d10core.dll",
+        "wined3d-11.19/x64-renamed/wined3d.dll",
+        "loader/x64/version.dll",
+        "ogl3d/x64/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 25,
+          "output": "auto",
+          "ortho_depth": -5,
+          "ortho_convergence": 0.978
+        },
+        "Flat": {
+          "enable": 0
+        }
+      },
+      "status": "working",
+      "notes": [
+        "Lines (11-04, user report): with the installer's Unity defaults (order, one layer per draw) thin diagonal lines ran through sprites, e.g. the title logo. The order rule spreads depth inside a draw by primitive pairs (quads); Unity's tight sprite meshes are many triangles of any shape, so neighbouring triangles got different shifts and cracks opened along their edges. snap_pixels = 1 (no spread) removed them.",
+        "Depth order (11-04): the order rule also put the jungle background in front of the ground (palms -4, ground +12..+18 at 960 px per eye). Broforce draws the background after the ground and hides it with a depth test, so drawing order says nothing about depth. The layers are in clip z, but Unity on D3D11 uses reversed Z (near = 1, far = 0): ortho_depth must be negative. ortho_depth -5, ortho_convergence 0.978, [Flat] enable 0, separation 25, measured at 3840 px per eye in the first jungle level: far background +88, background +48..+64, truck +24, ground +8..+16, the bro +8, P1 marker -8, HUD -16. No cracks (the shift is per vertex from z, one value per sprite). The pause menu stays flat at the screen."
+      ],
+      "known_issues": [
+        "The 3D world map (perspective camera) was not measured; it uses auto convergence, which runs to its limit inside levels where every vertex has w = 1.",
+        "Measured in the first level only; other areas and the user's comfort are to be confirmed."
+      ],
+      "test": {
+        "proc": "Broforce_beta",
+        "steps": "wait:25,key:0D,wait:3,key:0D,wait:5,key:0D,wait:4,hold:5A:0.4,wait:2,hold:5A:0.4,wait:20,hold:5A:0.3,wait:2,hold:5A:0.3,wait:2,hold:5A:0.3,wait:15,ctrlkey:7B,wait:4",
+        "reaches": "title Start (Enter) -> save slot 1 (Enter) -> continue campaign (Enter) -> join as P1 (hold Z, the keyboard fire key; X is back) -> world map briefing (Z) -> first jungle level",
+        "saves": "Saves\\ in the game folder (back up and restore around a test)"
+      }
+    },
+    {
       "id": "braid-anniversary-edition",
       "name": "Braid, Anniversary Edition",
       "steam_appid": 499180,

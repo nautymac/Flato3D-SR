@@ -9068,7 +9068,7 @@
    "api": "d3d11",
    "phase": 3,
    "bits": "x86/x64",
-   "note": "-force-glcore로 OpenGL 시도 가능(게임마다 다름)",
+   "note": "11-04: D3D11 → WineD3D, 클립 z 깊이(역 Z, ortho_depth -5). 예전 메모: -force-glcore로 OpenGL 시도 가능(게임마다 다름)",
    "d3d": [
     "11"
    ],
@@ -9093,7 +9093,7 @@
     "Side Scroller"
    ],
    "pcgw_page": "Broforce",
-   "status": "untested",
+   "status": "working",
    "uhd": "true",
    "uhd_note": "Use the Use the related PCGW community tool as a workaround (not compatible with Broforce Forever) or p1xel8teds solution.",
    "upscale": "0"

@@ -33,6 +33,7 @@
 | Mark of the Ninja | D3D9 (Klei 자체 엔진) · WineD3D | order | 사용자 확인 완료 | WineD3D x86, 로더, 중계 winmm.dll, opengl32.dll x86 (`bin`) |
 | Shank | D3D9 (Klei 자체 엔진) · WineD3D | order | 사용자 확인 완료 | WineD3D x86, 로더, opengl32.dll x86 (`bin`) |
 | Dead Cells | OpenGL 3.2 (Heaps) · 직접 | 평면 깊이 끔, 클립 z (`ortho_depth`) | 동작, 사용자 확인 전 | opengl32.dll x86, Steam 게임 속성 > 실행 옵션 > 선택한 실행 옵션을 "Dead Cells (OpenGL - Legacy)"로 |
+| Broforce | D3D11 (Unity 2017.4) · WineD3D | 평면 깊이 끔, 클립 z (`ortho_depth = -5`, 역 Z) | 동작, 사용자 확인 전 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64 |
 
 ## 게임별 메모
 
@@ -145,6 +146,8 @@ AGS 게임: 프로필이 없어도 `acsetup.cfg`가 있으면 설치기가 `driv
 - *A Twist of Fate*(2009): D3D9 → WineD3D, feet 규칙으로 입체가 됩니다(묘지, 배경 +66~−18px). 그림을 1280×720으로 1:1로 그려서, 업스케일 창이 200% 배율에서 2560×1440만 덮습니다. 막힌 전체화면 모드에서 창을 모니터 크기로 키우는 래퍼 수정이 남았습니다. 프로필은 그 뒤에 씁니다.
 
 **The Messenger** (프로필 `the-messenger`, 10-24): Unity 2017.4 x64, D3D11을 WineD3D로. 설치기의 Unity 기본값(order, draw마다 한 층, `screen_batch = 0`) 그대로입니다.
+
+**Broforce** (프로필 `broforce`, 11-04): 사용자가 "그래픽에 일자로 줄이 보인다"고 했습니다. 설치기의 Unity 기본값(order, draw마다 한 층)에서 타이틀 로고 같은 스프라이트에 가는 대각선 금이 갔습니다. order 규칙은 한 draw 안에서 삼각형 두 개(사각형)마다 깊이를 조금씩 나누는데, Unity의 tight 스프라이트 메시는 모양이 제각각인 삼각형 여러 개라 이웃 삼각형이 다르게 밀려 틈이 생겼습니다. 또 순서도 뒤집혀 정글 배경이 땅보다 앞에 섰습니다(야자수 −4, 땅 +12~+18, 한 눈 960px). 게임이 땅을 먼저 그리고 배경을 뒤에 깊이 테스트로 가리기 때문입니다. 층은 클립 z에 있는데, D3D11의 Unity는 역 Z(가까움 1, 멂 0)라서 `ortho_depth`를 음수로 둡니다. `[Flat] enable = 0`, `ortho_depth = -5`, `ortho_convergence = 0.978`, 분리 25에서 첫 정글 레벨(한 눈 3840px): 먼 배경 +88, 배경 +48~+64, 트럭 +24, 땅 +8~+16, 주인공 +8, P1 표시 −8, HUD −16이고 금이 없습니다. 일시정지 메뉴는 화면 위치입니다. 남은 일: 3D 월드맵(원근 카메라, 자동 Convergence)은 재지 않았고, 레벨 안에서는 자동 Convergence가 한계까지 달아납니다. 키보드: Enter로 메뉴, 참가는 Z(사격), X는 뒤로. 세이브는 게임 폴더의 `Saves`입니다.
 
 - **멈춤 해결**: 플레이 중 수십 초~몇 분 안에 "응답 없음"으로 멈췄습니다(래퍼 없이도, SR 없이도). WineD3D가 그리기 스레드를 스레드 알림(`NtAlertThreadByThreadId`)으로 깨우는데, 남은 알림이 Windows 11 24H2+의 critical section 대기를 엉뚱하게 깨워 ntdll이 `RtlpWaitOnCriticalSection`에서 영원히 돕니다. 래퍼가 WineD3D에 알림 함수를 주지 않아 이벤트로 깨우게 했습니다(로그 `WineD3D: command thread woken by an event`). 고치기 전 19회 중 11회 멈춤 → 고친 뒤 `sbs` 10회, SR 5회(각 120초) 멈춤 없음. CSMT를 쓰는 모든 WineD3D 게임에 해당합니다. 조사 과정은 [tools/hang/README.ko.md](../tools/hang/README.ko.md)의 사례에 있습니다.
 - CSMT는 켜 둬야 합니다(`csmt=0`은 시작하자마자 죽음, Huntdown과 같음). `-force-glcore`는 안 됩니다(이 빌드에 OpenGL 렌더러 없음).
