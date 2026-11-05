@@ -681,8 +681,9 @@
       ],
       "known_issues": [
         "Measured during the opening dialogue only; the depth in play is to be confirmed by the user.",
-        "Some starts take over a minute (the NEOWIZ logo stays up); automated runs wait 80 s."
+        "Some starts take over a minute (the NEOWIZ logo stays up); automated runs wait 80 s. The watchdog logs one 'HANG? no frame for 4 s' (WineD3D waiting) while the first scene loads; it recovers."
       ],
+      "intel_arc": "2026-11-05 (Arc 140V, driver 32.0.101.8991, sbs): before the compressed-texture fix 8 refused right-eye copies (0x8cdd); after it none. First corridor dump: corridor +16 px, structures in front -20 px, 1 of 19 blocks differing between the eyes (an edge). 60 fps.",
       "test": {
         "proc": "BladeAssault",
         "steps": "wait:80,key:0D,wait:6,key:0D,wait:15,ctrlkey:7B,wait:4",
@@ -737,6 +738,7 @@
         "Measured on the title and the opening dialogue only; the depth in play is to be confirmed by the user.",
         "The ninja stands about 10 px in front of the ledge under it (-6 px against +4 px)."
       ],
+      "intel_arc": "2026-11-05 (Arc 140V, driver 32.0.101.8991, sbs, the user's saved values separation 5.84 / depth_screen 0.909): no refused right-eye copies, no shader failures, no hangs, layer cache promoted as on NVIDIA; Ninja Village dump with both eyes consistent (1 of 30 blocks differing, an edge). 60 fps.",
       "test": {
         "proc": "TheMessenger",
         "steps": "wait:30,key:0D,wait:4,key:0D,wait:4,key:0D,wait:4,key:0D,wait:5,key:20,wait:5,key:20,wait:25,ctrlkey:7B,wait:4",
