@@ -21,8 +21,17 @@ namespace Flato3D
     // package after it. Every GitHub release gets a new version (raise both before packaging it).
     static class AppInfo
     {
-        public const string Version = "0.2.3";
-        public const string Date = "2026-11-02";
+        public const string Version = "0.3.0";
+        public const string Date = "2026-11-05";
+        // Edition: the SR package (Flato3D-SR: SR displays, side by side, top and bottom) or the Intel Arc package
+        // (Flato3D-IntelARC, build.cmd intelarc: side by side only, woven by the 3D One's AstraDepth3D app)
+#if INTELARC
+        public const bool IntelArc = true;
+        public const string Name = "Flato3D-IntelARC";
+#else
+        public const bool IntelArc = false;
+        public const string Name = "Flato3D-SR";
+#endif
     }
 
     class Game
@@ -378,7 +387,8 @@ namespace Flato3D
 
             // output: an SR display when its runtime is installed, else side by side
             string o = Json.Str(stereo, "output");
-            if (o == "sbs" || o == "tab") { r.Output = o; r.OutputWhy = profile; }
+            if (AppInfo.IntelArc) { r.Output = o == "tab" ? "tab" : "sbs"; r.OutputWhy = L.T("Intel Arc: AstraDepth3D가 SBS를 엮음", "Intel Arc: AstraDepth3D weaves side by side"); }
+            else if (o == "sbs" || o == "tab") { r.Output = o; r.OutputWhy = profile; }
             else if (SrRuntime()) { r.Output = "auto"; r.OutputWhy = L.T("SR 런타임 있음", "SR runtime found"); }
             else { r.Output = "sbs"; r.OutputWhy = L.T("SR 런타임 없음", "no SR runtime"); }
 

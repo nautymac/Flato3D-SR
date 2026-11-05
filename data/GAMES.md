@@ -13,7 +13,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | Huntdown | D3D11 (Unity) · WineD3D | order (drawing order) | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, forced vsync |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + layer cache | Works, confirmed by the user | WineD3D x86, loader, opengl32.dll x86, csmt=0 registry key |
 | FRAMED Collection | OpenGL 3.2 · direct | order (repeated panels share a layer) + silhouette | Confirmed by the user | opengl32.dll x86 (bin folder) |
-| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + scratch targets | Confirmed by the user (NVIDIA) | renamed WineD3D x64, loader (with static import support), opengl32.dll x64, geo-11 DLLs removed |
+| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + scratch targets | Confirmed by the user (NVIDIA), Intel Arc fix (11-05) | renamed WineD3D x64, loader (with static import support), opengl32.dll x64, geo-11 DLLs removed |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · direct | order (top-down) | Confirmed by the user | opengl32.dll x64 |
 | Intravenous 2: Mercenarism | OpenGL (LÖVE) · direct | order (top-down) | Confirmed by the user (3D) | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, one layer per draw | Confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, forced vsync, Defender exclusion |
@@ -75,7 +75,8 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 - Went through the hub areas (ruins, altar, garden, cliff) moving, jumping and attacking. 60fps with no hangs or errors. One flicker was caught, but it was a game effect that showed identically in both eyes.
 - Garden: sky +40~64px, ground +28px, trees +20px, characters 0~−6px, arch in front −12px, HUD −20px. Cliff: far islands +40~64px, rock island +28px, cliff in front −18px.
 - To do: the character seems to float in front of the ground it stands on (about 30px in the garden). This is because the game draws the ground first. In dialogue scenes the portrait, the dialogue box and the text are one UI layer.
-- User check (10-18): works well on NVIDIA GPUs. On a PC with an Intel GPU, the background sky came out different in the two eyes (reported 10-17). Recorded with NVIDIA as the only supported GPU.
+- User check (10-18): works well on NVIDIA GPUs. On a PC with an Intel GPU, the background sky came out different in the two eyes (reported 10-17).
+- **Cause found and fixed on an Intel Arc (3D One, Arc 140V, driver 32.0.101.8991; 11-05):** the log had 994 lines of `right-eye copy incomplete (0x8cdd)`. WineD3D attaches the game's BC7-compressed sprite textures (fmt 0x8e8c, e.g. 292x160, close to 16:9) to its own framebuffers to upload them; the wrapper judged them stereo targets by their aspect ratio and made right-eye clones. A compressed texture cannot be a render target, so Intel refused the framebuffer (NVIDIA let it pass), and the clone bound in the right eye showed another sky. The wrapper now treats compressed formats as pictures without a clone: on the same PC 0 refusals and 0 blocks differing between the eyes (dialogue scene dump). The log's `ARB vertex program 1: stereo rewrite failed (offset '65' is out of range)` is WineD3D's driver probe, which fails unmodified too: harmless.
 
 **Intravenous 2**: The first game installed with the installer. It was installed with the candidate list's defaults (top-down, order rule), and the user confirmed it in play. A problem where conversion failed because of LÖVE shader output names starting with an underscore was fixed in the wrapper.
 

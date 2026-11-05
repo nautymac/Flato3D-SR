@@ -23,10 +23,10 @@ namespace Flato3D
         {
             if (!Payload.Find())
             {
-                string msg = L.T("data\\game_profiles.json을 찾지 못했습니다. 설치기를 Flato3D-SR 폴더 안에서 실행하세요.",
-                                 "data\\game_profiles.json not found. Run the installer from inside the Flato3D-SR folder.");
+                string msg = L.T("data\\game_profiles.json을 찾지 못했습니다. 설치기를 " + AppInfo.Name + " 폴더 안에서 실행하세요.",
+                                 "data\\game_profiles.json not found. Run the installer from inside the " + AppInfo.Name + " folder.");
                 if (args.Length > 0) { Console.Error.WriteLine(msg); return 2; }
-                MessageBox.Show(msg, "Flato3D-SR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(msg, AppInfo.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 2;
             }
             Application.EnableVisualStyles();
@@ -151,18 +151,20 @@ namespace Flato3D
         readonly Label info = new Label();
         readonly ComboBox routeBox = new ComboBox(), outputBox = new ComboBox();
         readonly NumericUpDown sepBox = new NumericUpDown();
-        readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button(), reportBtn = new Button(), defenderBtn = new Button();
+        readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button(), reportBtn = new Button(), defenderBtn = new Button(),
+                        astraBtn = new Button();
         List<Game> all = new List<Game>();
         Game current;
         string currentExe;
         static readonly string[] Routes = { Route.OpenGL, Route.D3D9, Route.D3D11 };
-        static readonly string[] Outputs = { "auto", "sbs", "tab" };
+        // the Intel Arc edition has no SR output: AstraDepth3D weaves the side-by-side picture
+        static readonly string[] Outputs = AppInfo.IntelArc ? new[] { "sbs", "tab" } : new[] { "auto", "sbs", "tab" };
         float scale = 1f;   // the process is DPI aware: pixel sizes below are for 96 dpi and get scaled
         int P(int px) { return (int)Math.Round(px * scale); }
 
         public MainForm()
         {
-            Text = "Flato3D-SR " + AppInfo.Version + " " + L.T("설치기", "installer") + " (" + AppInfo.Date + ")";
+            Text = AppInfo.Name + " " + AppInfo.Version + " " + L.T("설치기", "installer") + " (" + AppInfo.Date + ")";
             using (var gfx = CreateGraphics()) scale = gfx.DpiX / 96f;
             Font = new Font("Segoe UI", 9f);
             AutoScaleMode = AutoScaleMode.None;
@@ -269,7 +271,10 @@ namespace Flato3D
             routeBox.SelectionChangeCommitted += (s, e) => { if (currentExe != null) installBtn.Enabled = true; };
             outputBox.DropDownStyle = ComboBoxStyle.DropDownList;
             outputBox.Width = P(230);
-            outputBox.Items.AddRange(new object[] { L.T("SR 디스플레이 (Acer, Samsung)", "SR display (Acer, Samsung)"), L.T("좌우 SBS", "Side by side"), L.T("위아래", "Top and bottom") });
+            if (AppInfo.IntelArc)
+                outputBox.Items.AddRange(new object[] { L.T("좌우 SBS (AstraDepth3D)", "Side by side (AstraDepth3D)"), L.T("위아래", "Top and bottom") });
+            else
+                outputBox.Items.AddRange(new object[] { L.T("SR 디스플레이 (Acer, Samsung)", "SR display (Acer, Samsung)"), L.T("좌우 SBS", "Side by side"), L.T("위아래", "Top and bottom") });
             sepBox.Minimum = 1;
             sepBox.Maximum = 200;
             sepBox.DecimalPlaces = 1;
@@ -296,7 +301,19 @@ namespace Flato3D
             defenderBtn.Text = L.T("Defender 예외", "Defender exclusion");
             tips.SetToolTip(defenderBtn, L.T("Windows Defender가 Flato3D 로더(version.dll)를 잘못 막을 때, 이 게임의 version.dll만 예외로 등록합니다.",
                                              "When Windows Defender wrongly blocks the Flato3D loader (version.dll), exclude this game's version.dll only."));
+            astraBtn.Text = L.T("AstraDepth3D 재시작", "Restart AstraDepth3D");
+            tips.SetToolTip(astraBtn, L.T("AstraDepth3D는 켜질 때만 게임 목록(gamelist.json)을 읽습니다. 설치한 뒤 게임을 하기 전에 한 번 다시 시작합니다.",
+                                          "AstraDepth3D reads its game list (gamelist.json) only when it starts: restart it once after installing, before playing."));
             foreach (var b in new[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn, defenderBtn }) { b.AutoSize = true; b.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(b); }
+            if (AppInfo.IntelArc) { astraBtn.AutoSize = true; astraBtn.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(astraBtn); }
+            astraBtn.Click += (s, e) =>
+            {
+                if (!Astra.Installed) { logBox.Text = L.T("AstraDepth3D가 설치되어 있지 않습니다.", "AstraDepth3D is not installed."); return; }
+                logBox.Text = Astra.Restart() ? L.T("AstraDepth3D를 다시 시작했습니다. 게임을 전체 화면으로 실행하고 AstraDepth3D의 3D 단축키로 켜면 좌우 SBS가 엮입니다.",
+                                                   "AstraDepth3D restarted. Run the game full screen and turn 3D on with AstraDepth3D's hotkey: the side-by-side picture is woven.")
+                                              : L.T("AstraDepth3D를 다시 시작하지 못했습니다. 직접 끄고 다시 켜세요.", "Could not restart AstraDepth3D: close and start it yourself.");
+                RefreshGame(current);
+            };
             reportBtn.Click += (s, e) => DoReport();
             defenderBtn.Click += (s, e) => DoDefender();
             installBtn.Click += (s, e) => DoInstall();
@@ -405,7 +422,7 @@ namespace Flato3D
         {
             var box = new TextBox { Multiline = true, ReadOnly = true, Dock = DockStyle.Fill, ScrollBars = ScrollBars.Vertical, Font = new Font("Segoe UI", 10f) };
             box.Text = string.Join("\r\n", new[] {
-                L.T("Flato3D-SR은 평면 2D 게임(픽셀 아트, 손그림)의 레이어와 스프라이트마다 깊이를 줘서 입체로 보여 줍니다.", "Flato3D-SR gives each layer and sprite of a flat 2D game its own depth."),
+                L.T(AppInfo.Name + "은 평면 2D 게임(픽셀 아트, 손그림)의 레이어와 스프라이트마다 깊이를 줘서 입체로 보여 줍니다.", AppInfo.Name + " gives each layer and sprite of a flat 2D game its own depth."),
                 "",
                 L.T("동작 방식", "How it works"),
                 L.T("  OpenGL 게임: opengl32.dll(OGL3D-SR)이 두 눈을 그립니다.", "  OpenGL games: opengl32.dll (OGL3D-SR) renders both eyes."),
@@ -414,8 +431,15 @@ namespace Flato3D
                 L.T("  원근이 있는 일반 입체 게임(2.5D, 3D)은 여기서 다루지 않습니다. Geo Gaming Hub에서 설치합니다.", "  Games with real depth (2.5D, 3D) are not done here: install them with Geo Gaming Hub."),
                 "",
                 L.T("알아 둘 것", "Good to know"),
-                L.T("  NVIDIA GPU에서만 동작을 보장합니다. Intel GPU에서는 셰이더가 깨진 적이 있습니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU로 실행하도록 설정합니다.",
-                    "  Only NVIDIA GPUs are supported; on Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets the game to run on the NVIDIA GPU."),
+                AppInfo.IntelArc
+                ? L.T("  Flato3D-IntelARC는 Intel Arc GPU(3D One 노트북)용입니다. 출력은 좌우 SBS이고, 3D One의 AstraDepth3D 앱이 그 화면을 렌티큘러 패널에 맞게 엮습니다. 설치하면 게임 exe를 AstraDepth3D의 게임 목록(gamelist.json)에 SBS 게임으로 등록합니다(관리자 권한 확인).",
+                      "  Flato3D-IntelARC is for Intel Arc GPUs (the 3D One laptop). The output is side by side; the 3D One's AstraDepth3D app weaves it for the lenticular panel. Install registers the game exe in AstraDepth3D's game list (gamelist.json) as a side-by-side game (Windows asks for permission).")
+                : L.T("  NVIDIA GPU에서만 동작을 보장합니다. Intel Arc GPU(3D One)에는 Flato3D-IntelARC를 쓰세요. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU로 실행하도록 설정합니다.",
+                      "  Only NVIDIA GPUs are supported; for an Intel Arc GPU (3D One) use Flato3D-IntelARC. On laptops with NVIDIA and another GPU, install sets the game to run on the NVIDIA GPU."),
+                AppInfo.IntelArc
+                ? L.T("    AstraDepth3D는 켜질 때만 목록을 읽습니다: 설치한 뒤 [AstraDepth3D 재시작]을 한 번 누르세요. 게임은 전체 화면으로 실행하고 AstraDepth3D의 3D 단축키로 켭니다. 게임 안 Ctrl+T로 Flato3D의 3D를 끄면 평면 그림이 되므로 그때는 AstraDepth3D의 3D도 끄세요.",
+                      "    AstraDepth3D reads its list only when it starts: press [Restart AstraDepth3D] once after installing. Run the game full screen and turn 3D on with AstraDepth3D's hotkey. Ctrl+T in game turns Flato3D's 3D off (a flat picture): turn AstraDepth3D's 3D off then as well.")
+                : "",
                 L.T("  Windows Defender가 Direct3D 게임용 로더(version.dll)를 바이러스로 잘못 진단할 수 있습니다(예: Trojan:Win32/Cloxer). 악성 코드가 아니며, 막히면 3D가 나오지 않습니다.",
                     "  Windows Defender may wrongly flag the loader for Direct3D games (version.dll) as malware (e.g. Trojan:Win32/Cloxer). It is not; when blocked there is no 3D."),
                 L.T("    막히면 Flato3D 열에 \"version.dll 없음\"이 뜨고 [Defender 예외] 버튼이 주황색으로 바뀝니다. 그때 누른 뒤 [설치]를 다시 누르세요.",
@@ -433,7 +457,8 @@ namespace Flato3D
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
                 L.T("  Ctrl+F5 / Ctrl+F6  화면 위치를 앞으로 / 뒤로", "  Ctrl+F5 / Ctrl+F6  screen plane nearer / farther"),
-                L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기      Ctrl+Alt+W  SR 디스플레이 출력 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off      Ctrl+Alt+W  SR display output on/off"),
+                AppInfo.IntelArc ? L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off")
+                                 : L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기      Ctrl+Alt+W  SR 디스플레이 출력 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off      Ctrl+Alt+W  SR display output on/off"),
                 L.T("  Ctrl+F12  두 눈 이미지 저장(분석용). 이 키들은 게임에 전달되지 않습니다.", "  Ctrl+F12  save both eyes (analysis). The game does not receive these keys."),
                 "",
                 L.T("출처와 라이선스", "Credits and license"),
@@ -537,7 +562,16 @@ namespace Flato3D
             foreach (var n in Json.Arr(g.Profile, "known_issues").Take(2)) sb.AppendLine("• " + n);
             if (g.Profile == null && Json.Str(g.Candidate, "note") is string note && note.Length > 0) sb.AppendLine("• " + note);
             foreach (var n in Json.Arr(g.Profile, "remove")) sb.AppendLine(L.T("• 설치 때 옮겨 둠: ", "• moved aside on install: ") + n);
-            if (Gpu.Known && !Gpu.Nvidia) sb.AppendLine("⚠ " + Gpu.Warning());
+            if (Gpu.Mismatch) sb.AppendLine("⚠ " + Gpu.Warning());
+            if (AppInfo.IntelArc && currentExe != null)
+            {
+                if (!Astra.Installed)
+                    sb.AppendLine("⚠ " + L.T("AstraDepth3D가 없습니다. 3D One이 아니면 좌우 SBS 화면을 다른 3D 디스플레이 프로그램으로 보세요.",
+                                             "AstraDepth3D not found. On a PC other than the 3D One, show the side-by-side picture with another 3D display program."));
+                else if (installed0(currentExe) && !Astra.Listed(currentExe))
+                    sb.AppendLine("⚠ " + L.T("이 게임이 AstraDepth3D 목록에 없습니다(SBS가 엮이지 않음). [설치]를 다시 눌러 등록하세요.",
+                                             "This game is not in the AstraDepth3D list (its side-by-side picture is not woven): press [Install] again to register it."));
+            }
             // set up by hand before the installer: no record to undo, so [Uninstall] waits for one
             if (currentExe != null && Setup.ManualInstall(Path.GetDirectoryName(currentExe)))
                 sb.AppendLine(L.T("• 설치 기록이 없어 [제거]가 꺼져 있습니다. [설치]를 한 번 누르면 기록이 생기고(지금 설정은 유지), 그다음부터 [제거]를 쓸 수 있습니다.",
@@ -567,6 +601,8 @@ namespace Flato3D
             installBtn.Enabled = currentExe != null && r != Route.None;
             removeBtn.Enabled = currentExe != null && File.Exists(Path.Combine(Path.GetDirectoryName(currentExe), Setup.ManifestName));
         }
+
+        static bool installed0(string exe) { return exe != null && File.Exists(Path.Combine(Path.GetDirectoryName(exe), Setup.ManifestName)); }
 
         static string RuleLabel(Recommendation rec)
         {
@@ -646,6 +682,12 @@ namespace Flato3D
             try { logBox.Text = Setup.Install(current, currentExe, route, o).Replace("\n", "\r\n"); }
             catch (Exception e) { logBox.Text = L.T("설치 실패: ", "Install failed: ") + e.Message; }
             RefreshGame(current);
+            // the Intel Arc edition: AstraDepth3D only reads its list when it starts
+            if (AppInfo.IntelArc && Astra.Installed && Astra.Running && Astra.Listed(currentExe) &&
+                MessageBox.Show(this, L.T("게임을 AstraDepth3D 목록에 등록했습니다. AstraDepth3D는 켜질 때만 목록을 읽으므로 지금 다시 시작할까요?\r\n(3D가 켜져 있으면 잠시 꺼집니다)",
+                                          "The game was registered with AstraDepth3D, which reads its list only when it starts. Restart it now?\r\n(3D turns off for a moment if it is on)"),
+                                Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                logBox.AppendText("\r\n" + (Astra.Restart() ? L.T("AstraDepth3D를 다시 시작했습니다.", "AstraDepth3D restarted.") : L.T("AstraDepth3D를 다시 시작하지 못했습니다. 직접 끄고 다시 켜세요.", "Could not restart AstraDepth3D: close and start it yourself.")));
         }
 
         class Shot

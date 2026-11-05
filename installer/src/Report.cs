@@ -88,7 +88,7 @@ namespace Flato3D
             string gameDir = exe == null ? g.Dir : Path.GetDirectoryName(exe);
 
             var s = new StringBuilder();
-            s.AppendLine("Flato3D-SR status report");
+            s.AppendLine(AppInfo.Name + " status report");
             s.AppendLine("time: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture));
             s.AppendLine("result: " + (result ?? "-"));
             s.AppendLine("symptom / note:");
@@ -120,7 +120,7 @@ namespace Flato3D
             s.AppendLine("installer: " + AppInfo.Version + " (" + AppInfo.Date + "), built " + File.GetLastWriteTime(Process.GetCurrentProcess().MainModule.FileName).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) +
                          " (" + AppDomain.CurrentDomain.BaseDirectory + ")");
             s.AppendLine("windows: " + WindowsVersion());
-            s.AppendLine("SR runtime: " + (Recommend.SrRuntime() ? "yes" : "no"));
+            s.AppendLine("SR runtime: " + (Recommend.SrRuntime() ? "yes" : "no") + (AppInfo.IntelArc ? " | AstraDepth3D: " + (Astra.Installed ? "yes" : "no") : ""));
             s.AppendLine("GPU: " + (Gpu.Known ? string.Join(" | ", Gpu.Names()) : "?") + (Gpu.Hybrid ? " (hybrid)" : ""));
             if (gameDir != null && File.Exists(Path.Combine(gameDir, "version.dll")))
                 s.AppendLine("loader version.dll: " + (Defender.Readable(Path.Combine(gameDir, "version.dll")) ? "readable" : "BLOCKED (antivirus?)") +

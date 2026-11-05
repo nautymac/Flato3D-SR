@@ -71,7 +71,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 
 ### Good to know
 
-- **Only NVIDIA GPUs are supported.** On Intel GPUs shaders have broken. On laptops with NVIDIA and another GPU, install sets Windows' graphics setting for the game to the NVIDIA GPU (high performance); uninstall puts it back.
+- **GPU and package:** `Flato3D-SR` is for NVIDIA GPUs and SR displays. On laptops with NVIDIA and another GPU, install sets Windows' graphics setting for the game to the NVIDIA GPU (high performance); uninstall puts it back. **For an Intel Arc GPU (the 3D One laptop) use the `Flato3D-IntelARC`** package: its only output is side by side, and the installer registers the game in the 3D One's AstraDepth3D game list (`gamelist.json`) as a side-by-side game, so AstraDepth3D weaves the picture (same repository, `installer\src\build.cmd intelarc`, `package.ps1 -Edition IntelARC`). What broke on Intel (BC7-compressed textures that WineD3D attaches were cloned as right-eye targets) was fixed in the wrapper on 2026-11-05.
 - **Windows Defender false positive:** Defender may flag the loader for Direct3D games (`version.dll`) as malware (e.g. `Trojan:Win32/Cloxer`). It sends the DLLs the game loads to WineD3D and is not malware (its source is `loader/` in this repository).
   - When it is blocked there is no 3D, and the installer shows "version.dll missing".
   - Choose the game in the installer and press **Defender exclusion** to exclude that game's `version.dll` only (Windows asks for permission). If it was already quarantined, press **Install** again.

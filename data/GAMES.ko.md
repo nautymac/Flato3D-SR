@@ -11,7 +11,7 @@
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
-| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 사용자 확인 완료 (NVIDIA) | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
+| Astral Ascent | D3D11 (Chowdren) · WineD3D | order + 임시 버퍼 | 사용자 확인 완료 (NVIDIA), Intel Arc 수정(11-05) | 이름 바꾼 WineD3D x64, 로더(정적 가져오기 지원), opengl32.dll x64, geo-11 DLL 제거 |
 | Intravenous 2 | OpenGL (LÖVE 11.5) · 직접 | order (탑다운) | 사용자 확인 완료 | opengl32.dll x64 |
 | Intravenous 2: Mercenarism | OpenGL (LÖVE) · 직접 | order (탑다운) | 사용자 확인 완료 (3D) | opengl32.dll x64 |
 | Guns, Gore and Cannoli 2 | D3D11 (Unity 5.6) · WineD3D | order, draw마다 한 층 | 사용자 확인 완료 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제, Defender 예외 |
@@ -73,7 +73,8 @@ AGS 게임: 프로필이 없어도 `acsetup.cfg`가 있으면 설치기가 `driv
 - 허브 지역(폐허, 제단, 정원, 절벽)을 이동, 점프, 공격하며 지나갔습니다. 멈춤이나 오류 없이 60fps였습니다. 깜빡임은 한 번 잡혔는데 두 눈에 똑같이 나타난 게임 효과였습니다.
 - 정원: 하늘 +40~64px, 바닥 +28px, 나무 +20px, 캐릭터 0~−6px, 앞 아치 −12px, HUD −20px. 절벽: 먼 섬 +40~64px, 바위섬 +28px, 앞 절벽 −18px.
 - 남은 일: 캐릭터가 서 있는 바닥보다 앞에 떠 보입니다(정원에서 약 30px). 게임이 바닥을 먼저 그리기 때문입니다. 대화 장면은 초상화, 대화창, 글자가 한 UI 층입니다.
-- 사용자 확인(10-18): NVIDIA GPU에서는 잘 됩니다. Intel GPU PC에서는 배경 하늘이 두 눈에서 다르게 나왔습니다(10-17 보고). NVIDIA만 보장하는 범위로 기록했습니다.
+- 사용자 확인(10-18): NVIDIA GPU에서는 잘 됩니다. Intel GPU PC에서는 배경 하늘이 두 눈에서 다르게 나왔습니다(10-17 보고).
+- **Intel Arc(3D One, Arc 140V, 드라이버 32.0.101.8991)에서 원인 확인·수정(11-05):** 로그에 `right-eye copy incomplete (0x8cdd)`가 994줄. WineD3D가 게임의 BC7 압축 스프라이트 텍스처(fmt 0x8e8c, 292×160 등 16:9에 가까운 것)를 자기 프레임버퍼에 붙여 올리는데, 래퍼가 비율만 보고 스테레오 타깃으로 판정해 오른쪽 사본을 만들었습니다. 압축 텍스처는 렌더 타깃이 될 수 없어 Intel은 FBO를 거부했고(NVIDIA는 통과), 오른쪽 눈에는 그 사본이 바인딩되어 하늘이 달랐습니다. 래퍼가 압축 형식을 그림으로 보고 사본을 만들지 않게 고친 뒤 같은 PC에서 거부 0건, 두 눈 불일치 블록 0개(대화 장면 덤프). 로그의 `ARB vertex program 1: stereo rewrite failed (offset '65' is out of range)`는 WineD3D의 드라이버 탐침이라 원본도 실패하는 무해한 줄입니다.
 
 **Intravenous 2**: 설치기로 처음 설치한 게임입니다. 후보 목록의 기본값(탑다운, order 규칙)으로 설치했고, 사용자가 플레이로 확인했습니다. LÖVE 셰이더 중 밑줄로 시작하는 출력 이름 때문에 변환이 실패하던 문제를 래퍼에서 고쳤습니다.
 

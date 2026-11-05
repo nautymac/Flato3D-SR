@@ -269,7 +269,7 @@
         }
       },
       "status": "verified",
-      "verified_by_user": "2026-10-18 (NVIDIA GPU; on an Intel GPU the sky differed between the eyes, report 2026-10-17)",
+      "verified_by_user": "2026-10-18 (NVIDIA GPU; on an Intel GPU the sky differed between the eyes, report 2026-10-17; cause fixed in the wrapper 2026-11-05, checked on an Intel Arc 140V with sbs output)",
       "notes": [
         "No upscale: the game makes itself DPI aware at run time (SDL) and has no resolution or fullscreen option, so it always renders at the desktop resolution (4K) and upscale changes nothing (checked 2026-10-19). Its own scale option makes the UI larger. The 1600x900 limit on PCGamingWiki does not hold.",
         "The exe binds d3d11.dll before any of our code runs; the loader points that import at w3d11.dll (the system d3d11 stays for the GPU driver).",
@@ -277,10 +277,10 @@
         "Text is drawn glyph by glyph into a scratch target that is cleared and composited several times a frame: each use is one layer, so lines are flat.",
         "Animated sprites change texture every few frames: groups new to the last frame's layout take the place after the group drawn before them.",
         "Measured in the first area (separation 25): sky +28..54 px, islands +30, swords/ruins +20..26, pillars and ground +8, player -6, HUD -14..-18.",
-        "Played through the hub areas (ruins, altar, garden, cliff) with movement, jumps and attacks: no hangs or errors, 60 fps, one A-B-A flicker that was a game effect in both eyes. Garden: sky +40..64 px, ground +28, trees +20, characters 0..-6, pergola -12, low clouds -14, HUD -20. Cliff: far islands +40..64, rock island +28, characters 0, big foreground cliff -18."
+        "Played through the hub areas (ruins, altar, garden, cliff) with movement, jumps and attacks: no hangs or errors, 60 fps, one A-B-A flicker that was a game effect in both eyes. Garden: sky +40..64 px, ground +28, trees +20, characters 0..-6, pergola -12, low clouds -14, HUD -20. Cliff: far islands +40..64, rock island +28, characters 0, big foreground cliff -18.",
+        "Intel Arc (3D One, 2026-11-05): the sky differing between the eyes came from WineD3D attaching the game's BC7-compressed sprite textures (fmt 0x8e8c, near 16:9) to its framebuffers; the wrapper cloned them as stereo targets, Intel refused those framebuffers (994 x 'right-eye copy incomplete (0x8cdd)') and the clone bound in the right eye showed another picture. Compressed formats are pictures now (no clone): 0 refusals, 0 blocks differing between the eyes. The log's 'ARB vertex program 1: stereo rewrite failed (offset 65 out of range)' is WineD3D's driver probe, harmless."
       ],
       "known_issues": [
-        "Intel GPU (another PC, report 2026-10-17): the background sky differs between the eyes. NVIDIA works; only NVIDIA GPUs are supported.",
         "Characters stand in front of the ground they walk on (the ground is drawn before them, so drawing order puts it farther): up to about 30 px in the garden.",
         "Dialogue scenes: portrait, box and text are one flat UI layer in front of the scene."
       ],

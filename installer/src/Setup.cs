@@ -295,7 +295,7 @@ namespace Flato3D
             // laptops with an NVIDIA GPU next to another one: the game runs on the NVIDIA GPU (Windows graphics
             // setting "high performance"), the only GPU Flato3D is supported on
             const string gpuKey = @"HKCU\Software\Microsoft\DirectX\UserGpuPreferences";
-            if (Gpu.Hybrid && !regs.Any(x => Json.Str((Dictionary<string, object>)x, "key") == gpuKey && Json.Str((Dictionary<string, object>)x, "name") == exe))
+            if (!AppInfo.IntelArc && Gpu.Hybrid && !regs.Any(x => Json.Str((Dictionary<string, object>)x, "key") == gpuKey && Json.Str((Dictionary<string, object>)x, "name") == exe))
                 using (var k = Registry.CurrentUser.CreateSubKey(gpuKey.Substring(5)))
                 {
                     object old = k.GetValue(exe);
@@ -303,7 +303,30 @@ namespace Flato3D
                     k.SetValue(exe, "GpuPreference=2;", RegistryValueKind.String);
                     log.AppendLine(L.T("그래픽 설정: 이 게임은 NVIDIA GPU(고성능)로 실행", "graphics setting: this game runs on the NVIDIA GPU (high performance)"));
                 }
-            if (Gpu.Known && !Gpu.Nvidia) log.AppendLine(Gpu.Warning());
+            if (Gpu.Mismatch) log.AppendLine(Gpu.Warning());
+
+            // Intel Arc (3D One): the AstraDepth3D app weaves the game's side-by-side picture when the exe is in its list
+            if (AppInfo.IntelArc)
+            {
+                if (!Astra.Installed)
+                    log.AppendLine(L.T("AstraDepth3D가 없습니다: 3D One이 아니면 좌우 SBS 화면을 다른 3D 디스플레이 프로그램으로 보세요.",
+                                       "AstraDepth3D not found: on a PC other than the 3D One, show the side-by-side picture with another 3D display program."));
+                else
+                {
+                    string why;
+                    if (Astra.Register(exe, out why))
+                    {
+                        man["astradepth3d"] = Astra.EntryPath(exe);
+                        log.AppendLine(L.T("AstraDepth3D 목록에 등록 (좌우 SBS 게임): ", "registered with AstraDepth3D (side-by-side game): ") + Astra.EntryPath(exe));
+                        if (Astra.Running)
+                            log.AppendLine(L.T("AstraDepth3D는 켜질 때만 목록을 읽습니다: 게임을 하기 전에 AstraDepth3D를 다시 시작하세요(설치기의 [AstraDepth3D 재시작]).",
+                                               "AstraDepth3D reads the list only when it starts: restart it before playing ([Restart AstraDepth3D] in the installer)."));
+                    }
+                    else
+                        log.AppendLine(L.T("경고: AstraDepth3D 목록(gamelist.json)에 등록하지 못했습니다(" + why + "). 게임이 SBS로 엮이지 않습니다. [설치]를 다시 누르고 관리자 권한을 허용하세요.",
+                                           "Warning: could not register with AstraDepth3D (gamelist.json: " + why + "); the game will not be woven. Press [Install] again and allow the permission prompt."));
+                }
+            }
 
             // launch options the game needs (FNA: /gldevice:OpenGL), set in Steam as in the game's Properties
             string launch = Json.Str(g.Profile, "launch_options"), appId = g.SteamAppId ?? Json.Str(g.Profile, "steam_appid");
@@ -397,6 +420,12 @@ namespace Flato3D
                     SteamLaunch.Apply(Json.Str(lo, "appid"), launch, false);
                     log.AppendLine(L.T("Steam 실행 옵션 뺌: ", "Steam launch option removed: ") + launch);
                 }
+            }
+            if (Json.Str(man, "astradepth3d") != null && Astra.Installed)
+            {
+                string why, exe = Path.Combine(exeDir, Json.Str(man, "exe") ?? "");
+                if (Astra.Unregister(exe, out why)) log.AppendLine(L.T("AstraDepth3D 목록에서 뺌: ", "removed from the AstraDepth3D list: ") + Json.Str(man, "astradepth3d"));
+                else log.AppendLine(L.T("AstraDepth3D 목록에서 빼지 못함 (" + why + "): 그대로 두어도 해는 없습니다.", "Could not remove it from the AstraDepth3D list (" + why + "); leaving it there does no harm."));
             }
             File.Delete(Path.Combine(exeDir, ManifestName));
             log.AppendLine(L.T("제거 완료", "uninstalled"));

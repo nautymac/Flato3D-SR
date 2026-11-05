@@ -71,7 +71,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 
 ### 알아 둘 것
 
-- **NVIDIA GPU에서만 동작을 보장합니다.** Intel GPU에서는 셰이더가 깨진 적이 있습니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU(고성능)로 실행하도록 Windows 그래픽 설정을 바꾸고, 제거하면 되돌립니다.
+- **GPU와 패키지:** `Flato3D-SR`은 NVIDIA GPU와 SR 디스플레이용입니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU(고성능)로 실행하도록 Windows 그래픽 설정을 바꾸고, 제거하면 되돌립니다. **Intel Arc GPU(3D One 노트북)에는 `Flato3D-IntelARC`** 패키지를 씁니다: 출력은 좌우 SBS뿐이고, 설치기가 게임을 3D One의 AstraDepth3D 게임 목록(`gamelist.json`)에 SBS 게임으로 등록해 AstraDepth3D가 그 화면을 엮습니다(같은 저장소, `installer\src\build.cmd intelarc`, `package.ps1 -Edition IntelARC`). Intel에서 깨지던 원인(WineD3D가 붙이는 BC7 압축 텍스처를 오른쪽 눈 사본으로 복제)은 2026-11-05에 래퍼에서 고쳤습니다.
 - **Windows Defender 오탐:** Defender가 Direct3D 게임용 로더(`version.dll`)를 바이러스(예: `Trojan:Win32/Cloxer`)로 잘못 진단할 수 있습니다. 게임이 불러오는 DLL을 WineD3D로 돌리는 방식 때문이며 악성 코드가 아닙니다(소스는 이 저장소의 `loader/`).
   - 막히면 3D가 나오지 않고, 설치기에 "version.dll 없음"이 표시됩니다.
   - 설치기에서 그 게임을 고르고 **Defender 예외**를 누르면 그 게임의 `version.dll`만 예외로 등록합니다(관리자 권한 확인). 이미 격리됐다면 **설치**를 다시 누릅니다.

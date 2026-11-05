@@ -34,5 +34,11 @@
 
 - 래퍼: `ogl3d\build.ps1`
 - 로더: `loader\build.ps1`
-- 설치기: `installer\src\build.cmd`
-- 패키지: `package.ps1`
+- 설치기: `installer\src\build.cmd` (SR), `installer\src\build.cmd intelarc` (Intel Arc 에디션, `/define:INTELARC` → `installer\bin\intelarc\`)
+- 패키지: `package.ps1` (SR), `package.ps1 -Edition IntelARC` (`dist\Flato3D-IntelARC`, zip `Flato3D-IntelARC-<버전>.zip`, ini 템플릿 `output = sbs`)
+- pre-release: `prerelease.ps1 -Wait`와 `prerelease.ps1 -Wait -Edition IntelARC` (OneDrive `Flato3D_github_release\Flato3D-IntelARC`)
+
+## 에디션
+
+- **Flato3D-SR:** NVIDIA GPU, SR 디스플레이(+ SBS/위아래). 기준 PC는 Helios3D.
+- **Flato3D-IntelARC (2026-11-05~):** Intel Arc GPU의 3D One 노트북용. 같은 소스, 설치기만 `INTELARC`로 빌드. 출력은 SBS(또는 위아래)뿐이고, 설치기가 AstraDepth3D의 `gamelist.json`(Program Files, 관리자 권한 copy)에 게임을 `type 1`(SBS 소스)로 등록·제거하며 [AstraDepth3D 재시작] 버튼이 있습니다(AstraDepth3D는 켜질 때만 목록을 읽음). GPU 경고·`GpuPreference` 기록은 에디션에 따라 다릅니다(`AppInfo.IntelArc`). 래퍼 수정은 두 에디션에 공통이므로 Intel에서 고친 뒤 Helios3D(NVIDIA)에서도 회귀 확인합니다.

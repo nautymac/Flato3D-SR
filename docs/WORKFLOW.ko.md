@@ -207,6 +207,7 @@
 | 장면 전체가 시차 0이거나 한 층으로 뭉침, 추적 기록의 draw가 모두 같은 `fb` 번호 | 엔진이 FBO 하나에 렌더 타깃마다 부착물만 바꿔 그림(FNA): 타깃마다 거는 viewport가 새 묶음(UI)이 되고, 합성 순서가 모든 타깃을 한 임시 버퍼로 봄 | 래퍼에서 수정됨: 묶음과 합성 순서가 FBO + 색 부착물을 타깃으로 셈. 부착물이 바뀐 FBO는 레이아웃 줄에 큰 번호(`fb1073741825` 등)로 나옴 (Axiom Verge) |
 | 장면을 앞으로 당기면(`depth_screen` 크게) 아래쪽 물체가 바닥보다 뒤로 꺼짐 | 물체는 `sprite_min`에서 막히는데 바닥은 더 가까워짐 | `sprite_min`이 `depth_screen`을 따라 움직임(수정됨) |
 | 한쪽 눈에 장면 일부가 빠지고 로그에 `right-eye copy incomplete (0x8cd7)` | 오른쪽 눈 버퍼 사본에 붙일 텍스처를 만들지 못함. WineD3D가 멀티샘플 텍스처를 고정 저장소로 만들고 그 텍스처 뷰를 붙이는데, 사본이 고정 저장소가 아니면 뷰를 못 만듦(Snufkin) | 래퍼에서 수정됨(`glTexStorage2DMultisample` 추적, 뷰의 원본은 고정 저장소로 복제). 다른 원인이면 `fbo N` 번호로 추적 기록의 부착물 확인 |
+| Intel GPU에서 배경(하늘)이 두 눈에서 다르고 로그에 `right-eye copy incomplete (0x8cdd)`가 수백 줄 | WineD3D가 게임이 올린 BC7 압축 텍스처(fmt `0x8e8c`)를 자기 프레임버퍼에 붙이는데, 16:9 비율이라 스테레오 타깃으로 보고 오른쪽 사본을 만듦. 압축 텍스처는 렌더 타깃이 될 수 없어 Intel은 `GL_FRAMEBUFFER_UNSUPPORTED`를 내고(NVIDIA는 통과), 오른쪽 눈에는 그 사본이 바인딩되어 다른 그림이 나옴(Astral Ascent, Blade Assault) | 래퍼에서 수정됨(11-05): 압축 형식(S3TC, RGTC, BPTC, ETC2, ASTC)은 그림으로 보고 사본을 만들지 않음. 로그의 `incomplete` 줄에 부착물(텍스처, 형식, 사본)이 함께 남음 |
 | 장면 전체가 먼 끝(최대 분리값 근처)에 한 장으로 붙음 | 평면 2D가 아니라 원근 카메라의 실제 3D 게임. 평면 깊이가 켜져 있으면 자동 Convergence가 꺼져 시작값(3)에 머묾 | `[Flat] enable = 0`(자동 Convergence가 장면 거리에 맞춤, Snufkin은 약 65) |
 | 평면 깊이를 끈 게임에서 깊이가 1초에 몇 번씩 출렁임, 로그에 `auto convergence:` 줄이 수백 개(적은 블록의 작은 근거리 값) | 장면이 거의 한 평면이라 수렴값이 맞으면 오프셋 0에서 일치해 2D로 빠지고, 남은 가장자리 블록이 틀린 근거리를 냄 | 래퍼에서 수정됨: 화면 평면의 블록이 나머지의 2배를 넘으면 수렴값을 둠 (SteamWorld Heist) |
 | 오른쪽 눈만 색이 다름(새빨감 등) | 색 보정 표(Unity 후처리의 1024×32 띠)를 레이어 캐시로 보고 스테레오로 만들어 오른쪽 눈에서 밀어 버림(Blade Assault) | 래퍼에서 수정됨: 띠 모양(한 변이 다른 변의 4배 초과) 버퍼는 레이어 캐시가 아님 |
@@ -298,7 +299,7 @@
 - **덤프 크기:** 4K 덤프는 장당 16MB입니다. 끝나면 지웁니다.
 - **세이브:** 플레이 테스트 전에 백업하고, 끝나면 되돌립니다. Steam Cloud는 로컬 변경을 올리므로 따로 처리할 필요가 없었습니다.
 - **Defender 오탐 (2026-10-18~):** x64 로더 `version.dll`이 `Trojan:Win32/Cloxer`로 진단되어 격리됩니다(클라우드 판정이라 다시 빌드해도 곧 다시 걸림, x86은 아직 아님). 이 PC는 로더 경로들(`loader\bin`, `dist`, pre-release의 `loader`와 zip, WineD3D 게임들의 `version.dll`)을 예외로 등록했습니다. 새 게임에 설치하면 그 `version.dll`도 설치기의 **Defender 예외**로 등록해야 합니다. 증상: 설치기에 "version.dll 없음", 게임은 평면.
-- **GPU:** NVIDIA에서만 보장합니다. Intel GPU에서는 셰이더가 깨진 적이 있습니다. 하이브리드 노트북은 설치기가 `HKCU\Software\Microsoft\DirectX\UserGpuPreferences`에 `GpuPreference=2;`를 기록합니다.
+- **GPU:** Flato3D-SR은 NVIDIA용입니다. 하이브리드 노트북은 설치기가 `HKCU\Software\Microsoft\DirectX\UserGpuPreferences`에 `GpuPreference=2;`를 기록합니다. Intel Arc(3D One)는 **Flato3D-IntelARC** 패키지(`installer\src\build.cmd intelarc` → `package.ps1 -Edition IntelARC`, `prerelease.ps1 -Edition IntelARC`): 출력은 SBS뿐, 설치기가 AstraDepth3D의 `gamelist.json`(Program Files, 관리자 권한)에 게임을 `type 1`(SBS)로 넣고 AstraDepth3D 재시작을 안내합니다. AstraDepth3D는 exe 이름과 경로의 마지막 두 요소(`<폴더>\<exe>`)로 게임을 찾고, 켜질 때만 목록을 읽습니다. Intel 드라이버(32.0.101.8991)에서 WineD3D의 ARB 탐침 프로그램(`C[A0.x + 65]` 오프셋 검사)은 원본도 실패하므로 로그의 `ARB vertex program 1: stereo rewrite failed ... offset '65' is out of range`는 무해합니다.
 - **측정 중 값이 바뀜:** 덤프 로그의 `separation N%`가 ini 값과 다르면 누군가 Ctrl+F3/F4를 눌렀습니다(`separation ... flat screen depth` 줄). 측정값은 그 분리값으로 환산합니다.
 - **데스크탑에 위빙이 남음:** SR 렌즈를 켠 게임이 끄지 않고 종료하면 렌즈가 켜진 채 남습니다. 새 프로그램의 렌즈 끄기나 SRSession 재시작으로는 안 풀리고, `Restart-Service 'SR Service'`(관리자)로 풉니다.
 - **알려진 미해결:** 캐릭터가 바닥 앞에 뜸, 저해상도 캐시의 거친 깊이 단계, 합쳐진 그림 안의 밝은 인물, 프레임 3 멈춤.
