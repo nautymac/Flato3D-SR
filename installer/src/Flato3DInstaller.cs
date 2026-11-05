@@ -138,8 +138,7 @@ namespace Flato3D
             }
             catch (Exception e) { log.AppendLine("ERROR: " + e.Message); rc = 1; }
             try { File.WriteAllText(Arg(a, "--log") ?? "flato3d_installer.log", log.ToString(), Encoding.UTF8); }
-            catch (Exception e) { Console.Error.WriteLine(log.ToString() + "
-log not written: " + e.Message); return rc == 0 ? 3 : rc; }
+            catch (Exception e) { Console.Error.WriteLine(log.ToString() + "\nlog not written: " + e.Message); return rc == 0 ? 3 : rc; }
             return rc;
         }
     }
