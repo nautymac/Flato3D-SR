@@ -396,7 +396,14 @@ namespace Flato3D
             string pu = Json.Str(disp, "upscale"), cu = Json.Str(g.Candidate, "upscale");
             string uhd = Json.Str(g.Candidate, "uhd"), note = Json.Str(g.Candidate, "uhd_note") ?? "";
             string basis = "PCGamingWiki 4K: " + uhd + (note.Length > 0 ? " — " + (note.Length > 80 ? note.Substring(0, 80) + "..." : note) : "");
-            if (pu != null) { r.Upscale = pu == "1"; r.UpscaleWhy = profile; }
+            if (AppInfo.IntelArc)
+            {
+                // the 3D One's panel is 2560x1600 (no 4K problem), and the upscale presenter (GL -> D3D11 interop)
+                // was built and tested on NVIDIA only: black frames on an Intel Arc (Shank, 2026-11-05)
+                r.Upscale = false;
+                r.UpscaleWhy = L.T("Intel Arc: 업스케일 안 씀 (패널 2560×1600, 업스케일 표시 경로는 NVIDIA용)", "Intel Arc: no upscale (2560x1600 panel; the upscale presenter is NVIDIA-only)");
+            }
+            else if (pu != null) { r.Upscale = pu == "1"; r.UpscaleWhy = profile; }
             else if (cu == "1" && exe != null && Pe.DpiAware(exe))
                 r.UpscaleWhy = L.T("4K가 맞지 않지만 exe가 고해상도 인식(DPI aware)이라 업스케일이 듣지 않음", "4K does not fit, but the exe is DPI aware: upscale has no effect") + " (" + basis + ")";
             else if (cu == "1") { r.Upscale = true; r.UpscaleWhy = basis; }

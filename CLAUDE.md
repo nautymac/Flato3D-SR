@@ -41,4 +41,4 @@
 ## 에디션
 
 - **Flato3D-SR:** NVIDIA GPU, SR 디스플레이(+ SBS/위아래). 기준 PC는 Helios3D.
-- **Flato3D-IntelARC (2026-11-05~):** Intel Arc GPU의 3D One 노트북용. 같은 소스, 설치기만 `INTELARC`로 빌드. 출력은 SBS(또는 위아래)뿐이고, 설치기가 AstraDepth3D의 `gamelist.json`(Program Files, 관리자 권한 copy)에 게임을 `type 1`(SBS 소스)로 등록·제거하며 [AstraDepth3D 재시작] 버튼이 있습니다(AstraDepth3D는 켜질 때만 목록을 읽음). GPU 경고·`GpuPreference` 기록은 에디션에 따라 다릅니다(`AppInfo.IntelArc`). 래퍼 수정은 두 에디션에 공통이므로 Intel에서 고친 뒤 Helios3D(NVIDIA)에서도 회귀 확인합니다.
+- **Flato3D-IntelARC (2026-11-05~):** Intel Arc GPU의 3D One 노트북용. 같은 소스, 설치기만 `INTELARC`로 빌드. 출력은 SBS(또는 위아래)뿐이고, 설치기가 AstraDepth3D의 `gamelist.json`(Program Files, 관리자 권한 copy)에 게임을 `type 1`(SBS 소스)로 등록·제거하며 [AstraDepth3D 재시작] 버튼이 있습니다(AstraDepth3D는 켜질 때만 목록을 읽음). GPU 경고·`GpuPreference` 기록은 에디션에 따라 다릅니다(`AppInfo.IntelArc`). IntelARC는 업스케일을 미리 켜지 않습니다(패널 2560×1600, 업스케일 표시 경로(GL→D3D11 interop)는 NVIDIA에서만 검증; Shank에서 검은 화면 반복, 11-05). 래퍼 수정은 두 에디션에 공통이므로 Intel에서 고친 뒤 Helios3D(NVIDIA)에서도 회귀 확인합니다.
