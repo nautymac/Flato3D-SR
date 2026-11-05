@@ -1344,7 +1344,8 @@
         "Installed on 10-18 (before the profile existed: candidate defaults, drawing order) and confirmed on the SR display by the user (11-03). The user's values are kept as the profile: separation 4.47, depth_screen 1.0 (saved in game). Log: 80 to 260 stereo draws a frame, 17 shaders, no failures, SR weaver on. The wrapper in the game folder is from 10-24, older than the current one; depth was not measured with dumps."
       ],
       "known_issues": [
-        "Confirmed with the wrapper of 10-24; the current wrapper not yet tried on it."
+        "Confirmed with the wrapper of 10-24; the current wrapper not yet tried on it.",
+        "Intel Arc / 3D One (2026-11-05, sbs, upscale off): black frames repeated in the train level while the game's Blur option was on; with Blur off it plays normally (user). The flicker probe saw no black in the eye images in 30 s, so the blur pass's own targets are the place to look. Not measured further."
       ]
     },
     {
