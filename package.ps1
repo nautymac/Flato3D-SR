@@ -59,11 +59,25 @@ Put 'third_party\licenses\LGPL-2.1.txt' 'wined3d\LGPL-2.1.txt'
 $zip = Join-Path $root "dist\$name-$Version.zip"
 if (Test-Path $zip) { Remove-Item $zip }
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
-$z = [System.IO.Compression.ZipFile]::Open($zip, 'Create')
-try {
-    Get-ChildItem $stage -Recurse -File | ForEach-Object {
-        $rel = $name + '/' + $_.FullName.Substring($stage.Length + 1).Replace('\', '/')
-        [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($z, $_.FullName, $rel, 'Optimal') | Out-Null   # keeps the file time
+# Windows Defender's cloud verdict on the loader (version.dll, a known false positive) sometimes stops the zip
+# being written ("file contains a virus"): the zip is built in the temp folder and tried a few times
+$tmp = Join-Path ([IO.Path]::GetTempPath()) "$name-$Version.zip"
+for ($try = 1; $try -le 4; ++$try) {
+    if (Test-Path $tmp) { Remove-Item $tmp -Force }
+    try {
+        $z = [System.IO.Compression.ZipFile]::Open($tmp, 'Create')
+        try {
+            Get-ChildItem $stage -Recurse -File | ForEach-Object {
+                $rel = $name + '/' + $_.FullName.Substring($stage.Length + 1).Replace('\', '/')
+                [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($z, $_.FullName, $rel, 'Optimal') | Out-Null   # keeps the file time
+            }
+        } finally { $z.Dispose() }
+        Move-Item $tmp $zip -Force
+        break
+    } catch {
+        if ($try -eq 4) { throw }
+        "zip attempt $try failed ($($_.Exception.Message.Trim())), retrying..."
+        Start-Sleep -Seconds 3
     }
-} finally { $z.Dispose() }
+}
 "package: $zip ($([math]::Round((Get-Item $zip).Length / 1MB, 1)) MB)"
