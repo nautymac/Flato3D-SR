@@ -8,6 +8,7 @@
 | --- | --- | --- | --- | --- |
 | Technobabylon | OpenGL (AGS) · 직접 | feet (발 위치) | 사용자 확인 완료 | opengl32.dll x86 |
 | Resonance | OpenGL (AGS) · 직접 | feet (발 위치) | 동작 (측정) | opengl32.dll x86, acsetup.cfg `render_at_screenres=1` |
+| AM2R | D3D9 (GameMaker 1.4) · WineD3D | order + 레이어 캐시(426×240), `snap_pixels = 1` | 동작 (측정, Intel Arc) | WineD3D x86, 로더+중계 winmm.dll, opengl32.dll x86. 게임 Display Scale은 정수(6x) |
 | Huntdown | D3D11 (Unity) · WineD3D | order (그리는 순서) | 동작, 사용자 확인 | 이름 바꾼 WineD3D x64, 로더, opengl32.dll x64, 수직동기화 강제 |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + 레이어 캐시 | 동작, 사용자 확인 | WineD3D x86, 로더, opengl32.dll x86, csmt=0 레지스트리 |
 | FRAMED Collection | OpenGL 3.2 · 직접 | order (반복 칸은 같은 층) + 실루엣 | 사용자 확인 완료 | opengl32.dll x86 (bin 폴더) |
@@ -38,6 +39,12 @@
 ## 게임별 메모
 
 **Technobabylon**: AGS의 `acsetup.cfg`에서 드라이버를 OGL로 둡니다. 캐릭터는 발 높이의 깊이에 서고 방은 화면 위쪽으로 갈수록 멀어집니다. GUI는 화면 위치에 남습니다.
+
+**AM2R** (프로필 `am2r`, 11-10, 3D One·Intel Arc): AM2R 런처 프로필 폴더(`Community Updates (Latest)`)에 설치합니다. 와이드 모드에서 장면을 426×240 버퍼에 그려 키웁니다(레이어 캐시로 자동 입체).
+
+- **세로줄·스크롤 때 밀림(사용자 보고, SBS):** 게임의 Display Scale이 "늘리기"면 426px을 2560px로 6.009배 늘려, 열 대부분이 6px이고 세 개(x 962, 1605, 2242)만 7px입니다(3D를 꺼도 같음). 반쪽 SBS는 눈마다 2:1로 줄이는데, 7px 열 뒤로는 모든 텍셀 경계가 홀수 열에 걸려 반씩 섞입니다. 그래서 화면이 고정된 위치에서 또렷한 띠와 번진 띠로 나뉘고(번진 경계 비율 화면 1/3씩 12%·45%·37%), 스크롤하면 그림이 그 경계를 지나며 튑니다. Display Scale을 정수 6x(2556×1440, 위아래 검은 띠)로 바꾸면 경계가 모두 짝수 열에 놓여 번진 경계가 27%→2%로 줄고 화면 전체가 고르게 됩니다. 깊이는 그대로(배경 +24px, HUD 0).
+- `snap_pixels = 1`: 정지 화면에서는 차이가 없었지만, 저해상도 픽셀 게임 기본값으로 둡니다(묶음 안 타일이 함께 움직임).
+- 분리값은 사용자 값 14.53(426px 버퍼에서 최대 약 3픽셀이라 깊이 단계가 적음). 종료 때 Intel Vulkan 드라이버(igvk32.dll)에서 한 번 죽은 기록이 있습니다(재현 안 함).
 
 **Resonance** (프로필 `resonance`, 11-03): Technobabylon과 같은 AGS 3.6.1.35입니다. 게임 해상도가 320x240(4:3)이라, 기본값(`render_at_screenres=0`)에서는 방 전체가 320x240 버퍼에 그려진 뒤 확대됩니다. 이 버퍼는 창 비율이 아니어서 단일 시점으로 남았습니다(시차 0). `aspect_tolerance = 0.35`로 입체가 되지만 깊이가 320x240 픽셀 단위(18px 계단)로 움직입니다. 설치기가 `acsetup.cfg`에 `render_at_screenres=1`을 넣으면 스프라이트를 화면 해상도로 그려 방이 부드럽게 기웁니다. 첫 방(침실) 측정: 천장 +62, 벽 +30~+50, 바닥 +8~+24, 캐릭터는 발 위치 바닥과 같은 +14입니다(한 눈 3840px 기준).
 

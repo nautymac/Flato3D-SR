@@ -1411,6 +1411,54 @@
         "reaches": "logos and the news intro: Esc, Esc, click, Esc, Esc; menu ~15 s after launch",
         "notes": "AGS ignores SetCursorPos: from the menu cursor (screen centre) rmove 672,464 is New Game. New Game, Esc twice reaches the bedroom. Back up Saved Games\\Resonance (test-backups\\Resonance)."
       }
+    },
+    {
+      "id": "am2r",
+      "name": "AM2R (Another Metroid 2 Remake)",
+      "folder": "Community Updates (Latest)",
+      "exe": "AM2R.exe",
+      "arch": "x86",
+      "engine": "GameMaker: Studio 1.4 (AM2R Launcher profile; widescreen draws a 426x240 application surface)",
+      "api": "Direct3D 9",
+      "route": "wined3d",
+      "install": [
+        "wined3d-11.19/x86/d3d9.dll",
+        "wined3d-11.19/x86/wined3d.dll",
+        "loader/x86/version.dll",
+        "loader/x86/shim/winmm.dll",
+        "ogl3d/x86/opengl32.dll",
+        "OGL3D.ini"
+      ],
+      "registry": [],
+      "ini": {
+        "Stereo": {
+          "separation": 14.53,
+          "output": "auto"
+        },
+        "Flat": {
+          "enable": 1,
+          "rule": "order",
+          "depth_screen": 0.3,
+          "snap_pixels": 1
+        }
+      },
+      "status": "working",
+      "notes": [
+        "The game draws each layer into a 426x240 application surface (a layer cache, made stereo automatically) and scales it to the window. Layers are drawn in order (rule order); tiles come in batches of 30-60 quads.",
+        "Vertical lines and a 'sliding' picture while scrolling (Intel Arc / 3D One, side by side, 2026-11-10): the game's Display Scale was Stretch, which scales 426 px to 2560 (6.009x): every column is 6 px except three of 7 px (x 962, 1605, 2242), measured the same with 3D off. Half side by side halves each eye 2:1; after a 7-px column every texel edge falls on an odd column and is averaged, so the picture splits into sharp and smeared bands at fixed screen positions (blended edges 12% / 45% / 37% by screen third) that the content scrolls through. Display Scale 6x (integer; 2556x1440, letterboxed) puts every edge on an even column: blended edges 27% -> 2%, even across the screen; depth unchanged.",
+        "snap_pixels = 1: whole pixels of the 426x240 target (no per-sprite spread inside a batch). No measured difference in a still frame; it keeps the batches moving together while scrolling, as for other low-resolution pixel games (Axiom Verge).",
+        "The separation is the user's (14.53, saved in game). It moves layers by at most about 3 pixels of the 426x240 target, so depth comes in few steps."
+      ],
+      "known_issues": [
+        "Set the game's Display Options -> Display Scale to an integer (6x on a 2560x1600 panel); Stretch gives vertical seams in side by side. Windowed mode: pick a window size that is a whole multiple of 426x240.",
+        "One crash on exit inside the Intel Vulkan driver (igvk32.dll, 2026-11-10 20:06) after two 4-s waits in WineD3D; not reproduced."
+      ],
+      "test": {
+        "proc": "AM2R",
+        "steps": "wait:15,key:0D,wait:3,key:5A,wait:3,key:5A,wait:3,key:5A,wait:12,hold:27:2,ctrlkey:7B,wait:3",
+        "reaches": "title (Enter) -> slot A (Z) -> Continue Game (Z) -> landing site, walk right, Ctrl+F12 dump",
+        "notes": "Not a Steam game: gametest -Exe '<profile folder>\\AM2R.exe'. Saves and settings: %LOCALAPPDATA%\\AM2R (save1, config.ini [Screen] Scale) - back up save1 first. Z is OK, X is Back, Ctrl is a game button (X)."
+      }
     }
   ]
 }

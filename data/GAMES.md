@@ -10,6 +10,7 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 | --- | --- | --- | --- | --- |
 | Technobabylon | OpenGL (AGS) · direct | feet (foot position) | Confirmed by the user | opengl32.dll x86 |
 | Resonance | OpenGL (AGS) · direct | feet (foot position) | Works (measured) | opengl32.dll x86, acsetup.cfg `render_at_screenres=1` |
+| AM2R | D3D9 (GameMaker 1.4) · WineD3D | order + layer cache (426x240), `snap_pixels = 1` | Works (measured, Intel Arc) | WineD3D x86, loader + winmm.dll shim, opengl32.dll x86. Game Display Scale integer (6x) |
 | Huntdown | D3D11 (Unity) · WineD3D | order (drawing order) | Works, confirmed by the user | renamed WineD3D x64, loader, opengl32.dll x64, forced vsync |
 | Door Kickers: Action Squad | D3D9 (DXUT) · WineD3D | order + layer cache | Works, confirmed by the user | WineD3D x86, loader, opengl32.dll x86, csmt=0 registry key |
 | FRAMED Collection | OpenGL 3.2 · direct | order (repeated panels share a layer) + silhouette | Confirmed by the user | opengl32.dll x86 (bin folder) |
@@ -40,6 +41,12 @@ The source of the profiles the installer uses is `game_profiles.json`. The 544 c
 ## Notes per game
 
 **Technobabylon**: In AGS's `acsetup.cfg`, set the driver to OGL. Characters stand at the depth of their feet, and the room moves farther away towards the top of the screen. The GUI stays at the screen plane.
+
+**AM2R** (profile `am2r`, 11-10, 3D One / Intel Arc): installed into the AM2R Launcher profile folder (`Community Updates (Latest)`). In widescreen the scene is drawn into a 426x240 target and scaled up (a layer cache, made stereo automatically).
+
+- **Vertical lines and a sliding picture while scrolling (user report, side by side):** with the game's Display Scale on Stretch, 426 px are scaled to 2560 (6.009x): most columns are 6 px and three (x 962, 1605, 2242) are 7 px (the same with 3D off). Half side by side halves each eye 2:1; after a 7-px column every texel edge falls on an odd column and is averaged. The picture splits into sharp and smeared bands at fixed positions (blended edges 12% / 45% / 37% by screen third), and scrolling content jumps as it crosses them. Display Scale 6x (integer; 2556x1440, letterboxed) puts every edge on an even column: blended edges 27% -> 2%, even across the screen. Depth unchanged (background +24 px, HUD 0).
+- `snap_pixels = 1`: no difference in a still frame; kept as the default for low-resolution pixel games (tiles in a batch move together).
+- The separation is the user's 14.53 (at most about 3 pixels of the 426 px target, so depth has few steps). One crash on exit inside the Intel Vulkan driver (igvk32.dll); not reproduced.
 
 **Resonance** (profile `resonance`, 11-03): the same AGS 3.6.1.35 as Technobabylon. The game is 320x240 (4:3); by default (`render_at_screenres=0`) the whole room is drawn into a 320x240 target and scaled up. That target is not the window's aspect, so it stayed mono (disparity 0). `aspect_tolerance = 0.35` makes it stereo, but depth then moves in 320x240 pixels (18 px steps). The installer sets `render_at_screenres=1` in `acsetup.cfg`, so sprites are drawn at the screen resolution and the room slopes smoothly. Measured in the first room (bedroom): ceiling +62, walls +30..+50, floor +8..+24, the character +14 like the floor at his feet (3840 px per eye).
 
