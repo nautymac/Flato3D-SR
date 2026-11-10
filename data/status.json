@@ -3,6 +3,20 @@
  "source": "GitHub issues (label report) + data/game_profiles.json",
  "games": [
   {
+   "game": "AM2R (Another Metroid 2 Remake)",
+   "steam": null,
+   "profile": "am2r",
+   "profile_status": "working",
+   "status": null,
+   "works": 0,
+   "issues": 0,
+   "broken": 0,
+   "updated": "",
+   "note": "",
+   "open_problems": [],
+   "reports": []
+  },
+  {
    "game": "Astral Ascent",
    "steam": "1280930",
    "profile": "astral-ascent",

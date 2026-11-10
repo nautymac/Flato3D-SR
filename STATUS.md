@@ -4,10 +4,11 @@ Built automatically. **Profile** is the state of the developer's setup for the g
 
 Report with the installer's **[Report status]** button or the [form](https://github.com/nautymac/Flato3D-SR/issues/new?template=status_report.yml). A problem report that has been handled is closed and no longer counts; a game whose problem reports are all handled shows 🔧 handled.
 
-29 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
+30 games · 6 reports · 한국어: [STATUS.ko.md](STATUS.ko.md)
 
 | Game | Profile | Players | Reports | Open problems | Latest note | Issues |
 |---|---|---|---|---|---|---|
+| AM2R (Another Metroid 2 Remake) | 🔵 working | - | - | - | - | - |
 | [Astral Ascent](https://store.steampowered.com/app/1280930) | ✅ confirmed | 🔧 Handled (2026-10-17) | ⚠️ 1 | - | 벼경하늘이 서로 차이가 난다. | [#1](https://github.com/nautymac/Flato3D-SR/issues/1) |
 | [Axiom Verge](https://store.steampowered.com/app/332200) | 🔵 working | - | - | - | - | - |
 | [Axiom Verge 2](https://store.steampowered.com/app/946030) | 🔵 working | - | - | - | - | - |
