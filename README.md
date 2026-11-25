@@ -69,6 +69,10 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 4. **Uninstall** removes what was installed and puts the moved files and registry values back.
 5. Press **Report status** and choose the result (works / some problems / does not work); the game list then shows it. Describe a problem if there is one, and add screenshots as files or with Ctrl+V (recent captures are listed to tick); they go into one folder with the logs, the settings and the last Ctrl+F12 dump, and a [GitHub issue](https://github.com/nautymac/Flato3D-SR/issues) page can be opened: drag the zip it made into the issue.
 
+### Linux (DroidDeck, Steam Deck)
+
+The package's `linux/` folder has an installer for Steam (Proton) games. In desktop mode, `sh linux/install-desktop.sh` adds its icon; it installs with the same profiles. Proton's DLL overrides (`WINEDLLOVERRIDES`) take the place of the Windows loader, and the output is side by side. See [linux/README.md](linux/README.md).
+
 ### Good to know
 
 - **GPU and package:** `Flato3D-SR` is for NVIDIA GPUs and SR displays. On laptops with NVIDIA and another GPU, install sets Windows' graphics setting for the game to the NVIDIA GPU (high performance); uninstall puts it back. **For an Intel Arc GPU (the 3D One laptop) use the `Flato3D-IntelARC`** package: its only output is side by side, and the installer registers the game in the 3D One's AstraDepth3D game list (`gamelist.json`) as a side-by-side game, so AstraDepth3D weaves the picture (same repository, `installer\src\build.cmd intelarc`, `package.ps1 -Edition IntelARC`). What broke on Intel (BC7-compressed textures that WineD3D attaches were cloned as right-eye targets) was fixed in the wrapper on 2026-11-05.

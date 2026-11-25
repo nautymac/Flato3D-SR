@@ -55,6 +55,8 @@ foreach ($a in 'x86', 'x64') {
 Put 'third_party\wined3d-11.19\SOURCE.txt' 'wined3d\SOURCE.txt'
 Put 'third_party\wined3d-11.19\x86\WINED3D README.txt' 'wined3d\WINED3D README.txt'
 Put 'third_party\licenses\LGPL-2.1.txt' 'wined3d\LGPL-2.1.txt'
+# Linux (DroidDeck / Steam Deck desktop, Proton games): the same profiles and payload
+foreach ($f in 'flato3d-linux.py', 'install-desktop.sh', 'README.md') { Put "linux\$f" "linux\$f" }
 
 $zip = Join-Path $root "dist\$name-$Version.zip"
 if (Test-Path $zip) { Remove-Item $zip }

@@ -69,6 +69,10 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 4. **제거**는 설치한 것을 지우고, 옮겨 둔 파일과 레지스트리 값을 되돌립니다.
 5. 게임을 해 본 뒤 **상태 보고**를 누르고 결과(잘 됨 / 일부 문제 / 안 됨)를 고릅니다. 결과는 게임 목록에 표시됩니다. 문제가 있으면 증상을 적습니다. 스크린샷은 파일로 추가하거나 Ctrl+V로 붙여 넣고(최근 캡처는 목록에서 체크), 로그, 설정, 마지막 Ctrl+F12 덤프와 함께 한 폴더에 모입니다. 원하면 [GitHub 이슈](https://github.com/nautymac/Flato3D-SR/issues) 페이지가 열립니다. 만든 zip을 이슈에 끌어다 놓으면 됩니다.
 
+### Linux (DroidDeck, Steam Deck)
+
+패키지의 `linux/` 폴더에 Steam(Proton) 게임용 설치 도구가 있습니다. 데스크탑 모드에서 `sh linux/install-desktop.sh`로 아이콘을 만들고, 같은 프로필로 설치합니다. Windows 로더 대신 Proton의 DLL 설정(`WINEDLLOVERRIDES`)을 쓰고, 출력은 좌우 SBS입니다. 자세한 내용은 [linux/README.md](linux/README.md)에 있습니다.
+
 ### 알아 둘 것
 
 - **GPU와 패키지:** `Flato3D-SR`은 NVIDIA GPU와 SR 디스플레이용입니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU(고성능)로 실행하도록 Windows 그래픽 설정을 바꾸고, 제거하면 되돌립니다. **Intel Arc GPU(3D One 노트북)에는 `Flato3D-IntelARC`** 패키지를 씁니다: 출력은 좌우 SBS뿐이고, 설치기가 게임을 3D One의 AstraDepth3D 게임 목록(`gamelist.json`)에 SBS 게임으로 등록해 AstraDepth3D가 그 화면을 엮습니다(같은 저장소, `installer\src\build.cmd intelarc`, `package.ps1 -Edition IntelARC`). Intel에서 깨지던 원인(WineD3D가 붙이는 BC7 압축 텍스처를 오른쪽 눈 사본으로 복제)은 2026-11-05에 래퍼에서 고쳤습니다.
