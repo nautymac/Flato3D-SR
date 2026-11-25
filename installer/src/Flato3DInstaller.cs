@@ -458,6 +458,7 @@ namespace Flato3D
                 L.T("게임 안의 단축키", "Hotkeys in game"),
                 L.T("  Ctrl+F3 / Ctrl+F4  분리값 낮춤 / 높임", "  Ctrl+F3 / Ctrl+F4  separation down / up"),
                 L.T("  Ctrl+F5 / Ctrl+F6  화면 위치를 앞으로 / 뒤로", "  Ctrl+F5 / Ctrl+F6  screen plane nearer / farther"),
+                L.T("  게임패드 L1+R1 + 십자키  위/아래 분리값, 오른쪽/왼쪽 화면 위치. 조절을 멈추면 값이 자동 저장됩니다.", "  Controller L1+R1 + D-pad  up/down separation, right/left screen plane. Values are saved when you stop adjusting."),
                 AppInfo.IntelArc ? L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off")
                                  : L.T("  Ctrl+F7  값 저장      Ctrl+T  3D 켜기/끄기      Ctrl+Alt+W  SR 디스플레이 출력 켜기/끄기", "  Ctrl+F7  save      Ctrl+T  3D on/off      Ctrl+Alt+W  SR display output on/off"),
                 L.T("  Ctrl+F12  두 눈 이미지 저장(분석용). 이 키들은 게임에 전달되지 않습니다.", "  Ctrl+F12  save both eyes (analysis). The game does not receive these keys."),

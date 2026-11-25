@@ -90,10 +90,12 @@ Hotkeys:
 | Ctrl+F3 / Ctrl+F4 | separation down / up |
 | Ctrl+F5 / Ctrl+F6 | flat games: move the screen plane nearer / farther |
 | Ctrl+F7 | save the values |
+| Controller: L1+R1 + D-pad | up / down = separation up / down, right / left = screen plane farther / nearer |
 | Ctrl+Alt+W | SR display output on/off (off shows the side-by-side picture) |
 | Ctrl+F12 | save both eyes and a draw trace (for analysis) |
 
 The game does not receive these keys.
+ (The controller buttons do reach the game.) Releasing an adjustment key or the controller combo saves the values by itself, so they are kept for the next launch.
 
 ## Building
 
