@@ -5,8 +5,7 @@ Runs in the DroidDeck or Steam Deck desktop and uses the Flato3D-SR package next
 (ogl3d/, wined3d/, data/). Same choices as the Windows installer (profile, route, depth
 rule, separation), with Proton in place of the Windows loader:
   OpenGL games  -> opengl32.dll (OGL3D) next to the exe
-  Direct3D 8/9  -> WineD3D's d3d9.dll / wined3d.dll next to the exe, plus OGL3D
-  Direct3D 10/11-> Proton's own WineD3D (PROTON_USE_WINED3D=1), plus OGL3D
+  Direct3D 8-11 -> Proton's own WineD3D (PROTON_USE_WINED3D=1), plus OGL3D
 Output is half side-by-side, which DroidDeck shows with Cardboard off
 (or Cardboard "Side-by-side 3D" + Viewer "No lens").
 """
@@ -365,14 +364,10 @@ def load_manifest(exe_dir):
 
 
 def payload(pkg, route, arch, imports):
-    """(source, name) pairs the route puts next to the exe."""
+    """(source, name) pairs the route puts next to the exe. Direct3D games use Proton's own WineD3D: the
+    package's WineD3D DLLs are Wine builds, which Wine takes for its builtins and then fails to load from
+    the game folder (ARM64 Proton, Shank: "d3d9.dll not found")."""
     files = [(os.path.join(pkg, "ogl3d", arch, "opengl32.dll"), "opengl32.dll")]
-    if route == "d3d9":
-        w = os.path.join(pkg, "wined3d", arch)
-        files += [(os.path.join(w, "wined3d.dll"), "wined3d.dll"), (os.path.join(w, "d3d9.dll"), "d3d9.dll")]
-        for n in ("d3d8.dll", "ddraw.dll"):
-            if n in imports:
-                files.append((os.path.join(w, n), n))
     for src, n in files:
         if not os.path.isfile(src):
             raise SystemExit(T("설치 파일이 없습니다: ", "Missing package file: ") + src)
@@ -380,9 +375,8 @@ def payload(pkg, route, arch, imports):
 
 
 def launch_options(route, extra=None, dlls=None):
-    dlls = dlls or (["opengl32"] + (["d3d9", "wined3d"] if route == "d3d9" else []))
-    s = 'WINEDLLOVERRIDES="%s=n,b" ' % ",".join(dlls)
-    if route == "d3d11":
+    s = 'WINEDLLOVERRIDES="%s=n,b" ' % ",".join(dlls or ["opengl32"])
+    if route in ("d3d9", "d3d11"):
         s = "PROTON_USE_WINED3D=1 " + s
     s += "%command%"
     if extra:
@@ -390,7 +384,156 @@ def launch_options(route, extra=None, dlls=None):
     return s
 
 
-def install(exe, pkg, prof, cand, output=None, separation=None, log=print):
+# ---------- Steam launch options through the client's DevTools (SharedJSContext) ----------
+
+def devtools_ports():
+    """DroidDeck starts Steam with -devtools-port N (guest processes only); Steam with
+    .cef-enable-remote-debugging (Steam Deck) listens on 8080."""
+    ports = []
+    for d in glob.glob("/proc/[0-9]*/cmdline"):
+        try:
+            with open(d, "rb") as f:
+                args = f.read().split(b"\0")
+        except OSError:
+            continue
+        if b"-devtools-port" in args:
+            i = args.index(b"-devtools-port")
+            if i + 1 < len(args) and args[i + 1].isdigit():
+                ports.append(int(args[i + 1]))
+    return list(dict.fromkeys(ports + [8080]))
+
+
+def _ws_eval(port, path, expression, timeout=10):
+    import base64
+    import socket
+    sock = socket.create_connection(("127.0.0.1", port), timeout=timeout)
+    try:
+        key = base64.b64encode(os.urandom(16)).decode()
+        sock.sendall(("GET %s HTTP/1.1\r\nHost: 127.0.0.1:%d\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n"
+                      "Sec-WebSocket-Key: %s\r\nSec-WebSocket-Version: 13\r\n\r\n" % (path, port, key)).encode())
+        buf = b""
+        while b"\r\n\r\n" not in buf:
+            chunk = sock.recv(65536)
+            if not chunk:
+                raise OSError("closed")
+            buf += chunk
+        head, _, buf = buf.partition(b"\r\n\r\n")
+        if not head.startswith(b"HTTP/1.1 101"):
+            raise OSError("websocket refused")
+
+        def take(n):
+            nonlocal buf
+            while len(buf) < n:
+                chunk = sock.recv(65536)
+                if not chunk:
+                    raise OSError("closed")
+                buf += chunk
+            data, buf = buf[:n], buf[n:]
+            return data
+
+        def send(payload, opcode=1):
+            mask = os.urandom(4)
+            n = len(payload)
+            head = (struct.pack("!BB", 0x80 | opcode, 0x80 | n) if n < 126 else
+                    struct.pack("!BBH", 0x80 | opcode, 0xFE, n) if n < 65536 else
+                    struct.pack("!BBQ", 0x80 | opcode, 0xFF, n))
+            sock.sendall(head + mask + bytes(b ^ mask[i % 4] for i, b in enumerate(payload)))
+
+        send(json.dumps({"id": 1, "method": "Runtime.evaluate", "params": {
+            "expression": expression, "awaitPromise": True, "returnByValue": True}}).encode())
+        message = b""
+        while True:
+            first, second = take(2)
+            n = second & 0x7F
+            n = struct.unpack("!H", take(2))[0] if n == 126 else struct.unpack("!Q", take(8))[0] if n == 127 else n
+            mask = take(4) if second & 0x80 else None
+            payload = take(n)
+            if mask:
+                payload = bytes(b ^ mask[i % 4] for i, b in enumerate(payload))
+            opcode = first & 0x0F
+            if opcode == 8:
+                raise OSError("closed")
+            if opcode == 9:
+                send(payload, 10)
+                continue
+            if opcode == 10:
+                continue
+            message += payload
+            if not first & 0x80:
+                continue
+            m = json.loads(message.decode("utf-8", "replace"))
+            message = b""
+            if m.get("id") == 1:
+                r = m.get("result") or {}
+                if "exceptionDetails" in r or "error" in m:
+                    raise OSError("script failed")
+                return (r.get("result") or {}).get("value")
+    finally:
+        sock.close()
+
+
+def steam_eval(expression):
+    """Evaluates expression in the running Steam client; raises OSError when Steam cannot be reached."""
+    from urllib.request import urlopen
+    for port in devtools_ports():
+        try:
+            with urlopen("http://127.0.0.1:%d/json/list" % port, timeout=3) as r:
+                targets = json.loads(r.read().decode("utf-8", "replace"))
+        except (OSError, ValueError):
+            continue
+        t = next((t for t in targets if t.get("title") == "SharedJSContext" and t.get("webSocketDebuggerUrl")), None)
+        if t:
+            return _ws_eval(port, "/" + t["webSocketDebuggerUrl"].split("/", 3)[3], expression)
+    raise OSError("Steam's DevTools not reachable")
+
+
+def get_launch_options(appid):
+    return steam_eval("new Promise(r => { const u = SteamClient.Apps.RegisterForAppDetails(%d, d => "
+                      "{ u.unregister(); r(d.strLaunchOptions || ''); }); setTimeout(() => r(null), 5000); })" % int(appid))
+
+
+def set_launch_options(appid, options):
+    steam_eval("SteamClient.Apps.SetAppLaunchOptions(%d, %s)" % (int(appid), json.dumps(options)))
+    return get_launch_options(appid) == options
+
+
+def apply_launch_options(appid, ours, man, old=None):
+    """Sets our launch options in Steam when the game's are empty (or ones this tool set before).
+    man["steam"] records it, so removing clears them again."""
+    if not appid or not str(appid).isdigit():
+        return "manual"
+    try:
+        cur = get_launch_options(appid)
+        if cur is None:
+            return "manual"
+        if cur.strip() and cur.strip() not in (ours, old):
+            man["steam"] = {"appid": appid, "kept": cur}
+            return "kept"
+        if cur.strip() == ours or set_launch_options(appid, ours):
+            man["steam"] = {"appid": appid, "set": ours}
+            return "set"
+    except (OSError, ValueError):
+        pass
+    return "manual"
+
+
+def appid_for_dir(game_dir):
+    """The Steam app id whose appmanifest installs into game_dir (steamapps/common/<installdir>)."""
+    common = os.path.dirname(os.path.realpath(game_dir))
+    if os.path.basename(common) != "common":
+        return ""
+    for acf in glob.glob(os.path.join(os.path.dirname(common), "appmanifest_*.acf")):
+        try:
+            with open(acf, encoding="utf-8", errors="replace") as f:
+                kv = dict(re.findall(r'"(appid|installdir)"\s+"([^"]*)"', f.read()))
+        except OSError:
+            continue
+        if kv.get("installdir", "").lower() == os.path.basename(game_dir).lower():
+            return kv.get("appid", "")
+    return ""
+
+
+def install(exe, pkg, prof, cand, output=None, separation=None, log=print, appid=None):
     exe_dir = os.path.dirname(exe)
     arch, imports = pe_info(exe)
     if arch not in ("x86", "x64"):
@@ -404,13 +547,14 @@ def install(exe, pkg, prof, cand, output=None, separation=None, log=print):
     separation = rec["separation"] if separation is None else separation
 
     kept = None
+    old_launch = ((load_manifest(exe_dir) or {}).get("steam") or {}).get("set")
     if load_manifest(exe_dir):
         # values tuned in game and saved with Ctrl+F7 stay; only the output (and a separation given here) change
         ini = os.path.join(exe_dir, "OGL3D.ini")
         kept = read_text(ini) if os.path.isfile(ini) else None
         log(T("이미 설치되어 있어 먼저 제거 후 다시 설치합니다 (게임에서 저장한 OGL3D.ini 값은 유지).",
               "Already installed: removing it first (OGL3D.ini values saved in game stay)."))
-        uninstall(exe_dir, log=lambda *_: None)
+        uninstall(exe_dir, log=lambda *_: None, clear_launch=False)
 
     files = payload(pkg, route, arch, imports)
     backup = state_path(exe_dir, "backup")
@@ -485,12 +629,21 @@ def install(exe, pkg, prof, cand, output=None, separation=None, log=print):
     dlls = ["opengl32"] + [os.path.splitext(n)[0] for _, n in files if n != "opengl32.dll"]
     man["launch_options"] = launch_options(route, (prof or {}).get("launch_options"), dlls)
     man["registry_skipped"] = [r.get("key") for r in (prof or {}).get("registry") or []]
+    if not appid:
+        d = exe_dir
+        for _ in range(4):
+            appid = appid_for_dir(d)
+            if appid:
+                break
+            d = os.path.dirname(d)
+    appid = appid or (prof or {}).get("steam_appid") or ""
+    man["launch_set"] = apply_launch_options(str(appid), man["launch_options"], man, old_launch)
     with open(state_path(exe_dir, MANIFEST), "w", encoding="utf-8") as f:
         json.dump(man, f, indent=1, ensure_ascii=False)
     return {"exe": exe, "arch": arch, "route": route, "why": why, "rule": rec["rule"], "flat": rec["flat"]}, man
 
 
-def uninstall(exe_dir, log=print):
+def uninstall(exe_dir, log=print, clear_launch=True):
     m = load_manifest(exe_dir)
     if not m:
         raise SystemExit(T("이 도구로 설치한 기록이 없습니다: ", "Nothing installed by this tool in: ") + exe_dir)
@@ -518,7 +671,18 @@ def uninstall(exe_dir, log=print):
                 os.remove(p)
     shutil.rmtree(state_path(exe_dir), ignore_errors=True)
     log(T("제거했습니다: ", "Removed from: ") + exe_dir)
-    log(T("Steam 실행 옵션에서 넣었던 문구도 지우세요.", "Also clear the launch options you set in Steam."))
+    steam, cleared = m.get("steam") or {}, False
+    if steam.get("set") and clear_launch:
+        try:
+            cleared = get_launch_options(steam["appid"]) != steam["set"] or set_launch_options(steam["appid"], "")
+        except (OSError, ValueError):
+            pass
+    if steam.get("set") and not clear_launch:
+        return
+    if cleared:
+        log(T("Steam 실행 옵션도 지웠습니다.", "Cleared the Steam launch options too."))
+    else:
+        log(T("Steam 실행 옵션에서 넣었던 문구도 지우세요.", "Also clear the launch options you set in Steam."))
 
 
 # ---------- user interface ----------
@@ -527,14 +691,16 @@ def copy_to_clipboard(text):
     for cmd in (["wl-copy"], ["xclip", "-selection", "clipboard"], ["xsel", "--clipboard", "--input"]):
         if shutil.which(cmd[0]):
             try:
-                subprocess.run(cmd, input=text.encode(), check=True, timeout=5)
+                # wl-copy stays behind to serve the clipboard: it must not hold our output open
+                subprocess.run(cmd, input=text.encode(), check=True, timeout=5,
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 return True
             except (subprocess.SubprocessError, OSError):
                 pass
     return False
 
 
-ROUTE_NAME = {"opengl": "OpenGL", "d3d9": "Direct3D 8/9 -> WineD3D", "d3d11": "Direct3D 10/11 -> Proton WineD3D"}
+ROUTE_NAME = {"opengl": "OpenGL", "d3d9": "Direct3D 8/9 -> Proton WineD3D", "d3d11": "Direct3D 10/11 -> Proton WineD3D"}
 
 
 def report_install(info, man):
@@ -544,10 +710,21 @@ def report_install(info, man):
     print("  %s: %s, separation %s, output %s" % (T("깊이", "depth"), info["rule"] if info["flat"] else "off",
                                                   fmt(man["separation"]), man["output"]))
     print()
-    print(T("1) Steam > 게임 속성 > 실행 옵션에 다음을 넣으세요:", "1) Put this in Steam > game Properties > Launch Options:"))
-    print("   " + man["launch_options"])
-    if copy_to_clipboard(man["launch_options"]):
-        print(T("   (클립보드에 복사했습니다)", "   (copied to the clipboard)"))
+    state = man.get("launch_set")
+    if state == "set":
+        print(T("1) Steam 실행 옵션을 넣었습니다:", "1) Set the Steam launch options:"))
+        print("   " + man["launch_options"])
+    else:
+        if state == "kept":
+            print(T("1) 이 게임에 이미 다른 실행 옵션이 있어 그대로 두었습니다: ", "1) The game already has other launch options; they were kept: ")
+                  + man["steam"]["kept"])
+            print(T("   Steam > 게임 속성 > 실행 옵션을 다음으로 바꾸세요 (필요한 옵션은 합쳐서):",
+                    "   Change Steam > game Properties > Launch Options to this (merge what you need):"))
+        else:
+            print(T("1) Steam > 게임 속성 > 실행 옵션에 다음을 넣으세요:", "1) Put this in Steam > game Properties > Launch Options:"))
+        print("   " + man["launch_options"])
+        if copy_to_clipboard(man["launch_options"]):
+            print(T("   (클립보드에 복사했습니다)", "   (copied to the clipboard)"))
     print(T("2) DroidDeck: Cardboard를 끄고 봅니다 (게임이 직접 좌우 SBS로 나옴).",
             "2) DroidDeck: keep Cardboard off (the game itself shows side by side)."))
     print(T("   단축키: Ctrl+T 3D 켜기/끄기, Ctrl+F3/F4 분리, Ctrl+F5/F6 화면 위치, Ctrl+F7 저장",
@@ -555,9 +732,7 @@ def report_install(info, man):
     if man.get("registry_skipped"):
         print(T("   참고: 프로필의 레지스트리 설정은 Linux에서 하지 않았습니다: ", "   Note: the profile's registry settings were not applied on Linux: ")
               + ", ".join(k for k in man["registry_skipped"] if k))
-    if info["route"] != "opengl":
-        print(T("   Proton에서 Direct3D 경로(WineD3D)는 아직 확인되지 않았습니다. 화면이 안 나오면 [제거]로 되돌리세요.",
-                "   The Direct3D routes (WineD3D) are not confirmed under Proton yet. If the game shows nothing, [Remove] puts it back."))
+    print(T("   화면이 안 나오면 [제거]로 되돌리세요.", "   If the game shows nothing, [Remove] puts it back."))
 
 
 def ask(prompt, default=""):

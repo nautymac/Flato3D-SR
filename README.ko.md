@@ -71,7 +71,7 @@ Flato3D는 평면 2D 게임(픽셀 아트, 손그림)에 실제 입체 깊이를
 
 ### Linux (DroidDeck, Steam Deck)
 
-패키지의 `linux/` 폴더에 Steam(Proton) 게임용 설치 도구가 있습니다. 데스크탑 모드에서 `sh linux/install-desktop.sh`로 아이콘을 만들고, 같은 프로필로 설치합니다. Windows 로더 대신 Proton의 DLL 설정(`WINEDLLOVERRIDES`)을 쓰고, 출력은 좌우 SBS입니다. 자세한 내용은 [linux/README.md](linux/README.md)에 있습니다.
+패키지의 `linux/` 폴더에 Steam(Proton) 게임용 설치 도구가 있습니다. 데스크탑 모드에서 `sh linux/install-desktop.sh`로 아이콘을 만들고, 같은 프로필로 설치합니다. Windows 로더 대신 Proton의 DLL 설정(`WINEDLLOVERRIDES`)과 Proton의 WineD3D를 쓰고, Steam 실행 옵션도 직접 넣습니다. 출력은 좌우 SBS입니다. 자세한 내용은 [linux/README.md](linux/README.md)에 있습니다.
 
 ### 알아 둘 것
 

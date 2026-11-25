@@ -71,7 +71,7 @@ Download the package from the releases page, unpack it anywhere and run `Flato3D
 
 ### Linux (DroidDeck, Steam Deck)
 
-The package's `linux/` folder has an installer for Steam (Proton) games. In desktop mode, `sh linux/install-desktop.sh` adds its icon; it installs with the same profiles. Proton's DLL overrides (`WINEDLLOVERRIDES`) take the place of the Windows loader, and the output is side by side. See [linux/README.md](linux/README.md).
+The package's `linux/` folder has an installer for Steam (Proton) games. In desktop mode, `sh linux/install-desktop.sh` adds its icon; it installs with the same profiles. Proton's DLL overrides (`WINEDLLOVERRIDES`) and Proton's WineD3D take the place of the Windows loader, it sets the Steam launch options itself, and the output is side by side. See [linux/README.md](linux/README.md).
 
 ### Good to know
 
