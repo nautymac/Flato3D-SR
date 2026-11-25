@@ -89,7 +89,7 @@ The diagonal line that showed for a while had nothing to do with vsync. It came 
 
 - To do: per-layer disparity has not been measured with dumps.
 
-**Intravenous 2: Mercenarism**: The candidate list had it as Direct3D 9 (PCGamingWiki), so the installer installed it on the WineD3D route, but being LÖVE it draws with OpenGL and only `opengl32.dll` is used. The profile was made for the OpenGL route, and the candidate list was corrected as well. The user confirmed the 3D in SBS (10-19).
+**Intravenous 2: Mercenarism**: The candidate list had it as Direct3D 9 (PCGamingWiki), so the installer installed it on the WineD3D route, but being LÖVE it draws with OpenGL and only `opengl32.dll` is used. The profile was made for the OpenGL route, and the candidate list was corrected as well. The user confirmed the 3D in SBS (10-19). It works on Linux too: installed with `linux/flato3d-linux.py` in DroidDeck (Proton) on a RedMagic phone and confirmed by the user (11-25), the first game checked under Proton.
 
 - Menus and the pause screen use the Windows arrow cursor. In SBS, Windows draws a single cursor at the real mouse position, so neither eye's picture had a cursor. The wrapper was fixed to draw the cursor the game chose at the same position in both eyes (at screen depth) and to hide the Windows cursor over the game window (`[Overlay] cursor = 1`, the default). During missions the game draws its own crosshair and uses a transparent cursor, so the wrapper draws nothing extra.
 - With the same fix, screen captures confirmed that the menu cursor also shows in both eyes in Door Kickers: Action Squad (WineD3D x86) and Astral Ascent (WineD3D x64, where the render thread is not the window thread).

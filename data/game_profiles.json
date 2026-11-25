@@ -361,6 +361,7 @@
       },
       "status": "verified",
       "verified_by_user": "2026-10-19 (3D, SBS)",
+      "verified_linux": "2026-11-25 (DroidDeck on a RedMagic phone, Proton, linux/flato3d-linux.py, SBS)",
       "notes": [
         "The candidate list had it as Direct3D 9 (PCGamingWiki), so the installer first put in the WineD3D route; LÖVE draws with OpenGL and only opengl32.dll is used.",
         "Menus and the pause screen use Windows' arrow cursor: in SBS it showed in neither eye until the wrapper drew the cursor into each eye ([Overlay] cursor, 2026-10-19). In missions the game draws its own crosshair and sets a transparent cursor."

@@ -15,7 +15,11 @@ Windows의 로더(`version.dll`) 대신 Proton의 DLL 설정(`WINEDLLOVERRIDES`)
 - **다른 도구의 파일:** 그래픽 DLL(geo-11, dgVoodoo 등)은 `.flato3d_linux/backup/`으로 옮깁니다. 제거하면 설치 전 상태로 되돌립니다.
 - **하지 않는 것:** 프로필의 레지스트리 설정은 Linux에서 하지 않습니다.
 
-Proton에서는 아직 시험 중입니다. 결과를 알려 주세요.
+Proton에서 확인된 것:
+- **OpenGL 경로:** Intravenous 2: Mercenarism (RedMagic 폰의 DroidDeck, 2026-11-25)
+- **Direct3D 경로(WineD3D):** 아직 확인하지 못했습니다. Shank는 그 기기에서 게임 자체가 돌지 않았습니다.
+
+결과를 알려 주세요.
 
 ### 설치
 1. Flato3D-SR 릴리스 zip을 기기에 풉니다(예: `~/Flato3D-SR/`). 이 폴더는 그 안의 `linux/`입니다.
@@ -59,7 +63,11 @@ Proton's DLL overrides (`WINEDLLOVERRIDES`) make the game load our DLLs, in plac
 - **Other tools' files:** graphics DLLs (geo-11, dgVoodoo, ...) move to `.flato3d_linux/backup/`. Removing puts everything back as it was.
 - **Not done:** a profile's registry settings are not applied on Linux.
 
-Flato3D under Proton is still being tried out. Please report results.
+Checked under Proton:
+- **OpenGL route:** Intravenous 2: Mercenarism (DroidDeck on a RedMagic phone, 2026-11-25)
+- **Direct3D routes (WineD3D):** not checked yet. Shank itself did not run on that device.
+
+Please report results.
 
 ### Install
 1. Unpack the Flato3D-SR release zip on the device (e.g. `~/Flato3D-SR/`). This folder is its `linux/`.

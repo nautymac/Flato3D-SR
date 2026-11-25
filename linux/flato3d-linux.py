@@ -555,8 +555,9 @@ def report_install(info, man):
     if man.get("registry_skipped"):
         print(T("   참고: 프로필의 레지스트리 설정은 Linux에서 하지 않았습니다: ", "   Note: the profile's registry settings were not applied on Linux: ")
               + ", ".join(k for k in man["registry_skipped"] if k))
-    print(T("   Proton에서 Flato3D는 아직 시험 중입니다. 화면이 안 나오면 [제거]로 되돌리세요.",
-            "   Flato3D under Proton is still being tried out. If the game shows nothing, [Remove] puts it back."))
+    if info["route"] != "opengl":
+        print(T("   Proton에서 Direct3D 경로(WineD3D)는 아직 확인되지 않았습니다. 화면이 안 나오면 [제거]로 되돌리세요.",
+                "   The Direct3D routes (WineD3D) are not confirmed under Proton yet. If the game shows nothing, [Remove] puts it back."))
 
 
 def ask(prompt, default=""):

@@ -87,7 +87,7 @@ AGS 게임: 프로필이 없어도 `acsetup.cfg`가 있으면 설치기가 `driv
 
 - 남은 일: 덤프로 층별 시차를 측정하지 않았습니다.
 
-**Intravenous 2: Mercenarism**: 후보 목록에 Direct3D 9로 올라 있어(PCGamingWiki) 설치기가 WineD3D 경로로 설치했지만, LÖVE라 OpenGL로 그리고 `opengl32.dll`만 쓰입니다. 프로필을 OpenGL 경로로 만들고 후보 목록도 고쳤습니다. 사용자가 SBS로 3D를 확인했습니다(10-19).
+**Intravenous 2: Mercenarism**: 후보 목록에 Direct3D 9로 올라 있어(PCGamingWiki) 설치기가 WineD3D 경로로 설치했지만, LÖVE라 OpenGL로 그리고 `opengl32.dll`만 쓰입니다. 프로필을 OpenGL 경로로 만들고 후보 목록도 고쳤습니다. 사용자가 SBS로 3D를 확인했습니다(10-19). Linux에서도 됩니다: RedMagic 폰의 DroidDeck(Proton)에서 `linux/flato3d-linux.py`로 설치해 사용자가 확인했습니다(11-25). Proton에서 처음 확인한 게임입니다.
 
 - 메뉴와 일시정지 화면은 Windows 화살표 커서를 씁니다. SBS에서는 Windows가 실제 마우스 위치에 커서를 하나만 그려서 어느 눈의 그림에도 커서가 없었습니다. 래퍼가 게임이 고른 커서를 두 눈의 같은 위치(화면 깊이)에 그리고, 게임 창 위의 Windows 커서는 숨기도록 고쳤습니다(`[Overlay] cursor = 1`, 기본). 임무 중에는 게임이 조준점을 직접 그리고 투명 커서를 쓰므로 래퍼가 더 그리는 것은 없습니다.
 - 같은 수정으로 Door Kickers: Action Squad(WineD3D x86)와 Astral Ascent(WineD3D x64, 렌더 스레드가 창 스레드와 다름)의 메뉴 커서도 두 눈에 나오는 것을 화면 캡처로 확인했습니다.
