@@ -21,17 +21,15 @@ namespace Flato3D
     // package after it. Every GitHub release gets a new version (raise both before packaging it).
     static class AppInfo
     {
-        public const string Version = "0.3.1";
+        public const string Version = "0.3.2";
         public const string Date = "2026-11-27";
-        // Edition: the SR package (Flato3D-SR: SR displays, side by side, top and bottom) or the Intel Arc package
-        // (Flato3D-IntelARC, build.cmd intelarc: side by side only, woven by the 3D One's AstraDepth3D app)
-#if INTELARC
-        public const bool IntelArc = true;
-        public const string Name = "Flato3D-IntelARC";
-#else
-        public const bool IntelArc = false;
-        public const string Name = "Flato3D-SR";
-#endif
+        // One package for both kinds of PC; the folder and zip are named after it.
+        public const string Package = "Flato3D-SR";
+        // The mode is chosen when the installer starts (Mode in SystemCheck.cs): Intel Arc mode (the 3D One: side by
+        // side only, woven by its AstraDepth3D app) or SR mode (NVIDIA: SR displays, side by side, top and bottom).
+        // Name is the mode's name, in the title, status reports and messages (the two editions had these names).
+        public static bool IntelArc { get { return Mode.IntelArc; } }
+        public static string Name { get { return IntelArc ? "Flato3D-IntelARC" : "Flato3D-SR"; } }
     }
 
     class Game

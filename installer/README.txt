@@ -19,9 +19,11 @@ https://github.com/nautymac/Flato3D-SR
    그 장면에서 게임 안 Ctrl+F12를 먼저 누르면 두 눈 이미지도 함께 들어갑니다.
    스크린샷은 [파일 추가]나 Ctrl+V(Win+Shift+S로 캡처한 것)로 넣고, 최근 캡처는 목록에서 체크합니다.
 알아 둘 것
-- 이 패키지(Flato3D-SR)는 NVIDIA GPU와 SR 디스플레이용입니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을
+- 설치기는 켜질 때 PC를 보고 모드를 고릅니다. AstraDepth3D가 있거나 NVIDIA 없이 Intel GPU만 있으면 Intel Arc 모드
+  (3D One 노트북: 좌우 SBS, AstraDepth3D가 엮음, 안내는 README-IntelARC.txt), 그 밖에는 SR 모드(NVIDIA GPU와 SR 디스플레이)입니다.
+  창 아래쪽 [모드]로 직접 고를 수 있습니다(설치기가 다시 시작되고, 고른 것은 installer.ini에 남습니다).
+- SR 모드는 NVIDIA GPU에서만 동작을 보장합니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을
   NVIDIA GPU(고성능)로 실행하도록 Windows 그래픽 설정을 바꾸고, 제거하면 되돌립니다.
-  Intel Arc GPU(3D One 노트북)에는 Flato3D-IntelARC 패키지를 쓰세요(좌우 SBS, AstraDepth3D가 엮음).
 - Windows Defender가 Direct3D 게임용 로더(version.dll)를 바이러스로 잘못 진단할 수 있습니다(예: Trojan:Win32/Cloxer).
   게임이 불러오는 DLL을 WineD3D로 돌리는 방식 때문이며 악성 코드가 아닙니다(소스: github.com/nautymac/Flato3D-SR).
   막히면 3D가 나오지 않습니다. 설치기에서 그 게임을 고르고 [Defender 예외]를 누르면 그 version.dll만 예외로 등록합니다
@@ -49,9 +51,12 @@ Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에
    Press Ctrl+F12 in game at that scene first to include both eyes.
    Add screenshots with [Add files...] or Ctrl+V (a Win+Shift+S capture); recent captures are listed to tick.
 Good to know
-- This package (Flato3D-SR) is for NVIDIA GPUs and SR displays. On laptops with NVIDIA and another GPU, install sets
-  Windows' graphics setting for the game to the NVIDIA GPU (high performance); uninstall puts it back.
-  For an Intel Arc GPU (the 3D One laptop) use the Flato3D-IntelARC package (side by side, woven by AstraDepth3D).
+- The installer picks its mode from the PC when it starts. With AstraDepth3D installed, or an Intel GPU and no NVIDIA,
+  it is Intel Arc mode (the 3D One laptop: side by side, woven by AstraDepth3D; see README-IntelARC.txt); otherwise SR
+  mode (NVIDIA GPUs and SR displays). [Mode] at the bottom of the window chooses one by hand (the installer restarts;
+  the choice is kept in installer.ini).
+- SR mode is only supported on NVIDIA GPUs. On laptops with NVIDIA and another GPU, install sets Windows' graphics
+  setting for the game to the NVIDIA GPU (high performance); uninstall puts it back.
 - Windows Defender may wrongly flag the loader for Direct3D games (version.dll) as malware (e.g. Trojan:Win32/Cloxer).
   It sends the DLLs the game loads to WineD3D and is not malware (source: github.com/nautymac/Flato3D-SR). When it is
   blocked there is no 3D: choose the game in the installer and press [Defender exclusion] to exclude that version.dll

@@ -1,10 +1,11 @@
-Flato3D-IntelARC - stereo depth for flat 2D games, Intel Arc (3D One) edition
+Flato3D-IntelARC - stereo depth for flat 2D games, Intel Arc (3D One) mode
 https://github.com/nautymac/Flato3D-SR
 
 [한국어]
-Flato3D-SR의 Intel Arc GPU용 판입니다. 3D One 노트북처럼 Intel Arc GPU와 AstraDepth3D 앱이 있는 PC에서 씁니다.
-출력은 좌우 SBS(반쪽씩)이고, 그 화면을 AstraDepth3D가 렌티큘러 패널에 맞게 엮습니다. SR 디스플레이(Acer, Samsung)와
-NVIDIA GPU에는 Flato3D-SR을 쓰세요.
+Flato3D-SR 설치기의 Intel Arc 모드 안내입니다. 3D One 노트북처럼 Intel Arc GPU와 AstraDepth3D 앱이 있는 PC에서는
+설치기가 이 모드로 켜집니다(AstraDepth3D가 있거나 NVIDIA 없이 Intel GPU만 있을 때, 창 제목이 Flato3D-IntelARC).
+출력은 좌우 SBS(반쪽씩)이고, 그 화면을 AstraDepth3D가 렌티큘러 패널에 맞게 엮습니다. 모드가 다르게 잡히면 창 아래쪽
+[모드]에서 Intel Arc (3D One)를 고릅니다.
 1. 이 폴더를 아무 곳에나 풀고 Flato3DInstaller.exe를 실행합니다. 폴더 구성은 바꾸지 마세요.
 2. 게임 탭에서 게임을 고르면 32/64비트, 경로(OpenGL / Direct3D → WineD3D), 깊이 방식, 업스케일이 게임 정보(확인된
    프로필, PCGamingWiki의 4K 지원 여부, exe)로 미리 골라지고, 그 근거가 표시됩니다. 목록에는 Flato3D로 할 수 있는
@@ -34,9 +35,10 @@ NVIDIA GPU에는 Flato3D-SR을 쓰세요.
 Direct3D 12, Vulkan, 완성 화면 한 장만 내는 게임(DOSBox, ScummVM, 에뮬레이터)은 이 방법으로 할 수 없습니다.
 
 [English]
-The Intel Arc GPU edition of Flato3D-SR, for PCs with an Intel Arc GPU and the AstraDepth3D app, such as the 3D One
-laptop. The output is side by side (half width each); AstraDepth3D weaves that picture for the lenticular panel. For
-SR displays (Acer, Samsung) and NVIDIA GPUs use Flato3D-SR.
+The guide to Intel Arc mode of the Flato3D-SR installer. On a PC with an Intel Arc GPU and the AstraDepth3D app, such
+as the 3D One laptop, the installer starts in this mode (AstraDepth3D installed, or an Intel GPU and no NVIDIA; the
+window title says Flato3D-IntelARC). The output is side by side (half width each); AstraDepth3D weaves that picture for
+the lenticular panel. If the mode is detected wrongly, choose Intel Arc (3D One) in [Mode] at the bottom of the window.
 1. Unpack this folder anywhere and run Flato3DInstaller.exe. Keep the folder layout as it is.
 2. Choose a game on the Games tab: 32/64-bit, the route (OpenGL / Direct3D -> WineD3D), the depth rule and upscale
    are pre-selected from what is known about the game (tested profile, PCGamingWiki 4K support, the exe), with the

@@ -1,6 +1,6 @@
-// What the PC itself means for Flato3D: the GPU (the SR edition is for NVIDIA, the Intel Arc edition for Intel),
-// Windows Defender, which may wrongly flag the loader (version.dll) as malware, and the 3D One's AstraDepth3D app,
-// which weaves the Intel Arc edition's side-by-side picture.
+// What the PC itself means for Flato3D: the GPU and the mode it decides (SR mode is for NVIDIA, Intel Arc mode for
+// the 3D One's Intel GPU), Windows Defender, which may wrongly flag the loader (version.dll) as malware, and the
+// 3D One's AstraDepth3D app, which weaves Intel Arc mode's side-by-side picture.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,17 +43,84 @@ namespace Flato3D
         public static bool Hybrid { get { return Nvidia && Names().Any(n => !IsNvidia(n) && !IsVirtual(n)); } }
         public static bool Known { get { return Names().Count > 0; } }
 
-        // The edition's GPU is not here: the SR package wants NVIDIA, the Intel Arc package an Intel GPU.
+        // The mode's GPU is not here: SR mode wants NVIDIA, Intel Arc mode an Intel GPU.
         public static bool Mismatch { get { return Known && (AppInfo.IntelArc ? !Intel : !Nvidia); } }
 
         public static string Warning()
         {
             if (AppInfo.IntelArc)
-                return L.T("Intel GPU가 없습니다: Flato3D-IntelARC는 Intel Arc GPU(3D One)용입니다. NVIDIA GPU와 SR 디스플레이에는 Flato3D-SR을 쓰세요.",
-                           "No Intel GPU: Flato3D-IntelARC is for Intel Arc GPUs (3D One). For NVIDIA GPUs and SR displays use Flato3D-SR.");
-            return L.T("NVIDIA GPU가 없습니다: Flato3D는 NVIDIA GPU에서만 동작을 보장합니다. Intel Arc GPU(3D One)에는 Flato3D-IntelARC를 쓰세요.",
-                       "No NVIDIA GPU: Flato3D is only supported on NVIDIA GPUs. For an Intel Arc GPU (3D One) use Flato3D-IntelARC.");
+                return L.T("Intel GPU가 없습니다: Intel Arc 모드는 Intel Arc GPU(3D One)용입니다. NVIDIA GPU와 SR 디스플레이에서는 [모드]를 SR로 바꾸세요.",
+                           "No Intel GPU: Intel Arc mode is for Intel Arc GPUs (3D One). For NVIDIA GPUs and SR displays set [Mode] to SR.");
+            return L.T("NVIDIA GPU가 없습니다: SR 모드는 NVIDIA GPU에서만 동작을 보장합니다. Intel Arc GPU(3D One)에서는 [모드]를 Intel Arc로 바꾸세요.",
+                       "No NVIDIA GPU: SR mode is only supported on NVIDIA GPUs. On an Intel Arc GPU (3D One) set [Mode] to Intel Arc.");
         }
+    }
+
+    // Intel Arc mode or SR mode, decided once when the installer starts (the window is built for it).
+    //   auto: the 3D One's AstraDepth3D app is installed, or there is an Intel GPU and no NVIDIA one -> Intel Arc;
+    //         anything else -> SR. NVIDIA laptops have an Intel GPU too, so "an Intel GPU" alone does not decide it.
+    //   installer.ini next to the exe, "mode = auto | sr | intelarc", forces one ([Mode] in the window writes it).
+    static class Mode
+    {
+        public const string Auto = "auto", Sr = "sr", Intel = "intelarc";
+        static string setting, why;
+        static bool? intel;
+
+        static string IniPath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "installer.ini"); } }
+
+        public static string Setting
+        {
+            get
+            {
+                if (setting != null) return setting;
+                setting = Auto;
+                try
+                {
+                    if (File.Exists(IniPath))
+                        foreach (string l in File.ReadAllLines(IniPath))
+                        {
+                            var m = Regex.Match(l, @"^\s*mode\s*=\s*(\w+)\s*$", RegexOptions.IgnoreCase);
+                            string v = m.Success ? m.Groups[1].Value.ToLowerInvariant() : null;
+                            if (v == Sr || v == Intel || v == Auto) setting = v;
+                        }
+                }
+                catch { }
+                return setting;
+            }
+        }
+
+        public static void Save(string v)
+        {
+            File.WriteAllText(IniPath, "; Flato3D installer mode: auto (detect), sr (NVIDIA, SR displays) or intelarc (3D One)\r\nmode = " + v + "\r\n");
+        }
+
+        // what auto would choose on this PC
+        public static bool Detected(out string reason)
+        {
+            if (Astra.Installed) { reason = L.T("AstraDepth3D 있음", "AstraDepth3D found"); return true; }
+            if (Gpu.Intel && !Gpu.Nvidia) { reason = L.T("Intel GPU, NVIDIA 없음", "Intel GPU, no NVIDIA"); return true; }
+            reason = Gpu.Nvidia ? "NVIDIA GPU" : L.T("기본값", "default");
+            return false;
+        }
+
+        public static bool IntelArc
+        {
+            get
+            {
+                if (intel == null)
+                {
+                    string r;
+                    bool d = Detected(out r);
+                    if (Setting == Auto) { intel = d; why = L.T("자동: ", "auto: ") + r; }
+                    else { intel = Setting == Intel; why = L.T("직접 고름 (installer.ini)", "chosen by hand (installer.ini)"); }
+                }
+                return intel.Value;
+            }
+        }
+
+        // "auto: AstraDepth3D found" / "chosen by hand (installer.ini)"
+        public static string Why { get { bool unused = IntelArc; return why; } }
+        public static string Label(bool intelArc) { return intelArc ? "Intel Arc (3D One)" : "SR (NVIDIA)"; }
     }
 
     // The 3D One laptop's AstraDepth3D app weaves a full-screen window for its lenticular panel. Its gamelist.json

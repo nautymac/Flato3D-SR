@@ -23,10 +23,10 @@ namespace Flato3D
         {
             if (!Payload.Find())
             {
-                string msg = L.T("data\\game_profiles.json을 찾지 못했습니다. 설치기를 " + AppInfo.Name + " 폴더 안에서 실행하세요.",
-                                 "data\\game_profiles.json not found. Run the installer from inside the " + AppInfo.Name + " folder.");
+                string msg = L.T("data\\game_profiles.json을 찾지 못했습니다. 설치기를 " + AppInfo.Package + " 폴더 안에서 실행하세요.",
+                                 "data\\game_profiles.json not found. Run the installer from inside the " + AppInfo.Package + " folder.");
                 if (args.Length > 0) { Console.Error.WriteLine(msg); return 2; }
-                MessageBox.Show(msg, AppInfo.Name, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(msg, AppInfo.Package, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return 2;
             }
             Application.EnableVisualStyles();
@@ -150,7 +150,7 @@ namespace Flato3D
         readonly ToolTip tips = new ToolTip { AutoPopDelay = 20000 };
         readonly TextBox exeBox = new TextBox(), logBox = new TextBox(), candFilter = new TextBox();
         readonly Label info = new Label();
-        readonly ComboBox routeBox = new ComboBox(), outputBox = new ComboBox();
+        readonly ComboBox routeBox = new ComboBox(), outputBox = new ComboBox(), modeBox = new ComboBox();
         readonly NumericUpDown sepBox = new NumericUpDown();
         readonly Button installBtn = new Button(), removeBtn = new Button(), runBtn = new Button(), folderBtn = new Button(), logBtn = new Button(), reportBtn = new Button(), defenderBtn = new Button(),
                         astraBtn = new Button();
@@ -158,7 +158,7 @@ namespace Flato3D
         Game current;
         string currentExe;
         static readonly string[] Routes = { Route.OpenGL, Route.D3D9, Route.D3D11 };
-        // the Intel Arc edition has no SR output: AstraDepth3D weaves the side-by-side picture
+        // Intel Arc mode has no SR output: AstraDepth3D weaves the side-by-side picture
         static readonly string[] Outputs = AppInfo.IntelArc ? new[] { "sbs", "tab" } : new[] { "auto", "sbs", "tab" };
         float scale = 1f;   // the process is DPI aware: pixel sizes below are for 96 dpi and get scaled
         int P(int px) { return (int)Math.Round(px * scale); }
@@ -307,6 +307,26 @@ namespace Flato3D
                                           "AstraDepth3D reads its game list (gamelist.json) only when it starts: restart it once after installing, before playing."));
             foreach (var b in new[] { installBtn, removeBtn, runBtn, folderBtn, logBtn, reportBtn, defenderBtn }) { b.AutoSize = true; b.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(b); }
             if (AppInfo.IntelArc) { astraBtn.AutoSize = true; astraBtn.MinimumSize = new Size(P(90), P(28)); row3.Controls.Add(astraBtn); }
+            // mode: chosen when the installer starts (auto shows what it detected); a change restarts the installer
+            string detectedWhy;
+            bool detectedIntel = Mode.Detected(out detectedWhy);
+            modeBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            modeBox.Width = P(220);
+            modeBox.Items.AddRange(new object[] { L.T("자동", "Auto") + ": " + Mode.Label(detectedIntel), Mode.Label(false), Mode.Label(true) });
+            modeBox.SelectedIndex = Mode.Setting == Mode.Sr ? 1 : Mode.Setting == Mode.Intel ? 2 : 0;
+            tips.SetToolTip(modeBox, L.T("자동은 AstraDepth3D가 있거나 NVIDIA 없이 Intel GPU만 있으면 Intel Arc(3D One), 그 밖에는 SR(NVIDIA)을 고릅니다. 지금 감지: ",
+                                         "Auto picks Intel Arc (3D One) when AstraDepth3D is installed or there is an Intel GPU and no NVIDIA, else SR (NVIDIA). Detected now: ")
+                                     + detectedWhy + L.T(". 바꾸면 설치기가 다시 시작됩니다.", ". Changing it restarts the installer."));
+            modeBox.SelectionChangeCommitted += (s, e) =>
+            {
+                string v = new[] { Mode.Auto, Mode.Sr, Mode.Intel }[modeBox.SelectedIndex];
+                if (v == Mode.Setting) return;
+                try { Mode.Save(v); }
+                catch (Exception ex) { logBox.Text = L.T("모드를 저장하지 못했습니다: ", "Could not save the mode: ") + ex.Message; return; }
+                Application.Restart();
+            };
+            row3.Controls.Add(new Label { Text = L.T("모드:", "Mode:"), AutoSize = true, Padding = new Padding(P(12), P(6), 0, 0) });
+            row3.Controls.Add(modeBox);
             astraBtn.Click += (s, e) =>
             {
                 if (!Astra.Installed) { logBox.Text = L.T("AstraDepth3D가 설치되어 있지 않습니다.", "AstraDepth3D is not installed."); return; }
@@ -432,11 +452,14 @@ namespace Flato3D
                 L.T("  원근이 있는 일반 입체 게임(2.5D, 3D)은 여기서 다루지 않습니다. Geo Gaming Hub에서 설치합니다.", "  Games with real depth (2.5D, 3D) are not done here: install them with Geo Gaming Hub."),
                 "",
                 L.T("알아 둘 것", "Good to know"),
+                L.T("  모드는 설치기가 켜질 때 PC를 보고 고릅니다(AstraDepth3D가 있거나 NVIDIA 없이 Intel GPU만 있으면 Intel Arc, 그 밖에는 SR). 지금: ",
+                    "  The mode is chosen from the PC when the installer starts (Intel Arc when AstraDepth3D is installed or there is an Intel GPU and no NVIDIA, else SR). Now: ")
+                    + Mode.Label(AppInfo.IntelArc) + " (" + Mode.Why + L.T("). 아래 [모드]로 바꿀 수 있습니다.", "). [Mode] at the bottom changes it."),
                 AppInfo.IntelArc
-                ? L.T("  Flato3D-IntelARC는 Intel Arc GPU(3D One 노트북)용입니다. 출력은 좌우 SBS이고, 3D One의 AstraDepth3D 앱이 그 화면을 렌티큘러 패널에 맞게 엮습니다. 설치하면 게임 exe를 AstraDepth3D의 게임 목록(gamelist.json)에 SBS 게임으로 등록합니다(관리자 권한 확인).",
-                      "  Flato3D-IntelARC is for Intel Arc GPUs (the 3D One laptop). The output is side by side; the 3D One's AstraDepth3D app weaves it for the lenticular panel. Install registers the game exe in AstraDepth3D's game list (gamelist.json) as a side-by-side game (Windows asks for permission).")
-                : L.T("  NVIDIA GPU에서만 동작을 보장합니다. Intel Arc GPU(3D One)에는 Flato3D-IntelARC를 쓰세요. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU로 실행하도록 설정합니다.",
-                      "  Only NVIDIA GPUs are supported; for an Intel Arc GPU (3D One) use Flato3D-IntelARC. On laptops with NVIDIA and another GPU, install sets the game to run on the NVIDIA GPU."),
+                ? L.T("  Intel Arc 모드(3D One 노트북, Intel Arc GPU)입니다. 출력은 좌우 SBS이고, 3D One의 AstraDepth3D 앱이 그 화면을 렌티큘러 패널에 맞게 엮습니다. 설치하면 게임 exe를 AstraDepth3D의 게임 목록(gamelist.json)에 SBS 게임으로 등록합니다(관리자 권한 확인).",
+                      "  Intel Arc mode (the 3D One laptop, Intel Arc GPU). The output is side by side; the 3D One's AstraDepth3D app weaves it for the lenticular panel. Install registers the game exe in AstraDepth3D's game list (gamelist.json) as a side-by-side game (Windows asks for permission).")
+                : L.T("  SR 모드: NVIDIA GPU에서만 동작을 보장합니다. Intel Arc GPU(3D One)에서는 설치기가 Intel Arc 모드로 켜집니다. NVIDIA와 다른 GPU가 함께 있는 노트북은 설치할 때 게임을 NVIDIA GPU로 실행하도록 설정합니다.",
+                      "  SR mode: only NVIDIA GPUs are supported; on an Intel Arc GPU (3D One) the installer starts in Intel Arc mode. On laptops with NVIDIA and another GPU, install sets the game to run on the NVIDIA GPU."),
                 AppInfo.IntelArc
                 ? L.T("    AstraDepth3D는 켜질 때만 목록을 읽습니다: 설치한 뒤 [AstraDepth3D 재시작]을 한 번 누르세요. 게임은 전체 화면으로 실행하고 AstraDepth3D의 3D 단축키로 켭니다. 게임 안 Ctrl+T로 Flato3D의 3D를 끄면 평면 그림이 되므로 그때는 AstraDepth3D의 3D도 끄세요.",
                       "    AstraDepth3D reads its list only when it starts: press [Restart AstraDepth3D] once after installing. Run the game full screen and turn 3D on with AstraDepth3D's hotkey. Ctrl+T in game turns Flato3D's 3D off (a flat picture): turn AstraDepth3D's 3D off then as well.")
@@ -684,7 +707,7 @@ namespace Flato3D
             try { logBox.Text = Setup.Install(current, currentExe, route, o).Replace("\n", "\r\n"); }
             catch (Exception e) { logBox.Text = L.T("설치 실패: ", "Install failed: ") + e.Message; }
             RefreshGame(current);
-            // the Intel Arc edition: AstraDepth3D only reads its list when it starts
+            // Intel Arc mode: AstraDepth3D only reads its list when it starts
             if (AppInfo.IntelArc && Astra.Installed && Astra.Running && Astra.Listed(currentExe) &&
                 MessageBox.Show(this, L.T("게임을 AstraDepth3D 목록에 등록했습니다. AstraDepth3D는 켜질 때만 목록을 읽으므로 지금 다시 시작할까요?\r\n(3D가 켜져 있으면 잠시 꺼집니다)",
                                           "The game was registered with AstraDepth3D, which reads its list only when it starts. Restart it now?\r\n(3D turns off for a moment if it is on)"),
