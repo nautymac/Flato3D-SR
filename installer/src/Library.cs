@@ -21,8 +21,8 @@ namespace Flato3D
     // package after it. Every GitHub release gets a new version (raise both before packaging it).
     static class AppInfo
     {
-        public const string Version = "0.3.2";
-        public const string Date = "2026-11-27";
+        public const string Version = "0.3.3";
+        public const string Date = "2026-11-28";
         // One package for both kinds of PC; the folder and zip are named after it.
         public const string Package = "Flato3D-SR";
         // The mode is chosen when the installer starts (Mode in SystemCheck.cs): Intel Arc mode (the 3D One: side by
